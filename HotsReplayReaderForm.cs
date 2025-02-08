@@ -13,6 +13,8 @@ namespace HotsReplayReader
         private Rectangle originalHotsReplayReaderFormSize;
         private Rectangle listBoxHotsReplaysOriginalRectangle;
 
+        private string userDocumentsFolder;
+
         private string hotsVariablesFile;
         List<hotsLocalAccount> hotsLocalAccounts;
         private StormReplay hotsReplay;
@@ -47,7 +49,7 @@ namespace HotsReplayReader
         private string getLastReplayFilePath()
         {
             RegistryKey RegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
-            string userDocumentsFolder = RegKey.GetValue("Personal", "").ToString();
+            userDocumentsFolder = RegKey.GetValue("Personal", "").ToString();
 
             bool lastReplayFilePathFound = false;
             string lastReplayFilePath = @"";
@@ -85,31 +87,35 @@ namespace HotsReplayReader
 
         private void listHotsAccounts()
         {
+            string[] accountsDirs;
             comboBoxHotsAccounts.Items.Clear();
             hotsLocalAccounts = new List<hotsLocalAccount>();
-            string[] accountsDirs = Directory.GetDirectories(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts");
-            foreach (string accountDir in accountsDirs)
+            if (Directory.Exists(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts"))
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(accountDir);
-                string[] multiplayersReplayDirs = Directory.GetDirectories(accountDir);
-                foreach (string multiplayersReplayDir in multiplayersReplayDirs)
+                accountsDirs = Directory.GetDirectories(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts");
+                foreach (string accountDir in accountsDirs)
                 {
-                    DirectoryInfo multiplayersReplayDirInfo = new DirectoryInfo(multiplayersReplayDir);
-                    if (multiplayersReplayDirInfo.Name.Substring(0, 7) == @"2-Hero-")
+                    DirectoryInfo directoryInfo = new DirectoryInfo(accountDir);
+                    string[] multiplayersReplayDirs = Directory.GetDirectories(accountDir);
+                    foreach (string multiplayersReplayDir in multiplayersReplayDirs)
                     {
-                        DirectoryInfo hotsReplayFolder = new(multiplayersReplayDir + @"\Replays\Multiplayer");
-                        FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
-                        if (replayFiles.Length > 0)
+                        DirectoryInfo multiplayersReplayDirInfo = new DirectoryInfo(multiplayersReplayDir);
+                        if (multiplayersReplayDirInfo.Name.Substring(0, 7) == @"2-Hero-")
                         {
-                            Array.Reverse(replayFiles);
-                            if (StormReplayParse(replayFiles[0].FullName))
+                            DirectoryInfo hotsReplayFolder = new(multiplayersReplayDir + @"\Replays\Multiplayer");
+                            FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
+                            if (replayFiles.Length > 0)
                             {
-                                hotsLocalAccounts.Add(new hotsLocalAccount
+                                Array.Reverse(replayFiles);
+                                if (StormReplayParse(replayFiles[0].FullName))
                                 {
-                                    BattleTagName = hotsReplay.Owner.BattleTagName,
-                                    FullPath = Path.GetDirectoryName(replayFiles[0].FullName)
-                                });
-                                comboBoxHotsAccounts.Items.Add(hotsReplay.Owner.BattleTagName);
+                                    hotsLocalAccounts.Add(new hotsLocalAccount
+                                    {
+                                        BattleTagName = hotsReplay.Owner.BattleTagName,
+                                        FullPath = Path.GetDirectoryName(replayFiles[0].FullName)
+                                    });
+                                    comboBoxHotsAccounts.Items.Add(hotsReplay.Owner.BattleTagName);
+                                }
                             }
                         }
                     }
