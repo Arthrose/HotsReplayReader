@@ -17,4 +17,19 @@
     <ProjectReference Include="..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="heroesIcon.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>heroesIcon.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="heroesIcon.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>heroesIcon.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
