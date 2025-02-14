@@ -27,12 +27,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>heroesIcon.resx</DependentUpon>
     </Compile>
+    <Compile Update="hotsImages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>hotsImages.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="heroesIcon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>heroesIcon.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="hotsImages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>hotsImages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

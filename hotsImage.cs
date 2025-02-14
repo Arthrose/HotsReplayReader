@@ -11,9 +11,108 @@ namespace HotsReplayReader
     {
         public Bitmap Bitmap { get; set; }
         public string Name { get; set; }
+        public string Base64String {  get; set; }
 
-        public hotsImage()
+        public hotsImage(string HeroName = "_Null")
         {
+            this.Name = HeroName;
+            getBase64String();
+        }
+
+        private void getBase64String()
+        {
+            if (Name == "Abathur") Base64String = Convert.ToBase64String((byte[])heroesIcon.Abathur);
+            else if (Name == "Alarak") Base64String = Convert.ToBase64String((byte[])heroesIcon.Alarak);
+            else if (Name == "Alexstrasza") Base64String = Convert.ToBase64String((byte[])heroesIcon.Alexstrasza);
+            else if (Name == "Ana") Base64String = Convert.ToBase64String((byte[])heroesIcon.Ana);
+            else if (Name == "Anduin") Base64String = Convert.ToBase64String((byte[])heroesIcon.Anduin);
+            else if (Name == "Anub'arak") Base64String = Convert.ToBase64String((byte[])heroesIcon.Anub_arak);
+            else if (Name == "Artanis") Base64String = Convert.ToBase64String((byte[])heroesIcon.Artanis);
+            else if (Name == "Arthas") Base64String = Convert.ToBase64String((byte[])heroesIcon.Arthas);
+            else if (Name == "Auriel") Base64String = Convert.ToBase64String((byte[])heroesIcon.Auriel);
+            else if (Name == "Azmodan") Base64String = Convert.ToBase64String((byte[])heroesIcon.Azmodan);
+            else if (Name == "Blaze") Base64String = Convert.ToBase64String((byte[])heroesIcon.Blaze);
+            else if (Name == "Brightwing") Base64String = Convert.ToBase64String((byte[])heroesIcon.Brightwing);
+            else if (Name == "Cassia") Base64String = Convert.ToBase64String((byte[])heroesIcon.Cassia);
+            else if (Name == "Chen") Base64String = Convert.ToBase64String((byte[])heroesIcon.Chen);
+            else if (Name == "Cho") Base64String = Convert.ToBase64String((byte[])heroesIcon.Cho);
+            else if (Name == "Chromie") Base64String = Convert.ToBase64String((byte[])heroesIcon.Chromie);
+            else if (Name == "D.Va") Base64String = Convert.ToBase64String((byte[])heroesIcon.D_Va);
+            else if (Name == "Deathwing") Base64String = Convert.ToBase64String((byte[])heroesIcon.Deathwing);
+            else if (Name == "Deckard") Base64String = Convert.ToBase64String((byte[])heroesIcon.Deckard);
+            else if (Name == "Dehaka") Base64String = Convert.ToBase64String((byte[])heroesIcon.Dehaka);
+            else if (Name == "Diablo") Base64String = Convert.ToBase64String((byte[])heroesIcon.Diablo);
+            else if (Name == "E.T.C.") Base64String = Convert.ToBase64String((byte[])heroesIcon.E_T_C_);
+            else if (Name == "Falstad") Base64String = Convert.ToBase64String((byte[])heroesIcon.Falstad);
+            else if (Name == "Fenix") Base64String = Convert.ToBase64String((byte[])heroesIcon.Fenix);
+            else if (Name == "Gall") Base64String = Convert.ToBase64String((byte[])heroesIcon.Gall);
+            else if (Name == "Garrosh") Base64String = Convert.ToBase64String((byte[])heroesIcon.Garrosh);
+            else if (Name == "Gazlowe") Base64String = Convert.ToBase64String((byte[])heroesIcon.Gazlowe);
+            else if (Name == "Genji") Base64String = Convert.ToBase64String((byte[])heroesIcon.Genji);
+            else if (Name == "Greymane") Base64String = Convert.ToBase64String((byte[])heroesIcon.Greymane);
+            else if (Name == "Gul'dan") Base64String = Convert.ToBase64String((byte[])heroesIcon.Gul_dan);
+            else if (Name == "Hanzo") Base64String = Convert.ToBase64String((byte[])heroesIcon.Hanzo);
+            else if (Name == "Hogger") Base64String = Convert.ToBase64String((byte[])heroesIcon.Hogger);
+            else if (Name == "Illidan") Base64String = Convert.ToBase64String((byte[])heroesIcon.Illidan);
+            else if (Name == "Imperius") Base64String = Convert.ToBase64String((byte[])heroesIcon.Imperius);
+            else if (Name == "Jaina") Base64String = Convert.ToBase64String((byte[])heroesIcon.Jaina);
+            else if (Name == "Johanna") Base64String = Convert.ToBase64String((byte[])heroesIcon.Johanna);
+            else if (Name == "Junkrat") Base64String = Convert.ToBase64String((byte[])heroesIcon.Junkrat);
+            else if (Name == "Kael'thas") Base64String = Convert.ToBase64String((byte[])heroesIcon.Kael_thas);
+            else if (Name == "Kel'Thuzad") Base64String = Convert.ToBase64String((byte[])heroesIcon.Kel_Thuzad);
+            else if (Name == "Kerrigan") Base64String = Convert.ToBase64String((byte[])heroesIcon.Kerrigan);
+            else if (Name == "Kharazim") Base64String = Convert.ToBase64String((byte[])heroesIcon.Kharazim);
+            else if (Name == "Leoric") Base64String = Convert.ToBase64String((byte[])heroesIcon.Leoric);
+            else if (Name == "Li Li") Base64String = Convert.ToBase64String((byte[])heroesIcon.Li_Li);
+            else if (Name == "Li-Ming") Base64String = Convert.ToBase64String((byte[])heroesIcon.Li_Ming);
+            else if (Name == "Lt. Morales") Base64String = Convert.ToBase64String((byte[])heroesIcon.Lt__Morales);
+            else if (Name == "Lunara") Base64String = Convert.ToBase64String((byte[])heroesIcon.Lunara);
+            else if (Name == "Lúcio") Base64String = Convert.ToBase64String((byte[])heroesIcon.Lúcio);
+            else if (Name == "Maiev") Base64String = Convert.ToBase64String((byte[])heroesIcon.Maiev);
+            else if (Name == "Mal'Ganis") Base64String = Convert.ToBase64String((byte[])heroesIcon.Mal_Ganis);
+            else if (Name == "Malfurion") Base64String = Convert.ToBase64String((byte[])heroesIcon.Malfurion);
+            else if (Name == "Malthael") Base64String = Convert.ToBase64String((byte[])heroesIcon.Malthael);
+            else if (Name == "Medivh") Base64String = Convert.ToBase64String((byte[])heroesIcon.Medivh);
+            else if (Name == "Mei") Base64String = Convert.ToBase64String((byte[])heroesIcon.Mei);
+            else if (Name == "Mephisto") Base64String = Convert.ToBase64String((byte[])heroesIcon.Mephisto);
+            else if (Name == "Muradin") Base64String = Convert.ToBase64String((byte[])heroesIcon.Muradin);
+            else if (Name == "Murky") Base64String = Convert.ToBase64String((byte[])heroesIcon.Murky);
+            else if (Name == "Nazeebo") Base64String = Convert.ToBase64String((byte[])heroesIcon.Nazeebo);
+            else if (Name == "Nova") Base64String = Convert.ToBase64String((byte[])heroesIcon.Nova);
+            else if (Name == "Orphea") Base64String = Convert.ToBase64String((byte[])heroesIcon.Orphea);
+            else if (Name == "Probius") Base64String = Convert.ToBase64String((byte[])heroesIcon.Probius);
+            else if (Name == "Qhira") Base64String = Convert.ToBase64String((byte[])heroesIcon.Qhira);
+            else if (Name == "Ragnaros") Base64String = Convert.ToBase64String((byte[])heroesIcon.Ragnaros);
+            else if (Name == "Raynor") Base64String = Convert.ToBase64String((byte[])heroesIcon.Raynor);
+            else if (Name == "Rehgar") Base64String = Convert.ToBase64String((byte[])heroesIcon.Rehgar);
+            else if (Name == "Rexxar") Base64String = Convert.ToBase64String((byte[])heroesIcon.Rexxar);
+            else if (Name == "Samuro") Base64String = Convert.ToBase64String((byte[])heroesIcon.Samuro);
+            else if (Name == "Sgt. Hammer") Base64String = Convert.ToBase64String((byte[])heroesIcon.Sgt__Hammer);
+            else if (Name == "Sonya") Base64String = Convert.ToBase64String((byte[])heroesIcon.Sonya);
+            else if (Name == "Stitches") Base64String = Convert.ToBase64String((byte[])heroesIcon.Stitches);
+            else if (Name == "Stukov") Base64String = Convert.ToBase64String((byte[])heroesIcon.Stukov);
+            else if (Name == "Sylvanas") Base64String = Convert.ToBase64String((byte[])heroesIcon.Sylvanas);
+            else if (Name == "Tassadar") Base64String = Convert.ToBase64String((byte[])heroesIcon.Tassadar);
+            else if (Name == "The Butcher") Base64String = Convert.ToBase64String((byte[])heroesIcon.The_Butcher);
+            else if (Name == "The Lost Vikings") Base64String = Convert.ToBase64String((byte[])heroesIcon.The_Lost_Vikings);
+            else if (Name == "Thrall") Base64String = Convert.ToBase64String((byte[])heroesIcon.Thrall);
+            else if (Name == "Tracer") Base64String = Convert.ToBase64String((byte[])heroesIcon.Tracer);
+            else if (Name == "Tychus") Base64String = Convert.ToBase64String((byte[])heroesIcon.Tychus);
+            else if (Name == "Tyrael") Base64String = Convert.ToBase64String((byte[])heroesIcon.Tyrael);
+            else if (Name == "Tyrande") Base64String = Convert.ToBase64String((byte[])heroesIcon.Tyrande);
+            else if (Name == "Uther") Base64String = Convert.ToBase64String((byte[])heroesIcon.Uther);
+            else if (Name == "Valeera") Base64String = Convert.ToBase64String((byte[])heroesIcon.Valeera);
+            else if (Name == "Valla") Base64String = Convert.ToBase64String((byte[])heroesIcon.Valla);
+            else if (Name == "Varian") Base64String = Convert.ToBase64String((byte[])heroesIcon.Varian);
+            else if (Name == "Whitemane") Base64String = Convert.ToBase64String((byte[])heroesIcon.Whitemane);
+            else if (Name == "Xul") Base64String = Convert.ToBase64String((byte[])heroesIcon.Xul);
+            else if (Name == "Yrel") Base64String = Convert.ToBase64String((byte[])heroesIcon.Yrel);
+            else if (Name == "Zagara") Base64String = Convert.ToBase64String((byte[])heroesIcon.Zagara);
+            else if (Name == "Zarya") Base64String = Convert.ToBase64String((byte[])heroesIcon.Zarya);
+            else if (Name == "Zeratul") Base64String = Convert.ToBase64String((byte[])heroesIcon.Zeratul);
+            else if (Name == "Zul'jin") Base64String = Convert.ToBase64String((byte[])heroesIcon.Zul_jin);
+            else if (Name == "Welcome") Base64String = Convert.ToBase64String((byte[])hotsImages.Welcome);
+            else Base64String = Convert.ToBase64String((byte[])heroesIcon._Null);
         }
 
         public void setBitmap()

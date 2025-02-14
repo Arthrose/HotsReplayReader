@@ -32,12 +32,12 @@
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             browseToolStripMenuItem = new ToolStripMenuItem();
+            sourceToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             accountsToolStripMenuItem = new ToolStripMenuItem();
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
-            sourceToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView).BeginInit();
             SuspendLayout();
@@ -61,14 +61,21 @@
             // browseToolStripMenuItem
             // 
             browseToolStripMenuItem.Name = "browseToolStripMenuItem";
-            browseToolStripMenuItem.Size = new Size(180, 22);
+            browseToolStripMenuItem.Size = new Size(112, 22);
             browseToolStripMenuItem.Text = "Browse";
             browseToolStripMenuItem.Click += browseToolStripMenuItem_Click;
+            // 
+            // sourceToolStripMenuItem
+            // 
+            sourceToolStripMenuItem.Name = "sourceToolStripMenuItem";
+            sourceToolStripMenuItem.Size = new Size(112, 22);
+            sourceToolStripMenuItem.Text = "Source";
+            sourceToolStripMenuItem.Click += sourceToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(112, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
@@ -86,7 +93,7 @@
             webView.Location = new Point(348, 24);
             webView.Name = "webView";
             webView.Size = new Size(1011, 784);
-            webView.Source = new Uri("http://crapouilleau.free.fr/info.php", UriKind.Absolute);
+            webView.Source = new Uri("about:blank", UriKind.Absolute);
             webView.TabIndex = 1;
             webView.ZoomFactor = 1D;
             // 
@@ -98,13 +105,6 @@
             listBoxHotsReplays.Size = new Size(342, 784);
             listBoxHotsReplays.TabIndex = 3;
             listBoxHotsReplays.SelectedIndexChanged += listBoxHotsReplays_SelectedIndexChanged;
-            // 
-            // sourceToolStripMenuItem
-            // 
-            sourceToolStripMenuItem.Name = "sourceToolStripMenuItem";
-            sourceToolStripMenuItem.Size = new Size(180, 22);
-            sourceToolStripMenuItem.Text = "Source";
-            sourceToolStripMenuItem.Click += sourceToolStripMenuItem_Click;
             // 
             // hotsReplayWebReader
             // 
