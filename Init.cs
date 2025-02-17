@@ -16,7 +16,7 @@ namespace HotsReplayReader
         private string? hotsVariablesFile;
         internal List<hotsLocalAccount>? hotsLocalAccounts;
         private StormReplay? hotsReplay;
-        IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
+        IEnumerable<Heroes.StormReplayParser.Player.stormPlayer>? hotsPlayers;
         public Init()
         {
             lastReplayFilePath = getLastReplayFilePath();

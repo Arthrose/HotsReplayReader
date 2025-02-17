@@ -15,6 +15,7 @@ using Heroes.StormReplayParser.Player;
 using static System.Net.Mime.MediaTypeNames;
 using System.Drawing.Printing;
 using System.Security.Policy;
+using System.Diagnostics;
 
 namespace HotsReplayReader
 {
@@ -27,6 +28,9 @@ namespace HotsReplayReader
         private string? hotsReplayFolder;
 
         hotsReplay hotsReplay;
+        hotsTeam redTeam;
+        hotsTeam blueTeam;
+        hotsPlayer[] hotsplayers;
 
         internal string? htmlContent;
 
@@ -54,14 +58,65 @@ namespace HotsReplayReader
 
             if (Directory.Exists(Init.lastReplayFilePath))
                 listHotsReplays(Init.lastReplayFilePath);
-
-
-            //htmlContent += $@"<img src='data:image/png;base64,{new hotsImage("Welcome").Base64String}' />";
-            //webView.CoreWebView2.NavigateToString(htmlContent);
-
             await webView.EnsureCoreWebView2Async();
-            htmlContent += $@"<body style=""background-color: black;""><img style=""width: 100%; height: 100%;"" src=""data:image/png;base64,{new hotsImage("Welcome").Base64String}"" /></body>";
-            webView.CoreWebView2.NavigateToString(htmlContent);
+            //webView.CoreWebView2.NavigateToString(htmlContent);
+            webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
+            webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+            //htmlContent += $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://heroesIcon.local/Alarak.png"" /></body>";
+            htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsImages/Welcome.jpg"" /></body>";
+            //htmlContent += $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsImages/Kael'thas.png"" /></body>";
+            webView.NavigateToString(htmlContent);
+        }
+        private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
+        {
+            Uri uri = new Uri(e.Request.Uri);
+
+            // Vérifier si le schéma correspond à celui défini (ici "app")
+            if (uri.Scheme == "app")
+            {
+                // Récupérer le nom du fichier (exemple : "MyImage.png")
+                string fileName = System.IO.Path.GetFileName(uri.LocalPath);
+                // On suppose que le nom de la ressource est le nom du fichier sans l'extension
+                string resourceName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                string Extension = System.IO.Path.GetExtension(fileName);
+
+                // Récupérer l'image depuis les ressources (adapté selon vos ressources)
+                Bitmap image = new hotsImage(resourceName).Bitmap;
+                if (image != null)
+                {
+                    // Convertir l'image en MemoryStream
+                    if (Extension == ".png")
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        ms.Position = 0;
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
+                    }
+                    else if (Extension == ".jpg")
+                    {
+                        // Suppression du canal Alpha pour ne pas gérer la transparence
+                        Bitmap newImage = new Bitmap(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                        using (Graphics g = Graphics.FromImage(newImage))
+                        {
+                            g.Clear(Color.White);
+                            g.DrawImage(image, 0, 0, image.Width, image.Height);
+                        }
+                        MemoryStream ms = new MemoryStream();
+                        newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        ms.Position = 0;
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/jpeg");
+                    }
+                }
+            }
+        }
+        private static Bitmap ByteToImage(byte[] blob)
+        {
+            MemoryStream mStream = new MemoryStream();
+            byte[] pData = blob;
+            mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+            Bitmap bm = new Bitmap(mStream, false);
+            mStream.Dispose();
+            return bm;
         }
         private void resizeControl(Rectangle r, Control c, bool growWidth)
         {
@@ -116,9 +171,9 @@ namespace HotsReplayReader
         {
             string backColor = @"#0C0318";
             if (hotsReplay.stormReplay.Owner.IsWinner)
-                backColor = @"#003300"; //@"#DDFFDD";
+                backColor = @"#001100";
             else
-                backColor = @"#330000";
+                backColor = @"#110000";
 
             string html = $@"
                 <html>
@@ -136,8 +191,24 @@ namespace HotsReplayReader
                 tr {{
                   text-align: center;
                 }}
+				.headTableTd {{
+                  padding: 5px;
+				}}
+                .titleBlueTeam {{
+                  color: deepskyblue;
+                  font-size: 300%;
+                  font-weight: bold;
+                  font-family: Consolas, Lucida Console, Courier New;
+                }}
+                .titleRedTeam {{
+                  color: crimson;
+                  font-size: 300%;
+                  font-weight: bold;
+                  font-family: Consolas, Lucida Console, Courier New;
+                }}
                 .heroIcon {{
-                  border: 3px solid white;
+                  /*border: 3px solid gainsboro;*/
+                  box-shadow: 0px 0px 4px 4px gainsboro;
                   border-radius: 100%;
                   width: 80px;
                   height: 80px;
@@ -147,18 +218,46 @@ namespace HotsReplayReader
                 }}
                 .battleTag {{
                   font-size: 80%;
+                  font-family: Consolas, Lucida Console, Courier New;
+                  line-height: 250%;
+                }}
+                .heroIconTeam1 {{
+                  box-shadow: 0px 0px 4px 4px crimson;
+                }}
+                .heroIconTeam2 {{
+                  box-shadow: 0px 0px 4px 4px deepskyblue;
+                }}
+                .heroIconTeam3 {{
+                  box-shadow: 0px 0px 4px 3px green;
+                }}
+                .heroIconTeam4 {{
+                  box-shadow: 0px 0px 4px 4px goldenrod;
                 }}
                 .team1 {{
-                  border: 3px solid red;
+                  color: crimson;
                 }}
                 .team2 {{
-                  border: 3px solid blue;
+                  color: deepskyblue;
                 }}
                 .team3 {{
-                  border: 3px solid green;
+                  color: green;
                 }}
                 .team4 {{
-                  border: 3px solid gold;
+                  color: goldenrod;
+                }}
+                .teamHeader {{
+                  background-color: #000000;
+                }}
+                .teamBlue {{
+                  background-color: #17203D;
+                }}
+                .teamRed {{
+                  background-color: #300F22;
+                }}
+                .tdPlayerName {{
+                  text-align: left;
+                  vertical-align: center;
+                  font-family: Consolas, Lucida Console, Courier New;
                 }}
                 .chatMessages {{
                   background-color: #272A34;
@@ -173,9 +272,27 @@ namespace HotsReplayReader
                   vertical-align: top;
                   font-family: Consolas, Lucida Console, Courier New;
                 }}
+                .nonBreakingText {{
+                  white-space: nowrap;
+                }}
+                .tableScore {{
+                  text-align: center;
+                  vertical-align: center;
+                  font-family: Consolas, Lucida Console, Courier New;
+                }}
+                .scoreIcon {{
+                  width: 100px;
+                  height: 50px;
+                  object-fit: cover;
+                  object-position: 100% 50;
+                }}
+                .teamBestScore {{
+				  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
+                }}
                 </style>
                 </head>
                 <body>
+                <p>&nbsp;</p>
                 ";
             return html;
         }
@@ -189,78 +306,89 @@ namespace HotsReplayReader
         internal string HTMLGetHeadTable()
         {
             string playerName;
-            string html = $@"<table>
+            string html = $@"<table class=""headTable"">
             <tr>
-            <td colspan=""5"">TEAM 1</td>
+            <td colspan=""5"" class=""titleBlueTeam"">Blue Team</td>
             <td></td>
-            <td colspan=""5"">TEAM 2</td>
+            <td colspan=""5"" class=""titleRedTeam"">Red Team</td>
             </tr>
             <tr>
             ";
             long? opponentsFirstParty = null;
-            foreach (StormPlayer StormPlayer in hotsReplay.stormPlayers)
-            {
-                if (StormPlayer.Team.ToString() == "Red")
+            hotsplayers = new hotsPlayer[10];
+            int i = 0;
+
+            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+                if (stormPlayer.Team.ToString() == "Blue")
                 {
-                    playerName = StormPlayer.BattleTagName.Remove(StormPlayer.BattleTagName.IndexOf("#"));
-                    html += $@"<td><img src='data:image/png;base64,{new hotsImage(StormPlayer.PlayerHero.HeroName).Base64String}' class='heroIcon";
-                    if (StormPlayer.Team == hotsReplay.stormReplay.Owner.Team)
-                    {
-                        if (hotsReplay.stormReplay.Owner.BattleTagName == StormPlayer.BattleTagName)
-                            html += $@" team1";
-                        else if ((StormPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (StormPlayer.PartyValue != null))
-                            html += $@" team1";
-                        else if (StormPlayer.PartyValue != null)
-                            html += $@" team2";
-                    }
-                    else
-                    {
-                        if ((StormPlayer.PartyValue != null) && ((opponentsFirstParty == null) || (opponentsFirstParty == StormPlayer.PartyValue)))
-                        {
-                            opponentsFirstParty = StormPlayer.PartyValue;
-                            html += $@" team3";
-                        }
-                        else if ((StormPlayer.PartyValue != null) && (opponentsFirstParty != StormPlayer.PartyValue))
-                            html += $@" team4";
-                    }
-                    html += $@"' /><br><div class='battleTag'>{playerName}</div></td>";
+                    html += HTMLGetHeadTableCell(stormPlayer, ref opponentsFirstParty, i);
+                    i++;
                 }
-            }
+
             html += $@"<td width=""100""></td>";
-            //opponentsFirstParty = null;
-            foreach (StormPlayer StormPlayer in hotsReplay.stormPlayers)
-            {
-                if (StormPlayer.Team.ToString() == "Blue")
+
+            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+                if (stormPlayer.Team.ToString() == "Red")
                 {
-                    playerName = StormPlayer.BattleTagName.Remove(StormPlayer.BattleTagName.IndexOf("#"));
-                    html += $@"<td><img src='data:image/png;base64,{new hotsImage(StormPlayer.PlayerHero.HeroName).Base64String}' class='heroIcon";
-                    if (StormPlayer.Team == hotsReplay.stormReplay.Owner.Team)
-                    {
-                        if (hotsReplay.stormReplay.Owner.BattleTagName == StormPlayer.BattleTagName)
-                            html += $@" team1";
-                        else if ((StormPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (StormPlayer.PartyValue != null))
-                            html += $@" team1";
-                        else if (StormPlayer.PartyValue != null)
-                            html += $@" team2";
-                    }
-                    else
-                    {
-                        if ((StormPlayer.PartyValue != null) && ((opponentsFirstParty == null) || (opponentsFirstParty == StormPlayer.PartyValue)))
-                        {
-                            opponentsFirstParty = StormPlayer.PartyValue;
-                            html += $@" team3";
-                        }
-                        else if ((StormPlayer.PartyValue != null) && (opponentsFirstParty != StormPlayer.PartyValue))
-                            html += $@" team4";
-                    }
-                    html += $@"' /><br><div class='battleTag'>{playerName}</div></td>";
+                    html += HTMLGetHeadTableCell(stormPlayer, ref opponentsFirstParty, i);
+                    i++;
                 }
-            }
+
             html += $@"
             </tr>
             </table>
             </body>
             </html>
+            ";
+            return html;
+        }
+        internal string HTMLGetHeadTableCell(stormPlayer stormPlayer, ref long? opponentsFirstParty, int id)
+        {
+            string html = $@"";
+            string playerName;
+
+            hotsplayers[id] = new hotsPlayer();
+            hotsplayers[id].BattleTag = stormPlayer.BattleTagName;
+            hotsplayers[id].Party = "0";
+            hotsplayers[id].Team = stormPlayer.Team.ToString();
+
+            playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
+            //playerName = stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#"));
+            //html += $@"<td><img src='data:image/png;base64,{new hotsImage(StormPlayer.PlayerHero.HeroName).Base64String}' class='heroIcon";
+            html += $@"<td class=""headTableTd""><img src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" class='heroIcon";
+            if (stormPlayer.Team == hotsReplay.stormReplay.Owner.Team)
+            {
+                if (hotsReplay.stormReplay.Owner.BattleTagName == stormPlayer.BattleTagName)
+                {
+                    html += $@" heroIconTeam1";
+                    hotsplayers[id].Party = "1";
+                }
+                else if ((stormPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (stormPlayer.PartyValue != null))
+                {
+                    html += $@" heroIconTeam1";
+                    hotsplayers[id].Party = "1";
+                }
+                else if (stormPlayer.PartyValue != null)
+                {
+                    html += $@" heroIconTeam2";
+                    hotsplayers[id].Party = "2";
+                }
+            }
+            else
+            {
+                if ((stormPlayer.PartyValue != null) && ((opponentsFirstParty == null) || (opponentsFirstParty == stormPlayer.PartyValue)))
+                {
+                    opponentsFirstParty = stormPlayer.PartyValue;
+                    html += $@" heroIconTeam3";
+                    hotsplayers[id].Party = "3";
+                }
+                else if ((stormPlayer.PartyValue != null) && (opponentsFirstParty != stormPlayer.PartyValue))
+                {
+                    html += $@" heroIconTeam4";
+                    hotsplayers[id].Party = "4";
+                }
+            }
+            html += $@"' /><div class=""battleTag"">{playerName}</div></td>
             ";
             return html;
         }
@@ -281,53 +409,183 @@ namespace HotsReplayReader
                 int? msgSenderAccountLevel = chatMessage.MessageSender.AccountLevel;
                 string msgBattleTagName = chatMessage.MessageSender.BattleTagName;
                 string msgCharacter = "";
-                foreach (Heroes.StormReplayParser.Player.StormPlayer hotsPlayer in hotsReplay.stormPlayers)
+                foreach (Heroes.StormReplayParser.Player.stormPlayer hotsPlayer in hotsReplay.stormPlayers)
                     if (hotsPlayer.BattleTagName == chatMessage.MessageSender.BattleTagName)
+                    {
                         msgCharacter = hotsPlayer.PlayerHero.HeroName;
+                        msgCharacter = msgCharacter.Replace(" ", "&nbsp;");
+                    }
                 html += $@"<td class=""messages"">[" + msgHours + ":" + msgMinutes + ":" + msgSeconds + ":" + msgMilliseconds + "]&nbsp;&nbsp;</td>";
                 html += $@"<td class=""messages""><b>";
                 if (chatMessage.MessageSender.BattleTagName == hotsReplay.stormReplay.Owner.BattleTagName)
-                    html += $@"<class style=""color: red"">{msgSenderName}</class>";
+                    html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
                 else if ((chatMessage.MessageSender.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (chatMessage.MessageSender.PartyValue != null))
-                    html += $@"<class style=""color: red"">{msgSenderName}</class>";
+                    html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
                 else if (chatMessage.MessageSender.PartyValue != null)
-                    html += $@"<class style=""color: lightblue"">{msgSenderName}</class>";
+                    html += $@"<class style=""color: deepskyblue"">{msgSenderName}</class>";
                 else
-                    html += $@"<class>{msgSenderName}</class>";
+                    html += $@"<class style=""color: gainsboro"">{msgSenderName}</class>";
                 html += $@"</b>";
                 html += $@"&nbsp;({msgSenderAccountLevel})&nbsp;&nbsp;</td>";
-                html += $@"<td class=""messages"">{msgCharacter}&nbsp;&nbsp;</td>";
+                html += $@"<td class=""messages nonBreakingText""><nobr>{msgCharacter}</nobr>&nbsp;&nbsp;</td>";
                 html += $@"<td width=""100%"" class=""messages"">{((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text}</td>";
-                html += $@"</tr>";
+                html += "</tr>\r\n";
             }
             html += $@"</table>";
             html += $@"</div>";
             return html;
         }
+        private string HTMLGetScoreTable()
+        {
+            string playerName;
+            string html = @$"
+              <table class=""tableScore"">
+                <tr class=""teamHeader"">
+                <td>&nbsp;&nbsp;Icone&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;Name&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;Takedown&nbsp;</td>
+                <td>&nbsp;&nbsp;Deaths&nbsp;</td>
+                <td>Siege Dmge</td>
+                <td>&nbsp;Hero Dmg&nbsp;</td>
+                <td>&nbsp;Healing&nbsp;&nbsp;</td>
+                <td>Dmg Taken&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            ";
+
+            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+                if (stormPlayer.Team.ToString() == "Blue")
+                    html += HTMLGetScoreTr(stormPlayer, blueTeam, getParty(stormPlayer.BattleTagName));
+            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+                if (stormPlayer.Team.ToString() == "Red")
+                    html += HTMLGetScoreTr(stormPlayer, redTeam, getParty(stormPlayer.BattleTagName));
+
+            html += @$"</table>";
+            return html;
+        }
+        private string getParty(string playerBattleTag)
+        {
+            foreach (hotsPlayer hotsPlayer in hotsplayers)
+            {
+                if (hotsPlayer.BattleTag == playerBattleTag)
+                {
+                    return hotsPlayer.Party;
+                }
+            }
+            return "0";
+        }
+        private string HTMLGetScoreTr(stormPlayer stormPlayer, hotsTeam team, string partyColor)
+        {
+            string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")): stormPlayer.Name + " (AI)";
+            string html = @"";
+            html += @$"<tr class=""team{team.Name}"">";
+            //html += @$"<td><img class=""scoreIcon"" src=""data:image/png;base64,{new hotsImage(stormPlayer.PlayerHero.HeroName).Base64String}"" /></td>";
+            html += @$"<td><img class=""scoreIcon"" src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" /></td>";
+            html += @$"<td class=""tdPlayerName {team.Name} team{partyColor}"">{stormPlayer.PlayerHero.HeroName}<br /><font size=""-1"">{playerName}</font></td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.SoloKills == team.maxKills)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.SoloKills}</td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.Takedowns == team.maxTakedowns)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.Takedowns}</td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.Deaths == team.maxDeaths)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.Deaths}</td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.SiegeDamage == team.maxSiegeDmg)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.SiegeDamage:n0}</td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.HeroDamage == team.maxHeroDmg)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.HeroDamage:n0}</td>";
+
+            html += @$"<td";
+            if ((stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing) == team.maxHealing)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing:n0}</td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.DamageTaken == team.maxDmgTaken)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.DamageTaken:n0}</td>";
+
+            html += @$"<td";
+            if (stormPlayer.ScoreResult.ExperienceContribution == team.maxExp)
+                html += $@" class = teamBestScore";
+            html += @$">{stormPlayer.ScoreResult.ExperienceContribution:n0}</td>";
+
+            html += "</tr>\r\n";
+            return html;
+        }
+        private void initTeamDatas(hotsTeam team)
+        {
+            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            {
+                if (stormPlayer.Team.ToString() == team.Name)
+                {
+                    if (stormPlayer.ScoreResult.SoloKills >= team.maxKills)
+                        team.maxKills = stormPlayer.ScoreResult.SoloKills;
+                    if (stormPlayer.ScoreResult.Takedowns >= team.maxTakedowns)
+                        team.maxTakedowns = stormPlayer.ScoreResult.Takedowns;
+                    if (stormPlayer.ScoreResult.Deaths <= team.maxDeaths)
+                        team.maxDeaths = stormPlayer.ScoreResult.Deaths;
+                    if (stormPlayer.ScoreResult.SiegeDamage >= team.maxSiegeDmg)
+                        team.maxSiegeDmg = stormPlayer.ScoreResult.SiegeDamage;
+                    if (stormPlayer.ScoreResult.HeroDamage >= team.maxHeroDmg)
+                        team.maxHeroDmg = stormPlayer.ScoreResult.HeroDamage;
+                    if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing >= team.maxHealing)
+                        team.maxHealing = stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing;
+                    if (stormPlayer.ScoreResult.DamageTaken >= team.maxDmgTaken)
+                        team.maxDmgTaken = stormPlayer.ScoreResult.DamageTaken;
+                    if (stormPlayer.ScoreResult.ExperienceContribution >= team.maxExp)
+                        team.maxExp = stormPlayer.ScoreResult.ExperienceContribution;
+                }
+            }
+        }
         private void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
             //htmlContent += $@"<img src='http://hotsreplayreader.local/{StormPlayer.PlayerHero.HeroName}.png' class='heroIcon' /> - {StormPlayer.PlayerHero.HeroName}<br />";
             //webView.CoreWebView2.SetVirtualHostNameToFolderMapping("hotsreplayreader.local", "icons/heroes", CoreWebView2HostResourceAccessKind.Allow);
-
             hotsReplay = new hotsReplay(hotsReplayFolder + "\\" + listBoxHotsReplays.Text + ".stormreplay");
-            htmlContent = $@"{HTMLGetHeader()}";
-            htmlContent += $@"{HTMLGetHeadTable()}<br /><br />";
-            htmlContent += $@"{HTMLGetChatMessage()}";
-            htmlContent += $@"{HTMLGetFooter()}";
+            if (hotsReplay.stormReplay != null)
+            {
+                initTeamDatas(redTeam = new hotsTeam("Red"));
+                initTeamDatas(blueTeam = new hotsTeam("Blue"));
+                htmlContent = $@"{HTMLGetHeader()}";
+                htmlContent += $@"{HTMLGetHeadTable()}<br /><br />";
+                htmlContent += $@"{HTMLGetChatMessage()}<br /><br />";
+                htmlContent += $@"{HTMLGetScoreTable()}<br /><br />";
+                htmlContent += $@"{HTMLGetFooter()}";
+            }
+            else
+            {
+                htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsImages/Welcome.jpg"" /></body>";
+            }
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void sourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(htmlContent);
             string path = "C:\\Users\\Thom\\Downloads\\html.html";
-            if (!File.Exists(path))
+            //MessageBox.Show($@"Souces enrgistrées dans le fichier {path}");
+            if (File.Exists(path))
             {
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    sw.Write(htmlContent);
-                }
+                File.Delete(path);
             }
-
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                sw.Write(htmlContent);
+            }
+            Process.Start("notepad.exe", path);
         }
     }
 }

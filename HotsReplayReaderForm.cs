@@ -28,7 +28,7 @@ namespace HotsReplayReader
         private string hotsVariablesFile;
         List<hotsLocalAccount> hotsLocalAccounts;
         private StormReplay hotsReplay;
-        IEnumerable<Heroes.StormReplayParser.Player.StormPlayer> hotsPlayers;
+        IEnumerable<Heroes.StormReplayParser.Player.stormPlayer> hotsPlayers;
         long? opponentsFirstParty;
 
         public hotsReplayReaderForm()
@@ -209,7 +209,7 @@ namespace HotsReplayReader
                 string msgBattleTagName = chatMessage.MessageSender.BattleTagName;
                 string msgCharacter = "";
 
-                foreach (Heroes.StormReplayParser.Player.StormPlayer hotsPlayer in hotsPlayers)
+                foreach (Heroes.StormReplayParser.Player.stormPlayer hotsPlayer in hotsPlayers)
                     if (hotsPlayer.BattleTagName == chatMessage.MessageSender.BattleTagName)
                         msgCharacter = hotsPlayer.PlayerHero.HeroName;
 
@@ -240,7 +240,7 @@ namespace HotsReplayReader
             }
         }
 
-        private void setimageHeroAndBorder(StormPlayer hotsPlayer, PictureBox pictureBoxHero)
+        private void setimageHeroAndBorder(stormPlayer hotsPlayer, PictureBox pictureBoxHero)
         {
             hotsImage heroImage = new hotsImage();
             pictureBoxHero.Image = heroImage.getBitmap(hotsPlayer.PlayerHero.HeroName);
@@ -272,7 +272,7 @@ namespace HotsReplayReader
         {
             hotsImage heroImage = new hotsImage();
             int i = 0;
-            foreach (Heroes.StormReplayParser.Player.StormPlayer hotsPlayer in hotsPlayers)
+            foreach (Heroes.StormReplayParser.Player.stormPlayer hotsPlayer in hotsPlayers)
             {
                 switch (i)
                 {

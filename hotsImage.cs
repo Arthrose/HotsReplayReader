@@ -16,6 +16,7 @@ namespace HotsReplayReader
         public hotsImage(string HeroName = "_Null")
         {
             this.Name = HeroName;
+            setBitmap();
             getBase64String();
         }
 
@@ -207,6 +208,7 @@ namespace HotsReplayReader
             else if (Name == "Zarya") Bitmap = ByteToImage(heroesIcon.Zarya);
             else if (Name == "Zeratul") Bitmap = ByteToImage(heroesIcon.Zeratul);
             else if (Name == "Zul'jin") Bitmap = ByteToImage(heroesIcon.Zul_jin);
+            else if (Name == "Welcome") Bitmap = ByteToImage(hotsImages.Welcome);
             else Bitmap = ByteToImage(heroesIcon._Null);
         }
 

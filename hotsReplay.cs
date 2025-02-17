@@ -11,7 +11,7 @@ namespace HotsReplayReader
     internal class hotsReplay
     {
         public StormReplay stormReplay;
-        public IEnumerable<Heroes.StormReplayParser.Player.StormPlayer> stormPlayers;
+        public IEnumerable<Heroes.StormReplayParser.Player.stormPlayer> stormPlayers;
         public hotsReplay(string path)
         {
             StormReplayParse(path);

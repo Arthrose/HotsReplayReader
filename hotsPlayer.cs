@@ -8,5 +8,8 @@ namespace HotsReplayReader
 {
     internal class hotsPlayer
     {
+        public string BattleTag { get; set; }
+        public string Party { get; set; }
+        public string Team { get; set; }
     }
 }
