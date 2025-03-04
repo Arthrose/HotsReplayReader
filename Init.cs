@@ -119,4 +119,8 @@ namespace HotsReplayReader
             }
         }
     }
+    internal class jsonConfig
+    {
+        public string? lastBrowseDirectory { get; set; }
+    }
 }

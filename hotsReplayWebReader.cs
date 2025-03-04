@@ -1,22 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.VisualBasic.ApplicationServices;
-using Microsoft.Web.WebView2.Core;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Heroes.StormReplayParser;
+﻿using Microsoft.Web.WebView2.Core;
 using Heroes.StormReplayParser.Player;
-using static System.Net.Mime.MediaTypeNames;
-using System.Drawing.Printing;
-using System.Security.Policy;
 using System.Diagnostics;
-using System.Collections;
+using System.Text.Json;
 
 namespace HotsReplayReader
 {
@@ -27,6 +12,7 @@ namespace HotsReplayReader
         private Rectangle webViewOriginalRectangle;
 
         private string? hotsReplayFolder;
+        private string jsonConfigFile = "HotsReplayReader.json";
 
         hotsReplay hotsReplay;
         hotsTeam redTeam;
@@ -176,19 +162,6 @@ namespace HotsReplayReader
 */
                 }
             }
-        }
-        private void browseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            folderBrowserDialog.InitialDirectory = hotsReplayFolder;
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                hotsReplayFolder = folderBrowserDialog.SelectedPath;
-                listHotsReplays(hotsReplayFolder);
-            }
-        }
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            HotsReplayReader.Program.ExitApp();
         }
         internal string HTMLGetHeader()
         {
@@ -827,19 +800,39 @@ namespace HotsReplayReader
             }
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
+        private void browseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File.Exists($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}"))
+            {
+                var json = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}");
+                jsonConfig? jsonConfig = JsonSerializer.Deserialize<jsonConfig>(json);
+                if (Directory.Exists(jsonConfig?.lastBrowseDirectory))
+                    folderBrowserDialog.InitialDirectory = jsonConfig.lastBrowseDirectory;
+                else
+                    folderBrowserDialog.InitialDirectory = hotsReplayFolder;
+            }
+            else
+                folderBrowserDialog.InitialDirectory = hotsReplayFolder;
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                //var jsonConfig = new jsonConfig { lastBrowseDirectory = folderBrowserDialog.SelectedPath };
+                File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(new jsonConfig { lastBrowseDirectory = folderBrowserDialog.SelectedPath }));
+                hotsReplayFolder = folderBrowserDialog.SelectedPath;
+                listHotsReplays(hotsReplayFolder);
+            }
+        }
         private void sourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string path = "C:\\Users\\Thom\\Downloads\\html.html";
-            //MessageBox.Show($@"Souces enrgistrées dans le fichier {path}");
+            string path = @$"{Environment.GetEnvironmentVariable("TEMP")}\HotsReplayReader.html";
             if (File.Exists(path))
-            {
                 File.Delete(path);
-            }
             using (StreamWriter sw = File.CreateText(path))
-            {
                 sw.Write(htmlContent);
-            }
             Process.Start("notepad.exe", path);
+        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HotsReplayReader.Program.ExitApp();
         }
     }
 }
