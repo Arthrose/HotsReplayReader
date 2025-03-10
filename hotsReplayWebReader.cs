@@ -1,10 +1,7 @@
-﻿using Microsoft.Web.WebView2.Core;
-using Heroes.StormReplayParser.Player;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Diagnostics.Metrics;
-using static System.Net.WebRequestMethods;
+using Heroes.StormReplayParser.Player;
+using Microsoft.Web.WebView2.Core;
 
 namespace HotsReplayReader
 {
@@ -344,7 +341,7 @@ namespace HotsReplayReader
             playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             html += $@"<td class=""headTableTd""><img src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" class='heroIcon";
             html += $@" heroIconTeam{getParty(stormPlayer.BattleTagName)}";
-            
+
             html += $@"' /><div class=""battleTag"">{playerName}</div></td>
             ";
             return html;
@@ -424,7 +421,7 @@ namespace HotsReplayReader
         }
         private string HTMLGetScoreTr(stormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
-            string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")): stormPlayer.Name + " (AI)";
+            string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
             html += @$"<tr class=""team{team.Name}"">";
             html += @$"<td><img class=""scoreIcon"" src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" /></td>";

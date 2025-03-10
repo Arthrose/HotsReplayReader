@@ -1,15 +1,6 @@
-﻿using Heroes.StormReplayParser;
-using Heroes.StormReplayParser.Player;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
+using Heroes.StormReplayParser;
 using Microsoft.Win32;
-using System.Text.Json;
-using System.Resources;
-using System.Diagnostics;
 
 namespace HotsReplayReader
 {

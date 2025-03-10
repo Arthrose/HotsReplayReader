@@ -9,13 +9,6 @@
  * var json = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\heroes\{hotsPlayers[id].PlayerHero.HeroName}.json");
  * hotsHero? hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
 */
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HotsReplayReader
 {
     public class hotsHeroAbility

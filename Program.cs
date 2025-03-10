@@ -1,7 +1,3 @@
-using Heroes.StormReplayParser;
-using Heroes.StormReplayParser.MessageEvent;
-using Heroes.StormReplayParser.Replay;
-
 namespace HotsReplayReader
 {
     internal static class Program
@@ -15,7 +11,6 @@ namespace HotsReplayReader
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            //Application.Run(new hotsReplayReaderForm());
             Application.Run(new hotsReplayWebReader());
         }
         internal static void ExitApp()

@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HotsReplayReader
+﻿namespace HotsReplayReader
 {
     internal class hotsImage
     {
         public Bitmap Bitmap { get; set; }
         public string Name { get; set; }
         public string ResourceName { get; set; }
-        public hotsImage(string resourceName= "heroesicon", string imageName = "_Null")
+        public hotsImage(string resourceName = "heroesicon", string imageName = "_Null")
         {
             this.Name = imageName;
             this.ResourceName = resourceName;

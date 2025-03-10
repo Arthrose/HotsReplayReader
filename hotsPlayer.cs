@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Heroes.StormReplayParser.Player;
+﻿using Heroes.StormReplayParser.Player;
 
 namespace HotsReplayReader
 {
@@ -14,7 +9,7 @@ namespace HotsReplayReader
         public double mvpScore { get; set; }
         public hotsTeam playerTeam { get; set; }
         public hotsTeam enemyTeam { get; set; }
-        public IReadOnlyList <HeroMasteryTier> heroMasteryTiers { get; set; }
+        public IReadOnlyList<HeroMasteryTier> heroMasteryTiers { get; set; }
         public int? heroMasteryTiersCount { get; set; }
         public IReadOnlyList<MatchAwardType>? matchAwards { get; set; }
         public int? matchAwardsCount { get; set; }
