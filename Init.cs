@@ -7,6 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using System.Text.Json;
+using System.Resources;
+using System.Diagnostics;
 
 namespace HotsReplayReader
 {
@@ -22,7 +25,6 @@ namespace HotsReplayReader
             lastReplayFilePath = getLastReplayFilePath();
             listHotsAccounts();
         }
-
         internal string getLastReplayFilePath()
         {
             string userDocumentsFolder;

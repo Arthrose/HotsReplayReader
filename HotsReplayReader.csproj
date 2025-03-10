@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="abilitytalents.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>abilityTalents.resx</DependentUpon>
+    </Compile>
     <Compile Update="heroesIcon.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -35,6 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="abilityTalents.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>abilitytalents.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="heroesIcon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>heroesIcon.Designer.cs</LastGenOutput>
@@ -47,6 +56,15 @@
 
   <ItemGroup>
     <Folder Include="Classes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="heroes\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

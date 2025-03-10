@@ -270,7 +270,6 @@ namespace HotsReplayReader
 
         private void imageHeroesRenew()
         {
-            hotsImage heroImage = new hotsImage();
             int i = 0;
             foreach (Heroes.StormReplayParser.Player.stormPlayer hotsPlayer in hotsPlayers)
             {
