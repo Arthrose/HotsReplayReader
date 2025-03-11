@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
 
@@ -273,15 +274,16 @@ namespace HotsReplayReader
                 .tooltip .tooltiptext {{
                   visibility: hidden;
                   width: 300px;
-                  background-color: black;
-                  color: #fff;
-                  text-align: center;
+                  background-color: #150C39;
+                  color: #8984C7;
+                  font-family: Calibri;
+                  text-align: left;
                   border-radius: 6px;
-                  padding: 5px 0;
+                  padding: 1em;
                   position: absolute;
                   z-index: 1;
                   bottom: 100%;
-                  left: 50%;
+                  left: 220%;
                   margin-left: -60px;
                   opacity: 0;
                   transition: opacity 0.5s;
@@ -315,13 +317,13 @@ namespace HotsReplayReader
             <tr>
             ";
 
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetHeadTableCell(stormPlayer);
 
             html += $@"<td width=""100""></td>";
 
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetHeadTableCell(stormPlayer);
 
@@ -333,7 +335,7 @@ namespace HotsReplayReader
             ";
             return html;
         }
-        internal string HTMLGetHeadTableCell(stormPlayer stormPlayer)
+        internal string HTMLGetHeadTableCell(StormPlayer stormPlayer)
         {
             string html = $@"";
             string playerName;
@@ -363,7 +365,7 @@ namespace HotsReplayReader
                 int? msgSenderAccountLevel = chatMessage.MessageSender.AccountLevel;
                 string msgBattleTagName = chatMessage.MessageSender.BattleTagName;
                 string msgCharacter = "";
-                foreach (Heroes.StormReplayParser.Player.stormPlayer hotsPlayer in hotsReplay.stormPlayers)
+                foreach (Heroes.StormReplayParser.Player.StormPlayer hotsPlayer in hotsReplay.stormPlayers)
                     if (hotsPlayer.BattleTagName == chatMessage.MessageSender.BattleTagName)
                     {
                         msgCharacter = hotsPlayer.PlayerHero.HeroName;
@@ -409,17 +411,17 @@ namespace HotsReplayReader
                 </tr>
             ";
 
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetScoreTr(stormPlayer, blueTeam, getParty(stormPlayer.BattleTagName));
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetScoreTr(stormPlayer, redTeam, getParty(stormPlayer.BattleTagName));
 
             html += @$"</table>";
             return html;
         }
-        private string HTMLGetScoreTr(stormPlayer stormPlayer, hotsTeam team, string partyColor)
+        private string HTMLGetScoreTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
@@ -494,17 +496,17 @@ namespace HotsReplayReader
                 </tr>
             ";
 
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetTalentsTr(stormPlayer, blueTeam, getParty(stormPlayer.BattleTagName));
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, getParty(stormPlayer.BattleTagName));
 
             html += @$"</table>";
             return html;
         }
-        private string HTMLGetTalentsTr(stormPlayer stormPlayer, hotsTeam team, string partyColor)
+        private string HTMLGetTalentsTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
             var json = System.IO.File.ReadAllText($@"{Directory.GetCurrentDirectory()}\heroes\{getHeroJsonFileName(stormPlayer.PlayerHero.HeroName)}.json");
             hotsHero? hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
@@ -535,7 +537,7 @@ namespace HotsReplayReader
             heroName = heroName.Replace("thelostvikings", "lostvikings");
             return heroName;
         }
-        private string getTalentImgString(stormPlayer stormPlayer, hotsHero hotsHero, int i)
+        private string getTalentImgString(StormPlayer stormPlayer, hotsHero hotsHero, int i)
         {
             int tier = 0;
             switch (i)
@@ -565,18 +567,24 @@ namespace HotsReplayReader
             string iconPath = $@"https://appassets/images/abilitytalents/{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).icon}";
             iconPath = iconPath.Replace("kelthuzad", "kel'thuzad");
             iconPath = $@"app://abilityTalents/{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).icon}";
-            string descritpion = getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).description;
-            descritpion = descritpion.Replace("  ", "<br />");
-            descritpion = descritpion.Replace("Quest:", "<u>Quest:</u>");
-            descritpion = descritpion.Replace("Reward:", "<u>Reward:</u>");
-            descritpion = descritpion.Replace("  ", "<br />");
+            string description = getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).description;
+            description = description.Replace("  ", "<br />");
+            // Colore les chiffres et les % en blanc
+            description = Regex.Replace(description, @"([0-9]|%)", "<font color='White'>$1</font>");
+            // Saute une ligne avant "Reward:"
+            description = description.Replace("Reward:", "<br />Reward:");
+            // Saute une ligne avant "Quest:" si elle n'est pas la premiere ligne de la descritpion.
+            // Ex : Extended Lightning de Alarak
+            description = Regex.Replace(description, @"(?<!^)(Quest:)", "<br />Quest:");
+            // Colorie Quest et Reward en jaune
+            description = Regex.Replace(description, @"(Quest:|Reward:)", "<font color='#D7BA3A'>$1</font>");
             return @$"
              <td>
               <div class=""tooltip"">
                 <img src=""{iconPath}"" class=""heroTalentIcon""/>
                 <span class=""tooltiptext"">
-                  <b><u>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</u></b><br /><br />
-                  {descritpion}
+                  <b><font color='White'>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</font></b><br /><br />
+                  {description}
                 </span>
               </div>
              </td>";
@@ -619,7 +627,7 @@ namespace HotsReplayReader
         }
         private void initTeamDatas(hotsTeam team)
         {
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
                 if (stormPlayer.Team.ToString() == team.Name)
                 {
@@ -648,13 +656,13 @@ namespace HotsReplayReader
             hotsPlayers = null;
             hotsPlayers = new hotsPlayer[10];
             int i = 0;
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                 {
                     initPlayerData(stormPlayer, ref opponentsFirstParty, i);
                     i++;
                 }
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                 {
                     initPlayerData(stormPlayer, ref opponentsFirstParty, i);
@@ -662,7 +670,7 @@ namespace HotsReplayReader
                 }
 
             i = 0;
-            foreach (stormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
                 foreach (hotsPlayer hotsPlayer in hotsPlayers)
                 {
@@ -732,7 +740,7 @@ namespace HotsReplayReader
                 i++;
             }
         }
-        private void initPlayerData(stormPlayer stormPlayer, ref long? opponentsFirstParty, int id)
+        private void initPlayerData(StormPlayer stormPlayer, ref long? opponentsFirstParty, int id)
         {
             string playerName;
             hotsPlayers[id] = new hotsPlayer(stormPlayer);
@@ -928,8 +936,8 @@ namespace HotsReplayReader
             {
                 var json = System.IO.File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}");
                 jsonConfig? jsonConfig = JsonSerializer.Deserialize<jsonConfig>(json);
-                if (Directory.Exists(jsonConfig?.lastBrowseDirectory))
-                    folderBrowserDialog.InitialDirectory = jsonConfig.lastBrowseDirectory;
+                if (Directory.Exists(jsonConfig?.LastBrowseDirectory))
+                    folderBrowserDialog.InitialDirectory = jsonConfig.LastBrowseDirectory;
                 else
                     folderBrowserDialog.InitialDirectory = hotsReplayFolder;
             }
@@ -938,7 +946,7 @@ namespace HotsReplayReader
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 //var jsonConfig = new jsonConfig { lastBrowseDirectory = folderBrowserDialog.SelectedPath };
-                System.IO.File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(new jsonConfig { lastBrowseDirectory = folderBrowserDialog.SelectedPath }));
+                System.IO.File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(new jsonConfig { LastBrowseDirectory = folderBrowserDialog.SelectedPath }));
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
                 listHotsReplays(hotsReplayFolder);
             }

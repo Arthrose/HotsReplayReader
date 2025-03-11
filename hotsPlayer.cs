@@ -2,13 +2,13 @@
 
 namespace HotsReplayReader
 {
-    internal class hotsPlayer : stormPlayer
+    internal class hotsPlayer : StormPlayer
     {
-        public string Party { get; set; }
-        public string teamColor { get; set; }
+        public string? Party { get; set; }
+        public string? teamColor { get; set; }
         public double mvpScore { get; set; }
-        public hotsTeam playerTeam { get; set; }
-        public hotsTeam enemyTeam { get; set; }
+        public hotsTeam? playerTeam { get; set; }
+        public hotsTeam? enemyTeam { get; set; }
         public IReadOnlyList<HeroMasteryTier> heroMasteryTiers { get; set; }
         public int? heroMasteryTiersCount { get; set; }
         public IReadOnlyList<MatchAwardType>? matchAwards { get; set; }
@@ -16,7 +16,7 @@ namespace HotsReplayReader
         public IReadOnlyList<PlayerDisconnect> playerDisconnects { get; set; }
         public ScoreResult? scoreResult { get; set; }
         public IReadOnlyList<HeroTalent> talents { get; set; }
-        public hotsPlayer(stormPlayer stormPlayer)
+        public hotsPlayer(StormPlayer stormPlayer)
         {
             this.AccountLevel = stormPlayer.AccountLevel;
             this.BattleTagName = stormPlayer.BattleTagName;

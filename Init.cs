@@ -10,7 +10,7 @@ namespace HotsReplayReader
         private string? hotsVariablesFile;
         internal List<hotsLocalAccount>? hotsLocalAccounts;
         private StormReplay? hotsReplay;
-        IEnumerable<Heroes.StormReplayParser.Player.stormPlayer>? hotsPlayers;
+        IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         public Init()
         {
             lastReplayFilePath = getLastReplayFilePath();
@@ -18,8 +18,8 @@ namespace HotsReplayReader
         }
         internal string getLastReplayFilePath()
         {
-            string userDocumentsFolder;
-            RegistryKey RegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
+            string? userDocumentsFolder;
+            RegistryKey? RegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
             userDocumentsFolder = RegKey.GetValue("Personal", "").ToString();
 
             bool lastReplayFilePathFound = false;
@@ -36,7 +36,6 @@ namespace HotsReplayReader
                         lastReplayFilePath = Path.GetDirectoryName(line.Substring(line.IndexOf('=') + 1));
                         if (lastReplayFilePath.Length > 0)
                             lastReplayFilePathFound = true;
-                        // MessageBox.Show(lastReplayFilePath);
                     }
                 }
             }
@@ -83,7 +82,6 @@ namespace HotsReplayReader
                                         BattleTagName = hotsReplay.Owner.BattleTagName,
                                         FullPath = Path.GetDirectoryName(replayFiles[0].FullName)
                                     });
-                                    //comboBoxHotsAccounts.Items.Add(hotsReplay.Owner.BattleTagName);
                                 }
                             }
                         }
@@ -114,6 +112,6 @@ namespace HotsReplayReader
     }
     internal class jsonConfig
     {
-        public string? lastBrowseDirectory { get; set; }
+        public string? LastBrowseDirectory { get; set; }
     }
 }
