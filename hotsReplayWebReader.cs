@@ -339,7 +339,10 @@ namespace HotsReplayReader
         {
             string html = $@"";
             string playerName;
-
+/*
+            if (stormPlayer.PlayerHero.HeroName == "Varian")
+                MessageBox.Show(stormPlayer.PlayerHero.HeroName);
+*/
             playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             html += $@"<td class=""headTableTd""><img src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" class='heroIcon";
             html += $@" heroIconTeam{getParty(stormPlayer.BattleTagName)}";
@@ -569,6 +572,8 @@ namespace HotsReplayReader
             iconPath = $@"app://abilityTalents/{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).icon}";
             string description = getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).description;
             description = description.Replace("  ", "<br />");
+            // Saute une ligne si il y a plusieurs quetes
+            description = Regex.Replace(description, @". Quest:", "<br :>Quest:");
             // Colore les chiffres et les % en blanc
             description = Regex.Replace(description, @"([0-9]|%)", "<font color='White'>$1</font>");
             // Saute une ligne avant "Reward:"
@@ -909,8 +914,6 @@ namespace HotsReplayReader
         }
         private void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //htmlContent += $@"<img src='http://hotsreplayreader.local/{StormPlayer.PlayerHero.HeroName}.png' class='heroIcon' /> - {StormPlayer.PlayerHero.HeroName}<br />";
-            //webView.CoreWebView2.SetVirtualHostNameToFolderMapping("hotsreplayreader.local", "icons/heroes", CoreWebView2HostResourceAccessKind.Allow);
             hotsReplay = new hotsReplay(hotsReplayFolder + "\\" + listBoxHotsReplays.Text + ".stormreplay");
             if (hotsReplay.stormReplay != null)
             {
@@ -945,7 +948,6 @@ namespace HotsReplayReader
                 folderBrowserDialog.InitialDirectory = hotsReplayFolder;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                //var jsonConfig = new jsonConfig { lastBrowseDirectory = folderBrowserDialog.SelectedPath };
                 System.IO.File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(new jsonConfig { LastBrowseDirectory = folderBrowserDialog.SelectedPath }));
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
                 listHotsReplays(hotsReplayFolder);
