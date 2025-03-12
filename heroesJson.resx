@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="abathur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\abathur.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>Abathur</comment>
+  </data>
+  <data name="alarak" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\alarak.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>Abathur</comment>
+  </data>
+  <data name="alexstrasza" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\alexstrasza.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>Abathur</comment>
+  </data>
+  <data name="ana" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\ana.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>ana</comment>
+  </data>
+  <data name="anduin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\anduin.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>anduin</comment>
+  </data>
+  <data name="anubarak" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\anubarak.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>anubarak</comment>
+  </data>
+  <data name="artanis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\artanis.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>artanis</comment>
+  </data>
+  <data name="arthas" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\arthas.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>arthas</comment>
+  </data>
+  <data name="auriel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\auriel.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>auriel</comment>
+  </data>
+  <data name="azmodan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\azmodan.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>azmodan</comment>
+  </data>
+  <data name="blaze" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\blaze.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>blaze</comment>
+  </data>
+  <data name="brightwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\brightwing.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>brightwing</comment>
+  </data>
+  <data name="cassia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\cassia.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>cassia</comment>
+  </data>
+  <data name="chen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\chen.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>chen</comment>
+  </data>
+  <data name="chogall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\chogall.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>chogall</comment>
+  </data>
+  <data name="chromie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\chromie.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>chromie</comment>
+  </data>
+  <data name="deathwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\deathwing.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>deathwing</comment>
+  </data>
+  <data name="deckard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\deckard.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>deckard</comment>
+  </data>
+  <data name="dehaka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\dehaka.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>dehaka</comment>
+  </data>
+  <data name="diablo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\diablo.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>diablo</comment>
+  </data>
+  <data name="dva" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\dva.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>dva</comment>
+  </data>
+  <data name="etc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\etc.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>etc</comment>
+  </data>
+  <data name="falstad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\falstad.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>falstad</comment>
+  </data>
+  <data name="fenix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\fenix.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>fenix</comment>
+  </data>
+  <data name="gall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\gall.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>gall</comment>
+  </data>
+  <data name="garrosh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\garrosh.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>garrosh</comment>
+  </data>
+  <data name="gazlowe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\gazlowe.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>gazlowe</comment>
+  </data>
+  <data name="genji" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\genji.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>genji</comment>
+  </data>
+  <data name="greymane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\greymane.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>greymane</comment>
+  </data>
+  <data name="guldan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\guldan.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>guldan</comment>
+  </data>
+  <data name="hanzo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\hanzo.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>hanzo</comment>
+  </data>
+  <data name="hogger" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\hogger.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>hogger</comment>
+  </data>
+  <data name="illidan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\illidan.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>illidan</comment>
+  </data>
+  <data name="imperius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\imperius.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>imperius</comment>
+  </data>
+  <data name="jaina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\jaina.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>jaina</comment>
+  </data>
+  <data name="johanna" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\johanna.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>johanna</comment>
+  </data>
+  <data name="junkrat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\junkrat.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>junkrat</comment>
+  </data>
+  <data name="kaelthas" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\kaelthas.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>kaelthas</comment>
+  </data>
+  <data name="kelthuzad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\kelthuzad.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>kelthuzad</comment>
+  </data>
+  <data name="kerrigan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\kerrigan.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>kerrigan</comment>
+  </data>
+  <data name="kharazim" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\kharazim.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>kharazim</comment>
+  </data>
+  <data name="leoric" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\leoric.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>leoric</comment>
+  </data>
+  <data name="lili" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\lili.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>lili</comment>
+  </data>
+  <data name="liming" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\liming.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>liming</comment>
+  </data>
+  <data name="lostvikings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\lostvikings.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>lostvikings</comment>
+  </data>
+  <data name="ltmorales" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\ltmorales.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>ltmorales</comment>
+  </data>
+  <data name="lucio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\lucio.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>lucio</comment>
+  </data>
+  <data name="lunara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\lunara.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>lunara</comment>
+  </data>
+  <data name="maiev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\maiev.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>maiev</comment>
+  </data>
+  <data name="malfurion" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\malfurion.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>malfurion</comment>
+  </data>
+  <data name="malganis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\malganis.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>malganis</comment>
+  </data>
+  <data name="malthael" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\malthael.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>malthael</comment>
+  </data>
+  <data name="medivh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\medivh.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>medivh</comment>
+  </data>
+  <data name="mei" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\mei.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>mei</comment>
+  </data>
+  <data name="mephisto" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\mephisto.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>mephisto</comment>
+  </data>
+  <data name="muradin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\muradin.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>muradin</comment>
+  </data>
+  <data name="murky" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\murky.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>murky</comment>
+  </data>
+  <data name="nazeebo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\nazeebo.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>nazeebo</comment>
+  </data>
+  <data name="nova" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\nova.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>nova</comment>
+  </data>
+  <data name="orphea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\orphea.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>orphea</comment>
+  </data>
+  <data name="probius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\probius.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>probius</comment>
+  </data>
+  <data name="qhira" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\qhira.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>qhira</comment>
+  </data>
+  <data name="ragnaros" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\ragnaros.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>ragnaros</comment>
+  </data>
+  <data name="raynor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\raynor.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>raynor</comment>
+  </data>
+  <data name="rehgar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\rehgar.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>rehgar</comment>
+  </data>
+  <data name="rexxar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\rexxar.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>rexxar</comment>
+  </data>
+  <data name="samuro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\samuro.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>samuro</comment>
+  </data>
+  <data name="sgthammer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\sgthammer.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sgthammer</comment>
+  </data>
+  <data name="sonya" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\sonya.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sonya</comment>
+  </data>
+  <data name="stitches" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\stitches.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>stitches</comment>
+  </data>
+  <data name="stukov" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\stukov.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>stukov</comment>
+  </data>
+  <data name="sylvanas" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\sylvanas.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sylvanas</comment>
+  </data>
+  <data name="tassadar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\tassadar.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>tassadar</comment>
+  </data>
+  <data name="thebutcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\thebutcher.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>thebutcher</comment>
+  </data>
+  <data name="thrall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\thrall.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>thrall</comment>
+  </data>
+  <data name="tracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\tracer.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>tracer</comment>
+  </data>
+  <data name="tychus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\tychus.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>tychus</comment>
+  </data>
+  <data name="tyrael" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\tyrael.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>tyrael</comment>
+  </data>
+  <data name="tyrande" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\tyrande.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>tyrande</comment>
+  </data>
+  <data name="uther" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\uther.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>uther</comment>
+  </data>
+  <data name="valeera" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\valeera.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>valeera</comment>
+  </data>
+  <data name="valla" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\valla.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>valla</comment>
+  </data>
+  <data name="varian" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\varian.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>varian</comment>
+  </data>
+  <data name="whitemane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\whitemane.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>whitemane</comment>
+  </data>
+  <data name="xul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\xul.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>xul</comment>
+  </data>
+  <data name="yrel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\yrel.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>yrel</comment>
+  </data>
+  <data name="zagara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\zagara.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>zagara</comment>
+  </data>
+  <data name="zarya" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\zarya.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>zarya</comment>
+  </data>
+  <data name="zeratul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\zeratul.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>zeratul</comment>
+  </data>
+  <data name="zuljin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>heroes\zuljin.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>zuljin</comment>
+  </data>
+</root>

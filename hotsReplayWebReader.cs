@@ -512,6 +512,7 @@ namespace HotsReplayReader
         private string HTMLGetTalentsTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
             var json = System.IO.File.ReadAllText($@"{Directory.GetCurrentDirectory()}\heroes\{getHeroJsonFileName(stormPlayer.PlayerHero.HeroName)}.json");
+            //json = Convert.FromBase64String(heroesJson.abathur);
             hotsHero? hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
