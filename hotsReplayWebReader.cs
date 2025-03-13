@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
+using System.Resources;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser.Player;
@@ -262,6 +264,7 @@ namespace HotsReplayReader
                 }}
                 .heroTalentIcon {{
                   width: 50px;
+                  vertical-align: baseline;
                 }}
                 .heroTalentIcon:hover {{
                   filter: brightness(125%);
@@ -269,7 +272,6 @@ namespace HotsReplayReader
                 .tooltip {{
                   position: relative;
                   display: inline-block;
-                  border-bottom: 1px dotted black;
                 }}
                 .tooltip .tooltiptext {{
                   visibility: hidden;
@@ -291,6 +293,16 @@ namespace HotsReplayReader
                 .tooltip:hover .tooltiptext {{
                   visibility: visible;
                   opacity: 1;
+                }}
+                .imgTalentBorder
+                {{
+                  border: 6px solid transparent;
+                  border-image: url('app://hotsImages/talentsBorder.png') 6 stretch;
+                }}
+                .imgTalent10Border
+                {{
+                  border: 6px solid transparent;
+                  border-image: url('app://hotsImages/talents10Border.png') 6 stretch;
                 }}
                 </style>
                 </head>
@@ -511,9 +523,19 @@ namespace HotsReplayReader
         }
         private string HTMLGetTalentsTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
-            var json = System.IO.File.ReadAllText($@"{Directory.GetCurrentDirectory()}\heroes\{getHeroJsonFileName(stormPlayer.PlayerHero.HeroName)}.json");
-            //json = Convert.FromBase64String(heroesJson.abathur);
-            hotsHero? hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
+            hotsHero? hotsHero;
+            string json;
+            string resourceName = getHeroJsonFileName(stormPlayer.PlayerHero.HeroName);
+            Type resourcesType = typeof(heroesJson);
+            PropertyInfo propertyInfo = resourcesType.GetProperty(resourceName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
+            byte[] resourceData = (byte[])propertyInfo.GetValue(null, null);
+            using (var stream = new MemoryStream(resourceData))
+            using (var reader = new StreamReader(stream))
+            {
+                json = reader.ReadToEnd();
+            }
+
+            hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
             html += @$"<tr class=""team{team.Name}"">";
@@ -584,10 +606,16 @@ namespace HotsReplayReader
             description = Regex.Replace(description, @"(?<!^)(Quest:)", "<br />Quest:");
             // Colorie Quest et Reward en jaune
             description = Regex.Replace(description, @"(Quest:|Reward:)", "<font color='#D7BA3A'>$1</font>");
+
+            string imgTalentBorderClass;
+            if (tier == 10 | tier == 20)
+                imgTalentBorderClass = "imgTalent10Border";
+            else
+                imgTalentBorderClass = "imgTalentBorder";
             return @$"
              <td>
               <div class=""tooltip"">
-                <img src=""{iconPath}"" class=""heroTalentIcon""/>
+                &nbsp;<img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}""/>&nbsp;
                 <span class=""tooltiptext"">
                   <b><font color='White'>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</font></b><br /><br />
                   {description}

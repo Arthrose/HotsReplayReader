@@ -64,12 +64,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="heroes\**">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj" />
   </ItemGroup>
 

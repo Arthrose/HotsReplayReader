@@ -120,15 +120,15 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="abathur" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>heroes\abathur.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    <comment>Abathur</comment>
+    <comment>abathur</comment>
   </data>
   <data name="alarak" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>heroes\alarak.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    <comment>Abathur</comment>
+    <comment>alarak</comment>
   </data>
   <data name="alexstrasza" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>heroes\alexstrasza.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    <comment>Abathur</comment>
+    <comment>alexstrasza</comment>
   </data>
   <data name="ana" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>heroes\ana.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
