@@ -458,7 +458,7 @@ namespace HotsReplayReader
             // Saute une ligne si il y a plusieurs quetes
             description = Regex.Replace(description, @". Quest:", "<br :>Quest:");
             // Colore les chiffres et les % en blanc
-            description = Regex.Replace(description, @"([0-9]|%)", "<font color='White'>$1</font>");
+            description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?)", "<font color='White'>$1</font>");
             // Saute une ligne avant "Reward:"
             description = description.Replace("Reward:", "<br />Reward:");
             // Saute une ligne avant "Quest:" si elle n'est pas la premiere ligne de la descritpion.
