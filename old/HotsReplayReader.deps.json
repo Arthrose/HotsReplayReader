@@ -1,0 +1,57 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "HotsReplayReader/1.0.0": {
+        "dependencies": {
+          "Heroes.StormReplayParser": "2.2.1"
+        },
+        "runtime": {
+          "HotsReplayReader.dll": {}
+        }
+      },
+      "Heroes.MpqTool/1.2.0": {
+        "runtime": {
+          "lib/net8.0/Heroes.MpqTool.dll": {
+            "assemblyVersion": "1.2.0.0",
+            "fileVersion": "1.2.0.0"
+          }
+        }
+      },
+      "Heroes.StormReplayParser/2.2.1": {
+        "dependencies": {
+          "Heroes.MpqTool": "1.2.0"
+        },
+        "runtime": {
+          "Heroes.StormReplayParser.dll": {
+            "assemblyVersion": "2.2.1",
+            "fileVersion": "2.2.1.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HotsReplayReader/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Heroes.MpqTool/1.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ju6dc+/ctEw0pPF3RXpecf6RQve2S3Ge+D7jUpCBTNF62UdmuZ3layFssgVkx0hvXFhZB8h6H4yX1IW6KiRvvw==",
+      "path": "heroes.mpqtool/1.2.0",
+      "hashPath": "heroes.mpqtool.1.2.0.nupkg.sha512"
+    },
+    "Heroes.StormReplayParser/2.2.1": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

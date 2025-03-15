@@ -21,6 +21,7 @@ namespace HotsReplayReader
         hotsTeam redTeam;
         hotsTeam blueTeam;
         private hotsPlayer[]? hotsPlayers;
+        private List<hotsMessage> hotsMessages = new List<hotsMessage>();
 
         internal string? htmlContent;
 
@@ -260,10 +261,10 @@ namespace HotsReplayReader
                   object-position: 100% 50;
                 }}
                 .teamBestScore {{
-				  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
+                  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
                 }}
                 .heroTalentIcon {{
-                  width: 50px;
+                  width: 45px;
                   vertical-align: baseline;
                 }}
                 .heroTalentIcon:hover {{
@@ -284,8 +285,8 @@ namespace HotsReplayReader
                   padding: 1em;
                   position: absolute;
                   z-index: 1;
-                  bottom: 100%;
-                  left: 220%;
+                  bottom: 90%;
+                  left: 195%;
                   margin-left: -60px;
                   opacity: 0;
                   transition: opacity 0.5s;
@@ -303,6 +304,16 @@ namespace HotsReplayReader
                 {{
                   border: 6px solid transparent;
                   border-image: url('app://hotsImages/talents10Border.png') 6 stretch;
+                }}
+                .disconnected
+                {{
+                  color: Red;
+                  font-size: 0.75em;
+                }}
+                .reconnected
+                {{
+                  color: Green;
+                  font-size: 0.75em;
                 }}
                 </style>
                 </head>
@@ -363,47 +374,60 @@ namespace HotsReplayReader
             ";
             return html;
         }
-        internal string HTMLGetChatMessage()
+        internal string HTMLGetChatMessages()
         {
+            foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
+                hotsMessages.Add(new hotsMessage(getHotsPlayer(chatMessage.MessageSender.BattleTagName), chatMessage.Timestamp, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
+            foreach (hotsPlayer hotsPlayer in hotsPlayers)
+            {
+                foreach (PlayerDisconnect playerDisconnect in hotsPlayer.playerDisconnects)
+                {
+                    hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.From, "<span class='disconnected'>Disconnected</span>"));
+                    if (playerDisconnect.To != null)
+                        hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class='reconnected'>Reconnected</span>"));
+                }
+            }
+            hotsMessages = hotsMessages.OrderBy(o => o.TotalMilliseconds).ToList();
+
             string html = $@"";
             html += $@"<div class=""chatMessages"">";
             html += $@"<table>";
-            //html += $@"<tr><td class=""messages"">Time</td><td class=""messages"">Account</td><td class=""messages"">Character</td><td width=""100%"" class=""messages"">Message</td></tr>";
-            foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
+            foreach (hotsMessage hotsMessage in hotsMessages)
             {
-                html += $@"<tr>";
-                string msgHours = ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Hours < 10 ? "0" + ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Hours.ToString() : ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Hours.ToString();
-                string msgMinutes = ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Minutes < 10 ? "0" + ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Minutes.ToString() : ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Minutes.ToString();
-                string msgSeconds = ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Seconds < 10 ? "0" + ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Seconds.ToString() : ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Seconds.ToString();
-                string msgMilliseconds = ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Milliseconds < 10 ? ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Milliseconds.ToString() + "00" : (((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Milliseconds < 100 ? ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Milliseconds.ToString() + "0" : ((Heroes.StormReplayParser.MessageEvent.StormMessageBase)chatMessage).Timestamp.Milliseconds.ToString());
-                string msgSenderName = chatMessage.MessageSender.Name;
-                int? msgSenderAccountLevel = chatMessage.MessageSender.AccountLevel;
-                string msgBattleTagName = chatMessage.MessageSender.BattleTagName;
-                string msgCharacter = "";
-                foreach (Heroes.StormReplayParser.Player.StormPlayer hotsPlayer in hotsReplay.stormPlayers)
-                    if (hotsPlayer.BattleTagName == chatMessage.MessageSender.BattleTagName)
-                    {
-                        msgCharacter = hotsPlayer.PlayerHero.HeroName;
-                        msgCharacter = msgCharacter.Replace(" ", "&nbsp;");
-                    }
-                html += $@"<td class=""messages"">[" + msgHours + ":" + msgMinutes + ":" + msgSeconds + ":" + msgMilliseconds + "]&nbsp;&nbsp;</td>";
-                html += $@"<td class=""messages""><b>";
-                if (chatMessage.MessageSender.BattleTagName == hotsReplay.stormReplay.Owner.BattleTagName)
-                    html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
-                else if ((chatMessage.MessageSender.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (chatMessage.MessageSender.PartyValue != null))
-                    html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
-                else if (chatMessage.MessageSender.PartyValue != null)
-                    html += $@"<class style=""color: deepskyblue"">{msgSenderName}</class>";
-                else
-                    html += $@"<class style=""color: gainsboro"">{msgSenderName}</class>";
-                html += $@"</b>";
-                html += $@"&nbsp;({msgSenderAccountLevel})&nbsp;&nbsp;</td>";
-                html += $@"<td class=""messages nonBreakingText""><nobr>{msgCharacter}</nobr>&nbsp;&nbsp;</td>";
-                html += $@"<td width=""100%"" class=""messages"">{((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text}</td>";
-                html += "</tr>\r\n";
+                html += HTMLGetChatMessage(hotsMessage);
             }
             html += $@"</table>";
             html += $@"</div>";
+            return html;
+        }
+        internal string HTMLGetChatMessage(hotsMessage hotsMessage)
+        {
+            string html = $@"<tr>";
+            string msgHours = hotsMessage.Hours;
+            string msgMinutes = hotsMessage.Minutes;
+            string msgSeconds = hotsMessage.Seconds;
+            string msgMilliseconds = hotsMessage.MilliSeconds;
+            string msgSenderName = hotsMessage.HotsPlayer.Name;
+
+            int? msgSenderAccountLevel = hotsMessage.HotsPlayer.AccountLevel;
+            string msgBattleTagName = hotsMessage.HotsPlayer.BattleTagName;
+            string msgCharacter = (hotsMessage.HotsPlayer.PlayerHero.HeroName).Replace(" ", "&nbsp;");
+
+            html += $@"<td class=""messages"">[" + msgHours + ":" + msgMinutes + ":" + msgSeconds + ":" + msgMilliseconds + "]&nbsp;&nbsp;</td>";
+            html += $@"<td class=""messages""><b>";
+            if (msgBattleTagName == hotsReplay.stormReplay.Owner.BattleTagName)
+                html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
+            else if ((hotsMessage.HotsPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (hotsMessage.HotsPlayer.PartyValue != null))
+                html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
+            else if (hotsMessage.HotsPlayer.PartyValue != null)
+                html += $@"<class style=""color: deepskyblue"">{msgSenderName}</class>";
+            else
+                html += $@"<class style=""color: gainsboro"">{msgSenderName}</class>";
+            html += $@"</b>";
+            html += $@"&nbsp;({msgSenderAccountLevel})&nbsp;&nbsp;</td>";
+            html += $@"<td class=""messages nonBreakingText""><nobr>{msgCharacter}</nobr>&nbsp;&nbsp;</td>";
+            html += $@"<td width=""100%"" class=""messages"">{hotsMessage.Message}</td>";
+            html += "</tr>\r\n";
             return html;
         }
         private string HTMLGetScoreTable()
@@ -501,13 +525,13 @@ namespace HotsReplayReader
                 <tr class=""teamHeader"">
                 <td>&nbsp;&nbsp;</td>
                 <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
             ";
 
@@ -615,7 +639,7 @@ namespace HotsReplayReader
             return @$"
              <td>
               <div class=""tooltip"">
-                &nbsp;<img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}""/>&nbsp;
+                <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"" />
                 <span class=""tooltiptext"">
                   <b><font color='White'>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</font></b><br /><br />
                   {description}
@@ -951,7 +975,7 @@ namespace HotsReplayReader
                 initPlayersData();
                 htmlContent = $@"{HTMLGetHeader()}";
                 htmlContent += $@"{HTMLGetHeadTable()}<br /><br />";
-                htmlContent += $@"{HTMLGetChatMessage()}<br /><br />";
+                htmlContent += $@"{HTMLGetChatMessages()}<br /><br />";
                 htmlContent += $@"{HTMLGetScoreTable()}<br /><br />";
                 htmlContent += $@"{HTMLGetTalentsTable()}<br /><br />";
                 htmlContent += $@"{HTMLGetFooter()}";
