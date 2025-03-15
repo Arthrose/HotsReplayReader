@@ -1,0 +1,166 @@
+<style>
+body {
+  color: white;
+  background-color: #backColor#;
+  text-align: center;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+tr {
+  text-align: center;
+}
+.headTableTd {
+  padding: 5px;
+}
+.titleBlueTeam {
+  color: deepskyblue;
+  font-size: 300%;
+  font-weight: bold;
+  font-family: Consolas, Lucida Console, Courier New;
+}
+.titleRedTeam {
+  color: crimson;
+  font-size: 300%;
+  font-weight: bold;
+  font-family: Consolas, Lucida Console, Courier New;
+}
+.heroIcon {
+  /*border: 3px solid gainsboro;*/
+  border-radius: 100%;
+  width: 80px;
+  height: 80px;
+}
+.heroIcon:hover {
+  filter: brightness(125%);
+}
+.battleTag {
+  font-size: 80%;
+  font-family: Consolas, Lucida Console, Courier New;
+  line-height: 250%;
+}
+.heroIconTeam0 {
+  box-shadow: 0px 0px 4px 4px gainsboro;
+}
+.heroIconTeam1 {
+  box-shadow: 0px 0px 4px 4px crimson;
+}
+.heroIconTeam2 {
+  box-shadow: 0px 0px 4px 4px deepskyblue;
+}
+.heroIconTeam3 {
+  box-shadow: 0px 0px 4px 3px green;
+}
+.heroIconTeam4 {
+  box-shadow: 0px 0px 4px 4px goldenrod;
+}
+.team1 {
+  color: crimson;
+}
+.team2 {
+  color: deepskyblue;
+}
+.team3 {
+  color: green;
+}
+.team4 {
+  color: goldenrod;
+}
+.teamHeader {
+  background-color: #000000;
+}
+.teamBlue {
+  background-color: #17203D;
+}
+.teamRed {
+  background-color: #300F22;
+}
+.tdPlayerName {
+  text-align: left;
+  vertical-align: center;
+  font-family: Consolas, Lucida Console, Courier New;
+}
+.chatMessages {
+  background-color: #272A34;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  height: 300px;
+  overflow-y: scroll;
+}
+.messages {
+  text-align: left;
+  vertical-align: top;
+  font-family: Consolas, Lucida Console, Courier New;
+}
+.nonBreakingText {
+  white-space: nowrap;
+}
+.tableScore {
+  text-align: center;
+  vertical-align: center;
+  font-family: Consolas, Lucida Console, Courier New;
+}
+.scoreIcon {
+  width: 100px;
+  height: 50px;
+  object-fit: cover;
+  object-position: 100% 50;
+}
+.teamBestScore {
+  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
+}
+.heroTalentIcon {
+  width: 45px;
+  vertical-align: baseline;
+}
+.heroTalentIcon:hover {
+  filter: brightness(125%);
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: #150C39;
+  color: #8984C7;
+  font-family: Calibri;
+  text-align: left;
+  border-radius: 6px;
+  padding: 1em;
+  position: absolute;
+  z-index: 1;
+  bottom: 90%;
+  left: 195%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+.imgTalentBorder
+{
+  border: 6px solid transparent;
+  border-image: url('app://hotsResources/talentsBorder.png') 6 stretch;
+}
+.imgTalent10Border
+{
+  border: 6px solid transparent;
+  border-image: url('app://hotsResources/talents10Border.png') 6 stretch;
+}
+.disconnected
+{
+  color: Red;
+  font-size: 0.75em;
+}
+.reconnected
+{
+  color: Green;
+  font-size: 0.75em;
+}
+</style>

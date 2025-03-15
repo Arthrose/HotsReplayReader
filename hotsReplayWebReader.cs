@@ -17,11 +17,10 @@ namespace HotsReplayReader
         private string? hotsReplayFolder;
         private string jsonConfigFile = "HotsReplayReader.json";
 
-        hotsReplay hotsReplay;
-        hotsTeam redTeam;
-        hotsTeam blueTeam;
+        hotsReplay? hotsReplay;
+        hotsTeam? redTeam;
+        hotsTeam? blueTeam;
         private hotsPlayer[]? hotsPlayers;
-        private List<hotsMessage> hotsMessages = new List<hotsMessage>();
 
         internal string? htmlContent;
 
@@ -56,7 +55,7 @@ namespace HotsReplayReader
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
 
-            htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsImages/Welcome.jpg"" /></body>";
+            htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
             webView.NavigateToString(htmlContent);
         }
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
@@ -141,185 +140,22 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeader()
         {
-            string backColor = @"#0C0318";
+            string contenu = System.Text.Encoding.UTF8.GetString(hotsResources.styles);
+
             if (hotsReplay.stormReplay.Owner.IsWinner)
-                backColor = @"#001100";
+                contenu = contenu.Replace(@"#backColor#", @"#001100");
             else
-                backColor = @"#110000";
+                contenu = contenu.Replace(@"#backColor#", @"#110000");
 
             string html = $@"
                 <html>
                 <head>
-                <style>
-                body {{
-                  color: white;
-                  background-color: {backColor};
-                  text-align: center;
-                }}
-                table {{
-                  margin-left: auto;
-                  margin-right: auto;
-                }}
-                tr {{
-                  text-align: center;
-                }}
-				.headTableTd {{
-                  padding: 5px;
-				}}
-                .titleBlueTeam {{
-                  color: deepskyblue;
-                  font-size: 300%;
-                  font-weight: bold;
-                  font-family: Consolas, Lucida Console, Courier New;
-                }}
-                .titleRedTeam {{
-                  color: crimson;
-                  font-size: 300%;
-                  font-weight: bold;
-                  font-family: Consolas, Lucida Console, Courier New;
-                }}
-                .heroIcon {{
-                  /*border: 3px solid gainsboro;*/
-                  border-radius: 100%;
-                  width: 80px;
-                  height: 80px;
-                }}
-                .heroIcon:hover {{
-                  filter: brightness(125%);
-                }}
-                .battleTag {{
-                  font-size: 80%;
-                  font-family: Consolas, Lucida Console, Courier New;
-                  line-height: 250%;
-                }}
-                .heroIconTeam0 {{
-                  box-shadow: 0px 0px 4px 4px gainsboro;
-                }}
-                .heroIconTeam1 {{
-                  box-shadow: 0px 0px 4px 4px crimson;
-                }}
-                .heroIconTeam2 {{
-                  box-shadow: 0px 0px 4px 4px deepskyblue;
-                }}
-                .heroIconTeam3 {{
-                  box-shadow: 0px 0px 4px 3px green;
-                }}
-                .heroIconTeam4 {{
-                  box-shadow: 0px 0px 4px 4px goldenrod;
-                }}
-                .team1 {{
-                  color: crimson;
-                }}
-                .team2 {{
-                  color: deepskyblue;
-                }}
-                .team3 {{
-                  color: green;
-                }}
-                .team4 {{
-                  color: goldenrod;
-                }}
-                .teamHeader {{
-                  background-color: #000000;
-                }}
-                .teamBlue {{
-                  background-color: #17203D;
-                }}
-                .teamRed {{
-                  background-color: #300F22;
-                }}
-                .tdPlayerName {{
-                  text-align: left;
-                  vertical-align: center;
-                  font-family: Consolas, Lucida Console, Courier New;
-                }}
-                .chatMessages {{
-                  background-color: #272A34;
-                  margin-left: auto;
-                  margin-right: auto;
-                  width: 800px;
-                  height: 300px;
-                  overflow-y: scroll;
-                }}
-                .messages {{
-                  text-align: left;
-                  vertical-align: top;
-                  font-family: Consolas, Lucida Console, Courier New;
-                }}
-                .nonBreakingText {{
-                  white-space: nowrap;
-                }}
-                .tableScore {{
-                  text-align: center;
-                  vertical-align: center;
-                  font-family: Consolas, Lucida Console, Courier New;
-                }}
-                .scoreIcon {{
-                  width: 100px;
-                  height: 50px;
-                  object-fit: cover;
-                  object-position: 100% 50;
-                }}
-                .teamBestScore {{
-                  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
-                }}
-                .heroTalentIcon {{
-                  width: 45px;
-                  vertical-align: baseline;
-                }}
-                .heroTalentIcon:hover {{
-                  filter: brightness(125%);
-                }}
-                .tooltip {{
-                  position: relative;
-                  display: inline-block;
-                }}
-                .tooltip .tooltiptext {{
-                  visibility: hidden;
-                  width: 300px;
-                  background-color: #150C39;
-                  color: #8984C7;
-                  font-family: Calibri;
-                  text-align: left;
-                  border-radius: 6px;
-                  padding: 1em;
-                  position: absolute;
-                  z-index: 1;
-                  bottom: 90%;
-                  left: 195%;
-                  margin-left: -60px;
-                  opacity: 0;
-                  transition: opacity 0.5s;
-                }}
-                .tooltip:hover .tooltiptext {{
-                  visibility: visible;
-                  opacity: 1;
-                }}
-                .imgTalentBorder
-                {{
-                  border: 6px solid transparent;
-                  border-image: url('app://hotsImages/talentsBorder.png') 6 stretch;
-                }}
-                .imgTalent10Border
-                {{
-                  border: 6px solid transparent;
-                  border-image: url('app://hotsImages/talents10Border.png') 6 stretch;
-                }}
-                .disconnected
-                {{
-                  color: Red;
-                  font-size: 0.75em;
-                }}
-                .reconnected
-                {{
-                  color: Green;
-                  font-size: 0.75em;
-                }}
-                </style>
+                {contenu}
                 </head>
                 <body>
                 <p>&nbsp;</p>
                 ";
+
             return html;
         }
         internal string HTMLGetFooter()
@@ -376,6 +212,7 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessages()
         {
+            List<hotsMessage> hotsMessages = new List<hotsMessage>();
             foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
                 hotsMessages.Add(new hotsMessage(getHotsPlayer(chatMessage.MessageSender.BattleTagName), chatMessage.Timestamp, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
             foreach (hotsPlayer hotsPlayer in hotsPlayers)
@@ -432,7 +269,6 @@ namespace HotsReplayReader
         }
         private string HTMLGetScoreTable()
         {
-            string playerName;
             string html = @$"
               <table class=""tableScore"">
                 <tr class=""teamHeader"">
@@ -982,7 +818,7 @@ namespace HotsReplayReader
             }
             else
             {
-                htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsImages/Welcome.jpg"" /></body>";
+                htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
             }
             webView.CoreWebView2.NavigateToString(htmlContent);
         }

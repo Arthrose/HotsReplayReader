@@ -19,9 +19,9 @@
                 object image = resourceManager.GetObject(Name);
                 Bitmap = ByteToImage((byte[])image);
             }
-            else if (ResourceName == "hotsimages")
+            else if (ResourceName == "hotsresources")
             {
-                var resourceManager = hotsImages.ResourceManager;
+                var resourceManager = hotsResources.ResourceManager;
                 object image = resourceManager.GetObject(Name);
                 Bitmap = ByteToImage((byte[])image);
             }
