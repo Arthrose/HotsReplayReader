@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;
 using Microsoft.Win32;
 
@@ -9,12 +10,14 @@ namespace HotsReplayReader
         internal string? lastReplayFilePath;
         private string? hotsVariablesFile;
         internal List<hotsLocalAccount>? hotsLocalAccounts;
+        internal hotsEmoticon? hotsEmoticons;
         private StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         public Init()
         {
             lastReplayFilePath = getLastReplayFilePath();
             listHotsAccounts();
+            loadHotsEmoticons();
         }
         internal string getLastReplayFilePath()
         {
@@ -75,17 +78,58 @@ namespace HotsReplayReader
                             if (replayFiles.Length > 0)
                             {
                                 Array.Reverse(replayFiles);
-                                if (StormReplayParse(replayFiles[0].FullName))
+                                for (int i = 0; i < replayFiles.Length; i++)
                                 {
-                                    hotsLocalAccounts.Add(new hotsLocalAccount
+                                    try
                                     {
-                                        BattleTagName = hotsReplay.Owner.BattleTagName,
-                                        FullPath = Path.GetDirectoryName(replayFiles[0].FullName)
-                                    });
+                                        if (StormReplayParse(replayFiles[i].FullName))
+                                        {
+                                            hotsLocalAccounts.Add(new hotsLocalAccount
+                                            {
+                                                BattleTagName = hotsReplay.Owner.BattleTagName,
+                                                FullPath = Path.GetDirectoryName(replayFiles[0].FullName)
+                                            });
+                                            break;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        continue;
+                                    }
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+        internal void loadHotsEmoticons()
+        {
+            // Load emoticons Data
+            string jsonFilePath = "C:\\CSharpProjects\\HotsReplayReader\\emoticondata.json";
+            string jsonString = File.ReadAllText(jsonFilePath);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            hotsEmoticons = JsonSerializer.Deserialize<hotsEmoticon>(jsonString, options);
+
+            // Load emoticons Aliases
+            jsonFilePath = "C:\\CSharpProjects\\HotsReplayReader\\emoticonsaliases.json";
+            jsonString = File.ReadAllText(jsonFilePath);
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            hotsEmoticonAliase? hotsEmoticonAliases;
+            hotsEmoticonAliases = JsonSerializer.Deserialize<hotsEmoticonAliase>(jsonString, options);
+
+            foreach (KeyValuePair<string, string> aliases in hotsEmoticonAliases.aliases)
+            {
+                if (hotsEmoticons != null && hotsEmoticons.ContainsKey(aliases.Key))
+                {
+                    foreach (string alias in aliases.Value.Split(' '))
+                        hotsEmoticons[aliases.Key].aliases.Add(alias);
                 }
             }
         }

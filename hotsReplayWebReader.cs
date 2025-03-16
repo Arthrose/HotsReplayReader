@@ -140,17 +140,19 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeader()
         {
-            string contenu = System.Text.Encoding.UTF8.GetString(hotsResources.styles);
+            string css = System.Text.Encoding.UTF8.GetString(hotsResources.styles);
 
             if (hotsReplay.stormReplay.Owner.IsWinner)
-                contenu = contenu.Replace(@"#backColor#", @"#001100");
+                css = css.Replace(@"#backColor#", @"#001100");
             else
-                contenu = contenu.Replace(@"#backColor#", @"#110000");
+                css = css.Replace(@"#backColor#", @"#110000");
 
             string html = $@"
                 <html>
                 <head>
-                {contenu}
+                <style type=""text/css"">
+                {css}
+                </style>
                 </head>
                 <body>
                 <p>&nbsp;</p>
@@ -214,7 +216,10 @@ namespace HotsReplayReader
         {
             List<hotsMessage> hotsMessages = new List<hotsMessage>();
             foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
-                hotsMessages.Add(new hotsMessage(getHotsPlayer(chatMessage.MessageSender.BattleTagName), chatMessage.Timestamp, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
+            {
+                string msg = HTMLGetChatMessageEmoticon(((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text);
+                hotsMessages.Add(new hotsMessage(getHotsPlayer(chatMessage.MessageSender.BattleTagName), chatMessage.Timestamp, msg));
+            }
             foreach (hotsPlayer hotsPlayer in hotsPlayers)
             {
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.playerDisconnects)
@@ -236,6 +241,27 @@ namespace HotsReplayReader
             html += $@"</table>";
             html += $@"</div>";
             return html;
+        }
+        internal string GetEmoticonImgFromTag(string tag)
+        {
+            foreach (KeyValuePair<string, hotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
+            {
+                foreach (string alias in hotsEmoticonData.Value.aliases)
+                {
+                    if (tag == alias)
+                        return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" />";
+                }
+            }
+            return tag;
+        }
+        internal string HTMLGetChatMessageEmoticon(string chatMessage)
+        {
+            string pattern = @"(:\w+:)";
+            return Regex.Replace(chatMessage, pattern, match =>
+            {
+                string emoticonTag = match.Groups[1].Value;
+                return GetEmoticonImgFromTag(emoticonTag);
+            });
         }
         internal string HTMLGetChatMessage(hotsMessage hotsMessage)
         {
@@ -282,7 +308,7 @@ namespace HotsReplayReader
                 <td>&nbsp;Healing&nbsp;&nbsp;</td>
                 <td>Dmg Taken&nbsp;</td>
                 <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>MVP</td>
+                <td>MVP Score</td>
                 </tr>
             ";
 
@@ -458,12 +484,14 @@ namespace HotsReplayReader
             // Saute une ligne si il y a plusieurs quetes
             description = Regex.Replace(description, @". Quest:", "<br :>Quest:");
             // Colore les chiffres et les % en blanc
-            description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?)", "<font color='White'>$1</font>");
+            description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?(st)?(nd)?(rd)?(th)?)", "<font color='White'>$1</font>");
             // Saute une ligne avant "Reward:"
             description = description.Replace("Reward:", "<br />Reward:");
             // Saute une ligne avant "Quest:" si elle n'est pas la premiere ligne de la descritpion.
             // Ex : Extended Lightning de Alarak
             description = Regex.Replace(description, @"(?<!^)(Quest:)", "<br />Quest:");
+            // Colorie Passive en vert
+            description = Regex.Replace(description, @"(Passive:)", "<br /><font color='#00FF90'>$1</font>");
             // Colorie Quest et Reward en jaune
             description = Regex.Replace(description, @"(Quest:|Reward:)", "<font color='#D7BA3A'>$1</font>");
 
@@ -803,20 +831,27 @@ namespace HotsReplayReader
         }
         private void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
-            hotsReplay = new hotsReplay(hotsReplayFolder + "\\" + listBoxHotsReplays.Text + ".stormreplay");
-            if (hotsReplay.stormReplay != null)
+            try
             {
-                initTeamDatas(redTeam = new hotsTeam("Red"));
-                initTeamDatas(blueTeam = new hotsTeam("Blue"));
-                initPlayersData();
-                htmlContent = $@"{HTMLGetHeader()}";
-                htmlContent += $@"{HTMLGetHeadTable()}<br /><br />";
-                htmlContent += $@"{HTMLGetChatMessages()}<br /><br />";
-                htmlContent += $@"{HTMLGetScoreTable()}<br /><br />";
-                htmlContent += $@"{HTMLGetTalentsTable()}<br /><br />";
-                htmlContent += $@"{HTMLGetFooter()}";
+                hotsReplay = new hotsReplay(hotsReplayFolder + "\\" + listBoxHotsReplays.Text + ".stormreplay");
+                if (hotsReplay.stormReplay != null)
+                {
+                    initTeamDatas(redTeam = new hotsTeam("Red"));
+                    initTeamDatas(blueTeam = new hotsTeam("Blue"));
+                    initPlayersData();
+                    htmlContent = $@"{HTMLGetHeader()}";
+                    htmlContent += $@"{HTMLGetHeadTable()}<br /><br />";
+                    htmlContent += $@"{HTMLGetChatMessages()}<br /><br />";
+                    htmlContent += $@"{HTMLGetScoreTable()}<br /><br />";
+                    htmlContent += $@"{HTMLGetTalentsTable()}<br /><br />";
+                    htmlContent += $@"{HTMLGetFooter()}";
+                }
+                else
+                {
+                    htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
+                }
             }
-            else
+            catch
             {
                 htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
             }

@@ -24,6 +24,7 @@ namespace HotsReplayReader
             this.Hours = (TimeStamp.Value.Hours < 10 ? "0" + TimeStamp.Value.Hours.ToString() : TimeStamp.Value.Hours.ToString());
             this.Minutes = (TimeStamp.Value.Minutes < 10 ? "0" + TimeStamp.Value.Minutes.ToString() : TimeStamp.Value.Minutes.ToString());
             this.Seconds = (TimeStamp.Value.Seconds < 10 ? "0" + TimeStamp.Value.Seconds.ToString() : TimeStamp.Value.Seconds.ToString());
+
             this.MilliSeconds =
             (
                 TimeStamp.Value.Milliseconds < 10 ?
@@ -36,6 +37,24 @@ namespace HotsReplayReader
                             TimeStamp.Value.Milliseconds.ToString()
                     )
             );
+
+/*
+            if (TimeStamp.Value.Milliseconds < 10)
+            {
+                this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString() + "00";
+            }
+            else
+            {
+                if (TimeStamp.Value.Milliseconds < 100)
+                {
+                    this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString() + "0";
+                }
+                else
+                {
+                    this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString();
+                }
+            }
+*/
         }
     }
 }
