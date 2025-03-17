@@ -19,19 +19,25 @@
             if (ResourceName == "heroesicon")
             {
                 var resourceManager = heroesIcon.ResourceManager;
-                object image = resourceManager.GetObject(Name);
+                object image = resourceManager.GetObject(this.Name);
                 Bitmap = ByteToImage((byte[])image);
             }
             else if (ResourceName == "hotsresources")
             {
                 var resourceManager = hotsResources.ResourceManager;
-                object image = resourceManager.GetObject(Name);
+                object image = resourceManager.GetObject(this.Name);
                 Bitmap = ByteToImage((byte[])image);
             }
             else if (ResourceName == "emoticons")
             {
                 var resourceManager = hotsEmoticons.ResourceManager;
                 object image = resourceManager.GetObject($@"{this.Name}{this.Extension}");
+                Bitmap = ByteToImage((byte[])image);
+            }
+            else if (ResourceName == "minimapicons")
+            {
+                var resourceManager = minimapIcons.ResourceManager;
+                object image = resourceManager.GetObject(this.Name);
                 Bitmap = ByteToImage((byte[])image);
             }
         }

@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Alarak" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_alarak.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Alexstrasza" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_alexstrasza.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Ana" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_ana.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Anduin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_anduin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Anub'arak" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_anubarak.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Artanis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_artanis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Arthas" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_arthas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Auriel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_auriel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="The Butcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_butcher.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Cho" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_cho.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Chromie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_chromie.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Cassia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_d2amazonf.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Deathwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_deathwing.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Deckard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_deckard.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Dehaka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_dehaka.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Valla" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_demonhunter.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="D.Va" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_dva_mech.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="E.T.C." type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_etc.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Fenix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_fenix.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Blaze" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_firebat.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Gall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_gall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Garrosh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_garrosh.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Genji" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_genji.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Greymane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_genngreymane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Falstad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_gryphon_rider.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Gul'dan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_guldan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Hanzo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_hanzo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Azmodan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_azmodan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Chen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_chen.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Diablo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_diablo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="The Lost Vikings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_erik.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Brightwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_faeriedragon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Sonya" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_femalebarbarian.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Gazlowe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_gazlowe.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Abathur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_infestor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Jaina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_jaina.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Johanna" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_johanna.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Kael'thas" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_kaelthas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Li Li" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_lili.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Malfurion" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_malfurion.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Murky" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_murky.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Rexxar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_rexxar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Stitches" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_stitches.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Tyrael" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_tyrael.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Tyrande" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_heros_tyrande.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Hogger" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_hogger.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Illidan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_illidan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Imperius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_imperius.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Junkrat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_junkrat.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Kel'Thuzad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_kelthuzad.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Kerrigan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_kerrigan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Leoric" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_leoric.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Lúcio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_lucio.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Lunara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_lunara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Maiev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_maiev.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Mal'Ganis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_malganis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Malthael" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_malthael.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Lt. Morales" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_medic.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Medivh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_medivh.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Mei" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_meiow.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Mephisto" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_mephisto.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Kharazim" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_monk.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Muradin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_muradin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Xul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_necromancer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Qhira" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_nexus2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Nova" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_nova.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Orphea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_orphea.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Probius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_probius.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Ragnaros" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_ragnaros.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Raynor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_raynor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Rehgar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_rehgar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Samuro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_samuro.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Stukov" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_stukov.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Sylvanas" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_sylvanas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Tassadar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_tassadar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Thrall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_thrall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Tracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_tracer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Tychus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_tychus.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Uther" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_uther.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Valeera" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_valeera.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Varian" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_varian.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Sgt. Hammer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_warfield.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Whitemane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_whitemane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Nazeebo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_witchdoctor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Li-Ming" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_wizard.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Yrel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_yrel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Zagara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_zagara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Zarya" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_zarya.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Zeratul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_zeratul.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Zul'jin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\minimapIcons\storm_ui_minimapicon_zuljin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

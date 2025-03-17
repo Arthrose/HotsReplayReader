@@ -233,7 +233,7 @@ namespace HotsReplayReader
 
             string html = $@"";
             html += $@"<div class=""chatMessages"">";
-            html += $@"<table>";
+            html += $@"<table border>";
             foreach (hotsMessage hotsMessage in hotsMessages)
             {
                 html += HTMLGetChatMessage(hotsMessage);
@@ -278,6 +278,7 @@ namespace HotsReplayReader
 
             html += $@"<td class=""messages"">[" + msgHours + ":" + msgMinutes + ":" + msgSeconds + ":" + msgMilliseconds + "]&nbsp;&nbsp;</td>";
             html += $@"<td class=""messages""><b>";
+            html += $@"<img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" style=""vertical-align: middle;"">&nbsp;";
             if (msgBattleTagName == hotsReplay.stormReplay.Owner.BattleTagName)
                 html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
             else if ((hotsMessage.HotsPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (hotsMessage.HotsPlayer.PartyValue != null))
@@ -711,109 +712,109 @@ namespace HotsReplayReader
         public string getHeroIdRole(string HeroId)
         {
             List<string> Tanks = new List<string>(new string[] {
-                "HeroAnubarak",
-                "HeroArthas",
-                "HeroFirebat",
-                "HeroCho",
-                "HeroDiablo",
-                "HeroL90ETC",
-                "HeroGarrosh",
-                "HeroCrusader",
-                "HeroMalGanis",
-                "HeroMeiOW",
-                "HeroMuradin",
-                "HeroStitches",
-                "HeroTyrael"
+                "HeroAnubarak", // Anub'arak
+                "HeroArthas", // Arthas
+                "HeroFirebat", // Blaze
+                "HeroCho", // Cho
+                "HeroDiablo", // Diablo
+                "HeroL90ETC", // E.T.C.
+                "HeroGarrosh", // Garrosh
+                "HeroCrusader", // Johanna
+                "HeroMalGanis", // Mal'Ganis
+                "HeroMeiOW", // Mei
+                "HeroMuradin", // Muradin
+                "HeroStitches", // Stitches
+                "HeroTyrael" // Tyrael
             });
             List<string> Bruisers = new List<string>(new string[] {
-                "HeroArtanis",
-                "HeroChen",
-                "HeroDeathwing",
-                "DeathwingDragonflightUnit",
-                "HeroDehaka",
-                "HeroDVaPilot",
-                "HeroTinker",
-                "HeroHogger",
-                "HeroImperius",
-                "HeroLeoric",
-                "HeroMalthael",
-                "HeroRagnaros",
-                "HeroRexxar",
-                "HeroBarbarian",
-                "HeroThrall",
-                "HeroVarian",
-                "HeroNecromancer",
-                "HeroYrel"
+                "HeroArtanis", // Artanis
+                "HeroChen", // Chen
+                "HeroDeathwing", // Deathwing
+                "DeathwingDragonflightUnit", // Deathwing
+                "HeroDehaka", // Dehaka
+                "HeroDVaPilot", // D.Va
+                "HeroTinker", // Gazlowe
+                "HeroHogger", // Hogger
+                "HeroImperius", // Imperius
+                "HeroLeoric", // Leoric
+                "HeroMalthael", // Malthael
+                "HeroRagnaros", // Ragnaros
+                "HeroRexxar", // Rexxar
+                "HeroBarbarian", // Sonya
+                "HeroThrall", // Thrall
+                "HeroVarian", // Varian
+                "HeroNecromancer", // Xul
+                "HeroYrel" // Yrel
             });
             List<string> Rangeds = new List<string>(new string[] {
-                "HeroAzmodan",
-                "HeroAmazon",
-                "HeroChromie",
-                "HeroFalstad",
-                "HeroFenix",
-                "HeroGall",
-                "HeroGenji",
-                "HeroGreymane",
-                "HeroGuldan",
-                "HeroHanzo",
-                "HeroJaina",
-                "HeroJunkrat",
-                "HeroKaelthas",
-                "HeroKelThuzad",
-                "HeroWizard",
-                "HeroDryad",
-                "HeroMephisto",
-                "HeroWitchDoctor",
-                "HeroNova",
-                "HeroOrphea",
-                "HeroProbius",
-                "HeroRaynor",
-                "HeroSgtHammer",
-                "HeroSylvanas",
-                "HeroTassadar",
-                "HeroTracer",
-                "HeroTychus",
-                "HeroDemonHunter",
-                "HeroZagara",
-                "HeroZuljin"
+                "HeroAzmodan", // Azmodan
+                "HeroAmazon", // Cassia
+                "HeroChromie", // Chromie
+                "HeroFalstad", // Falstad
+                "HeroFenix", // Fenix
+                "HeroGall", // Cho'gall
+                "HeroGenji", // Genji
+                "HeroGreymane", // Greymane
+                "HeroGuldan", // Gul'dan
+                "HeroHanzo", // Hanzo
+                "HeroJaina", // Jaina
+                "HeroJunkrat", // Junkrat
+                "HeroKaelthas", // Kael'thas
+                "HeroKelThuzad", // Kel'Thuzad
+                "HeroWizard", // Li-Ming
+                "HeroDryad", // Lunara
+                "HeroMephisto", // Mephisto
+                "HeroWitchDoctor", // Nazeebo
+                "HeroNova", // Nova
+                "HeroOrphea", // Orphea
+                "HeroProbius", // Probius
+                "HeroRaynor", // Raynor
+                "HeroSgtHammer", // Sgt. Hammer
+                "HeroSylvanas", // Sylvanas 
+                "HeroTassadar", // Tassadar
+                "HeroTracer", // Tracer
+                "HeroTychus", // Tychus
+                "HeroDemonHunter", // Valla
+                "HeroZagara", // Zagara
+                "HeroZuljin" // Zul'jin
             });
             List<string> Melees = new List<string>(new string[] {
-                "HeroAlarak",
-                "HeroIllidan",
-                "HeroKerrigan",
-                "HeroMaiev",
-                "HeroMurky",
-                "HeroNexusHunter",
-                "HeroSamuro",
-                "HeroButcher",
-                "HeroValeera",
-                "HeroZeratul"
+                "HeroAlarak", // Alarak
+                "HeroIllidan", // Illidan
+                "HeroKerrigan", // Kerrigan
+                "HeroMaiev", // Maiev
+                "HeroMurky", // Murky
+                "HeroNexusHunter", // Qhira
+                "HeroSamuro", // Samuro
+                "HeroButcher", // The Butcher
+                "HeroValeera", // Valeera
+                "HeroZeratul" // Zeratul
             });
             List<string> Healers = new List<string>(new string[] {
-                "HeroAlexstrasza",
-                "HeroAlexstraszaDragon",
-                "HeroAna",
-                "HeroAnduin",
-                "HeroAuriel",
-                "HeroFaerieDragon",
-                "HeroDeckard",
-                "HeroMonk",
-                "HeroLiLi",
-                "HeroMedic",
-                "HeroLucio",
-                "HeroMalfurion",
-                "HeroRehgar",
-                "HeroStukov",
-                "HeroTyrande",
-                "HeroUther",
-                "HeroWhitemane"
+                "HeroAlexstrasza", // Alexstrasza
+                "HeroAlexstraszaDragon", // Alexstrasza
+                "HeroAna", // Ana
+                "HeroAnduin", // Anduin
+                "HeroAuriel", // Auriel
+                "HeroFaerieDragon", // Brightwing
+                "HeroDeckard", // Deckard
+                "HeroMonk", // Kharazim
+                "HeroLiLi", // Li Li
+                "HeroMedic", // Lt. Morales
+                "HeroLucio", // Lucio
+                "HeroMalfurion", // Malfurion
+                "HeroRehgar", // Rehgar
+                "HeroStukov", // Stukov
+                "HeroTyrande", // Tyrande
+                "HeroUther", // Uther
+                "HeroWhitemane" // Whitemane
             });
             List<string> Supports = new List<string>(new string[] {
-                "HeroAbathur",
-                "HeroMedivh",
-                "HeroMedivhRaven",
-                "HeroLostVikingsController",
-                "HeroZarya"
+                "HeroAbathur", // Abathur
+                "HeroMedivh", // Medivh
+                "HeroMedivhRaven", // Medivh
+                "HeroLostVikingsController", // The Lost Vikings
+                "HeroZarya" // Zarya
             });
             if (Tanks.Contains(HeroId))
                 return "Tank";
