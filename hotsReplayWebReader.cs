@@ -72,7 +72,7 @@ namespace HotsReplayReader
                 string Extension = System.IO.Path.GetExtension(fileName);
 
                 // Récupérer l'image depuis les ressources (adapté selon vos ressources)
-                Bitmap image = new hotsImage(uri.Host, imageName).Bitmap;
+                Bitmap image = new hotsImage(uri.Host, imageName, Extension).Bitmap;
                 if (image != null)
                 {
                     // Convertir l'image en MemoryStream

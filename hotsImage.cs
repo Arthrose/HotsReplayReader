@@ -4,12 +4,15 @@
     {
         public Bitmap Bitmap { get; set; }
         public string Name { get; set; }
+        public string Extension { get; set; }
         public string ResourceName { get; set; }
-        public hotsImage(string resourceName = "heroesicon", string imageName = "_Null")
+        public hotsImage(string resourceName = "heroesicon", string imageName = "_Null", string extension = null)
         {
             this.Name = imageName;
             this.ResourceName = resourceName;
+            this.Extension = extension;
             setBitmap();
+            this.Extension = extension;
         }
         public void setBitmap()
         {
@@ -25,10 +28,10 @@
                 object image = resourceManager.GetObject(Name);
                 Bitmap = ByteToImage((byte[])image);
             }
-            else if (ResourceName == "abilitytalents")
+            else if (ResourceName == "emoticons")
             {
-                var resourceManager = abilityTalents.ResourceManager;
-                object image = resourceManager.GetObject(Name);
+                var resourceManager = hotsEmoticons.ResourceManager;
+                object image = resourceManager.GetObject($@"{this.Name}{this.Extension}");
                 Bitmap = ByteToImage((byte[])image);
             }
         }

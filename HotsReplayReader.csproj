@@ -33,6 +33,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>heroesJson.resx</DependentUpon>
     </Compile>
+    <Compile Update="hotsEmoticons.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>hotsEmoticons.resx</DependentUpon>
+    </Compile>
     <Compile Update="hotsResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,10 @@
     <EmbeddedResource Update="heroesJson.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>heroesJson.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="hotsEmoticons.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>hotsEmoticons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="hotsResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
