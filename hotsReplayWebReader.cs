@@ -74,10 +74,10 @@ namespace HotsReplayReader
                 Bitmap image = new hotsImage(uri.Host, imageName, extension).Bitmap;
                 if (image != null)
                 {
+                    MemoryStream ms = new MemoryStream();
                     // Convertir l'image en MemoryStream
                     if (extension == ".png")
                     {
-                        MemoryStream ms = new MemoryStream();
                         image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                         ms.Position = 0;
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
@@ -91,10 +91,16 @@ namespace HotsReplayReader
                             g.Clear(Color.White);
                             g.DrawImage(image, 0, 0, image.Width, image.Height);
                         }
-                        MemoryStream ms = new MemoryStream();
                         newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                         ms.Position = 0;
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/jpeg");
+                    }
+                    else if (extension == ".gif")
+                    {
+                        // Handle GIF images
+                        image.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+                        ms.Position = 0;
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
                     }
                 }
             }
@@ -213,10 +219,6 @@ namespace HotsReplayReader
         {
             string html = $@"";
             string playerName;
-/*
-            if (stormPlayer.PlayerHero.HeroName == "Varian")
-                MessageBox.Show(stormPlayer.PlayerHero.HeroName);
-*/
             playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             html += $@"<td class=""headTableTd""><img src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" class='heroIcon";
             html += $@" heroIconTeam{getParty(stormPlayer.BattleTagName)}";
@@ -262,9 +264,9 @@ namespace HotsReplayReader
                     if (tag == alias)
                     {
                         if (hotsEmoticonData.Value.image.Contains("storm_emoji_nexus"))
-                            return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.image}"" />";
+                            return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.aliases[0]}"" />";
                         else
-                            return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.image}"" />";
+                            return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.aliases[0]}"" />";
                     }
                 }
             }

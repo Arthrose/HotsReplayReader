@@ -34,6 +34,7 @@ namespace HotsReplayReader
                 case "emoticons":
                     resourceManager = hotsEmoticons.ResourceManager;
                     ResxObjectName = $@"{ResxObjectName}{Extension}";
+                    ResxObjectName = ResxObjectName.Replace("_0.gif", ".gif");
                     break;
                 case "minimapicons":
                     resourceManager = minimapIcons.ResourceManager;
