@@ -13,6 +13,7 @@
         public int maxExp { get; set; }
         public int totalKills { get; set; }
         public int totalDeath { get; set; }
+        public bool isWinner { get; set; }
 
         public hotsTeam(string Name)
         {
@@ -27,6 +28,7 @@
             this.maxExp = 0;
             this.totalKills = 0;
             this.totalDeath = 0;
+            this.isWinner = false;
         }
     }
 }

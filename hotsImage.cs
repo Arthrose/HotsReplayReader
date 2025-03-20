@@ -1,4 +1,6 @@
-﻿namespace HotsReplayReader
+﻿using System.Resources;
+
+namespace HotsReplayReader
 {
     internal class hotsImage
     {
@@ -6,57 +8,53 @@
         public string Name { get; set; }
         public string Extension { get; set; }
         public string ResourceName { get; set; }
-        public hotsImage(string resourceName = "heroesicon", string imageName = "_Null", string extension = null)
+        public hotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null)
         {
             this.Name = imageName;
             this.ResourceName = resourceName;
             this.Extension = extension;
             setBitmap();
-            this.Extension = extension;
         }
         public void setBitmap()
         {
-            if (ResourceName == "heroesicon")
+            object image = null;
+            ResourceManager resourceManager = null;
+            string ResxObjectName = Name;
+            switch (ResourceName)
             {
-                var resourceManager = heroesIcon.ResourceManager;
-                object image = resourceManager.GetObject(this.Name);
-                Bitmap = ByteToImage((byte[])image);
+                case "heroesicon":
+                    resourceManager = heroesIcon.ResourceManager;
+                    break;
+                case "hotsresources":
+                    resourceManager = hotsResources.ResourceManager;
+                    break;
+                case "abilitytalents":
+                    resourceManager = abilityTalents.ResourceManager;
+                    break;
+                case "emoticons":
+                    resourceManager = hotsEmoticons.ResourceManager;
+                    ResxObjectName = $@"{ResxObjectName}{Extension}";
+                    break;
+                case "minimapicons":
+                    resourceManager = minimapIcons.ResourceManager;
+                    break;
             }
-            else if (ResourceName == "hotsresources")
+            if (resourceManager != null)
             {
-                var resourceManager = hotsResources.ResourceManager;
-                object image = resourceManager.GetObject(this.Name);
-                Bitmap = ByteToImage((byte[])image);
+                image = resourceManager.GetObject(ResxObjectName);
             }
-            else if (ResourceName == "emoticons")
-            {
-                var resourceManager = hotsEmoticons.ResourceManager;
-                object image = resourceManager.GetObject($@"{this.Name}{this.Extension}");
-                Bitmap = ByteToImage((byte[])image);
-            }
-            else if (ResourceName == "minimapicons")
-            {
-                var resourceManager = minimapIcons.ResourceManager;
-                object image = resourceManager.GetObject(this.Name);
-                Bitmap = ByteToImage((byte[])image);
-            }
+            Bitmap = ByteToImage(image as byte[]);
         }
-
-        public Bitmap getBitmap(string name)
-        {
-            Name = name;
-            setBitmap();
-            return Bitmap;
-        }
-
         private static Bitmap ByteToImage(byte[] blob)
         {
-            MemoryStream mStream = new MemoryStream();
-            byte[] pData = blob;
-            mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
-            Bitmap bm = new Bitmap(mStream, false);
-            mStream.Dispose();
-            return bm;
+            if (blob == null)
+            {
+                return null;
+            }
+            using (MemoryStream mStream = new MemoryStream(blob))
+            {
+                return new Bitmap(mStream, false);
+            }
         }
     }
 }

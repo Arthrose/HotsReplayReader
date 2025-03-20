@@ -67,23 +67,22 @@ namespace HotsReplayReader
             {
                 // Récupérer le nom du fichier (exemple : "MyImage.png")
                 string fileName = System.IO.Path.GetFileName(uri.LocalPath);
-                // On suppose que le nom de la ressource est le nom du fichier sans l'extension
                 string imageName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-                string Extension = System.IO.Path.GetExtension(fileName);
+                string extension = System.IO.Path.GetExtension(fileName);
 
                 // Récupérer l'image depuis les ressources (adapté selon vos ressources)
-                Bitmap image = new hotsImage(uri.Host, imageName, Extension).Bitmap;
+                Bitmap image = new hotsImage(uri.Host, imageName, extension).Bitmap;
                 if (image != null)
                 {
                     // Convertir l'image en MemoryStream
-                    if (Extension == ".png")
+                    if (extension == ".png")
                     {
                         MemoryStream ms = new MemoryStream();
                         image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                         ms.Position = 0;
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
                     }
-                    else if (Extension == ".jpg")
+                    else if (extension == ".jpg")
                     {
                         // Suppression du canal Alpha pour ne pas gérer la transparence
                         Bitmap newImage = new Bitmap(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
@@ -169,7 +168,16 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeadTable()
         {
+            string isBlueTeamWinner = blueTeam.isWinner ? "Winner" : "&nbsp;";
+            string isRedTeamWinner = redTeam.isWinner ? "Winner" : "&nbsp;";
             string html = $@"<table class=""headTable"">
+            <tr>
+              <td>&nbsp;</td>
+              <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 60%;"">{isBlueTeamWinner}</td>
+              <td colSpan=""3"">&nbsp;</td>
+              <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 60%;"">{isRedTeamWinner}</td>
+              <td>&nbsp;</td>
+            </tr>
             <tr>
             <td colspan=""5"" class=""titleBlueTeam"">Blue Team</td>
             <td></td>
@@ -190,9 +198,14 @@ namespace HotsReplayReader
 
             html += $@"
             </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.totalKills}</td>
+              <td colSpan=""3"" class=""titleGameLength"" style=""zoom: 50%;"">Game Length<br />{hotsReplay.stormReplay.ReplayLength}</td>
+              <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.totalKills}</td>
+              <td>&nbsp;</td>
+            </tr>
             </table>
-            </body>
-            </html>
             ";
             return html;
         }
@@ -208,7 +221,7 @@ namespace HotsReplayReader
             html += $@"<td class=""headTableTd""><img src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" class='heroIcon";
             html += $@" heroIconTeam{getParty(stormPlayer.BattleTagName)}";
 
-            html += $@"' /><div class=""battleTag"">{playerName}</div></td>
+            html += $@"' title=""{stormPlayer.AccountLevel}""/><div class=""battleTag"">{playerName}</div></td>
             ";
             return html;
         }
@@ -232,13 +245,11 @@ namespace HotsReplayReader
             hotsMessages = hotsMessages.OrderBy(o => o.TotalMilliseconds).ToList();
 
             string html = $@"";
-            html += $@"<div class=""chatMessages"">";
-            html += $@"<table border>";
+            html += $@"<div class=""chat-container"">";
             foreach (hotsMessage hotsMessage in hotsMessages)
             {
                 html += HTMLGetChatMessage(hotsMessage);
             }
-            html += $@"</table>";
             html += $@"</div>";
             return html;
         }
@@ -249,7 +260,12 @@ namespace HotsReplayReader
                 foreach (string alias in hotsEmoticonData.Value.aliases)
                 {
                     if (tag == alias)
-                        return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" />";
+                    {
+                        if (hotsEmoticonData.Value.image.Contains("storm_emoji_nexus"))
+                            return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.image}"" />";
+                        else
+                            return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.image}"" />";
+                    }
                 }
             }
             return tag;
@@ -276,22 +292,21 @@ namespace HotsReplayReader
             string msgBattleTagName = hotsMessage.HotsPlayer.BattleTagName;
             string msgCharacter = (hotsMessage.HotsPlayer.PlayerHero.HeroName).Replace(" ", "&nbsp;");
 
-            html += $@"<td class=""messages"">[" + msgHours + ":" + msgMinutes + ":" + msgSeconds + ":" + msgMilliseconds + "]&nbsp;&nbsp;</td>";
-            html += $@"<td class=""messages""><b>";
-            html += $@"<img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" style=""vertical-align: middle;"">&nbsp;";
+            html += $@"<div class=""chat-message"">";
+            html += $@"[{msgHours}:{msgMinutes}:{msgSeconds}:{msgMilliseconds}] ";
+            html += $@"<span class=""chat-user""><img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" class=""chat-image"" />";
+
             if (msgBattleTagName == hotsReplay.stormReplay.Owner.BattleTagName)
-                html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
+                html += $@"<class style=""color: crimson"">{msgSenderName}: </class>";
             else if ((hotsMessage.HotsPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (hotsMessage.HotsPlayer.PartyValue != null))
-                html += $@"<class style=""color: crimson"">{msgSenderName}</class>";
+                html += $@"<class style=""color: crimson"">{msgSenderName}: </class>";
             else if (hotsMessage.HotsPlayer.PartyValue != null)
-                html += $@"<class style=""color: deepskyblue"">{msgSenderName}</class>";
+                html += $@"<class style=""color: deepskyblue"">{msgSenderName}: </class>";
             else
-                html += $@"<class style=""color: gainsboro"">{msgSenderName}</class>";
-            html += $@"</b>";
-            html += $@"&nbsp;({msgSenderAccountLevel})&nbsp;&nbsp;</td>";
-            html += $@"<td class=""messages nonBreakingText""><nobr>{msgCharacter}</nobr>&nbsp;&nbsp;</td>";
-            html += $@"<td width=""100%"" class=""messages"">{hotsMessage.Message}</td>";
-            html += "</tr>\r\n";
+                html += $@"<class style=""color: gainsboro"">{msgSenderName}: </class>";
+
+            html += $@"{hotsMessage.Message}</span>";
+            html += $@"</div>";
             return html;
         }
         private string HTMLGetScoreTable()
@@ -570,8 +585,12 @@ namespace HotsReplayReader
                         team.maxDmgTaken = stormPlayer.ScoreResult.DamageTaken;
                     if (stormPlayer.ScoreResult.ExperienceContribution >= team.maxExp)
                         team.maxExp = stormPlayer.ScoreResult.ExperienceContribution;
+                    team.totalDeath += stormPlayer.ScoreResult.Deaths;
+                    team.totalKills += stormPlayer.ScoreResult.SoloKills;
                 }
             }
+            if (team.Name == hotsReplay.stormReplay.WinningTeam.ToString())
+                team.isWinner = true;
         }
         private void initPlayersData()
         {

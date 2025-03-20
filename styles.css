@@ -25,6 +25,12 @@ tr {
   font-weight: bold;
   font-family: Calibri;
 }
+.titleGameLength {
+    color: gainsboro;
+    font-size: 300%;
+    font-weight: bold;
+    font-family: Calibri;
+}
 .heroIcon {
   /*border: 3px solid gainsboro;*/
   border-radius: 100%;
@@ -81,18 +87,34 @@ tr {
   vertical-align: center;
   font-family: Calibri;
 }
-.chatMessages {
-  background-color: #272A34;
-  margin-left: auto;
-  margin-right: auto;
-  width: 800px;
-  height: 300px;
-  overflow-y: scroll;
+.chat-container {
+    zoom: 0.9;
+    width: 900px;
+    height: 400;
+    overflow-y: scroll;
+    text-align: left;
+    margin: 0 auto;
+    background-color: #909090;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
-.messages {
-  text-align: left;
-  vertical-align: top;
-  font-family: Calibri;
+.chat-message {
+    font-family: 'Arial', sans-serif;
+    font-size: 26px;
+    color: #fff;
+    text-shadow: 1px 1px 3px black;
+    line-height: 1.5;
+}
+.chat-user {
+    font-weight: bold;
+}
+.chat-image {
+    margin-top: -5px;
+    vertical-align: middle;
+}
+.chat-image-emoticon {
+    height: 26px;
 }
 .nonBreakingText {
   white-space: nowrap;

@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Reflection;
+using System.Resources;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;
 using Microsoft.Win32;
@@ -105,24 +108,10 @@ namespace HotsReplayReader
         }
         internal void loadHotsEmoticons()
         {
-            // Load emoticons Data
-            string jsonFilePath = "C:\\CSharpProjects\\HotsReplayReader\\emoticondata.json";
-            string jsonString = File.ReadAllText(jsonFilePath);
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            hotsEmoticons = JsonSerializer.Deserialize<hotsEmoticon>(jsonString, options);
+            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            // Load emoticons Aliases
-            jsonFilePath = "C:\\CSharpProjects\\HotsReplayReader\\emoticonsaliases.json";
-            jsonString = File.ReadAllText(jsonFilePath);
-            options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            hotsEmoticonAliase? hotsEmoticonAliases;
-            hotsEmoticonAliases = JsonSerializer.Deserialize<hotsEmoticonAliase>(jsonString, options);
+            hotsEmoticons = JsonSerializer.Deserialize<hotsEmoticon>(Encoding.UTF8.GetString(hotsResources.emoticondata), jsonOptions);
+            hotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<hotsEmoticonAliase>(Encoding.UTF8.GetString(hotsResources.emoticonsaliases), jsonOptions);
 
             foreach (KeyValuePair<string, string> aliases in hotsEmoticonAliases.aliases)
             {
