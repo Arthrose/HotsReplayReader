@@ -298,14 +298,7 @@ namespace HotsReplayReader
             html += $@"[{msgHours}:{msgMinutes}:{msgSeconds}:{msgMilliseconds}] ";
             html += $@"<span class=""chat-user""><img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" class=""chat-image"" />";
 
-            if (msgBattleTagName == hotsReplay.stormReplay.Owner.BattleTagName)
-                html += $@"<class style=""color: crimson"">{msgSenderName}: </class>";
-            else if ((hotsMessage.HotsPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (hotsMessage.HotsPlayer.PartyValue != null))
-                html += $@"<class style=""color: crimson"">{msgSenderName}: </class>";
-            else if (hotsMessage.HotsPlayer.PartyValue != null)
-                html += $@"<class style=""color: deepskyblue"">{msgSenderName}: </class>";
-            else
-                html += $@"<class style=""color: gainsboro"">{msgSenderName}: </class>";
+            html += $@"<span class=""team{hotsMessage.HotsPlayer.Party}"">{msgSenderName}: </span>";
 
             html += $@"{hotsMessage.Message}</span>";
             html += $@"</div>";
