@@ -29,7 +29,6 @@ namespace HotsReplayReader
         internal string? htmlContent;
 
         //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
-        string apiKey = "54c80043-9bd6-47d5-90a1-6962b47cb2e0:fx";
 
         DeepLTranslator translator;
 
