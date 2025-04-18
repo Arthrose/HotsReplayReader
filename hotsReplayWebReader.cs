@@ -1,10 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HotsReplayReader
 {
@@ -24,10 +28,17 @@ namespace HotsReplayReader
 
         internal string? htmlContent;
 
+        //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
+        string apiKey = "54c80043-9bd6-47d5-90a1-6962b47cb2e0:fx";
+
+        DeepLTranslator translator;
+
         Init Init = new Init();
         public hotsReplayWebReader()
         {
             InitializeComponent();
+
+            translator = new DeepLTranslator(apiKey);
 
             ToolStripMenuItem[] accountsToolStipMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
             for (int i = 0; i < accountsToolStipMenu.Length; i++)
@@ -48,6 +59,7 @@ namespace HotsReplayReader
 
             if (Directory.Exists(Init.lastReplayFilePath))
                 listHotsReplays(Init.lastReplayFilePath);
+
             await webView.EnsureCoreWebView2Async();
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
@@ -55,7 +67,64 @@ namespace HotsReplayReader
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
 
-            htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
+            webView.CoreWebView2.WebMessageReceived += async (sender, args) =>
+            {
+                var json = args.WebMessageAsJson;
+
+                using var document = JsonDocument.Parse(json);
+                var root = document.RootElement;
+
+                if (root.TryGetProperty("action", out var actionElement) &&
+                    root.TryGetProperty("callbackId", out var callbackIdElement))
+                {
+                    string action = actionElement.GetString();
+                    string callbackId = callbackIdElement.GetString();
+
+                    if (action == "translate" && root.TryGetProperty("text", out var textElement))
+                    {
+                        string inputText = textElement.GetString();
+                        //string translated = new string(inputText.Reverse().ToArray());
+                        string translated = string.Empty;
+
+                        try
+                        {
+                            translated = await translator.TranslateText(inputText, "EN");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erreur : " + ex.Message);
+                            Console.WriteLine("Erreur : " + ex.Message);
+                        }
+
+                        string returnedText = JsonSerializer.Serialize(translated);
+
+                        // Call the JS callback and clean it up
+                        string script = $"window['{callbackId}']({returnedText}); delete window['{callbackId}'];";
+                        await webView.CoreWebView2.ExecuteScriptAsync(script);
+                    }
+                }
+            };
+
+            htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
+/*
+            htmlContent += @"
+<script>
+    function translateWithCSharp(text) {
+        const callbackId = ""cb_"" + Date.now();
+        window.chrome.webview.postMessage({
+            action: ""translate"",
+            callbackId: callbackId,
+            text: text
+        });
+        window[callbackId] = function(result) {
+            alert(result);
+        };
+    }
+</script>
+
+<button onclick = ""translateWithCSharp('Bonjour le monde!')"" >Get a response from C#</button>
+";
+*/
             webView.NavigateToString(htmlContent);
         }
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
@@ -103,6 +172,13 @@ namespace HotsReplayReader
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
                     }
                 }
+            }
+            else if (uri.Host == "hotsreplayreader.local")
+            {
+                string responseText = "Hello from C#!";
+                byte[] byteArray = Encoding.UTF8.GetBytes(responseText);
+                MemoryStream ms = new MemoryStream(byteArray);
+                e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: text/plain");
             }
         }
         private void resizeControl(Rectangle r, Control c, bool growWidth)
@@ -158,6 +234,22 @@ namespace HotsReplayReader
                 <style type=""text/css"">
                 {css}
                 </style>
+                <script>
+                    function translateWithCSharp(text) {{
+                        return new Promise((resolve, reject) => {{
+                            const callbackId = ""cb_"" + Date.now();
+                            window.chrome.webview.postMessage({{
+                                action: ""translate"",
+                                callbackId: callbackId,
+                                text: text
+                            }});
+                            window[callbackId] = function(result) {{
+//                                alert(result);
+                                resolve(result);
+                            }};
+                        }});
+                    }}
+                </script>
                 </head>
                 <body>
                 <p>&nbsp;</p>
@@ -202,12 +294,19 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetHeadTableCell(stormPlayer);
 
+            string replayLength;
+            if (hotsReplay.stormReplay.ReplayLength.Hours == 0)
+                replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString().Substring(3)}";
+            else
+                replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString()}";
+            string time = hotsReplay.stormReplay.ReplayLength.ToString();
+
             html += $@"
             </tr>
             <tr>
               <td>&nbsp;</td>
               <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.totalKills}</td>
-              <td colSpan=""3"" class=""titleGameLength"" style=""zoom: 50%;"">Game Length<br />{hotsReplay.stormReplay.ReplayLength}</td>
+              <td colSpan=""3"" class=""titleGameLength"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
               <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.totalKills}</td>
               <td>&nbsp;</td>
             </tr>
@@ -246,12 +345,67 @@ namespace HotsReplayReader
             }
             hotsMessages = hotsMessages.OrderBy(o => o.TotalMilliseconds).ToList();
 
+            bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Int32.Parse(hotsMessages.Last().Hours) > 0 ? true : false;
+
             string html = $@"";
             html += $@"<div class=""chat-container"">";
             foreach (hotsMessage hotsMessage in hotsMessages)
             {
-                html += HTMLGetChatMessage(hotsMessage);
+                html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
             }
+            html += $@"</div>";
+
+            html += @"<script>
+  function translate(text) {
+    fetch(""https://hotsreplayreader.local/"")
+      .then(response => {
+        if (!response.ok) throw new Error(""Network response was not ok"");
+        return response.text();
+      })
+      .catch(error => {
+        console.error(""There was a problem with the fetch operation:"", error);
+      });
+    //return text.split("""").reverse().join("""");
+  }
+  document.querySelectorAll("".chat-message"").forEach(function (element) {
+    element.addEventListener(""click"", function () {
+      const span = element.querySelector("".chat-message-corps"");
+      const currentText = span.textContent;
+//      const translated = await translateWithCSharp(currentText);
+//      const translated = translateWithCSharp(currentText);
+
+        translateWithCSharp(currentText)
+            .then(translated => {
+                // Do something with the translated text
+                span.textContent = translated;
+            })
+//      span.textContent = translated;
+    });
+  });
+</script>";
+
+            return html;
+        }
+        internal string HTMLGetChatMessage(hotsMessage hotsMessage, bool lastMessageAfterAnHour)
+        {
+            string html = $@"<tr>";
+            string msgHours = hotsMessage.Hours;
+            string msgMinutes = hotsMessage.Minutes;
+            string msgSeconds = hotsMessage.Seconds;
+            string msgSenderName = hotsMessage.HotsPlayer.Name;
+
+            int? msgSenderAccountLevel = hotsMessage.HotsPlayer.AccountLevel;
+            string msgBattleTagName = hotsMessage.HotsPlayer.BattleTagName;
+            string msgCharacter = (hotsMessage.HotsPlayer.PlayerHero.HeroName).Replace(" ", "&nbsp;");
+
+            html += $@"<div class=""chat-message"">";
+            if (lastMessageAfterAnHour)
+                html += $@"[{msgHours}:{msgMinutes}:{msgSeconds}] ";
+            else
+                html += $@"[{msgMinutes}:{msgSeconds}] ";
+            html += $@"<span class=""chat-user""><img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" class=""chat-image"" title=""{hotsMessage.HotsPlayer.PlayerHero.HeroName}""/> ";
+            html += $@"<span class=""team{hotsMessage.HotsPlayer.Party}"">{msgSenderName}: </span>";
+            html += $@"<span class=""chat-message-corps"">{hotsMessage.Message}</span><img class=""translate-icon"" style=""float: right"" src=""app://hotsResources/translate.png"" height=""24"" /></span>";
             html += $@"</div>";
             return html;
         }
@@ -281,29 +435,6 @@ namespace HotsReplayReader
                 return GetEmoticonImgFromTag(emoticonTag);
             });
         }
-        internal string HTMLGetChatMessage(hotsMessage hotsMessage)
-        {
-            string html = $@"<tr>";
-            string msgHours = hotsMessage.Hours;
-            string msgMinutes = hotsMessage.Minutes;
-            string msgSeconds = hotsMessage.Seconds;
-            string msgMilliseconds = hotsMessage.MilliSeconds;
-            string msgSenderName = hotsMessage.HotsPlayer.Name;
-
-            int? msgSenderAccountLevel = hotsMessage.HotsPlayer.AccountLevel;
-            string msgBattleTagName = hotsMessage.HotsPlayer.BattleTagName;
-            string msgCharacter = (hotsMessage.HotsPlayer.PlayerHero.HeroName).Replace(" ", "&nbsp;");
-
-            html += $@"<div class=""chat-message"">";
-            html += $@"[{msgHours}:{msgMinutes}:{msgSeconds}:{msgMilliseconds}] ";
-            html += $@"<span class=""chat-user""><img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" class=""chat-image"" />";
-
-            html += $@"<span class=""team{hotsMessage.HotsPlayer.Party}"">{msgSenderName}: </span>";
-
-            html += $@"{hotsMessage.Message}</span>";
-            html += $@"</div>";
-            return html;
-        }
         private string HTMLGetScoreTable()
         {
             string html = @$"
@@ -314,6 +445,7 @@ namespace HotsReplayReader
                 <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;Takedown&nbsp;</td>
                 <td>&nbsp;&nbsp;Deaths&nbsp;</td>
+                <td>Time<br />&nbsp;Spent&nbsp;<br />Dead</td>
                 <td>Siege Dmge</td>
                 <td>&nbsp;Hero Dmg&nbsp;</td>
                 <td>&nbsp;Healing&nbsp;&nbsp;</td>
@@ -335,6 +467,15 @@ namespace HotsReplayReader
         }
         private string HTMLGetScoreTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
+            string timeSpentDead = "&nbsp;";
+            if (stormPlayer.ScoreResult.Deaths > 0)
+            {
+                if (stormPlayer.ScoreResult.TimeSpentDead.Hours == 0)
+                    timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead.ToString().Substring(3)}";
+                else
+                    timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead.ToString()}";
+            }
+
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
             html += @$"<tr class=""team{team.Name}"">";
@@ -355,6 +496,8 @@ namespace HotsReplayReader
             if (stormPlayer.ScoreResult.Deaths == team.maxDeaths)
                 html += $@" class = teamBestScore";
             html += @$">{stormPlayer.ScoreResult.Deaths}</td>";
+
+            html += @$"<td>{timeSpentDead}</td>";
 
             html += @$"<td";
             if (stormPlayer.ScoreResult.SiegeDamage == team.maxSiegeDmg)
@@ -844,7 +987,7 @@ namespace HotsReplayReader
                 return "Support";
             else return "";
         }
-        private void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
+        private async void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -863,14 +1006,28 @@ namespace HotsReplayReader
                 }
                 else
                 {
-                    htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
+                    htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
                 }
             }
             catch
             {
-                htmlContent = $@"<body style=""background-color: black; margin: 0;""><img style=""width: 100%; height: 100%;"" src=""app://hotsResources/Welcome.jpg"" /></body>";
+                htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
             }
             webView.CoreWebView2.NavigateToString(htmlContent);
+
+/*
+            try
+            {
+                string result = await translator.TranslateText("Bonjour le monde", "EN");
+                MessageBox.Show("Traduction: " + result);
+                Console.WriteLine("Traduction : " + result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur : " + ex.Message);
+                Console.WriteLine("Erreur : " + ex.Message);
+            }
+*/
         }
         private void browseToolStripMenuItem_Click(object sender, EventArgs e)
         {

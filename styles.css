@@ -32,7 +32,6 @@ tr {
     font-family: Calibri;
 }
 .heroIcon {
-  /*border: 3px solid gainsboro;*/
   border-radius: 100%;
   width: 80px;
   height: 80px;
@@ -105,19 +104,28 @@ tr {
     color: #fff;
     text-shadow: 1px 1px 3px black;
     line-height: 1.5;
+    cursor: default;
 }
 .chat-user {
     font-weight: bold;
 }
 .chat-image {
+    height: 36px;
     margin-top: -5px;
     vertical-align: middle;
 }
 .chat-image-emoticon {
     height: 26px;
 }
+.translate-icon
+{
+    display: none;
+}
+.chat-message:hover .translate-icon {
+    display: inline-block;
+}
 .nonBreakingText {
-  white-space: nowrap;
+    white-space: nowrap;
 }
 .tableScore {
   text-align: center;
