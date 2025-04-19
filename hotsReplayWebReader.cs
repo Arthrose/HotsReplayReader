@@ -1,14 +1,10 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Resources;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HotsReplayReader
 {
@@ -66,6 +62,7 @@ namespace HotsReplayReader
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
 
+            // Traite les messages de JavaScript vers C#
             webView.CoreWebView2.WebMessageReceived += async (sender, args) =>
             {
                 var json = args.WebMessageAsJson;
@@ -73,16 +70,19 @@ namespace HotsReplayReader
                 using var document = JsonDocument.Parse(json);
                 var root = document.RootElement;
 
+                // Vérifie si le message contient les propriétés "action" et "callbackId"
                 if (root.TryGetProperty("action", out var actionElement) &&
                     root.TryGetProperty("callbackId", out var callbackIdElement))
                 {
+                    // Récupère les valeurs de "action" et "callbackId"
                     string action = actionElement.GetString();
                     string callbackId = callbackIdElement.GetString();
 
+                    // Vérifie si l'action est "translate" et si le message contient "text"
                     if (action == "translate" && root.TryGetProperty("text", out var textElement))
                     {
+                        // Récupère le texte à traduire
                         string inputText = textElement.GetString();
-                        //string translated = new string(inputText.Reverse().ToArray());
                         string translated = string.Empty;
 
                         try
@@ -95,9 +95,10 @@ namespace HotsReplayReader
                             Console.WriteLine("Erreur : " + ex.Message);
                         }
 
+                        // Sérialise le texte traduit en JSON
                         string returnedText = JsonSerializer.Serialize(translated);
 
-                        // Call the JS callback and clean it up
+                        // Appelle le callback JavaScript puis nettoie
                         string script = $"window['{callbackId}']({returnedText}); delete window['{callbackId}'];";
                         await webView.CoreWebView2.ExecuteScriptAsync(script);
                     }
@@ -105,8 +106,10 @@ namespace HotsReplayReader
             };
 
             htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
+
+// Bouton de test pour appeler la fonction translateWithCSharp
 /*
-            htmlContent += @"
+            htmlContent = @"
 <script>
     function translateWithCSharp(text) {
         const callbackId = ""cb_"" + Date.now();
@@ -172,13 +175,6 @@ namespace HotsReplayReader
                     }
                 }
             }
-            else if (uri.Host == "hotsreplayreader.local")
-            {
-                string responseText = "Hello from C#!";
-                byte[] byteArray = Encoding.UTF8.GetBytes(responseText);
-                MemoryStream ms = new MemoryStream(byteArray);
-                e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: text/plain");
-            }
         }
         private void resizeControl(Rectangle r, Control c, bool growWidth)
         {
@@ -228,31 +224,35 @@ namespace HotsReplayReader
                 css = css.Replace(@"#backColor#", @"#110000");
 
             string html = $@"
-                <html>
-                <head>
-                <style type=""text/css"">
-                {css}
-                </style>
-                <script>
-                    function translateWithCSharp(text) {{
-                        return new Promise((resolve, reject) => {{
-                            const callbackId = ""cb_"" + Date.now();
-                            window.chrome.webview.postMessage({{
-                                action: ""translate"",
-                                callbackId: callbackId,
-                                text: text
-                            }});
-                            window[callbackId] = function(result) {{
-//                                alert(result);
-                                resolve(result);
-                            }};
-                        }});
-                    }}
-                </script>
-                </head>
-                <body>
-                <p>&nbsp;</p>
-                ";
+<html>
+<head>
+<style type=""text/css"">
+{css}
+</style>
+<script>
+  // Fonction pour traduire le texte avec C#
+  function translateWithCSharp(text) {{
+    // Appelle la fonction C# pour traduire le texte
+    return new Promise((resolve, reject) => {{
+      // Crée un identifiant de rappel unique
+      const callbackId = ""cb_"" + Date.now();
+      // Envoie le message à C#
+      window.chrome.webview.postMessage({{
+        action: ""translate"",
+        callbackId: callbackId,
+        text: text
+      }});
+      // Définit la fonction de rappel pour traiter la réponse
+      window[callbackId] = function(result) {{
+        resolve(result);
+      }};
+    }});
+  }}
+</script>
+</head>
+<body>
+<p>&nbsp;</p>
+";
 
             return html;
         }
@@ -355,30 +355,19 @@ namespace HotsReplayReader
             html += $@"</div>";
 
             html += @"<script>
-  function translate(text) {
-    fetch(""https://hotsreplayreader.local/"")
-      .then(response => {
-        if (!response.ok) throw new Error(""Network response was not ok"");
-        return response.text();
-      })
-      .catch(error => {
-        console.error(""There was a problem with the fetch operation:"", error);
-      });
-    //return text.split("""").reverse().join("""");
-  }
+  // Selectionne tous les elements avec la classe chat-message et ajoute un evenement de clic
   document.querySelectorAll("".chat-message"").forEach(function (element) {
     element.addEventListener(""click"", function () {
+      // Récupère le texte du span avec la classe chat-message-corps
       const span = element.querySelector("".chat-message-corps"");
       const currentText = span.textContent;
-//      const translated = await translateWithCSharp(currentText);
-//      const translated = translateWithCSharp(currentText);
-
-        translateWithCSharp(currentText)
-            .then(translated => {
-                // Do something with the translated text
-                span.textContent = translated;
-            })
-//      span.textContent = translated;
+      // Appelle la fonction translateWithCSharp pour traduire le texte
+      translateWithCSharp(currentText)
+        // Attends la réponse de la fonction
+        .then(translated => {
+          // Met à jour le texte du span avec le texte traduit
+          span.textContent = translated;
+        })
     });
   });
 </script>";
@@ -643,9 +632,9 @@ namespace HotsReplayReader
             // Saute une ligne avant "Quest:" si elle n'est pas la premiere ligne de la descritpion.
             // Ex : Extended Lightning de Alarak
             description = Regex.Replace(description, @"(?<!^)(Quest:)", "<br />Quest:");
-            // Colorie Passive en vert
+            // Colore Passive en vert
             description = Regex.Replace(description, @"(Passive:)", "<br /><font color='#00FF90'>$1</font>");
-            // Colorie Quest et Reward en jaune
+            // Colore Quest et Reward en jaune
             description = Regex.Replace(description, @"(Quest:|Reward:)", "<font color='#D7BA3A'>$1</font>");
 
             string imgTalentBorderClass;
@@ -1013,20 +1002,6 @@ namespace HotsReplayReader
                 htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
             }
             webView.CoreWebView2.NavigateToString(htmlContent);
-
-/*
-            try
-            {
-                string result = await translator.TranslateText("Bonjour le monde", "EN");
-                MessageBox.Show("Traduction: " + result);
-                Console.WriteLine("Traduction : " + result);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erreur : " + ex.Message);
-                Console.WriteLine("Erreur : " + ex.Message);
-            }
-*/
         }
         private void browseToolStripMenuItem_Click(object sender, EventArgs e)
         {
