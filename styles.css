@@ -26,10 +26,10 @@ tr {
   font-family: Calibri;
 }
 .titleGameLength {
-    color: gainsboro;
-    font-size: 300%;
-    font-weight: bold;
-    font-family: Calibri;
+  color: gainsboro;
+  font-size: 300%;
+  font-weight: bold;
+  font-family: Calibri;
 }
 .heroIcon {
   border-radius: 100%;
@@ -87,45 +87,45 @@ tr {
   font-family: Calibri;
 }
 .chat-container {
-    zoom: 0.9;
-    width: 900px;
-    height: 400;
-    overflow-y: scroll;
-    text-align: left;
-    margin: 0 auto;
-    background-color: #909090;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+  zoom: 0.9;
+  width: 900px;
+  height: 400;
+  overflow-y: scroll;
+  text-align: left;
+  margin: 0 auto;
+  background-color: #909090;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 .chat-message {
-    font-family: 'Arial', sans-serif;
-    font-size: 26px;
-    color: #fff;
-    text-shadow: 1px 1px 3px black;
-    line-height: 1.5;
-    cursor: default;
+  font-family: 'Arial', sans-serif;
+  font-size: 26px;
+  color: #fff;
+  text-shadow: 1px 1px 3px black;
+  line-height: 1.5;
+  cursor: default;
 }
 .chat-user {
-    font-weight: bold;
+  font-weight: bold;
 }
 .chat-image {
-    height: 36px;
-    margin-top: -5px;
-    vertical-align: middle;
+  height: 36px;
+  margin-top: -5px;
+  vertical-align: middle;
 }
 .chat-image-emoticon {
-    height: 26px;
+  height: 26px;
 }
 .translate-icon
 {
-    display: none;
+  display: none;
 }
 .chat-message:hover .translate-icon {
-    display: inline-block;
+  display: inline-block;
 }
 .nonBreakingText {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 .tableScore {
   text-align: center;

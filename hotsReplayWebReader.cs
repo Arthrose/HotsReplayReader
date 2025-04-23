@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser.Player;
@@ -25,6 +24,7 @@ namespace HotsReplayReader
         internal string? htmlContent;
 
         //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
+        string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
 
         DeepLTranslator translator;
 
@@ -35,16 +35,16 @@ namespace HotsReplayReader
 
             translator = new DeepLTranslator(apiKey);
 
-            ToolStripMenuItem[] accountsToolStipMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
-            for (int i = 0; i < accountsToolStipMenu.Length; i++)
+            ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
+            for (int i = 0; i < accountsToolStripMenu.Length; i++)
             {
-                accountsToolStipMenu[i] = new ToolStripMenuItem();
-                accountsToolStipMenu[i].Name = Init.hotsLocalAccounts[i].BattleTagName;
-                accountsToolStipMenu[i].Tag = "Account";
-                accountsToolStipMenu[i].Text = Init.hotsLocalAccounts[i].BattleTagName.Remove(Init.hotsLocalAccounts[i].BattleTagName.IndexOf(@"#"));
-                accountsToolStipMenu[i].Click += new EventHandler(MenuItemClickHandler);
+                accountsToolStripMenu[i] = new ToolStripMenuItem();
+                accountsToolStripMenu[i].Name = Init.hotsLocalAccounts[i].BattleTagName;
+                accountsToolStripMenu[i].Tag = "Account";
+                accountsToolStripMenu[i].Text = Init.hotsLocalAccounts[i].BattleTagName.Remove(Init.hotsLocalAccounts[i].BattleTagName.IndexOf(@"#"));
+                accountsToolStripMenu[i].Click += new EventHandler(MenuItemClickHandler);
             }
-            accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStipMenu);
+            accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
         }
         private async void hotsReplayWebReader_Load(object sender, EventArgs e)
         {
@@ -223,8 +223,7 @@ namespace HotsReplayReader
             else
                 css = css.Replace(@"#backColor#", @"#110000");
 
-            string html = $@"
-<html>
+            string html = $@"<html>
 <head>
 <style type=""text/css"">
 {css}
@@ -258,9 +257,7 @@ namespace HotsReplayReader
         }
         internal string HTMLGetFooter()
         {
-            string html = $@"
-            </body>
-            </html>";
+            string html = "\n</body>\n</html>";
             return html;
         }
         internal string HTMLGetHeadTable()
@@ -268,26 +265,26 @@ namespace HotsReplayReader
             string isBlueTeamWinner = blueTeam.isWinner ? "Winner" : "&nbsp;";
             string isRedTeamWinner = redTeam.isWinner ? "Winner" : "&nbsp;";
             string html = $@"<table class=""headTable"">
-            <tr>
-              <td>&nbsp;</td>
-              <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 60%;"">{isBlueTeamWinner}</td>
-              <td colSpan=""3"">&nbsp;</td>
-              <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 60%;"">{isRedTeamWinner}</td>
-              <td>&nbsp;</td>
-            </tr>
-            <tr>
-            <td colspan=""5"" class=""titleBlueTeam"">Blue Team</td>
-            <td></td>
-            <td colspan=""5"" class=""titleRedTeam"">Red Team</td>
-            </tr>
-            <tr>
-            ";
+  <tr>
+    <td>&nbsp;</td>
+    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 60%;"">{isBlueTeamWinner}</td>
+    <td colSpan=""3"">&nbsp;</td>
+    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 60%;"">{isRedTeamWinner}</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=""5"" class=""titleBlueTeam"">Blue Team</td>
+    <td></td>
+    <td colspan=""5"" class=""titleRedTeam"">Red Team</td>
+  </tr>
+  <tr>
+";
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetHeadTableCell(stormPlayer);
 
-            html += $@"<td width=""100""></td>";
+            html += $"    <td width=\"100\"></td>\n";
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
@@ -300,29 +297,25 @@ namespace HotsReplayReader
                 replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString()}";
             string time = hotsReplay.stormReplay.ReplayLength.ToString();
 
-            html += $@"
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
-              <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.totalKills}</td>
-              <td colSpan=""3"" class=""titleGameLength"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
-              <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.totalKills}</td>
-              <td>&nbsp;</td>
-            </tr>
-            </table>
-            ";
+            html += $@"  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.totalKills}</td>
+    <td colSpan=""3"" class=""titleGameLength"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
+    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.totalKills}</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+";
             return html;
         }
         internal string HTMLGetHeadTableCell(StormPlayer stormPlayer)
         {
-            string html = $@"";
             string playerName;
             playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
-            html += $@"<td class=""headTableTd""><img src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" class='heroIcon";
-            html += $@" heroIconTeam{getParty(stormPlayer.BattleTagName)}";
-
-            html += $@"' title=""{stormPlayer.AccountLevel}""/><div class=""battleTag"">{playerName}</div></td>
-            ";
+            string html = $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon";
+            html += $" heroIconTeam{getParty(stormPlayer.BattleTagName)}";
+            html += $"\" title=\"{stormPlayer.AccountLevel}\"/><div class=\"battleTag\">{playerName}</div></td>\n";
             return html;
         }
         internal string HTMLGetChatMessages()
@@ -337,9 +330,9 @@ namespace HotsReplayReader
             {
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.playerDisconnects)
                 {
-                    hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.From, "<span class='disconnected'>Disconnected</span>"));
+                    hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.From, "<span class=\"disconnected\">Disconnected</span>", false));
                     if (playerDisconnect.To != null)
-                        hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class='reconnected'>Reconnected</span>"));
+                        hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class=\"reconnected\">Reconnected</span>", false));
                 }
             }
             hotsMessages = hotsMessages.OrderBy(o => o.TotalMilliseconds).ToList();
@@ -347,12 +340,12 @@ namespace HotsReplayReader
             bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Int32.Parse(hotsMessages.Last().Hours) > 0 ? true : false;
 
             string html = $@"";
-            html += $@"<div class=""chat-container"">";
+            html += "<div class=\"chat-container\">\n";
             foreach (hotsMessage hotsMessage in hotsMessages)
             {
                 html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
             }
-            html += $@"</div>";
+            html += "</div>\n";
 
             html += @"<script>
   // Selectionne tous les elements avec la classe chat-message et ajoute un evenement de clic
@@ -371,12 +364,10 @@ namespace HotsReplayReader
     });
   });
 </script>";
-
-            return html;
+            return $"{html}\n";
         }
         internal string HTMLGetChatMessage(hotsMessage hotsMessage, bool lastMessageAfterAnHour)
         {
-            string html = $@"<tr>";
             string msgHours = hotsMessage.Hours;
             string msgMinutes = hotsMessage.Minutes;
             string msgSeconds = hotsMessage.Seconds;
@@ -386,15 +377,18 @@ namespace HotsReplayReader
             string msgBattleTagName = hotsMessage.HotsPlayer.BattleTagName;
             string msgCharacter = (hotsMessage.HotsPlayer.PlayerHero.HeroName).Replace(" ", "&nbsp;");
 
-            html += $@"<div class=""chat-message"">";
+            string html = "  <div class=\"chat-message\">\n";
             if (lastMessageAfterAnHour)
-                html += $@"[{msgHours}:{msgMinutes}:{msgSeconds}] ";
+                html += $"    [{msgHours}:{msgMinutes}:{msgSeconds}]\n";
             else
-                html += $@"[{msgMinutes}:{msgSeconds}] ";
-            html += $@"<span class=""chat-user""><img src=""app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png"" class=""chat-image"" title=""{hotsMessage.HotsPlayer.PlayerHero.HeroName}""/> ";
-            html += $@"<span class=""team{hotsMessage.HotsPlayer.Party}"">{msgSenderName}: </span>";
-            html += $@"<span class=""chat-message-corps"">{hotsMessage.Message}</span><img class=""translate-icon"" style=""float: right"" src=""app://hotsResources/translate.png"" height=""24"" /></span>";
-            html += $@"</div>";
+                html += $"    [{msgMinutes}:{msgSeconds}]\n";
+            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png\" class=\"chat-image\" title=\"{hotsMessage.HotsPlayer.PlayerHero.HeroName}\"/>\n";
+            html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}\">{msgSenderName}: </span>\n";
+            if (hotsMessage.translate)
+                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\" /></span>\n";
+            else
+                html += $"    {hotsMessage.Message}\n";
+            html += $"  </div>\n";
             return html;
         }
         internal string GetEmoticonImgFromTag(string tag)
@@ -426,22 +420,22 @@ namespace HotsReplayReader
         private string HTMLGetScoreTable()
         {
             string html = @$"
-              <table class=""tableScore"">
-                <tr class=""teamHeader"">
-                <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;Takedown&nbsp;</td>
-                <td>&nbsp;&nbsp;Deaths&nbsp;</td>
-                <td>Time<br />&nbsp;Spent&nbsp;<br />Dead</td>
-                <td>Siege Dmge</td>
-                <td>&nbsp;Hero Dmg&nbsp;</td>
-                <td>&nbsp;Healing&nbsp;&nbsp;</td>
-                <td>Dmg Taken&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>MVP Score</td>
-                </tr>
-            ";
+<table class=""tableScore"">
+  <tr class=""teamHeader"">
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;Takedown&nbsp;</td>
+    <td>&nbsp;&nbsp;Deaths&nbsp;</td>
+    <td>Time<br />&nbsp;Spent&nbsp;<br />Dead</td>
+    <td>Siege Dmge</td>
+    <td>&nbsp;Hero Dmg&nbsp;</td>
+    <td>&nbsp;Healing&nbsp;&nbsp;</td>
+    <td>Dmg Taken&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>MVP Score</td>
+  </tr>
+";
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
@@ -450,7 +444,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetScoreTr(stormPlayer, redTeam, getParty(stormPlayer.BattleTagName));
 
-            html += @$"</table>";
+            html += "</table>\n";
             return html;
         }
         private string HTMLGetScoreTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
@@ -466,78 +460,78 @@ namespace HotsReplayReader
 
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
-            html += @$"<tr class=""team{team.Name}"">";
-            html += @$"<td><img class=""scoreIcon"" src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" /></td>";
-            html += @$"<td class=""tdPlayerName {team.Name} team{partyColor}"">{stormPlayer.PlayerHero.HeroName}<br /><font size=""-1"">{playerName}</font></td>";
+            html += $"  <tr class=\"team{team.Name}\">\n";
+            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" /></td>\n";
+            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{stormPlayer.PlayerHero.HeroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.SoloKills == team.maxKills)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.SoloKills}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.SoloKills}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.Takedowns == team.maxTakedowns)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.Takedowns}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.Takedowns}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.Deaths == team.maxDeaths)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.Deaths}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.Deaths}</td>\n";
 
-            html += @$"<td>{timeSpentDead}</td>";
+            html += $"    <td>{timeSpentDead}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.SiegeDamage == team.maxSiegeDmg)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.SiegeDamage:n0}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.SiegeDamage:n0}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.HeroDamage == team.maxHeroDmg)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.HeroDamage:n0}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.HeroDamage:n0}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if ((stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing) == team.maxHealing)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing:n0}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing:n0}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.DamageTaken == team.maxDmgTaken)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.DamageTaken:n0}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.DamageTaken:n0}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.ScoreResult.ExperienceContribution == team.maxExp)
-                html += $@" class = teamBestScore";
-            html += @$">{stormPlayer.ScoreResult.ExperienceContribution:n0}</td>";
+                html += " class = teamBestScore";
+            html += $">{stormPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
-            html += @$"<td";
+            html += "    <td";
             if (stormPlayer.MatchAwardsCount > 0)
                 if (stormPlayer.MatchAwards[0].ToString() == "MVP")
-                    html += $@" class = teamBestScore";
-            html += @$">{Math.Round(getHotsPlayer(stormPlayer.BattleTagName).mvpScore, 2)}</td>";
+                    html += " class = teamBestScore";
+            html += $">{Math.Round(getHotsPlayer(stormPlayer.BattleTagName).mvpScore, 2)}</td>\n";
 
-            html += "</tr>\r\n";
+            html += "  </tr>\n";
             return html;
         }
         private string HTMLGetTalentsTable()
         {
             string playerName;
             string html = @$"
-              <table class=""tableScore"">
-                <tr class=""teamHeader"">
-                <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                </tr>
-            ";
+<table class=""tableScore"">
+  <tr class=""teamHeader"">
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+";
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
@@ -546,7 +540,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, getParty(stormPlayer.BattleTagName));
 
-            html += @$"</table>";
+            html += "</table>\n";
             return html;
         }
         private string HTMLGetTalentsTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
@@ -566,17 +560,17 @@ namespace HotsReplayReader
             hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
-            html += @$"<tr class=""team{team.Name}"">";
-            html += @$"<td><img class=""scoreIcon"" src=""app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png"" /></td>";
-            html += @$"<td class=""tdPlayerName {team.Name} team{partyColor}"">{stormPlayer.PlayerHero.HeroName}<br /><font size=""-1"">{playerName}</font></td>";
+            html += $"  <tr class=\"team{team.Name}\">\n";
+            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" /></td>\n";
+            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{stormPlayer.PlayerHero.HeroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
             for (int i = 0; i <= 6; i++)
             {
                 if (i < stormPlayer.Talents.Count)
-                    html += @$"{getTalentImgString(stormPlayer, hotsHero, i)}";
+                    html += $"{getTalentImgString(stormPlayer, hotsHero, i)}\n";
                 else
-                    html += @$"<td>&nbsp;</td>";
+                    html += "    <td>&nbsp;</td>\n";
             }
-            html += "</tr>\r\n";
+            html += "  </tr>\n";
             return html;
         }
         private string getHeroJsonFileName(string heroName)
@@ -642,16 +636,15 @@ namespace HotsReplayReader
                 imgTalentBorderClass = "imgTalent10Border";
             else
                 imgTalentBorderClass = "imgTalentBorder";
-            return @$"
-             <td>
-              <div class=""tooltip"">
-                <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"" />
-                <span class=""tooltiptext"">
-                  <b><font color='White'>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</font></b><br /><br />
-                  {description}
-                </span>
-              </div>
-             </td>";
+            return @$"    <td>
+      <div class=""tooltip"">
+        <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"" />
+        <span class=""tooltiptext"">
+          <b><font color='White'>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</font></b><br /><br />
+          {description}
+        </span>
+      </div>
+    </td>";
         }
         private hotsHeroTalent getHotsHeroTalent(hotsHero hotsHero, int tier, string talentTreeId)
         {
@@ -986,7 +979,7 @@ namespace HotsReplayReader
                     initTeamDatas(blueTeam = new hotsTeam("Blue"));
                     initPlayersData();
                     htmlContent = $@"{HTMLGetHeader()}";
-                    htmlContent += $@"{HTMLGetHeadTable()}<br /><br />";
+                    htmlContent += $"{HTMLGetHeadTable()}<br /><br />\n";
                     htmlContent += $@"{HTMLGetChatMessages()}<br /><br />";
                     htmlContent += $@"{HTMLGetScoreTable()}<br /><br />";
                     htmlContent += $@"{HTMLGetTalentsTable()}<br /><br />";
