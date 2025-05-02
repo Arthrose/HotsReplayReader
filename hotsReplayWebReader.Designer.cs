@@ -87,7 +87,7 @@
             // 
             // webView
             // 
-            webView.AllowExternalDrop = true;
+            webView.AllowExternalDrop = false;
             webView.CreationProperties = null;
             webView.DefaultBackgroundColor = Color.White;
             webView.Location = new Point(348, 24);

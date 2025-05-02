@@ -229,7 +229,14 @@ namespace HotsReplayReader
 {css}
 </style>
 <script>
-  // Fonction pour traduire le texte avec C#
+  // Désactive le menu contextuel
+  document.addEventListener('DOMContentLoaded', () => {{
+    document.addEventListener('contextmenu', (e) => {{
+      e.preventDefault()
+    }})
+  }})
+
+  // Traduit le texte avec C#
   function translateWithCSharp(text) {{
     // Appelle la fonction C# pour traduire le texte
     return new Promise((resolve, reject) => {{
@@ -250,7 +257,6 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
-<p>&nbsp;</p>
 ";
 
             return html;
@@ -262,20 +268,17 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeadTable()
         {
-            string isBlueTeamWinner = blueTeam.isWinner ? "Winner" : "&nbsp;";
-            string isRedTeamWinner = redTeam.isWinner ? "Winner" : "&nbsp;";
+            string isBlueTeamWinner = blueTeam.isWinner ? " teamBestScore" : "";
+            string isRedTeamWinner = redTeam.isWinner ? " teamBestScore" : "";
+            string winnerTeamClass = blueTeam.isWinner ? "titleBlueTeam" : "titleRedTeam";
             string html = $@"<table class=""headTable"">
   <tr>
-    <td>&nbsp;</td>
-    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 60%;"">{isBlueTeamWinner}</td>
-    <td colSpan=""3"">&nbsp;</td>
-    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 60%;"">{isRedTeamWinner}</td>
-    <td>&nbsp;</td>
+    <td colSpan=""11"" class=""{winnerTeamClass}"">{hotsReplay.stormReplay.MapInfo.MapName}</td>
   </tr>
   <tr>
-    <td colspan=""5"" class=""titleBlueTeam"">Blue Team</td>
+    <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">Blue Team</td>
     <td></td>
-    <td colspan=""5"" class=""titleRedTeam"">Red Team</td>
+    <td colspan=""5"" class=""titleRedTeam{isRedTeamWinner}"">Red Team</td>
   </tr>
   <tr>
 ";
@@ -284,7 +287,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetHeadTableCell(stormPlayer);
 
-            html += $"    <td width=\"100\"></td>\n";
+            html += "    <td width=\"100\"></td>\n";
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
@@ -297,11 +300,25 @@ namespace HotsReplayReader
                 replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString()}";
             string time = hotsReplay.stormReplay.ReplayLength.ToString();
 
-            html += $@"  </tr>
-  <tr>
+            html += "  </tr>\n";
+
+            if (hotsReplay.stormReplay.DraftPicks.Count > 0)
+            {
+                html += "  <tr>\n    <td>&nbsp;</td>\n";
+                foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
+                    if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
+                        html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{getHeroNameFromHeroId(draftPick.HeroSelected)}.png\" class=\"heroIcon\">\n";
+                html += "    <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 50%;\">Bans</td>\n";
+                foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
+                    if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
+                        html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{getHeroNameFromHeroId(draftPick.HeroSelected)}.png\" class=\"heroIcon\">\n";
+                html += "    <td>&nbsp;</td>\n  <tr>\n";
+            }
+
+            html += $@"  <tr>
     <td>&nbsp;</td>
     <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.totalKills}</td>
-    <td colSpan=""3"" class=""titleGameLength"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
+    <td colSpan=""3"" class=""titleWhite"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
     <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.totalKills}</td>
     <td>&nbsp;</td>
   </tr>
@@ -572,6 +589,43 @@ namespace HotsReplayReader
             }
             html += "  </tr>\n";
             return html;
+        }
+        private string getHeroNameFromHeroId(string heroId)
+        {
+            string HeroName;
+            return HeroName = heroId switch
+            {
+                "Anubarak" => "Anub'arak",
+                "Firebat" => "Blaze",
+                "FaerieDragon" => "Brightwing",
+                "Butcher" => "The Butcher",
+                "Amazon" => "Cassia",
+                "DVa" => "D.Va",
+                "L90ETC" => "E.T.C.",
+                "Tinker" => "Gazlowe",
+                "Guldan" => "Gul'dan",
+                "SgtHammer" => "Sgt. Hammer",
+                "Crusader" => "Johanna",
+                "Kaelthas" => "Kael'thas",
+                "KelThuzad" => "Kel'Thuzad",
+                "Monk" => "Kharazim",
+                "LiLi" => "Li Li",
+                "Wizard" => "Li-Ming",
+                "LostVikings" => "The Lost Vikings",
+                "Lucio" => "Lúcio",
+                "Dryad" => "Lunara",
+                "MalGanis" => "Mal'Ganis",
+                "MeiOW" => "Mei",
+                "Medic" => "Lt. Morales",
+                "WitchDoctor" => "Nazeebo",
+                "NexusHunter" => "Qhira",
+                "Barbarian" => "Sonya",
+                "DemonHunter" => "Valla",
+                "Necromancer" => "Xul",
+                "Zuljin" => "Zuljin",
+                "NONE" => "_Null",
+                _ => heroId,
+            };
         }
         private string getHeroJsonFileName(string heroName)
         {

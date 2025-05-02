@@ -2,6 +2,7 @@ body {
   color: white;
   background-color: #backColor#;
   text-align: center;
+  cursor: default;
 }
 table {
   margin-left: auto;
@@ -25,7 +26,7 @@ tr {
   font-weight: bold;
   font-family: Calibri;
 }
-.titleGameLength {
+.titleWhite {
   color: gainsboro;
   font-size: 300%;
   font-weight: bold;
@@ -104,7 +105,6 @@ tr {
   color: #fff;
   text-shadow: 1px 1px 3px black;
   line-height: 1.5;
-  cursor: default;
 }
 .chat-user {
   font-weight: bold;

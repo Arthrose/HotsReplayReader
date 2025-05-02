@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Classes\**" />
+    <EmbeddedResource Remove="Classes\**" />
+    <None Remove="Classes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="HotsReplayReader.ico" />
   </ItemGroup>
 
@@ -75,10 +81,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>minimapIcons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Classes\" />
   </ItemGroup>
 
   <ItemGroup>
