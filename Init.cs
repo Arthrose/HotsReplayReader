@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using System.Resources;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;

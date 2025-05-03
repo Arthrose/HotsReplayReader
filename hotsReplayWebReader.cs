@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Linq;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
 
@@ -56,6 +57,12 @@ namespace HotsReplayReader
                 listHotsReplays(Init.lastReplayFilePath);
 
             await webView.EnsureCoreWebView2Async();
+
+            Debug.WriteLine("WebView2 Runtime version: " + webView.CoreWebView2.Environment.BrowserVersionString);
+
+            webView.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = false;
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+            webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
 
@@ -107,27 +114,28 @@ namespace HotsReplayReader
 
             htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
 
-// Bouton de test pour appeler la fonction translateWithCSharp
-/*
-            htmlContent = @"
-<script>
-    function translateWithCSharp(text) {
-        const callbackId = ""cb_"" + Date.now();
-        window.chrome.webview.postMessage({
-            action: ""translate"",
-            callbackId: callbackId,
-            text: text
-        });
-        window[callbackId] = function(result) {
-            alert(result);
-        };
-    }
-</script>
+            // Bouton de test pour appeler la fonction translateWithCSharp
+            /*
+                        htmlContent = @"
+            <script>
+                function translateWithCSharp(text) {
+                    const callbackId = ""cb_"" + Date.now();
+                    window.chrome.webview.postMessage({
+                        action: ""translate"",
+                        callbackId: callbackId,
+                        text: text
+                    });
+                    window[callbackId] = function(result) {
+                        alert(result);
+                    };
+                }
+            </script>
 
-<button onclick = ""translateWithCSharp('Bonjour le monde!')"" >Get a response from C#</button>
-";
-*/
+            <button onclick = ""translateWithCSharp('Bonjour le monde!')"" >Get a response from C#</button>
+            ";
+            */
             webView.NavigateToString(htmlContent);
+
         }
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
@@ -257,19 +265,19 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
+<div class=""parentDiv"">
 ";
-
             return html;
         }
         internal string HTMLGetFooter()
         {
-            string html = "\n</body>\n</html>";
+            string html = "\n<div>\n</body>\n</html>";
             return html;
         }
         internal string HTMLGetHeadTable()
         {
-            string isBlueTeamWinner = blueTeam.isWinner ? " teamBestScore" : "";
-            string isRedTeamWinner = redTeam.isWinner ? " teamBestScore" : "";
+            string isBlueTeamWinner = blueTeam.isWinner ? " teamBestScoreBlue" : "";
+            string isRedTeamWinner = redTeam.isWinner ? " teamBestScoreRed" : "";
             string winnerTeamClass = blueTeam.isWinner ? "titleBlueTeam" : "titleRedTeam";
             string html = $@"<table class=""headTable"">
   <tr>
@@ -595,35 +603,35 @@ namespace HotsReplayReader
             string HeroName;
             return HeroName = heroId switch
             {
-                "Anubarak" => "Anub'arak",
-                "Firebat" => "Blaze",
+                "Anubarak"     => "Anub'arak",
+                "Firebat"      => "Blaze",
                 "FaerieDragon" => "Brightwing",
-                "Butcher" => "The Butcher",
-                "Amazon" => "Cassia",
-                "DVa" => "D.Va",
-                "L90ETC" => "E.T.C.",
-                "Tinker" => "Gazlowe",
-                "Guldan" => "Gul'dan",
-                "SgtHammer" => "Sgt. Hammer",
-                "Crusader" => "Johanna",
-                "Kaelthas" => "Kael'thas",
-                "KelThuzad" => "Kel'Thuzad",
-                "Monk" => "Kharazim",
-                "LiLi" => "Li Li",
-                "Wizard" => "Li-Ming",
-                "LostVikings" => "The Lost Vikings",
-                "Lucio" => "Lúcio",
-                "Dryad" => "Lunara",
-                "MalGanis" => "Mal'Ganis",
-                "MeiOW" => "Mei",
-                "Medic" => "Lt. Morales",
-                "WitchDoctor" => "Nazeebo",
-                "NexusHunter" => "Qhira",
-                "Barbarian" => "Sonya",
-                "DemonHunter" => "Valla",
-                "Necromancer" => "Xul",
-                "Zuljin" => "Zuljin",
-                "NONE" => "_Null",
+                "Butcher"      => "The Butcher",
+                "Amazon"       => "Cassia",
+                "DVa"          => "D.Va",
+                "L90ETC"       => "E.T.C.",
+                "Tinker"       => "Gazlowe",
+                "Guldan"       => "Gul'dan",
+                "SgtHammer"    => "Sgt. Hammer",
+                "Crusader"     => "Johanna",
+                "Kaelthas"     => "Kael'thas",
+                "KelThuzad"    => "Kel'Thuzad",
+                "Monk"         => "Kharazim",
+                "LiLi"         => "Li Li",
+                "Wizard"       => "Li-Ming",
+                "LostVikings"  => "The Lost Vikings",
+                "Lucio"        => "Lúcio",
+                "Dryad"        => "Lunara",
+                "MalGanis"     => "Mal'Ganis",
+                "MeiOW"        => "Mei",
+                "Medic"        => "Lt. Morales",
+                "WitchDoctor"  => "Nazeebo",
+                "NexusHunter"  => "Qhira",
+                "Barbarian"    => "Sonya",
+                "DemonHunter"  => "Valla",
+                "Necromancer"  => "Xul",
+                "Zuljin"       => "Zuljin",
+                "NONE"         => "NONE",
                 _ => heroId,
             };
         }
@@ -666,25 +674,38 @@ namespace HotsReplayReader
                     tier = 20;
                     break;
             }
-            string iconPath = $@"https://appassets/images/abilitytalents/{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).icon}";
+            hotsHeroTalent heroTalent = getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId);
+            if (heroTalent.abilityId != null)
+            {
+                hotsHeroAbility heroAbility = GetHotsHeroAbility(hotsHero, heroTalent.abilityId);
+                if (heroAbility.manaCost != null)
+                    heroTalent.manaCost = heroAbility.manaCost;
+            }
+            string iconPath = $@"https://appassets/images/abilitytalents/{heroTalent.icon}";
             iconPath = iconPath.Replace("kelthuzad", "kel'thuzad");
-            iconPath = $@"app://abilityTalents/{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).icon}";
-            string description = getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).description;
-            description = description.Replace("  ", "<br />");
+            iconPath = $@"app://abilityTalents/{heroTalent.icon}";
+            string description = heroTalent.description;
+            description = description.Replace("  ", "<br /><br />");
             // Saute une ligne si il y a plusieurs quetes
-            description = Regex.Replace(description, @". Quest:", "<br :>Quest:");
+            description = Regex.Replace(description, @"\.( Quest:)", ".<br /><br />$1");
             // Colore les chiffres et les % en blanc
             description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?(st)?(nd)?(rd)?(th)?)", "<font color='White'>$1</font>");
-            // Saute une ligne avant "Reward:"
-            description = description.Replace("Reward:", "<br />Reward:");
-            // Saute une ligne avant "Quest:" si elle n'est pas la premiere ligne de la descritpion.
-            // Ex : Extended Lightning de Alarak
-            description = Regex.Replace(description, @"(?<!^)(Quest:)", "<br />Quest:");
             // Colore Passive en vert
-            description = Regex.Replace(description, @"(Passive:)", "<br /><font color='#00FF90'>$1</font>");
+            description = Regex.Replace(description, @"(Passive:)", "<font color='#00FF90'>$1</font>");
             // Colore Quest et Reward en jaune
-            description = Regex.Replace(description, @"(Quest:|Reward:)", "<font color='#D7BA3A'>$1</font>");
+            description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color='#D7BA3A'>$1</font>");
 
+
+            // Affiche le coût en mana si il y en a un
+            string abilityManaCost = "";
+            if (heroTalent.type == "Active" | heroTalent.type == "Heroic")
+                abilityManaCost = heroTalent.manaCost != null ? $"<br />\n            Mana: {heroTalent.manaCost}" : "";
+            // Affiche le cooldown si il y en a un
+            string talentCooldown = heroTalent.cooldown != null ? $"<br />\n            Cooldown: {heroTalent.cooldown} seconds" : "";
+
+            // Place le tooltip a gauche ou a droite de l'icône
+            string toolTipPosition = tier > 10 ? "Left" : "Right";
+            // Met une bordure sur les talents de niveau 10 et 20
             string imgTalentBorderClass;
             if (tier == 10 | tier == 20)
                 imgTalentBorderClass = "imgTalent10Border";
@@ -693,12 +714,31 @@ namespace HotsReplayReader
             return @$"    <td>
       <div class=""tooltip"">
         <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"" />
-        <span class=""tooltiptext"">
-          <b><font color='White'>{getHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId).name}</font></b><br /><br />
+        <span class=""tooltiptext tooltiptext{toolTipPosition}"">
+          <font color=""White"">
+            <b>{heroTalent.name}</b>{abilityManaCost}{talentCooldown}
+          </font>
+          <br /><br />
           {description}
         </span>
       </div>
     </td>";
+        }
+        private hotsHeroAbility GetHotsHeroAbility(hotsHero hotsHero, string abilityId)
+        {
+            List<hotsHeroAbility> hotsHeroAbilities;
+            // On enlève le nom de l'abilityId pour ne garder que le nom du héros
+            string heroName = Regex.Replace(abilityId, @"(.*)\|.*", "$1");
+            if (hotsHero.abilities.TryGetValue(heroName, out hotsHeroAbilities))
+            {
+                foreach (hotsHeroAbility HeroAbility in hotsHeroAbilities)
+                {
+                    if (HeroAbility.abilityId == abilityId)
+                        return HeroAbility;
+                }
+            }
+            hotsHeroAbility hotsHeroAbility = new hotsHeroAbility();
+            return hotsHeroAbility;
         }
         private hotsHeroTalent getHotsHeroTalent(hotsHero hotsHero, int tier, string talentTreeId)
         {
@@ -787,6 +827,8 @@ namespace HotsReplayReader
             i = 0;
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
+//                if (stormPlayer.PlayerHero.HeroName == "Alarak")
+//                    MessageBox.Show("Alarak");
                 foreach (hotsPlayer hotsPlayer in hotsPlayers)
                 {
                     if (hotsPlayer.BattleTagName == stormPlayer.BattleTagName)
@@ -1044,7 +1086,7 @@ namespace HotsReplayReader
                     htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
                 }
             }
-            catch
+            catch (Exception exception)
             {
                 htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
             }
@@ -1082,6 +1124,11 @@ namespace HotsReplayReader
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HotsReplayReader.Program.ExitApp();
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            //Debug.WriteLine(keyData.ToString());
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

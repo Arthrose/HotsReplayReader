@@ -388,6 +388,9 @@
   <data name="Zul'jin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>icons\heroes\Zul'jin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="NONE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>icons\heroes\NONE.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="_Null" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>icons\heroes\_Null.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

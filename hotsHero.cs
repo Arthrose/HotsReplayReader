@@ -20,6 +20,7 @@ namespace HotsReplayReader
         public bool? trait { get; set; } = false;
         public string? abilityId { get; set; }
         public float? cooldown { get; set; }
+        public int? manaCost { get; set; }
         public string? icon { get; set; }
         public string? type { get; set; }
 
@@ -33,6 +34,8 @@ namespace HotsReplayReader
         public string icon { get; set; }
         public string type { get; set; }
         public int sort { get; set; }
+        public float? cooldown { get; set; }
+        public int? manaCost { get; set; }
         public string abilityId { get; set; }
         public List<string> abilityLinks { get; set; }
     }

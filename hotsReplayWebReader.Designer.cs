@@ -115,6 +115,7 @@
             Controls.Add(webView);
             Controls.Add(menuStrip);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             MainMenuStrip = menuStrip;
             Name = "hotsReplayWebReader";
             Text = "Hots Replay Reader";
