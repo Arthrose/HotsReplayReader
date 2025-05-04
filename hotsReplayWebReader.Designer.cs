@@ -90,9 +90,9 @@
             webView.AllowExternalDrop = false;
             webView.CreationProperties = null;
             webView.DefaultBackgroundColor = Color.White;
-            webView.Location = new Point(348, 24);
+            webView.Location = new Point(260, 24);
             webView.Name = "webView";
-            webView.Size = new Size(1011, 784);
+            webView.Size = new Size(1099, 784);
             webView.Source = new Uri("about:blank", UriKind.Absolute);
             webView.TabIndex = 1;
             webView.ZoomFactor = 1D;
@@ -102,7 +102,7 @@
             listBoxHotsReplays.FormattingEnabled = true;
             listBoxHotsReplays.Location = new Point(0, 24);
             listBoxHotsReplays.Name = "listBoxHotsReplays";
-            listBoxHotsReplays.Size = new Size(342, 784);
+            listBoxHotsReplays.Size = new Size(254, 784);
             listBoxHotsReplays.TabIndex = 3;
             listBoxHotsReplays.SelectedIndexChanged += listBoxHotsReplays_SelectedIndexChanged;
             // 

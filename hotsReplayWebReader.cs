@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Linq;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
 
@@ -15,12 +14,18 @@ namespace HotsReplayReader
         private Rectangle webViewOriginalRectangle;
 
         private string? hotsReplayFolder;
-        private string jsonConfigFile = "HotsReplayReader.json";
+        internal static string jsonConfigFile = "HotsReplayReader.json";
+        internal static string currentAccount = string.Empty;
 
         hotsReplay? hotsReplay;
         hotsTeam? redTeam;
         hotsTeam? blueTeam;
         private hotsPlayer[]? hotsPlayers;
+
+        private string formTitle = "Hots Replay Reader";
+
+        // Liste des replays avec leur index et leur chemin
+        private Dictionary<int, string> replayList;
 
         internal string? htmlContent;
 
@@ -35,6 +40,7 @@ namespace HotsReplayReader
             InitializeComponent();
 
             translator = new DeepLTranslator(apiKey);
+            replayList = new Dictionary<int, string>();
 
             ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
             for (int i = 0; i < accountsToolStripMenu.Length; i++)
@@ -54,7 +60,11 @@ namespace HotsReplayReader
             webViewOriginalRectangle = new Rectangle(webViewOriginalRectangle.Location.X, webViewOriginalRectangle.Location.Y, webViewOriginalRectangle.Width, webViewOriginalRectangle.Height);
 
             if (Directory.Exists(Init.lastReplayFilePath))
+            {
                 listHotsReplays(Init.lastReplayFilePath);
+                this.Text = $"{formTitle} - {currentAccount}";
+                this.Update();
+            }
 
             await webView.EnsureCoreWebView2Async();
 
@@ -188,7 +198,7 @@ namespace HotsReplayReader
         {
             int newWidth;
             if (growWidth)
-                newWidth = (int)(this.Width - 364); //384
+                newWidth = (int)(this.Width - 276); //384
             else
                 newWidth = c.Width;
             int newHeight = (int)(this.Height - 63);
@@ -205,20 +215,43 @@ namespace HotsReplayReader
             if (clickedItem.Tag.ToString() == "Account")
                 for (int i = 0; i < Init.hotsLocalAccounts.Count; i++)
                     if (Init.hotsLocalAccounts[i].BattleTagName == clickedItem.Name)
+                    {
+                        currentAccount = clickedItem.Name;
                         listHotsReplays(Init.hotsLocalAccounts[i].FullPath);
+                        string jsonFile;
+                        jsonConfig? jsonConfig = new jsonConfig();
+                        if (File.Exists($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}"))
+                        {
+                            jsonFile = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}");
+                            jsonConfig = JsonSerializer.Deserialize<jsonConfig>(jsonFile);
+                        }
+                        jsonConfig.LastSelectedAccount = clickedItem.Name;
+                        jsonConfig.LastSelectedAccountDirectory = Init.hotsLocalAccounts[i].FullPath;
+                        File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(jsonConfig, new JsonSerializerOptions { WriteIndented = true }));
+                    }
+            this.Text = $"{formTitle} - {currentAccount}";
+            this.Update();
         }
         private void listHotsReplays(string path)
         {
             hotsReplayFolder = path;
             listBoxHotsReplays.Items.Clear();
+            replayList.Clear();
             if (Directory.Exists(path))
             {
                 DirectoryInfo hotsReplayFolder = new(path);
                 FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
                 Array.Reverse(replayFiles);
+                string replayDisplayedName = string.Empty;
+                int i = 0;
                 foreach (FileInfo replayFile in replayFiles)
                 {
-                    listBoxHotsReplays.Items.Add(@replayFile.Name.ToString().Replace(@replayFile.Extension.ToString(), @""));
+                    replayDisplayedName = replayFile.Name.ToString().Replace(replayFile.Extension.ToString(), @"");
+                    replayDisplayedName = Regex.Replace(replayDisplayedName, @"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)", "$3/$2/$1 $4:$5 $7");
+                    listBoxHotsReplays.Items.Add(replayDisplayedName);
+
+                    replayList.Add(i, replayFile.FullName);
+                    i++;
                 }
             }
         }
@@ -603,35 +636,35 @@ namespace HotsReplayReader
             string HeroName;
             return HeroName = heroId switch
             {
-                "Anubarak"     => "Anub'arak",
-                "Firebat"      => "Blaze",
+                "Anubarak" => "Anub'arak",
+                "Firebat" => "Blaze",
                 "FaerieDragon" => "Brightwing",
-                "Butcher"      => "The Butcher",
-                "Amazon"       => "Cassia",
-                "DVa"          => "D.Va",
-                "L90ETC"       => "E.T.C.",
-                "Tinker"       => "Gazlowe",
-                "Guldan"       => "Gul'dan",
-                "SgtHammer"    => "Sgt. Hammer",
-                "Crusader"     => "Johanna",
-                "Kaelthas"     => "Kael'thas",
-                "KelThuzad"    => "Kel'Thuzad",
-                "Monk"         => "Kharazim",
-                "LiLi"         => "Li Li",
-                "Wizard"       => "Li-Ming",
-                "LostVikings"  => "The Lost Vikings",
-                "Lucio"        => "Lúcio",
-                "Dryad"        => "Lunara",
-                "MalGanis"     => "Mal'Ganis",
-                "MeiOW"        => "Mei",
-                "Medic"        => "Lt. Morales",
-                "WitchDoctor"  => "Nazeebo",
-                "NexusHunter"  => "Qhira",
-                "Barbarian"    => "Sonya",
-                "DemonHunter"  => "Valla",
-                "Necromancer"  => "Xul",
-                "Zuljin"       => "Zuljin",
-                "NONE"         => "NONE",
+                "Butcher" => "The Butcher",
+                "Amazon" => "Cassia",
+                "DVa" => "D.Va",
+                "L90ETC" => "E.T.C.",
+                "Tinker" => "Gazlowe",
+                "Guldan" => "Gul'dan",
+                "SgtHammer" => "Sgt. Hammer",
+                "Crusader" => "Johanna",
+                "Kaelthas" => "Kael'thas",
+                "KelThuzad" => "Kel'Thuzad",
+                "Monk" => "Kharazim",
+                "LiLi" => "Li Li",
+                "Wizard" => "Li-Ming",
+                "LostVikings" => "The Lost Vikings",
+                "Lucio" => "Lúcio",
+                "Dryad" => "Lunara",
+                "MalGanis" => "Mal'Ganis",
+                "MeiOW" => "Mei",
+                "Medic" => "Lt. Morales",
+                "WitchDoctor" => "Nazeebo",
+                "NexusHunter" => "Qhira",
+                "Barbarian" => "Sonya",
+                "DemonHunter" => "Valla",
+                "Necromancer" => "Xul",
+                "Zuljin" => "Zuljin",
+                "NONE" => "NONE",
                 _ => heroId,
             };
         }
@@ -827,8 +860,8 @@ namespace HotsReplayReader
             i = 0;
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
-//                if (stormPlayer.PlayerHero.HeroName == "Alarak")
-//                    MessageBox.Show("Alarak");
+                //                if (stormPlayer.PlayerHero.HeroName == "Alarak")
+                //                    MessageBox.Show("Alarak");
                 foreach (hotsPlayer hotsPlayer in hotsPlayers)
                 {
                     if (hotsPlayer.BattleTagName == stormPlayer.BattleTagName)
@@ -1064,11 +1097,14 @@ namespace HotsReplayReader
                 return "Support";
             else return "";
         }
-        private async void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
+        private void listBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Debug.WriteLine(listBoxHotsReplays.SelectedIndex.ToString());
+            Debug.WriteLine(replayList[listBoxHotsReplays.SelectedIndex]);
+            
             try
             {
-                hotsReplay = new hotsReplay(hotsReplayFolder + "\\" + listBoxHotsReplays.Text + ".stormreplay");
+                hotsReplay = new hotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
                 if (hotsReplay.stormReplay != null)
                 {
                     initTeamDatas(redTeam = new hotsTeam("Red"));
@@ -1094,10 +1130,12 @@ namespace HotsReplayReader
         }
         private void browseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (System.IO.File.Exists($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}"))
+            jsonConfig? jsonConfig = new jsonConfig();
+            string jsonFile;
+            if (File.Exists($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}"))
             {
-                var json = System.IO.File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}");
-                jsonConfig? jsonConfig = JsonSerializer.Deserialize<jsonConfig>(json);
+                jsonFile = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}");
+                jsonConfig = JsonSerializer.Deserialize<jsonConfig>(jsonFile);
                 if (Directory.Exists(jsonConfig?.LastBrowseDirectory))
                     folderBrowserDialog.InitialDirectory = jsonConfig.LastBrowseDirectory;
                 else
@@ -1105,9 +1143,12 @@ namespace HotsReplayReader
             }
             else
                 folderBrowserDialog.InitialDirectory = hotsReplayFolder;
+
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                System.IO.File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(new jsonConfig { LastBrowseDirectory = folderBrowserDialog.SelectedPath }));
+                jsonConfig.LastBrowseDirectory = folderBrowserDialog.SelectedPath;
+                File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(jsonConfig, new JsonSerializerOptions { WriteIndented = true }));
+
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
                 listHotsReplays(hotsReplayFolder);
             }
