@@ -372,7 +372,7 @@
         "tooltipId": "TychusDrakkenLaserFocusingDiodesTalent",
         "talentTreeId": "TychusMasteryDrakkenLaserFocusingDiodes",
         "name": "Focusing Diodes",
-        "description": "Increases the range of the Drakken Laser Drill by 50%. Deals increasing damage the longer it remains on a single target, up to 100% extra damage.",
+        "description": "Increases the range of the Drakken Laser Drill by 50%. Deals increasing damage the longer it remains on a single target, up to 100% additional damage.",
         "icon": "storm_ui_icon_tychus_drakkinlaserdrill.png",
         "type": "Heroic",
         "sort": 2,

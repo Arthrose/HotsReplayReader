@@ -210,7 +210,6 @@
         "icon": "storm_ui_icon_ragnaros_catchingfire.png",
         "type": "Active",
         "sort": 3,
-        "cooldown": 30,
         "isQuest": true,
         "abilityId": "Ragnaros|Active"
       }

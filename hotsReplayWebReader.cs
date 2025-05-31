@@ -724,10 +724,21 @@ namespace HotsReplayReader
             // Colore les chiffres et les % en blanc
             description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?(st)?(nd)?(rd)?(th)?)", "<font color='White'>$1</font>");
             // Colore Passive en vert
-            description = Regex.Replace(description, @"(Passive:)", "<font color='#00FF90'>$1</font>");
+            description = Regex.Replace(description, @"(Passive:|Pilot Mode:)", "<font color='#00FF90'>$1</font>");
             // Colore Quest et Reward en jaune
             description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color='#D7BA3A'>$1</font>");
-
+            // Colorie les autres mots clés en blanc
+            description = Regex.Replace(description,
+                @"(<br\s*/><br\s*/>)([^<][^:\n]{1,100}?):",  // match après <br /><br /> jusqu'à :
+                m =>
+                {
+                    string label = m.Groups[2].Value;
+                    // Si le label est déjà colorié, on ne fait rien
+                    if (Regex.IsMatch(label, @"<font.*?>.*?</font>", RegexOptions.IgnoreCase))
+                        return m.Value;
+                    return $"{m.Groups[1].Value}<font color='White'>{label}:</font>";
+                },
+                RegexOptions.IgnoreCase);
 
             // Affiche le coût en mana si il y en a un
             string abilityManaCost = "";

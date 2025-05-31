@@ -87,7 +87,6 @@
         "description": "Orders any nearby Rock-It! Turrets to focus the target.",
         "hotkey": "1",
         "abilityId": "Gazlowe|11",
-        "cooldown": 1,
         "icon": "storm_ui_icon_gazlowe_rockitturret_var1.png",
         "type": "activable"
       }

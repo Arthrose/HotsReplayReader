@@ -126,7 +126,7 @@
         "tooltipId": "GreymaneInnerBeastWolfheartTalent",
         "talentTreeId": "GreymaneInnerBeastWolfheart",
         "name": "Wolfheart",
-        "description": "Increase the cooldown reduction from Basic Attacks during Inner Beast from 0.5 to 1.2 seconds.",
+        "description": "Increase the cooldown reduction from Basic Attacks during Inner Beast from 0.5 to 1.2 seconds, and Worgen Form's Armor bonus from 10 to 15.",
         "icon": "storm_ui_icon_greymane_beastfocus.png",
         "type": "W",
         "sort": 1,

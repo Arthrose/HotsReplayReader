@@ -320,7 +320,7 @@
         "tooltipId": "LeoricRoyalFocusTalent",
         "talentTreeId": "LeoricMasteryRoyalFocusWraithWalk",
         "name": "Royal Focus",
-        "description": "Wraith Walk increases the damage of the next Skeletal Swing within 5 seconds by 50%. Each enemy Hero hit by this Skeletal Swing reduces the cooldown of Wraith Walk by 7 seconds.",
+        "description": "Wraith Walk increases the damage of the next Skeletal Swing within 5 seconds by 50%. Each enemy Hero hit by Skeletal Swing reduces the cooldown of Wraith Walk by 7 seconds.",
         "icon": "storm_ui_icon_leoric_wraithwalk.png",
         "type": "E",
         "sort": 2,

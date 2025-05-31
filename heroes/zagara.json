@@ -277,7 +277,7 @@
         "tooltipId": "ZagaraCorrosiveSalivaHunterKillerTalent",
         "talentTreeId": "ZagaraMasteryCorrosiveSaliva",
         "name": "Corrosive Saliva",
-        "description": "When attacking Heroes, Hunter Killers and Roachlings deal additional damage equal to 1.75% of their maximum Health.",
+        "description": "When attacking Heroes, Hunter Killers and Roachlings deal additional damage equal to 1.5% of their maximum Health.",
         "icon": "storm_ui_icon_zagara_hunterkiller.png",
         "type": "W",
         "sort": 1,
