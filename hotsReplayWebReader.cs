@@ -722,14 +722,14 @@ namespace HotsReplayReader
             // Saute une ligne si il y a plusieurs quetes
             description = Regex.Replace(description, @"\.( Quest:)", ".<br /><br />$1");
             // Colore les chiffres et les % en blanc
-            description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?(st)?(nd)?(rd)?(th)?)", "<font color='White'>$1</font>");
+            description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?(st)?(nd)?(rd)?(th)?)", "<font color=\"White\">$1</font>");
             // Colore Passive en vert
-            description = Regex.Replace(description, @"(Passive:|Pilot Mode:)", "<font color='#00FF90'>$1</font>");
+            description = Regex.Replace(description, @"(Passive:|Pilot Mode:)", "<font color=\"#00FF90\">$1</font>");
             // Colore Quest et Reward en jaune
-            description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color='#D7BA3A'>$1</font>");
+            description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color=\"#D7BA3A\">$1</font>");
             // Colorie les autres mots clés en blanc
             // ([^<:\n]+?) un ou plusieurs caractères qui ne sont pas <, :, \n
-            description = Regex.Replace(description, @"<br \/><br \/>([^<:\n]+?):", "<br /><br /><font color='White'>$1:</font>");
+            description = Regex.Replace(description, @"<br \/><br \/>([^<:\n]+?):\s", "<br /><br /><font color=\"White\">$1:</font> ");
 
             // Affiche le coût en mana si il y en a un
             string abilityManaCost = "";
