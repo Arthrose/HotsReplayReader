@@ -728,17 +728,12 @@ namespace HotsReplayReader
             // Colore Quest et Reward en jaune
             description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color='#D7BA3A'>$1</font>");
             // Colorie les autres mots clés en blanc
-            description = Regex.Replace(description,
-                @"(<br\s*/><br\s*/>)([^<][^:\n]{1,100}?):",  // match après <br /><br /> jusqu'à :
-                m =>
-                {
-                    string label = m.Groups[2].Value;
-                    // Si le label est déjà colorié, on ne fait rien
-                    if (Regex.IsMatch(label, @"<font.*?>.*?</font>", RegexOptions.IgnoreCase))
-                        return m.Value;
-                    return $"{m.Groups[1].Value}<font color='White'>{label}:</font>";
-                },
-                RegexOptions.IgnoreCase);
+            // <br \/><br \/>([^<:\n]+?):
+            //      <br \/><br \/> cherche après <br /><br />
+            //      [^<:\n] Les caractères ne sont pas <, :, \n
+            //      +? un ou plusieurs caractères qui ne sont pas <, :, \n
+            //      : jusqu'au caractère ":"
+            description = Regex.Replace(description, @"<br \/><br \/>([^<:\n]+?):", "<br /><br /><font color='White'>$1:</font>");
 
             // Affiche le coût en mana si il y en a un
             string abilityManaCost = "";
