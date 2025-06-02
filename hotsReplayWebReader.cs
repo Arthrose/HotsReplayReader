@@ -525,50 +525,50 @@ namespace HotsReplayReader
 
             html += "    <td";
             if (stormPlayer.ScoreResult.SoloKills == team.maxKills)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.SoloKills}</td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.Takedowns == team.maxTakedowns)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.Takedowns}</td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.Deaths == team.maxDeaths)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.Deaths}</td>\n";
 
             html += $"    <td>{timeSpentDead}</td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.SiegeDamage == team.maxSiegeDmg)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.SiegeDamage:n0}</td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.HeroDamage == team.maxHeroDmg)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.HeroDamage:n0}</td>\n";
 
             html += "    <td";
             if ((stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing) == team.maxHealing)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing:n0}</td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.DamageTaken == team.maxDmgTaken)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.DamageTaken:n0}</td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.ExperienceContribution == team.maxExp)
-                html += " class = teamBestScore";
+                html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
             html += "    <td";
             if (stormPlayer.MatchAwardsCount > 0)
                 if (stormPlayer.MatchAwards[0].ToString() == "MVP")
-                    html += " class = teamBestScore";
+                    html += " class=\"teamBestScore\"";
             html += $">{Math.Round(getHotsPlayer(stormPlayer.BattleTagName).mvpScore, 2)}</td>\n";
 
             html += "  </tr>\n";
@@ -582,7 +582,7 @@ namespace HotsReplayReader
   <tr class=""teamHeader"">
     <td>&nbsp;&nbsp;</td>
     <td>&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
