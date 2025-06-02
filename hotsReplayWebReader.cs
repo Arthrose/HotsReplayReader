@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
+using Microsoft.Win32;
 
 namespace HotsReplayReader
 {
@@ -729,7 +730,7 @@ namespace HotsReplayReader
             description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color=\"#D7BA3A\">$1</font>");
             // Colorie les autres mots clés en blanc
             // ([^<:\n]+?) un ou plusieurs caractères qui ne sont pas <, :, \n
-            description = Regex.Replace(description, @"<br \/><br \/>([^<:\n]+?):\s", "<br /><br /><font color=\"White\">$1:</font> ");
+            description = Regex.Replace(description, @"(<br /><br />)?([^<:\n]+?:)\s", "$1<font color=\"White\">$2</font> ");
 
             // Affiche le coût en mana si il y en a un
             string abilityManaCost = "";
@@ -1155,6 +1156,29 @@ namespace HotsReplayReader
                 listHotsReplays(hotsReplayFolder);
             }
         }
+        public string GetNotepadPath()
+        {
+            string NotepadPPPath = string.Empty;
+            using (RegistryKey RegKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Notepad++"))
+            {
+                if (RegKey != null)
+                {
+                    object value = RegKey.GetValue("");
+                    if (value != null)
+                    {
+                        NotepadPPPath = value.ToString();
+                    }
+                }
+            }
+            if (File.Exists($"{NotepadPPPath}\\notepad++.exe"))
+            {
+                return $"{NotepadPPPath}\\notepad++.exe";
+            }
+            else
+            {
+                return "notepad.exe";
+            }
+        }
         private void sourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string path = @$"{Environment.GetEnvironmentVariable("TEMP")}\HotsReplayReader.html";
@@ -1162,7 +1186,8 @@ namespace HotsReplayReader
                 System.IO.File.Delete(path);
             using (StreamWriter sw = System.IO.File.CreateText(path))
                 sw.Write(htmlContent);
-            Process.Start("notepad.exe", path);
+
+            Process.Start(GetNotepadPath(), path);
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
