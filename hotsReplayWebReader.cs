@@ -664,7 +664,7 @@ namespace HotsReplayReader
                 "Barbarian" => "Sonya",
                 "DemonHunter" => "Valla",
                 "Necromancer" => "Xul",
-                "Zuljin" => "Zuljin",
+                "Zuljin" => "Zul'jin",
                 "NONE" => "NONE",
                 _ => heroId,
             };
