@@ -17,7 +17,7 @@
         public hotsEmoticonAnimation? animation { get; set; }
         public List<string> aliases { get; set; } = new List<string>();
     }
-    public class hotsEmoticon : Dictionary<string, hotsEmoticonData>   
+    public class hotsEmoticon : Dictionary<string, hotsEmoticonData>
     {
     }
     public class hotsEmoticonAliase

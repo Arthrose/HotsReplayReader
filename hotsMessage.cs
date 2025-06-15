@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HotsReplayReader
+﻿namespace HotsReplayReader
 {
     internal class hotsMessage
     {
@@ -40,23 +34,23 @@ namespace HotsReplayReader
                     )
             );
 
-/*
-            if (TimeStamp.Value.Milliseconds < 10)
-            {
-                this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString() + "00";
-            }
-            else
-            {
-                if (TimeStamp.Value.Milliseconds < 100)
-                {
-                    this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString() + "0";
-                }
-                else
-                {
-                    this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString();
-                }
-            }
-*/
+            /*
+                        if (TimeStamp.Value.Milliseconds < 10)
+                        {
+                            this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString() + "00";
+                        }
+                        else
+                        {
+                            if (TimeStamp.Value.Milliseconds < 100)
+                            {
+                                this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString() + "0";
+                            }
+                            else
+                            {
+                                this.MilliSeconds = TimeStamp.Value.Milliseconds.ToString();
+                            }
+                        }
+            */
         }
     }
 }

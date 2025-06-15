@@ -1104,7 +1104,7 @@ namespace HotsReplayReader
         {
             Debug.WriteLine(listBoxHotsReplays.SelectedIndex.ToString());
             Debug.WriteLine(replayList[listBoxHotsReplays.SelectedIndex]);
-            
+
             try
             {
                 hotsReplay = new hotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
