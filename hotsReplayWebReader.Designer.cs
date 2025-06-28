@@ -63,21 +63,21 @@
             browseToolStripMenuItem.Name = "browseToolStripMenuItem";
             browseToolStripMenuItem.Size = new Size(112, 22);
             browseToolStripMenuItem.Text = "Browse";
-            browseToolStripMenuItem.Click += browseToolStripMenuItem_Click;
+            browseToolStripMenuItem.Click += BrowseToolStripMenuItem_Click;
             // 
             // sourceToolStripMenuItem
             // 
             sourceToolStripMenuItem.Name = "sourceToolStripMenuItem";
             sourceToolStripMenuItem.Size = new Size(112, 22);
             sourceToolStripMenuItem.Text = "Source";
-            sourceToolStripMenuItem.Click += sourceToolStripMenuItem_Click;
+            sourceToolStripMenuItem.Click += SourceToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(112, 22);
             exitToolStripMenuItem.Text = "Exit";
-            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
             // 
             // accountsToolStripMenuItem
             // 
@@ -104,7 +104,7 @@
             listBoxHotsReplays.Name = "listBoxHotsReplays";
             listBoxHotsReplays.Size = new Size(254, 784);
             listBoxHotsReplays.TabIndex = 3;
-            listBoxHotsReplays.SelectedIndexChanged += listBoxHotsReplays_SelectedIndexChanged;
+            listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
             // 
             // hotsReplayWebReader
             // 
@@ -119,8 +119,8 @@
             MainMenuStrip = menuStrip;
             Name = "hotsReplayWebReader";
             Text = "Hots Replay Reader";
-            Load += hotsReplayWebReader_Load;
-            Resize += hotsReplayWebReader_Resize;
+            Load += HotsReplayWebReader_Load;
+            Resize += HotsReplayWebReader_Resize;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)webView).EndInit();
