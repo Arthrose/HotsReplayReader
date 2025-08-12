@@ -323,7 +323,7 @@
         "tooltipId": "LucioAmpItUpUpToEleven",
         "talentTreeId": "LucioAmpItUpUpToEleven",
         "name": "Up To Eleven",
-        "description": "Hitting an enemy Hero with Soundwave or Push Off increases the duration of Amp It Up.  Soundwave grants 0.25 seconds and Push Off grants 0.5 seconds. If Amp It Up is not active, these bonuses are granted to its next activation, up to 1.5 seconds.  Passive: Increase the duration of Amp It Up by 1 second.",
+        "description": "Hitting an enemy Hero with Soundwave or Push Off increases the duration of Amp It Up.  Soundwave grants 0.5 seconds and Push Off grants 1 second. If Amp It Up is not active, these bonuses are granted to its next activation, up to 3 seconds.  Passive: Increase the duration of Amp It Up by 1 second.",
         "icon": "storm_ui_icon_lucio_ampitup_a.png",
         "type": "E",
         "sort": 3,

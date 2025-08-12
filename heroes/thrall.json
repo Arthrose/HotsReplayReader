@@ -297,7 +297,7 @@
         "tooltipId": "ThrallThunderstorm",
         "talentTreeId": "ThrallThunderstorm",
         "name": "Thunderstorm",
-        "description": "Chain Lightning Slows targets by 8% for 2 seconds.  Quest: Targeting a Hero directly with Chain Lightning increases this Slow by 8%, up to an additional 40%.  Reward: While at a 40% bonus, Chain Lightning's damage is increased by 25%.  Bonuses are reset if Chain Lightning is used on the same Hero it was last used on, or if Thrall dies.",
+        "description": "Chain Lightning Slows the primary target by 8% for 2 seconds when used on Heroes.  Quest: Targeting a Hero directly with Chain Lightning increases this Slow by 8%, up to an additional 40%.  Reward: While at a 40% bonus, Chain Lightning's damage is increased by 25%.  Bonuses are reset if Chain Lightning is used on the same Hero it was last used on, or if Thrall dies.",
         "icon": "storm_ui_icon_thrall_chainlightning.png",
         "type": "Q",
         "sort": 2,

@@ -334,7 +334,7 @@
         "tooltipId": "JunkratExtraOomphRIPTireTalent",
         "talentTreeId": "JunkratRIPTireExtraOomph",
         "name": "Extra Oomph",
-        "description": "Increase RIP-Tire's knockback distance by 50%, and its cooldown is reduced by 25 seconds for each enemy Hero hit.",
+        "description": "Increase RIP-Tire's knockback distance by 80%, and its cooldown is reduced by 25 seconds for each enemy Hero hit.",
         "icon": "storm_ui_icon_junkrat_rip_tire.png",
         "type": "Heroic",
         "sort": 1,

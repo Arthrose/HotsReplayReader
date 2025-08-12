@@ -57,7 +57,6 @@ namespace HotsReplayReader
             }
             accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
         }
-
         private void InitFileWatcher(string path)
         {
             if (FileSystemWatcher != null)
@@ -78,7 +77,6 @@ namespace HotsReplayReader
 
             FileSystemWatcher.Created += OnFileCreated;
         }
-
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
             originalHotsReplayWebReaderSize = new Rectangle(this.Location.X, this.Location.Y, this.Size.Width, this.Size.Height);

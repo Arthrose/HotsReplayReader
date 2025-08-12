@@ -265,7 +265,7 @@
         "tooltipId": "CrusaderCondemnBlessedHammerTalent",
         "talentTreeId": "CrusaderBlessedHammer",
         "name": "Blessed Hammer",
-        "description": "Activate to create 2 hammers that spiral outward from Johanna, dealing 65 (+4% per level) damage to enemies hit. Damaging enemies with Basic Abilities reduce the cooldown of this Ability by 2 seconds.  Passive: Every 3rd Basic Attack against enemy Heroes releases a hammer.",
+        "description": "Activate to create 2 hammers that spiral outward from Johanna, dealing 65 (+4% per level) damage to enemies hit. Damaging enemies with Basic Abilities reduce the cooldown of this Ability by 2.5 seconds.  Passive: Every 3rd Basic Attack against enemy Heroes releases a hammer.",
         "icon": "storm_btn_d3ros_crusader_blessedhammer.png",
         "type": "Active",
         "sort": 3,

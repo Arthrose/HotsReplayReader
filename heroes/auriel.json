@@ -157,7 +157,7 @@
         "tooltipId": "AurielRepeatedOffenseDetainmentStrikeTalent",
         "talentTreeId": "AurielRepeatedOffenseDetainmentStrikeTalent",
         "name": "Repeated Offense",
-        "description": "Enemies hit by Detainment Strike are knocked back 25% farther.  Quest: Every time Detainment Strike stuns a Hero, increase the stun damage by 10, up to 60.  Reward: After stunning 6 Heroes, increase this damage bonus to 250.",
+        "description": "Enemies hit by Detainment Strike are knocked back 30% farther.  Quest: Every time Detainment Strike stuns a Hero, increase the stun damage by 10, up to 60.  Reward: After stunning 6 Heroes, increase this damage bonus to 250.",
         "icon": "storm_ui_icon_auriel_restrainingblow_a.png",
         "type": "E",
         "sort": 3,

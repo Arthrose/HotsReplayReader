@@ -120,7 +120,7 @@
         "tooltipId": "GenericRegenerationMasterTalent",
         "talentTreeId": "GenericTalentRegenerationMaster",
         "name": "Regeneration Master",
-        "description": "Quest: Gathering a Regeneration Globe increases your Health Regeneration by 1 per second, up to 30.  Reward: After gathering 30 Regeneration Globes, you also gain 500 Health.",
+        "description": "Quest: Gathering a Regeneration Globe increases your Health Regeneration by 1 per second, up to 30.  Reward: After gathering 25 Regeneration Globes, you also gain 500 Health.",
         "icon": "storm_ui_icon_talent_regenerationmaster.png",
         "type": "Passive",
         "sort": 3,

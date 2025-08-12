@@ -65,7 +65,7 @@
       {
         "uid": "0de520",
         "name": "Grav-O-Bomb 3000",
-        "description": "After a 1.5 second delay, pull enemies toward the center of an area and deal 220 (+4% per level) damage. Basic Abilities deal 30% more damage for 5 seconds after casting Grav-O-Bomb 3000.",
+        "description": "After a 1.5 second delay, pull enemies toward the center of an area, dealing 220 (+4% per level) damage and Stunning them for 0.5 seconds. Basic Abilities deal 30% more damage for 5 seconds after casting Grav-O-Bomb 3000.",
         "hotkey": "R",
         "abilityId": "Gazlowe|R2",
         "cooldown": 60,
@@ -236,7 +236,7 @@
         "tooltipId": "TinkerGravOBomb3000",
         "talentTreeId": "TinkerHeroicAbilityGravOBomb3000",
         "name": "Grav-O-Bomb 3000",
-        "description": "After a 1.5 second delay, pull enemies toward the center of an area and deal 220 (+4% per level) damage. Basic Abilities deal 30% more damage for 5 seconds after casting Grav-O-Bomb 3000.",
+        "description": "After a 1.5 second delay, pull enemies toward the center of an area, dealing 220 (+4% per level) damage and Stunning them for 0.5 seconds. Basic Abilities deal 30% more damage for 5 seconds after casting Grav-O-Bomb 3000.",
         "icon": "storm_ui_icon_gazlowe_gravobomb.png",
         "type": "Heroic",
         "sort": 2,
