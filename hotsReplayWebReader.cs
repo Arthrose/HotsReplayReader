@@ -409,7 +409,7 @@ namespace HotsReplayReader
             playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon";
             html += $" heroIconTeam{GetParty(stormPlayer.BattleTagName)}";
-            html += $"\" title=\"{stormPlayer.AccountLevel}\"/><div class=\"battleTag\">{playerName}</div></td>\n";
+            html += $"\" title=\"BattleTag: {stormPlayer.BattleTagName}\nAccountLevel: {stormPlayer.AccountLevel}\"/><div class=\"battleTag\">{playerName}</div></td>\n";
             return html;
         }
         internal string HTMLGetChatMessages()
