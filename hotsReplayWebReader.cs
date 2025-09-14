@@ -10,7 +10,6 @@ namespace HotsReplayReader
 {
     public partial class hotsReplayWebReader : Form
     {
-        private Rectangle originalHotsReplayWebReaderSize;
         private Rectangle listBoxHotsReplaysOriginalRectangle;
         private Rectangle webViewOriginalRectangle;
 
@@ -32,6 +31,7 @@ namespace HotsReplayReader
         private FileSystemWatcher FileSystemWatcher;
 
         internal string? htmlContent;
+        internal string? replayVersion;
 
         //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
         string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
@@ -79,7 +79,6 @@ namespace HotsReplayReader
         }
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
-            originalHotsReplayWebReaderSize = new Rectangle(this.Location.X, this.Location.Y, this.Size.Width, this.Size.Height);
             listBoxHotsReplaysOriginalRectangle = new Rectangle(listBoxHotsReplays.Location.X, listBoxHotsReplays.Location.Y, listBoxHotsReplays.Width, listBoxHotsReplays.Height);
             webViewOriginalRectangle = new Rectangle(webViewOriginalRectangle.Location.X, webViewOriginalRectangle.Location.Y, webViewOriginalRectangle.Width, webViewOriginalRectangle.Height);
 
@@ -350,7 +349,7 @@ namespace HotsReplayReader
             string winnerTeamClass = blueTeam.isWinner ? "titleBlueTeam" : "titleRedTeam";
             string html = $@"<table class=""headTable"">
   <tr>
-    <td colSpan=""11"" class=""{winnerTeamClass}"">{hotsReplay.stormReplay.MapInfo.MapName}</td>
+    <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay.stormReplay.ReplayVersion}"">{hotsReplay.stormReplay.MapInfo.MapName}</td>
   </tr>
   <tr>
     <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">Blue Team</td>
@@ -1152,6 +1151,16 @@ namespace HotsReplayReader
                     InitTeamDatas(redTeam = new hotsTeam("Red"));
                     InitTeamDatas(blueTeam = new hotsTeam("Blue"));
                     InitPlayersData();
+
+                    replayVersion = hotsReplay.stormReplay.ReplayVersion.ToString();
+                    // Correction de la version pour les replays 2.55.10.94387 qui sont en fait des 2.55.11.94387
+                    switch (replayVersion)
+                    {
+                        case "2.55.10.94387":
+                            replayVersion = "2.55.11.94387";
+                            break;
+                    }
+
                     htmlContent = $@"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}<br /><br />\n";
                     htmlContent += $@"{HTMLGetChatMessages()}<br /><br />";
