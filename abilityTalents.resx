@@ -1667,46 +1667,46 @@
     <value>images\abilitytalents\storm_ui_icon_kaelthas_verdantspheres_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_armorofthearchlich" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_armorofthearchlich.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_armorofthearchlich.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_chains" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_chains.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_chains.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_chains_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_chains_a.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_chains_a.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_chillingtouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_chillingtouch.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_chillingtouch.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_cultofthedamned" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_cultofthedamned.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_cultofthedamned.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_deathanddecay" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_deathanddecay.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_deathanddecay.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_frostnova" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_frostnova.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_frostnova.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_frozentomb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_frozentomb.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_frozentomb.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_glacialspike" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_glacialspike.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_glacialspike.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_phylactery" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_phylactery.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_phylactery.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_poweroficecrown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_poweroficecrown.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_poweroficecrown.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_powerofthecolddark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_powerofthecolddark.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_powerofthecolddark.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_shadowfissure" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_shadowfissure.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_shadowfissure.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kelthuzad_shiftingmalice" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\abilitytalents\storm_ui_icon_kel'thuzad_shiftingmalice.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\abilitytalents\storm_ui_icon_kelthuzad_shiftingmalice.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_icon_kerrigan_assimilation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>images\abilitytalents\storm_ui_icon_kerrigan_assimilation.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

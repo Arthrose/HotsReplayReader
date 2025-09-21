@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;
@@ -13,8 +14,9 @@ namespace HotsReplayReader
         private string? userDocumentsFolder;
         internal List<hotsLocalAccount>? hotsLocalAccounts;
         internal hotsEmoticon? hotsEmoticons;
-        private StormReplay? hotsReplay;
+        public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
+        internal string? dbDirectory { get; set; }
         public Init()
         {
             RegistryKey? RegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
@@ -24,6 +26,8 @@ namespace HotsReplayReader
             listHotsAccounts();
             lastReplayFilePath = getLastReplayFilePath();
             loadHotsEmoticons();
+
+            dbDirectory = $@"{Directory.GetCurrentDirectory()}\db";
         }
         internal string getLastReplayFilePath()
         {

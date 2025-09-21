@@ -34,11 +34,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>heroesIcon.resx</DependentUpon>
     </Compile>
-    <Compile Update="heroesJson.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>heroesJson.resx</DependentUpon>
-    </Compile>
     <Compile Update="hotsEmoticons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -65,10 +60,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>heroesIcon.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="heroesJson.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>heroesJson.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="hotsEmoticons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>hotsEmoticons.Designer.cs</LastGenOutput>
@@ -84,7 +75,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Heroes.Icons\Heroes.Icons\Heroes.Icons.csproj" />
     <ProjectReference Include="..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj" />
   </ItemGroup>
-
 </Project>

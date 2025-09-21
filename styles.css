@@ -187,10 +187,29 @@ tr {
   visibility: visible;
   opacity: 1;
 }
+.tooltip .tooltipHero {
+  visibility: hidden;
+  width: 200px;
+  background-color: #150C39;
+  color: #8984C7;
+  font-family: Calibri;
+  text-align: left;
+  border-radius: 6px;
+  padding: 1em;
+  position: absolute;
+  z-index: 1;
+  bottom: 90%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.tooltip:hover .tooltipHero {
+  visibility: visible;
+  opacity: 1;
+}
 .tooltip .tooltiptextRight {
   left: 195%;
 }
-
 .tooltip .tooltiptextLeft {
   right: 92%;
 }

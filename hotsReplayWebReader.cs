@@ -1,7 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using GameStrings;
+using Heroes.Icons.DataDocument;
+using Heroes.Models;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
@@ -32,6 +37,9 @@ namespace HotsReplayReader
 
         internal string? htmlContent;
         internal string? replayVersion;
+
+        internal HeroDataDocument? heroDataDocument;
+        internal GameStringsRoot? gameStringsRoot;
 
         //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
         string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
@@ -406,9 +414,9 @@ namespace HotsReplayReader
         {
             string playerName;
             playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
-            string html = $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon";
+            string html = $"    <td class=\"headTableTd\"><span class=\"tooltip\"><img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon";
             html += $" heroIconTeam{GetParty(stormPlayer.BattleTagName)}";
-            html += $"\" title=\"BattleTag: {stormPlayer.BattleTagName}\nAccountLevel: {stormPlayer.AccountLevel}\"/><div class=\"battleTag\">{playerName}</div></td>\n";
+            html += $"\" /><span class=\"tooltipHero\">BattleTag: {stormPlayer.BattleTagName}<br />AccountLevel: {stormPlayer.AccountLevel}</span></span><div class=\"battleTag\">{playerName}</div></td>\n";
             return html;
         }
         internal string HTMLGetChatMessages()
@@ -638,19 +646,12 @@ namespace HotsReplayReader
         }
         private string HTMLGetTalentsTr(StormPlayer stormPlayer, hotsTeam team, string partyColor)
         {
-            hotsHero? hotsHero;
-            string json;
-            string resourceName = GetHeroJsonFileName(stormPlayer.PlayerHero.HeroName);
-            Type resourcesType = typeof(heroesJson);
-            PropertyInfo propertyInfo = resourcesType.GetProperty(resourceName, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
-            byte[] resourceData = (byte[])propertyInfo.GetValue(null, null);
-            using (var stream = new MemoryStream(resourceData))
-            using (var reader = new StreamReader(stream))
-            {
-                json = reader.ReadToEnd();
-            }
+            string heroUnitId = stormPlayer.PlayerHero.HeroUnitId;
+            if (heroUnitId == "HeroDVaPilot")
+                heroUnitId = "HeroDVaMech";
 
-            hotsHero = JsonSerializer.Deserialize<hotsHero>(json);
+            Hero heroData = heroDataDocument.GetHeroByUnitId(heroUnitId, true, true, true, true);
+
             string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
@@ -659,7 +660,7 @@ namespace HotsReplayReader
             for (int i = 0; i <= 6; i++)
             {
                 if (i < stormPlayer.Talents.Count)
-                    html += $"{GetTalentImgString(stormPlayer, hotsHero, i)}\n";
+                    html += $"{GetTalentImgString(stormPlayer, heroData, i)}\n";
                 else
                     html += "    <td>&nbsp;</td>\n";
             }
@@ -703,19 +704,7 @@ namespace HotsReplayReader
                 _ => heroId,
             };
         }
-        private string GetHeroJsonFileName(string heroName)
-        {
-            heroName = heroName.ToLower();
-            heroName = heroName.Replace(".", "");
-            heroName = heroName.Replace("'", "");
-            heroName = heroName.Replace("-", "");
-            heroName = heroName.Replace(" ", "");
-            heroName = heroName.Replace("cho", "chogall");
-            heroName = heroName.Replace("lúcio", "lucio");
-            heroName = heroName.Replace("thelostvikings", "lostvikings");
-            return heroName;
-        }
-        private string GetTalentImgString(StormPlayer stormPlayer, hotsHero hotsHero, int i)
+        private string GetTalentImgString(StormPlayer stormPlayer, Hero heroData, int i)
         {
             int tier = 0;
             switch (i)
@@ -742,40 +731,47 @@ namespace HotsReplayReader
                     tier = 20;
                     break;
             }
-            hotsHeroTalent heroTalent = GetHotsHeroTalent(hotsHero, tier, stormPlayer.Talents[i].TalentNameId);
-            if (heroTalent.abilityId != null)
-            {
-                hotsHeroAbility heroAbility = GetHotsHeroAbility(hotsHero, heroTalent.abilityId);
-                if (heroAbility.manaCost != null)
-                    heroTalent.manaCost = heroAbility.manaCost;
-            }
-            string iconPath = $@"https://appassets/images/abilitytalents/{heroTalent.icon}";
-            iconPath = iconPath.Replace("kelthuzad", "kel'thuzad");
-            iconPath = $@"app://abilityTalents/{heroTalent.icon}";
+
+            AbilTalentEntry AbilTalentEntry = GetAbilTalent(heroData, stormPlayer.Talents[i].TalentNameId);
+
+            string iconPath = $@"app://abilityTalents/{AbilTalentEntry.IconFileName}";
+            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             // Si la description est vide, on n'affiche pas le talent
-            if (heroTalent.description == null || heroTalent.description == string.Empty)
+            if (AbilTalentEntry.Full == null || AbilTalentEntry.Full == string.Empty)
                 return "    <td>&nbsp;</td>";
-            string description = heroTalent.description;
-            description = description.Replace("  ", "<br /><br />");
-            // Saute une ligne si il y a plusieurs quetes
-            description = Regex.Replace(description, @"\.( Quest:)", ".<br /><br />$1");
-            // Colore les chiffres et les % en blanc
-            description = Regex.Replace(description, @"([+-]?\d+(\.\d+)?%?(st)?(nd)?(rd)?(th)?)", "<font color=\"White\">$1</font>");
-            // Colore Passive en vert
-            description = Regex.Replace(description, @"(Passive:|Pilot Mode:)", "<font color=\"#00FF90\">$1</font>");
-            // Colore Quest et Reward en jaune
-            description = Regex.Replace(description, @"(((Repeatable )?Quest:)|Reward:)", "<font color=\"#D7BA3A\">$1</font>");
-            // Colorie les autres mots clés en blanc
-            // ([^<:\n]+?) un ou plusieurs caractères qui ne sont pas <, :, \n
-            description = Regex.Replace(description, @"(<br /><br />)?([^<:\n]+?:)\s", "$1<font color=\"White\">$2</font> ");
 
             // Affiche le coût en mana si il y en a un
-            string abilityManaCost = "";
-            if (heroTalent.type == "Active" | heroTalent.type == "Heroic")
-                abilityManaCost = heroTalent.manaCost != null ? $"<br />\n            Mana: {heroTalent.manaCost}" : "";
+            if (AbilTalentEntry.Energy != null)
+                AbilTalentEntry.Energy = Regex.Replace(AbilTalentEntry.Energy, @"<s\s+val=""(.*?)""[^>]*>(.*?)</s>", "<font color=\"#${1}\">${2}</font>");
+            string abilityManaCost = AbilTalentEntry.Energy != null ? $"<br />\n            {AbilTalentEntry.Energy}" : "";
             // Affiche le cooldown si il y en a un
-            string talentCooldown = heroTalent.cooldown != null ? $"<br />\n            Cooldown: {heroTalent.cooldown} seconds" : "";
+            string talentCooldown = AbilTalentEntry.Cooldown != null ? $"<br />\n            <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
+
+            // Suppression des balises <img> dans la description
+            string description = Regex.Replace(AbilTalentEntry.Full, @"<img\s.*?\/>", string.Empty);
+
+            // Remplace <c val="color">text</c> par du texte coloré
+            description = Regex.Replace(description, @"<c\s+val=""(.*?)"">(.*?)</c>", "<font color=\"#${1}\">${2}</font>");
+
+            description = Regex.Replace(description, @"\~\~([0-9.]+)\~\~(</font>)?",
+                match =>
+                {
+                    // Conversion du nombre capturé
+                    double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                    // Conversion en pourcentage (4% pour 0.04)
+                    int percent = (int)Math.Round(value * 100);
+                    // Mise en forme du texte final
+                    string replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> per level)";
+                    // Si la balise </font> était présente, la déplacer avant le texte remplacé
+                    if (match.Groups[2].Success)
+                        return $"{match.Groups[2].Value}{replacement}";
+                    else
+                        return replacement;
+                });
+
+            // Remplace <n/> par un saut de ligne <br />
+            description = Regex.Replace(description, @"<n/>", "<br \\>");
 
             // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = tier > 10 ? "Left" : "Right";
@@ -790,7 +786,7 @@ namespace HotsReplayReader
         <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"" />
         <span class=""tooltiptext tooltiptext{toolTipPosition}"">
           <font color=""White"">
-            <b>{heroTalent.name}</b>{abilityManaCost}{talentCooldown}
+            <b>{AbilTalentEntry.Name}</b>{abilityManaCost}{talentCooldown}
           </font>
           <br /><br />
           {description}
@@ -798,35 +794,22 @@ namespace HotsReplayReader
       </div>
     </td>";
         }
-        private hotsHeroAbility GetHotsHeroAbility(hotsHero hotsHero, string abilityId)
+        private AbilTalentEntry GetAbilTalent(Hero heroData, string TalentNameId)
         {
-            List<hotsHeroAbility> hotsHeroAbilities;
-            // On enlève le nom de l'abilityId pour ne garder que le nom du héros
-            string heroName = Regex.Replace(abilityId, @"(.*)\|.*", "$1");
-            if (hotsHero.abilities.TryGetValue(heroName, out hotsHeroAbilities))
-            {
-                foreach (hotsHeroAbility HeroAbility in hotsHeroAbilities)
-                {
-                    if (HeroAbility.abilityId == abilityId)
-                        return HeroAbility;
-                }
-            }
-            hotsHeroAbility hotsHeroAbility = new hotsHeroAbility();
-            return hotsHeroAbility;
-        }
-        private hotsHeroTalent GetHotsHeroTalent(hotsHero hotsHero, int tier, string talentTreeId)
-        {
-            List<hotsHeroTalent> hotsHeroTalents;
-            if (hotsHero.talents.TryGetValue(tier.ToString(), out hotsHeroTalents))
-            {
-                foreach (hotsHeroTalent HeroTalent in hotsHeroTalents)
-                {
-                    if (HeroTalent.talentTreeId == talentTreeId)
-                        return HeroTalent;
-                }
-            }
-            hotsHeroTalent hotsHeroTalent = new hotsHeroTalent();
-            return hotsHeroTalent;
+            AbilTalentEntry abilTalentEntry = new AbilTalentEntry();
+
+            bool MatchPrefix(string key) => key.Split('|')[0].Equals(TalentNameId, StringComparison.OrdinalIgnoreCase);
+            abilTalentEntry.HeroId = heroData.CHeroId;
+            abilTalentEntry.AbilityId = TalentNameId;
+            abilTalentEntry.IconFileName = heroData.Talents.FirstOrDefault(t => t.AbilityTalentId.ToString().Split('|')[0].Equals(TalentNameId, StringComparison.OrdinalIgnoreCase)).IconFileName;
+            abilTalentEntry.Cooldown = gameStringsRoot.Gamestrings.AbilTalent.Cooldown?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Energy = gameStringsRoot.Gamestrings.AbilTalent.Energy?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Full = gameStringsRoot.Gamestrings.AbilTalent.Full?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Life = gameStringsRoot.Gamestrings.AbilTalent.Life?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Name = gameStringsRoot.Gamestrings.AbilTalent.Name?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Short = gameStringsRoot.Gamestrings.AbilTalent.Short?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+
+            return abilTalentEntry;
         }
         private string GetParty(string playerBattleTag)
         {
@@ -1138,7 +1121,104 @@ namespace HotsReplayReader
                 return "Support";
             else return "";
         }
-        private void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
+        public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
+        {
+            string replayVersionShort = replayVersion.Substring(replayVersion.LastIndexOf('.') + 1);
+            string url = "https://api.github.com/repositories/214500273/contents/heroesdata";
+
+            using var response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            using var doc = JsonDocument.Parse(json);
+            foreach (var item in doc.RootElement.EnumerateArray())
+            {
+                string name = item.GetProperty("name").GetString() ?? "";
+                string type = item.GetProperty("type").GetString() ?? "";
+
+                if (type == "dir" && name.EndsWith(replayVersionShort, StringComparison.OrdinalIgnoreCase))
+                {
+                    return name;
+                }
+            }
+
+            return null;
+        }
+        private async Task DownloadHeroesJsonFiles(HttpClient httpClient, string version)
+        {
+            // Correction de la version pour les replays par exemple : 2.55.10.94387 qui sont en fait des 2.55.11.94387
+            string versionGitHubFolder = await FindVersionGitHubFolder(httpClient, version);
+
+            string rootFolder = $@"{Init.dbDirectory}\{version}";
+
+            string gitHubApiUrl = $@"https://api.github.com/repos/HeroesToolChest/heroes-data/contents/heroesdata/{versionGitHubFolder}";
+
+            if (!Directory.Exists(Init.dbDirectory))
+                Directory.CreateDirectory(Init.dbDirectory);
+
+            if (!Directory.Exists(rootFolder))
+                Directory.CreateDirectory(rootFolder);
+
+            Debug.WriteLine($"Téléchargement des fichiers json des héros pour la version {version}...");
+            Debug.WriteLine($"{gitHubApiUrl}");
+
+            await DownloadGitHubFolderRecursive(httpClient, gitHubApiUrl, rootFolder);
+        }
+        private async Task DownloadGitHubFolderRecursive(HttpClient httpClient, string apiUrl, string localPath)
+        {
+            string json = await httpClient.GetStringAsync(apiUrl);
+            var items = JsonSerializer.Deserialize<GitHubFileInfo[]>(json);
+
+            foreach (var item in items)
+            {
+                if (item.type == "file")
+                {
+                    Console.WriteLine($"Téléchargement {item.path}...");
+                    byte[] data = await httpClient.GetByteArrayAsync(item.download_url);
+                    string filePath = Path.Combine(localPath, item.name);
+                    await File.WriteAllBytesAsync(filePath, data);
+                }
+                else if (item.type == "dir")
+                {
+                    string newFolder = Path.Combine(localPath, item.name);
+                    Directory.CreateDirectory(newFolder);
+
+                    // récursif
+                    await DownloadGitHubFolderRecursive(httpClient, item.url, newFolder);
+                }
+            }
+        }
+        private async Task CheckAndDownloadHeroesData(string replayVersion)
+        {
+            using HttpClient HttpClient = new HttpClient();
+            HttpClient.DefaultRequestHeaders.UserAgent.Add(
+                new ProductInfoHeaderValue(
+                    Assembly.GetExecutingAssembly().GetName().Name,
+                    Assembly.GetExecutingAssembly().GetName().Version.ToString(2)
+                )
+            );
+
+            // https://github.com/HeroesToolChest/heroes-data/tree/master/heroesdata
+            // Téléchargement des json des héros si besoin
+            if (!Directory.Exists($@"{Init.dbDirectory}\{replayVersion}"))
+            {
+                webView.CoreWebView2.NavigateToString($@"<center>T&eacute;l&eacute;chargement des fichiers json des h&eacute;ros pour la version {replayVersion}...</center>");
+                await DownloadHeroesJsonFiles(HttpClient, replayVersion);
+            }
+
+            string heroDataJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
+            string gameStringsJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\gamestrings\", "gamestrings_*_enus.json").FirstOrDefault();
+
+            heroDataDocument = HeroDataDocument.Parse(heroDataJsonPath);
+
+            string gameStringsjson = File.ReadAllText(gameStringsJsonPath);
+            JsonSerializerOptions jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip };
+            gameStringsRoot = JsonSerializer.Deserialize<GameStringsRoot>(gameStringsjson, jsonOptions);
+            Debug.WriteLine($"GameStrings loaded for version {gameStringsRoot.Meta.Version} - {gameStringsRoot.Meta.Locale}");
+        }
+        // Sélection d'un replay dans la liste
+        private async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
             Debug.WriteLine(listBoxHotsReplays.SelectedIndex.ToString());
             Debug.WriteLine(replayList[listBoxHotsReplays.SelectedIndex]);
@@ -1152,14 +1232,8 @@ namespace HotsReplayReader
                     InitTeamDatas(blueTeam = new hotsTeam("Blue"));
                     InitPlayersData();
 
-                    replayVersion = hotsReplay.stormReplay.ReplayVersion.ToString();
-                    // Correction de la version pour les replays 2.55.10.94387 qui sont en fait des 2.55.11.94387
-                    switch (replayVersion)
-                    {
-                        case "2.55.10.94387":
-                            replayVersion = "2.55.11.94387";
-                            break;
-                    }
+                    await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
+
 
                     htmlContent = $@"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}<br /><br />\n";
