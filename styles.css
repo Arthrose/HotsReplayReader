@@ -187,12 +187,17 @@ tr {
   visibility: visible;
   opacity: 1;
 }
+.tooltip .tooltiptextRight {
+  left: 195%;
+}
+.tooltip .tooltiptextLeft {
+  right: 92%;
+}
 .tooltip .tooltipHero {
   visibility: hidden;
-  width: 200px;
   background-color: #150C39;
   color: #8984C7;
-  font-family: Calibri;
+  font-family: Consolas;
   text-align: left;
   border-radius: 6px;
   padding: 1em;
@@ -207,11 +212,11 @@ tr {
   visibility: visible;
   opacity: 1;
 }
-.tooltip .tooltiptextRight {
-  left: 195%;
+.tooltip .tooltipHeroLeft {
+  left: 75%;
 }
-.tooltip .tooltiptextLeft {
-  right: 92%;
+.tooltip .tooltipHeroRight {
+  right: 0%;
 }
 .imgTalentBorder
 {

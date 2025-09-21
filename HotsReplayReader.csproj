@@ -78,4 +78,8 @@
     <ProjectReference Include="..\Heroes.Icons\Heroes.Icons\Heroes.Icons.csproj" />
     <ProjectReference Include="..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="obj\Debug\net9.0-windows\" />
+  </ItemGroup>
 </Project>

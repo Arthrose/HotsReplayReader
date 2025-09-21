@@ -413,10 +413,36 @@ namespace HotsReplayReader
         internal string HTMLGetHeadTableCell(StormPlayer stormPlayer)
         {
             string playerName;
-            playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
-            string html = $"    <td class=\"headTableTd\"><span class=\"tooltip\"><img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon";
-            html += $" heroIconTeam{GetParty(stormPlayer.BattleTagName)}";
-            html += $"\" /><span class=\"tooltipHero\">BattleTag: {stormPlayer.BattleTagName}<br />AccountLevel: {stormPlayer.AccountLevel}</span></span><div class=\"battleTag\">{playerName}</div></td>\n";
+            string playerID = string.Empty;
+            string accountLevel = stormPlayer.AccountLevel.HasValue ? stormPlayer.AccountLevel.Value.ToString() : "0";
+            string toolTipPosition = stormPlayer.Team.ToString() == "Blue" ? "Left" : "Right";
+
+            string html = $"    <td class=\"headTableTd\">\n";
+            html += "      <span class=\"tooltip\">\n";
+            html += $"        <img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon heroIconTeam{GetParty(stormPlayer.BattleTagName)}\" />\n";
+            html += $"        <span class=\"tooltipHero tooltipHero{toolTipPosition}\">\n";
+
+            if (stormPlayer.BattleTagName.IndexOf("#") > 0)
+            {
+                playerName = stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#"));
+                playerID = stormPlayer.BattleTagName.Substring(stormPlayer.BattleTagName.IndexOf("#") + 1);
+
+                html += $"          BattleTag:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{playerName}</font>#{playerID}<br />\n";
+                html += $"          AccountLevel:&nbsp;<font color=\"#bfd4fd\">{accountLevel}</font><br />\n";
+                if (stormPlayer.PlayerHero.HeroLevel >= 20)
+                    html += $"          HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font><br />\n";
+                else
+                    html += $"          HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{stormPlayer.PlayerHero.HeroLevel}</font>\n";
+            }
+            else
+            {
+                playerName = stormPlayer.Name + " (AI)";
+                html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{stormPlayer.ComputerDifficulty}</font>\n";
+            }
+
+            html += $"        </span>\n";
+            html += $"      </span>\n";
+            html += $"    <div class=\"battleTag\">{playerName}</div></td>\n";
             return html;
         }
         internal string HTMLGetChatMessages()
@@ -1147,7 +1173,7 @@ namespace HotsReplayReader
         }
         private async Task DownloadHeroesJsonFiles(HttpClient httpClient, string version)
         {
-            // Correction de la version pour les replays par exemple : 2.55.10.94387 qui sont en fait des 2.55.11.94387
+            // Correction de la version pour les replays. Par exemple, 2.55.10.94387 => 2.55.11.94387
             string versionGitHubFolder = await FindVersionGitHubFolder(httpClient, version);
 
             string rootFolder = $@"{Init.dbDirectory}\{version}";
@@ -1314,11 +1340,6 @@ namespace HotsReplayReader
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HotsReplayReader.Program.ExitApp();
-        }
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            //Debug.WriteLine(keyData.ToString());
-            return base.ProcessCmdKey(ref msg, keyData);
         }
         private void OnFileCreated(object sender, FileSystemEventArgs e)
         {
