@@ -436,7 +436,10 @@ namespace HotsReplayReader
 
             if (stormPlayer.MatchAwardsCount > 0)
             {
-                html += $"          <center><font color=\"#ffd700\">{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Description}</font></center><br />\n";
+                html += $"          <center>\n";
+                html += $"            <font color=\"#ffd700\">{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Name}</font><br />\n";
+                html += $"            <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Description}</nobr></font><br />\n";
+                html += $"          </center><br />\n";
             }
             if (stormPlayer.BattleTagName.IndexOf("#") > 0)
             {
@@ -1273,6 +1276,10 @@ namespace HotsReplayReader
             foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Description)
             {
                 matchAwards[Award.Key].Description = Award.Value;
+            }
+            foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Name)
+            {
+                matchAwards[Award.Key].Name = Award.Value;
             }
         }
         // Sélection d'un replay dans la liste

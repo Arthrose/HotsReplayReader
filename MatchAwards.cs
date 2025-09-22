@@ -4,6 +4,8 @@ namespace HotsReplayReader
 {
     internal class MatchAward
     {
+        public string Description { get; set; }
+        public string Name { get; set; }
         [JsonPropertyName("gameLink")]
         public string GameLink { get; set; }
 
@@ -15,7 +17,6 @@ namespace HotsReplayReader
 
         [JsonPropertyName("scoreScreenIcon")]
         public string ScoreScreenIcon { get; set; }
-        public string Description { get; set; }
     }
     internal class MatchAwards : Dictionary<string, MatchAward> { }
 }
