@@ -461,7 +461,8 @@ namespace HotsReplayReader
 
             html += $"        </span>\n";
             html += $"      </span>\n";
-            html += $"    <div class=\"battleTag\">{playerName}</div></td>\n";
+            html += $"      <div class=\"battleTag\">{playerName}</div>\n";
+            html += $"    </td>\n";
             return html;
         }
         internal string HTMLGetChatMessages()
