@@ -44,6 +44,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>hotsResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="MatchAwardsImg.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MatchAwardsImg.resx</DependentUpon>
+    </Compile>
     <Compile Update="minimapIcons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -67,6 +72,10 @@
     <EmbeddedResource Update="hotsResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>hotsResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MatchAwardsImg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MatchAwardsImg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="minimapIcons.resx">
       <Generator>ResXFileCodeGenerator</Generator>

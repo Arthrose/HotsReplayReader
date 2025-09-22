@@ -12,7 +12,7 @@ namespace HotsReplayReader
         private string? hotsVariablesFile;
         private string? userDocumentsFolder;
         internal List<hotsLocalAccount>? hotsLocalAccounts;
-        internal hotsEmoticon? hotsEmoticons;
+        internal HotsEmoticon? hotsEmoticons;
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         internal string? dbDirectory { get; set; }
@@ -129,8 +129,8 @@ namespace HotsReplayReader
         {
             var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            hotsEmoticons = JsonSerializer.Deserialize<hotsEmoticon>(Encoding.UTF8.GetString(hotsResources.emoticondata), jsonOptions);
-            hotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<hotsEmoticonAliase>(Encoding.UTF8.GetString(hotsResources.emoticonsaliases), jsonOptions);
+            hotsEmoticons = JsonSerializer.Deserialize<HotsEmoticon>(Encoding.UTF8.GetString(hotsResources.emoticondata), jsonOptions);
+            HotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<HotsEmoticonAliase>(Encoding.UTF8.GetString(hotsResources.emoticonsaliases), jsonOptions);
 
             foreach (KeyValuePair<string, string> aliases in hotsEmoticonAliases.aliases)
             {

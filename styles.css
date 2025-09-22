@@ -80,6 +80,18 @@ tr {
 .team4 {
   color: goldenrod;
 }
+.heroPortrait {
+  position: relative;
+  display: inline-block;
+}
+.heroPortrait .heroAwardIcon {
+  position: absolute;
+  bottom: -5;
+  right: -5;
+  width: 36px;
+  height: auto;
+  pointer-events: none;
+}
 .teamHeader {
   background-color: #000000;
   font-family: Consolas, Lucida Console, Courier New;

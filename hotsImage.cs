@@ -39,12 +39,29 @@ namespace HotsReplayReader
                 case "minimapicons":
                     resourceManager = minimapIcons.ResourceManager;
                     break;
+                case "matchawards":
+                    resourceManager = MatchAwardsImg.ResourceManager;
+                    break;
             }
             if (resourceManager != null)
             {
                 image = resourceManager.GetObject(ResxObjectName);
             }
-            Bitmap = ByteToImage(image as byte[]);
+            // byte[2102]
+            // System.Drawing.Bitmap
+
+            if (image is byte[])
+            {
+                Bitmap = ByteToImage(image as byte[]);
+            }
+            else if (image is Bitmap)
+            {
+                Bitmap = image as Bitmap;
+            }
+            else
+            {
+                Bitmap = null;
+            }
         }
         private static Bitmap ByteToImage(byte[] blob)
         {

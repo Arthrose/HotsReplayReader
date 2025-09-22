@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -40,6 +41,7 @@ namespace HotsReplayReader
 
         internal HeroDataDocument? heroDataDocument;
         internal GameStringsRoot? gameStringsRoot;
+        internal MatchAwards? matchAwards;
 
         //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
         string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
@@ -182,15 +184,15 @@ namespace HotsReplayReader
         {
             Uri uri = new Uri(e.Request.Uri);
 
-            // Vérifier si le schéma correspond à celui défini (ici "app")
+            // Vérifier si le schéma correspond à celui défini
             if (uri.Scheme == "app")
             {
-                // Récupérer le nom du fichier (exemple : "MyImage.png")
+                // Récupérer le nom du fichier
                 string fileName = System.IO.Path.GetFileName(uri.LocalPath);
                 string imageName = System.IO.Path.GetFileNameWithoutExtension(fileName);
                 string extension = System.IO.Path.GetExtension(fileName);
 
-                // Récupérer l'image depuis les ressources (adapté selon vos ressources)
+                // Récupérer l'image depuis les ressources
                 Bitmap image = new hotsImage(uri.Host, imageName, extension).Bitmap;
                 if (image != null)
                 {
@@ -419,9 +421,23 @@ namespace HotsReplayReader
 
             string html = $"    <td class=\"headTableTd\">\n";
             html += "      <span class=\"tooltip\">\n";
-            html += $"        <img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon heroIconTeam{GetParty(stormPlayer.BattleTagName)}\" />\n";
+            html += "        <span class=\"heroPortrait\">\n";
+            html += $"          <img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon heroIconTeam{GetParty(stormPlayer.BattleTagName)}\" />\n";
+
+            if (stormPlayer.MatchAwardsCount > 0)
+            {
+                string ressourceName = matchAwards[$"{stormPlayer.MatchAwards[0]}"].MvpScreenIcon;
+                ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
+                html += $"          <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\" />\n";
+            }
+
+            html += "        </span>\n";
             html += $"        <span class=\"tooltipHero tooltipHero{toolTipPosition}\">\n";
 
+            if (stormPlayer.MatchAwardsCount > 0)
+            {
+                html += $"          <center><font color=\"#ffd700\">{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Description}</font></center><br />\n";
+            }
             if (stormPlayer.BattleTagName.IndexOf("#") > 0)
             {
                 playerName = stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#"));
@@ -520,7 +536,7 @@ namespace HotsReplayReader
         }
         internal string GetEmoticonImgFromTag(string tag)
         {
-            foreach (KeyValuePair<string, hotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
+            foreach (KeyValuePair<string, HotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
             {
                 foreach (string alias in hotsEmoticonData.Value.aliases)
                 {
@@ -675,6 +691,12 @@ namespace HotsReplayReader
             string heroUnitId = stormPlayer.PlayerHero.HeroUnitId;
             if (heroUnitId == "HeroDVaPilot")
                 heroUnitId = "HeroDVaMech";
+            if (heroUnitId == "HeroMedivhRaven")
+                heroUnitId = "HeroMedivh";
+            if (heroUnitId == "DeathwingDragonflightUnit")
+                heroUnitId = "HeroDeathwing";
+            if (heroUnitId == "HeroAlexstraszaDragon")
+                heroUnitId = "HeroAlexstrasza";
 
             Hero heroData = heroDataDocument.GetHeroByUnitId(heroUnitId, true, true, true, true);
 
@@ -1234,14 +1256,24 @@ namespace HotsReplayReader
             }
 
             string heroDataJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
+            string matchAwardsJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
             string gameStringsJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\gamestrings\", "gamestrings_*_enus.json").FirstOrDefault();
 
             heroDataDocument = HeroDataDocument.Parse(heroDataJsonPath);
 
-            string gameStringsjson = File.ReadAllText(gameStringsJsonPath);
             JsonSerializerOptions jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip };
+
+            string gameStringsjson = File.ReadAllText(gameStringsJsonPath);
             gameStringsRoot = JsonSerializer.Deserialize<GameStringsRoot>(gameStringsjson, jsonOptions);
             Debug.WriteLine($"GameStrings loaded for version {gameStringsRoot.Meta.Version} - {gameStringsRoot.Meta.Locale}");
+
+            string matchAwardsJson = File.ReadAllText(matchAwardsJsonPath);
+            matchAwards = JsonSerializer.Deserialize<MatchAwards>(matchAwardsJson, jsonOptions);
+
+            foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Description)
+            {
+                matchAwards[Award.Key].Description = Award.Value;
+            }
         }
         // Sélection d'un replay dans la liste
         private async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
