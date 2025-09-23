@@ -250,3 +250,6 @@ tr {
   color: Green;
   font-size: 0.75em;
 }
+.nobr {
+    white-space: nowrap;
+}
