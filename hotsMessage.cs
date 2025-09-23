@@ -3,14 +3,14 @@
     internal class hotsMessage
     {
         public string Message { get; set; }
-        public hotsPlayer HotsPlayer { get; set; }
+        public HotsPlayer HotsPlayer { get; set; }
         public double TotalMilliseconds { get; set; }
         public string Hours { get; set; }
         public String Minutes { get; set; }
         public string Seconds { get; set; }
         public string MilliSeconds { get; set; }
         public bool translate { get; set; }
-        public hotsMessage(hotsPlayer HotsPlayer, TimeSpan? TimeStamp, string Message, bool translate = true)
+        public hotsMessage(HotsPlayer HotsPlayer, TimeSpan? TimeStamp, string Message, bool translate = true)
         {
             this.HotsPlayer = HotsPlayer;
             this.TotalMilliseconds = TimeStamp.Value.TotalMilliseconds;

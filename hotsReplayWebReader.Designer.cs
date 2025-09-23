@@ -1,6 +1,6 @@
 ﻿namespace HotsReplayReader
 {
-    partial class hotsReplayWebReader
+    partial class HotsReplayWebReader
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(hotsReplayWebReader));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HotsReplayWebReader));
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             browseToolStripMenuItem = new ToolStripMenuItem();

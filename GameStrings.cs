@@ -106,15 +106,15 @@ namespace GameStrings
 
     public class AbilTalentEntry
     {
-        public string HeroId { get; set; }
-        public string AbilityId { get; set; }
-        public string IconFileName { get; set; }
-        public string Cooldown { get; set; }
-        public string Energy { get; set; }
-        public string Full { get; set; }
-        public string Life { get; set; }
-        public string Name { get; set; }
-        public string Short { get; set; }
+        public string? HeroId { get; set; }
+        public string? AbilityId { get; set; }
+        public string? IconFileName { get; set; }
+        public string? Cooldown { get; set; }
+        public string? Energy { get; set; }
+        public string? Full { get; set; }
+        public string? Life { get; set; }
+        public string? Name { get; set; }
+        public string? Short { get; set; }
     }
 
     // Simple types reused

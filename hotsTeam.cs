@@ -1,6 +1,6 @@
 ﻿namespace HotsReplayReader
 {
-    internal class hotsTeam
+    internal class HotsTeam
     {
         public string Name { get; set; }
         public int maxKills { get; set; }
@@ -15,7 +15,7 @@
         public int totalDeath { get; set; }
         public bool isWinner { get; set; }
 
-        public hotsTeam(string Name)
+        public HotsTeam(string Name)
         {
             this.Name = Name;
             this.maxKills = 0;

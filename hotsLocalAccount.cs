@@ -1,6 +1,6 @@
 ﻿namespace HotsReplayReader
 {
-    internal class hotsLocalAccount
+    internal class HotsLocalAccount
     {
         public string BattleTagName { get; set; }
         public string FullPath { get; set; }
