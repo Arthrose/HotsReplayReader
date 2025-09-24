@@ -11,8 +11,11 @@
 
   <ItemGroup>
     <Compile Remove="Classes\**" />
+    <Compile Remove="NewFolder\**" />
     <EmbeddedResource Remove="Classes\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="Classes\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,7 +92,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
     <Folder Include="obj\Debug\net9.0-windows\" />
   </ItemGroup>
 </Project>
