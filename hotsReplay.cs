@@ -4,11 +4,12 @@ namespace HotsReplayReader
 {
     internal class HotsReplay
     {
-        public StormReplay stormReplay;
-        public IEnumerable<Heroes.StormReplayParser.Player.StormPlayer> stormPlayers;
+        public StormReplay? stormReplay;
+        public IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? stormPlayers;
         public HotsReplay(string path)
         {
-            StormReplayParse(path);
+            if (!StormReplayParse(path))
+                throw new InvalidOperationException($"File {path} could not be analysed.");
         }
         private bool StormReplayParse(string hotsReplayFilePath)
         {

@@ -1,11 +1,18 @@
-﻿namespace HotsReplayReader
+﻿using System.Text.Json.Serialization;
+
+namespace HotsReplayReader
 {
     internal class GitHubFileInfo
     {
-        public string name { get; set; }
-        public string path { get; set; }
-        public string type { get; set; }
-        public string download_url { get; set; }
-        public string url { get; set; }
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
+        [JsonPropertyName("path")]
+        public string? Path { get; set; }
+        [JsonPropertyName("type")]
+        public string? Type { get; set; }
+        [JsonPropertyName("download_url")]
+        public string? DownloadURL { get; set; }
+        [JsonPropertyName("url")]
+        public string? URL { get; set; }
     }
 }

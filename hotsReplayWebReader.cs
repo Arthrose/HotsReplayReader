@@ -4,7 +4,6 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using GameStrings;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.StormReplayParser.Player;
@@ -15,11 +14,11 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        private Rectangle listBoxHotsReplaysOriginalRectangle;
         private Rectangle webViewOriginalRectangle;
 
         private string? hotsReplayFolder;
         internal static string jsonConfigFile = "HotsReplayReader.json";
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
         internal static string currentAccount = string.Empty;
 
         HotsReplay? hotsReplay;
@@ -59,10 +58,14 @@ namespace HotsReplayReader
             ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
             for (int i = 0; i < accountsToolStripMenu.Length; i++)
             {
-                accountsToolStripMenu[i] = new ToolStripMenuItem();
-                accountsToolStripMenu[i].Name = Init.hotsLocalAccounts[i].BattleTagName;
-                accountsToolStripMenu[i].Tag = "Account";
-                accountsToolStripMenu[i].Text = Init.hotsLocalAccounts[i].BattleTagName.Remove(Init.hotsLocalAccounts[i].BattleTagName.IndexOf(@"#"));
+                accountsToolStripMenu[i] = new ToolStripMenuItem
+                {
+                    Name = Init?.hotsLocalAccounts[i].BattleTagName,
+                    Tag = "Account",
+                    Text = Init?.hotsLocalAccounts[i]?.BattleTagName is string tag && tag.Contains('#')
+                        ? tag[..tag.IndexOf('#')]
+                        : string.Empty
+                };
                 accountsToolStripMenu[i].Click += new EventHandler(MenuItemClickHandler);
             }
             accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
@@ -89,7 +92,6 @@ namespace HotsReplayReader
         }
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
-            listBoxHotsReplaysOriginalRectangle = new Rectangle(listBoxHotsReplays.Location.X, listBoxHotsReplays.Location.Y, listBoxHotsReplays.Width, listBoxHotsReplays.Height);
             webViewOriginalRectangle = new Rectangle(webViewOriginalRectangle.Location.X, webViewOriginalRectangle.Location.Y, webViewOriginalRectangle.Width, webViewOriginalRectangle.Height);
 
             if (Directory.Exists(Init.lastReplayFilePath))
@@ -182,7 +184,7 @@ namespace HotsReplayReader
         }
         private void CoreWebView2_WebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
-            Uri uri = new Uri(e.Request.Uri);
+            Uri uri = new(e.Request.Uri);
 
             // Vérifier si le schéma correspond à celui défini
             if (uri.Scheme == "app")
@@ -193,10 +195,10 @@ namespace HotsReplayReader
                 string extension = System.IO.Path.GetExtension(fileName);
 
                 // Récupérer l'image depuis les ressources
-                Bitmap image = new hotsImage(uri.Host, imageName, extension).Bitmap;
+                Bitmap? image = new HotsImage(uri.Host, imageName, extension).Bitmap;
                 if (image == null) return;
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 // Convertir l'image en MemoryStream
                 if (extension == ".png")
                 {
@@ -207,7 +209,7 @@ namespace HotsReplayReader
                 else if (extension == ".jpg")
                 {
                     // Suppression du canal Alpha pour ne pas gérer la transparence
-                    Bitmap newImage = new Bitmap(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                    Bitmap newImage = new(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                     using (Graphics g = Graphics.FromImage(newImage))
                     {
                         g.Clear(Color.White);
@@ -226,7 +228,7 @@ namespace HotsReplayReader
                 }
             }
         }
-        private void ResizeControl(Rectangle r, Control c, bool growWidth)
+        private void ResizeControl(Control c, bool growWidth)
         {
             int newWidth;
             if (growWidth)
@@ -238,8 +240,8 @@ namespace HotsReplayReader
         }
         private void HotsReplayWebReader_Resize(object sender, EventArgs e)
         {
-            ResizeControl(listBoxHotsReplaysOriginalRectangle, listBoxHotsReplays, false);
-            ResizeControl(webViewOriginalRectangle, webView, true);
+            ResizeControl(listBoxHotsReplays, false);
+            ResizeControl(webView, true);
         }
         private void MenuItemClickHandler(object? sender, EventArgs e)
         {
@@ -249,11 +251,12 @@ namespace HotsReplayReader
                 {
                     if (Init.hotsLocalAccounts[i].BattleTagName == clickedItem.Name)
                     {
+                        if (clickedItem.Name == null) continue;
                         currentAccount = clickedItem.Name;
                         ListHotsReplays(Init.hotsLocalAccounts[i].FullPath);
 
                         string jsonFile;
-                        JsonConfig? jsonConfig = new JsonConfig();
+                        JsonConfig? jsonConfig = new();
                         string path = Path.Combine(Directory.GetCurrentDirectory(), jsonConfigFile);
 
                         if (File.Exists(path))
@@ -267,7 +270,7 @@ namespace HotsReplayReader
 
                         File.WriteAllText(
                             path,
-                            JsonSerializer.Serialize(jsonConfig, new JsonSerializerOptions { WriteIndented = true })
+                            JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions)
                         );
                     }
                 }
@@ -276,7 +279,7 @@ namespace HotsReplayReader
                 this.Update();
             }
         }
-        private void ListHotsReplays(string path)
+        private void ListHotsReplays(string? path)
         {
             hotsReplayFolder = path;
             listBoxHotsReplays.Items.Clear();
@@ -294,7 +297,7 @@ namespace HotsReplayReader
                 foreach (FileInfo replayFile in replayFiles)
                 {
                     replayDisplayedName = replayFile.Name.ToString().Replace(replayFile.Extension.ToString(), @"");
-                    replayDisplayedName = Regex.Replace(replayDisplayedName, @"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)", "$3/$2/$1 $4:$5 $7");
+                    replayDisplayedName = MyRegexRenameReplayInList().Replace(replayDisplayedName, "$3/$2/$1 $4:$5 $7");
                     listBoxHotsReplays.Items.Add(replayDisplayedName);
 
                     replayList.Add(i, replayFile.FullName);
@@ -316,7 +319,7 @@ namespace HotsReplayReader
             string css = System.Text.Encoding.UTF8.GetString(hotsResources.styles);
 
             if (hotsReplay != null)
-                if (hotsReplay.stormReplay.Owner != null)
+                if (hotsReplay.stormReplay?.Owner != null)
                 {
                     if (hotsReplay.stormReplay.Owner.IsWinner)
                         css = css.Replace(@"#backColor#", @"#001100");
@@ -362,7 +365,7 @@ namespace HotsReplayReader
 ";
             return html;
         }
-        internal string HTMLGetFooter()
+        internal static string HTMLGetFooter()
         {
             string html = "\n<div>\n</body>\n</html>";
             return html;
@@ -376,7 +379,7 @@ namespace HotsReplayReader
             string winnerTeamClass = blueTeam.isWinner ? "titleBlueTeam" : "titleRedTeam";
             string html = $@"<table class=""headTable"">
   <tr>
-    <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay.stormReplay.ReplayVersion}"">{hotsReplay.stormReplay.MapInfo.MapName}</td>
+    <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{hotsReplay?.stormReplay?.MapInfo.MapName}</td>
   </tr>
   <tr>
     <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">Blue Team</td>
@@ -386,26 +389,27 @@ namespace HotsReplayReader
   <tr>
 ";
 
-            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
-                if (stormPlayer.Team.ToString() == "Blue")
-                    html += HTMLGetHeadTableCell(stormPlayer);
+            if (hotsReplay?.stormPlayers != null)
+                foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+                    if (stormPlayer.Team.ToString() == "Blue")
+                        html += HTMLGetHeadTableCell(stormPlayer);
 
             html += "    <td width=\"100\"></td>\n";
 
-            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
-                if (stormPlayer.Team.ToString() == "Red")
-                    html += HTMLGetHeadTableCell(stormPlayer);
+            if (hotsReplay?.stormPlayers != null)
+                foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+                    if (stormPlayer.Team.ToString() == "Red")
+                        html += HTMLGetHeadTableCell(stormPlayer);
 
             string replayLength;
-            if (hotsReplay.stormReplay.ReplayLength.Hours == 0)
-                replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString().Substring(3)}";
+            if (hotsReplay?.stormReplay?.ReplayLength.Hours == 0)
+                replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString()[3..]}";
             else
-                replayLength = $@"{hotsReplay.stormReplay.ReplayLength.ToString()}";
-            string time = hotsReplay.stormReplay.ReplayLength.ToString();
+                replayLength = $@"{hotsReplay?.stormReplay?.ReplayLength}";
 
             html += "  </tr>\n";
 
-            if (hotsReplay.stormReplay.DraftPicks.Count > 0)
+            if (hotsReplay?.stormReplay?.DraftPicks.Count > 0)
             {
                 html += "  <tr>\n    <td>&nbsp;</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
@@ -434,7 +438,7 @@ namespace HotsReplayReader
             if (stormPlayer == null || stormPlayer.PlayerHero == null || matchAwards == null || stormPlayer.MatchAwards == null) return "";
 
             string playerName;
-            string playerID = string.Empty;
+            string playerID;
             string accountLevel = stormPlayer.AccountLevel.HasValue ? stormPlayer.AccountLevel.Value.ToString() : "0";
             string toolTipPosition = stormPlayer.Team.ToString() == "Blue" ? "Left" : "Right";
 
@@ -446,7 +450,8 @@ namespace HotsReplayReader
             if (stormPlayer.MatchAwardsCount > 0)
             {
                 string ressourceName = matchAwards[$"{stormPlayer.MatchAwards[0]}"].MvpScreenIcon;
-                ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
+                if (ressourceName != null)
+                    ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
                 html += $"          <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\" />\n";
             }
 
@@ -460,10 +465,10 @@ namespace HotsReplayReader
                 html += $"            <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Description}</nobr></font><br />\n";
                 html += $"          </center><br />\n";
             }
-            if (stormPlayer.BattleTagName.IndexOf("#") > 0)
+            if (stormPlayer.BattleTagName.IndexOf('#') > 0)
             {
-                playerName = stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#"));
-                playerID = stormPlayer.BattleTagName.Substring(stormPlayer.BattleTagName.IndexOf("#") + 1);
+                playerName = stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')];
+                playerID = stormPlayer.BattleTagName[(stormPlayer.BattleTagName.IndexOf('#') + 1)..];
 
                 html += $"          <span class=\"nobr\">BattleTag:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br />\n";
                 html += $"          <span class=\"nobr\">AccountLevel:&nbsp;<font color=\"#bfd4fd\">{accountLevel}</font></span><br />\n";
@@ -504,9 +509,9 @@ namespace HotsReplayReader
                         hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class=\"reconnected\">Reconnected</span>", false));
                 }
             }
-            hotsMessages = hotsMessages.OrderBy(o => o.TotalMilliseconds).ToList();
+            hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
 
-            bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Int32.Parse(hotsMessages.Last().Hours) > 0 ? true : false;
+            bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Int32.Parse(hotsMessages.Last().Hours) > 0;
 
             string html = $@"";
             html += "<div class=\"chat-container\">\n";
@@ -543,10 +548,6 @@ namespace HotsReplayReader
             string msgMinutes = hotsMessage.Minutes;
             string msgSeconds = hotsMessage.Seconds;
             string msgSenderName = hotsMessage.HotsPlayer.Name;
-
-            int? msgSenderAccountLevel = hotsMessage.HotsPlayer.AccountLevel;
-            string msgBattleTagName = hotsMessage.HotsPlayer.BattleTagName;
-            string msgCharacter = (hotsMessage.HotsPlayer.PlayerHero.HeroName).Replace(" ", "&nbsp;");
 
             string html = "  <div class=\"chat-message\">\n";
             if (lastMessageAfterAnHour)
@@ -632,12 +633,12 @@ namespace HotsReplayReader
             if (stormPlayer.ScoreResult.Deaths > 0)
             {
                 if (stormPlayer.ScoreResult.TimeSpentDead.Hours == 0)
-                    timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead.ToString().Substring(3)}";
+                    timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead.ToString()[3..]}";
                 else
-                    timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead.ToString()}";
+                    timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead}";
             }
 
-            string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
+            string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" /></td>\n";
@@ -739,7 +740,7 @@ namespace HotsReplayReader
 
             Hero heroData = heroDataDocument.GetHeroByUnitId(heroUnitId, true, true, true, true);
 
-            string playerName = stormPlayer.BattleTagName.IndexOf("#") > 0 ? stormPlayer.BattleTagName.Remove(stormPlayer.BattleTagName.IndexOf("#")) : stormPlayer.Name + " (AI)";
+            string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" /></td>\n";
@@ -754,7 +755,7 @@ namespace HotsReplayReader
             html += "  </tr>\n";
             return html;
         }
-        private string GetHeroNameFromHeroId(string heroId)
+        private static string GetHeroNameFromHeroId(string heroId)
         {
             return _ = heroId switch
             {
@@ -888,7 +889,7 @@ namespace HotsReplayReader
         }
         private AbilTalentEntry GetAbilTalent(Hero heroData, string TalentNameId)
         {
-            AbilTalentEntry abilTalentEntry = new AbilTalentEntry();
+            AbilTalentEntry abilTalentEntry = new();
 
             bool MatchPrefix(string key) => key.Split('|')[0].Equals(TalentNameId, StringComparison.OrdinalIgnoreCase);
             abilTalentEntry.HeroId = heroData.CHeroId;
@@ -902,12 +903,12 @@ namespace HotsReplayReader
                     ?.IconFileName
                 ?? string.Empty;
 
-            abilTalentEntry.Cooldown = gameStringsRoot?.Gamestrings.AbilTalent.Cooldown?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
-            abilTalentEntry.Energy = gameStringsRoot?.Gamestrings.AbilTalent.Energy?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
-            abilTalentEntry.Full = gameStringsRoot?.Gamestrings.AbilTalent.Full?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
-            abilTalentEntry.Life = gameStringsRoot?.Gamestrings.AbilTalent.Life?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
-            abilTalentEntry.Name = gameStringsRoot?.Gamestrings.AbilTalent.Name?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
-            abilTalentEntry.Short = gameStringsRoot?.Gamestrings.AbilTalent.Short?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Cooldown = gameStringsRoot?.Gamestrings?.AbilTalent?.Cooldown?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Energy = gameStringsRoot?.Gamestrings?.AbilTalent?.Energy?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Full = gameStringsRoot?.Gamestrings?.AbilTalent?.Full?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Life = gameStringsRoot?.Gamestrings?.AbilTalent?.Life?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Name = gameStringsRoot?.Gamestrings?.AbilTalent?.Name?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
+            abilTalentEntry.Short = gameStringsRoot?.Gamestrings?.AbilTalent?.Short?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
 
             return abilTalentEntry;
         }
@@ -969,7 +970,7 @@ namespace HotsReplayReader
         private void InitPlayersData()
         {
             if (hotsReplay == null) return;
-            
+
             long? opponentsFirstParty = null;
             hotsPlayers = null;
             hotsPlayers = new HotsPlayer[10];
@@ -1065,9 +1066,11 @@ namespace HotsReplayReader
         {
             if (hotsPlayers != null && hotsReplay != null && hotsReplay.stormReplay.Owner != null)
             {
-                hotsPlayers[id] = new HotsPlayer(stormPlayer);
-                hotsPlayers[id].Party = "0";
-                hotsPlayers[id].teamColor = stormPlayer.Team.ToString();
+                hotsPlayers[id] = new HotsPlayer(stormPlayer)
+                {
+                    Party = "0",
+                    teamColor = stormPlayer.Team.ToString()
+                };
 
                 if (hotsPlayers[id].teamColor == "Blue")
                 {
@@ -1109,7 +1112,7 @@ namespace HotsReplayReader
                 }
             }
         }
-        public string GetHeroIdRole(string HeroId)
+        public static string GetHeroIdRole(string HeroId)
         {
             List<string> Tanks =
             [
@@ -1238,7 +1241,7 @@ namespace HotsReplayReader
         }
         public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
         {
-            string replayVersionShort = replayVersion.Substring(replayVersion.LastIndexOf('.') + 1);
+            string replayVersionShort = replayVersion[(replayVersion.LastIndexOf('.') + 1)..];
             string url = "https://api.github.com/repositories/214500273/contents/heroesdata";
 
             using var response = await httpClient.GetAsync(url);
@@ -1289,26 +1292,28 @@ namespace HotsReplayReader
 
             foreach (GitHubFileInfo? item in items)
             {
-                if (item.type == "file")
+                if (item.Name == null) continue;
+
+                if (item.Type == "file")
                 {
-                    Console.WriteLine($"Téléchargement {item.path}...");
-                    byte[] data = await httpClient.GetByteArrayAsync(item.download_url);
-                    string filePath = Path.Combine(localPath, item.name);
+                    Console.WriteLine($"Téléchargement {item.Path}...");
+                    byte[] data = await httpClient.GetByteArrayAsync(item.DownloadURL);
+                    string filePath = Path.Combine(localPath, item.Name);
                     await File.WriteAllBytesAsync(filePath, data);
                 }
-                else if (item.type == "dir")
+                else if (item.Type == "dir" && item.URL != null)
                 {
-                    string newFolder = Path.Combine(localPath, item.name);
+                    string newFolder = Path.Combine(localPath, item.Name);
                     Directory.CreateDirectory(newFolder);
 
                     // récursif
-                    await DownloadGitHubFolderRecursive(httpClient, item.url, newFolder);
+                    await DownloadGitHubFolderRecursive(httpClient, item.URL, newFolder);
                 }
             }
         }
         private async Task CheckAndDownloadHeroesData(string replayVersion)
         {
-            using HttpClient HttpClient = new HttpClient();
+            using HttpClient HttpClient = new();
             HttpClient.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue(
                     Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader",
@@ -1335,11 +1340,13 @@ namespace HotsReplayReader
 
             heroDataDocument = HeroDataDocument.Parse(heroDataJsonPath);
 
-            JsonSerializerOptions jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip };
+            JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip };
 
             string gameStringsjson = File.ReadAllText(gameStringsJsonPath);
             gameStringsRoot = JsonSerializer.Deserialize<GameStringsRoot>(gameStringsjson, jsonOptions);
-            if (gameStringsRoot == null) return;
+
+            if (gameStringsRoot?.Meta == null || gameStringsRoot.Gamestrings?.Award?.Name == null || gameStringsRoot.Gamestrings.Award.Description == null) return;
+
             Debug.WriteLine($"GameStrings loaded for version {gameStringsRoot.Meta.Version} - {gameStringsRoot.Meta.Locale}");
 
             string matchAwardsJson = File.ReadAllText(matchAwardsJsonPath);
@@ -1406,23 +1413,24 @@ namespace HotsReplayReader
             else
                 folderBrowserDialog.InitialDirectory = hotsReplayFolder ?? "";
 
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK && jsonConfig != null)
             {
                 jsonConfig.LastBrowseDirectory = folderBrowserDialog.SelectedPath;
-                File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(jsonConfig, new JsonSerializerOptions { WriteIndented = true }));
+                File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
 
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
                 ListHotsReplays(hotsReplayFolder);
             }
         }
-        public string GetNotepadPath()
+        public static string GetNotepadPath()
         {
-            string NotepadPPPath = string.Empty;
-            using (RegistryKey RegKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Notepad++"))
+            string? NotepadPPPath = string.Empty;
+
+            using (RegistryKey? RegKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Notepad++"))
             {
                 if (RegKey != null)
                 {
-                    object value = RegKey.GetValue("");
+                    object? value = RegKey.GetValue("");
                     if (value != null)
                     {
                         NotepadPPPath = value.ToString();
@@ -1463,10 +1471,8 @@ namespace HotsReplayReader
             {
                 try
                 {
-                    using (FileStream fs = File.Open(e.FullPath, FileMode.Open, FileAccess.Read, FileShare.None))
-                    {
-                        ready = true;
-                    }
+                    using FileStream fs = File.Open(e.FullPath, FileMode.Open, FileAccess.Read, FileShare.None);
+                    ready = true;
                 }
                 catch (IOException)
                 {
@@ -1482,15 +1488,29 @@ namespace HotsReplayReader
                 }));
             }
         }
+
+        // Colorie l'energie
         [GeneratedRegex(@"<s\s+val=""(.*?)""[^>]*>(.*?)</s>")]
         private static partial Regex MyRegexConvertEnergy();
+
+        // Retire les images
         [GeneratedRegex(@"<img\s.*?\/>")]
         private static partial Regex MyRegexRemoveImg();
+
+        // Converti les couleurs
         [GeneratedRegex(@"<c\s+val=""(.*?)"">(.*?)</c>")]
         private static partial Regex MyRegexConvertColor();
+
+        // Affiche (+x% per level)
         [GeneratedRegex(@"\~\~([0-9.]+)\~\~(</font>)?")]
         private static partial Regex MyRegexConvertPercentPerLevel();
+
+        // Sauts de ligne
         [GeneratedRegex(@"<n/>")]
         private static partial Regex MyRegexNewLine();
+
+        // Renomme les replays dans la liste
+        [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
+        private static partial Regex MyRegexRenameReplayInList();
     }
 }

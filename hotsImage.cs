@@ -2,23 +2,23 @@
 
 namespace HotsReplayReader
 {
-    internal class hotsImage
+    internal class HotsImage
     {
-        public Bitmap Bitmap { get; set; }
+        public Bitmap? Bitmap { get; set; }
         public string Name { get; set; }
-        public string Extension { get; set; }
+        public string? Extension { get; set; }
         public string ResourceName { get; set; }
-        public hotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null)
+        public HotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null)
         {
-            this.Name = imageName;
-            this.ResourceName = resourceName;
-            this.Extension = extension;
-            setBitmap();
+            Name = imageName;
+            ResourceName = resourceName;
+            Extension = extension ?? ".png";
+            SetBitmap();
         }
-        public void setBitmap()
+        public void SetBitmap()
         {
-            object image = null;
-            ResourceManager resourceManager = null;
+            object? image = null;
+            ResourceManager? resourceManager = null;
             string ResxObjectName = Name;
             switch (ResourceName)
             {
@@ -47,8 +47,6 @@ namespace HotsReplayReader
             {
                 image = resourceManager.GetObject(ResxObjectName);
             }
-            // byte[2102]
-            // System.Drawing.Bitmap
 
             if (image is byte[])
             {
@@ -63,7 +61,7 @@ namespace HotsReplayReader
                 Bitmap = null;
             }
         }
-        private static Bitmap ByteToImage(byte[] blob)
+        private static Bitmap? ByteToImage(byte[]? blob)
         {
             if (blob == null)
             {
