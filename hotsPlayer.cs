@@ -5,17 +5,17 @@ namespace HotsReplayReader
     internal class HotsPlayer : StormPlayer
     {
         public string? Party { get; set; }
-        public string? teamColor { get; set; }
-        public double mvpScore { get; set; }
-        public HotsTeam? playerTeam { get; set; }
-        public HotsTeam? enemyTeam { get; set; }
-        public IReadOnlyList<HeroMasteryTier> heroMasteryTiers { get; set; }
-        public int? heroMasteryTiersCount { get; set; }
-        public IReadOnlyList<MatchAwardType>? matchAwards { get; set; }
-        public int? matchAwardsCount { get; set; }
-        public IReadOnlyList<PlayerDisconnect> playerDisconnects { get; set; }
-        public ScoreResult? scoreResult { get; set; }
-        public IReadOnlyList<HeroTalent> talents { get; set; }
+        public string? TeamColor { get; set; }
+        public double MvpScore { get; set; }
+        public HotsTeam? PlayerTeam { get; set; }
+        public HotsTeam? EnemyTeam { get; set; }
+        public new IReadOnlyList<HeroMasteryTier> HeroMasteryTiers { get; set; }
+        public new int? HeroMasteryTiersCount { get; set; }
+        public new IReadOnlyList<MatchAwardType>? MatchAwards { get; set; }
+        public new int? MatchAwardsCount { get; set; }
+        public new IReadOnlyList<PlayerDisconnect> PlayerDisconnects { get; set; }
+        public new ScoreResult? ScoreResult { get; set; }
+        public new IReadOnlyList<HeroTalent> Talents { get; set; }
         public HotsPlayer(StormPlayer stormPlayer)
         {
             this.AccountLevel = stormPlayer.AccountLevel;
@@ -36,13 +36,13 @@ namespace HotsReplayReader
             this.PlayerType = stormPlayer.PlayerType;
             this.Team = stormPlayer.Team;
             this.ToonHandle = stormPlayer.ToonHandle;
-            this.heroMasteryTiers = stormPlayer.HeroMasteryTiers;
-            this.heroMasteryTiersCount = stormPlayer.HeroMasteryTiersCount;
-            this.matchAwards = stormPlayer.MatchAwards;
-            this.matchAwardsCount = stormPlayer.MatchAwardsCount;
-            this.playerDisconnects = stormPlayer.PlayerDisconnects;
-            this.scoreResult = stormPlayer.ScoreResult;
-            this.talents = stormPlayer.Talents;
+            this.HeroMasteryTiers = stormPlayer.HeroMasteryTiers;
+            this.HeroMasteryTiersCount = stormPlayer.HeroMasteryTiersCount;
+            this.MatchAwards = stormPlayer.MatchAwards;
+            this.MatchAwardsCount = stormPlayer.MatchAwardsCount;
+            this.PlayerDisconnects = stormPlayer.PlayerDisconnects;
+            this.ScoreResult = stormPlayer.ScoreResult;
+            this.Talents = stormPlayer.Talents;
         }
     }
 }

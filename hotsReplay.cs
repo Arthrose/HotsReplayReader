@@ -1,4 +1,5 @@
-﻿using Heroes.StormReplayParser;
+﻿using System.Diagnostics;
+using Heroes.StormReplayParser;
 
 namespace HotsReplayReader
 {
@@ -26,7 +27,7 @@ namespace HotsReplayReader
             {
                 if (hotsReplayStatus == StormReplayParseStatus.Exception)
                 {
-                    StormParseException? hotsParseException = hotsReplayResult.Exception;
+                    Debug.WriteLine($"Exception parsing replay: {hotsReplayResult.Exception?.Message}");
                 }
                 return false;
             }

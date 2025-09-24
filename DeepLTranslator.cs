@@ -2,16 +2,10 @@
 
 namespace HotsReplayReader
 {
-    internal class DeepLTranslator
+    internal class DeepLTranslator(string apiKey)
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _apiKey;
-
-        public DeepLTranslator(string apiKey)
-        {
-            _httpClient = new HttpClient();
-            _apiKey = apiKey;
-        }
+        private readonly HttpClient _httpClient = new();
+        private readonly string _apiKey = apiKey;
 
         public async Task<string> TranslateText(string? text, string targetLang)
         {
@@ -21,11 +15,11 @@ namespace HotsReplayReader
 
                 request.Headers.Add("Authorization", $"DeepL-Auth-Key {_apiKey}");
 
-                var content = new FormUrlEncodedContent(new[]
-                {
-                new KeyValuePair<string, string>("text", text),
-                new KeyValuePair<string, string>("target_lang", targetLang)
-            });
+                var content = new FormUrlEncodedContent(
+                [
+                    new KeyValuePair<string, string>("text", text),
+                    new KeyValuePair<string, string>("target_lang", targetLang)
+                ]);
 
                 request.Content = content;
 

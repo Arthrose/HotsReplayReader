@@ -1,6 +1,6 @@
 ﻿namespace HotsReplayReader
 {
-    internal class hotsMessage
+    internal class HotsMessage
     {
         public string Message { get; set; }
         public HotsPlayer HotsPlayer { get; set; }
@@ -9,12 +9,12 @@
         public string? Minutes { get; set; }
         public string? Seconds { get; set; }
         public string? MilliSeconds { get; set; }
-        public bool translate { get; set; }
-        public hotsMessage(HotsPlayer HotsPlayer, TimeSpan? TimeStamp, string Message, bool translate = true)
+        public bool Translate { get; set; }
+        public HotsMessage(HotsPlayer HotsPlayer, TimeSpan? TimeStamp, string Message, bool translate = true)
         {
             this.HotsPlayer = HotsPlayer;
             this.Message = Message;
-            this.translate = translate;
+            this.Translate = translate;
 
             if (TimeStamp != null)
             {

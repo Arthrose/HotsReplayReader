@@ -27,22 +27,22 @@
     <Compile Update="abilitytalents.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>abilityTalents.resx</DependentUpon>
+      <DependentUpon>AbilityTalents.resx</DependentUpon>
     </Compile>
     <Compile Update="heroesIcon.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>heroesIcon.resx</DependentUpon>
+      <DependentUpon>HeroesIcon.resx</DependentUpon>
     </Compile>
     <Compile Update="hotsEmoticons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>hotsEmoticons.resx</DependentUpon>
+      <DependentUpon>HotsEmoticons.resx</DependentUpon>
     </Compile>
     <Compile Update="hotsResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>hotsResources.resx</DependentUpon>
+      <DependentUpon>HotsResources.resx</DependentUpon>
     </Compile>
     <Compile Update="MatchAwardsImg.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -52,24 +52,24 @@
     <Compile Update="minimapIcons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>minimapIcons.resx</DependentUpon>
+      <DependentUpon>MinimapIcons.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="abilityTalents.resx">
+    <EmbeddedResource Update="AbilityTalents.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>abilitytalents.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="heroesIcon.resx">
+    <EmbeddedResource Update="HeroesIcon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>heroesIcon.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="hotsEmoticons.resx">
+    <EmbeddedResource Update="HotsEmoticons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>hotsEmoticons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="hotsResources.resx">
+    <EmbeddedResource Update="HotsResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>hotsResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -77,7 +77,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MatchAwardsImg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="minimapIcons.resx">
+    <EmbeddedResource Update="MinimapIcons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>minimapIcons.Designer.cs</LastGenOutput>
     </EmbeddedResource>

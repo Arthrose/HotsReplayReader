@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace HotsReplayReader
 {
-    // gameStringsRoot object
     public class GameStringsRoot
     {
         [JsonPropertyName("meta")]

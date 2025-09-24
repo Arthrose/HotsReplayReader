@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;
@@ -6,38 +7,43 @@ using Microsoft.Win32;
 
 namespace HotsReplayReader
 {
-    internal class Init
+    internal partial class Init
     {
         internal string? lastReplayFilePath;
-        private string? hotsVariablesFile;
-        private string? userDocumentsFolder;
+        private readonly string? hotsVariablesFile;
+        private readonly string? userDocumentsFolder;
         internal List<HotsLocalAccount>? hotsLocalAccounts;
         internal HotsEmoticon? hotsEmoticons;
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
-        internal string? dbDirectory { get; set; }
+        internal string? DbDirectory { get; set; }
         public Init()
         {
-            RegistryKey? RegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
-            userDocumentsFolder = RegKey.GetValue("Personal", "").ToString();
+            RegistryKey? regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
+            
+            if (regKey == null) return;
+
+            userDocumentsFolder = regKey.GetValue("Personal", "").ToString();
             hotsVariablesFile = userDocumentsFolder + @"\Heroes of the Storm\Variables.txt";
 
-            listHotsAccounts();
-            lastReplayFilePath = getLastReplayFilePath();
-            loadHotsEmoticons();
+            ListHotsAccounts();
+            lastReplayFilePath = GetLastReplayFilePath();
+            LoadHotsEmoticons();
 
-            dbDirectory = $@"{Directory.GetCurrentDirectory()}\db";
+            DbDirectory = $@"{Directory.GetCurrentDirectory()}\db";
         }
-        internal string getLastReplayFilePath()
+        internal string? GetLastReplayFilePath()
         {
-            JsonConfig? jsonConfig = new JsonConfig();
+            JsonConfig? jsonConfig;
             string jsonFile;
             if (File.Exists($@"{Directory.GetCurrentDirectory()}\{HotsReplayWebReader.jsonConfigFile}"))
             {
                 jsonFile = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{HotsReplayWebReader.jsonConfigFile}");
                 jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
+                if (jsonConfig == null) return @"";
                 if (Directory.Exists(jsonConfig.LastSelectedAccountDirectory))
                 {
+                    if (jsonConfig.LastSelectedAccount == null) return @"";
                     HotsReplayWebReader.currentAccount = jsonConfig.LastSelectedAccount;
                     return jsonConfig.LastSelectedAccountDirectory;
                 }
@@ -49,16 +55,17 @@ namespace HotsReplayReader
                 var lines = File.ReadLines(hotsVariablesFile);
                 foreach (var line in lines)
                 {
-                    if (Regex.IsMatch(line.Trim(), @"^lastReplayFilePath=(.*)$"))
+                    if (MyRegexLastReplayFilePath().IsMatch(line.Trim()))
                     {
-                        lastReplayFilePath = Path.GetDirectoryName(line.Substring(line.IndexOf('=') + 1));
-                        if (lastReplayFilePath.Length > 0)
-                            lastReplayFilePathFound = true;
+                        lastReplayFilePath = Path.GetDirectoryName(line[(line.IndexOf('=') + 1)..]);
+                        if (lastReplayFilePath != null)
+                            if (lastReplayFilePath.Length > 0)
+                                lastReplayFilePathFound = true;
                     }
                 }
             }
 
-            if (!lastReplayFilePathFound)
+            if (!lastReplayFilePathFound && userDocumentsFolder != null)
             {
                 if (userDocumentsFolder.Length > 0)
                 {
@@ -69,9 +76,12 @@ namespace HotsReplayReader
                     lastReplayFilePath = @"";
                 }
             }
+
+            if (hotsLocalAccounts == null) return lastReplayFilePath;
+
             foreach (HotsLocalAccount hotsLocalAccount in hotsLocalAccounts)
             {
-                if (hotsLocalAccount.FullPath == lastReplayFilePath)
+                if (hotsLocalAccount.FullPath == lastReplayFilePath && hotsLocalAccount.BattleTagName != null)
                 {
                     HotsReplayWebReader.currentAccount = hotsLocalAccount.BattleTagName;
                     break;
@@ -79,21 +89,21 @@ namespace HotsReplayReader
             }
             return lastReplayFilePath;
         }
-        internal void listHotsAccounts()
+        internal void ListHotsAccounts()
         {
             string[] accountsDirs;
-            hotsLocalAccounts = new List<HotsLocalAccount>();
+            hotsLocalAccounts = [];
             if (Directory.Exists(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts"))
             {
                 accountsDirs = Directory.GetDirectories(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts");
                 foreach (string accountDir in accountsDirs)
                 {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(accountDir);
+                    DirectoryInfo directoryInfo = new(accountDir);
                     string[] multiplayersReplayDirs = Directory.GetDirectories(accountDir);
                     foreach (string multiplayersReplayDir in multiplayersReplayDirs)
                     {
-                        DirectoryInfo multiplayersReplayDirInfo = new DirectoryInfo(multiplayersReplayDir);
-                        if (multiplayersReplayDirInfo.Name.Substring(0, 7) == @"2-Hero-")
+                        DirectoryInfo multiplayersReplayDirInfo = new(multiplayersReplayDir);
+                        if (multiplayersReplayDirInfo.Name[..7] == @"2-Hero-")
                         {
                             DirectoryInfo hotsReplayFolder = new(multiplayersReplayDir + @"\Replays\Multiplayer");
                             FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
@@ -104,7 +114,7 @@ namespace HotsReplayReader
                                 {
                                     try
                                     {
-                                        if (StormReplayParse(replayFiles[i].FullName))
+                                        if (StormReplayParse(replayFiles[i].FullName) && hotsReplay?.Owner != null)
                                         {
                                             hotsLocalAccounts.Add(new HotsLocalAccount
                                             {
@@ -125,19 +135,21 @@ namespace HotsReplayReader
                 }
             }
         }
-        internal void loadHotsEmoticons()
+        internal void LoadHotsEmoticons()
         {
             var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            hotsEmoticons = JsonSerializer.Deserialize<HotsEmoticon>(Encoding.UTF8.GetString(hotsResources.emoticondata), jsonOptions);
-            HotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<HotsEmoticonAliase>(Encoding.UTF8.GetString(hotsResources.emoticonsaliases), jsonOptions);
+            hotsEmoticons = JsonSerializer.Deserialize<HotsEmoticon>(Encoding.UTF8.GetString(HotsResources.emoticondata), jsonOptions);
+            HotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<HotsEmoticonAliase>(Encoding.UTF8.GetString(HotsResources.emoticonsaliases), jsonOptions);
 
-            foreach (KeyValuePair<string, string> aliases in hotsEmoticonAliases.aliases)
+            if (hotsEmoticonAliases?.Aliases == null) return;
+
+            foreach (KeyValuePair<string, string> aliases in hotsEmoticonAliases.Aliases)
             {
-                if (hotsEmoticons != null && hotsEmoticons.ContainsKey(aliases.Key))
+                if (hotsEmoticons != null && hotsEmoticons.TryGetValue(aliases.Key, out HotsEmoticonData? value))
                 {
                     foreach (string alias in aliases.Value.Split(' '))
-                        hotsEmoticons[aliases.Key].aliases.Add(alias);
+                        value.Aliases.Add(alias);
                 }
             }
         }
@@ -156,11 +168,15 @@ namespace HotsReplayReader
             {
                 if (hotsReplayStatus == StormReplayParseStatus.Exception)
                 {
-                    StormParseException? hotsParseException = hotsReplayResult.Exception;
+                    Debug.WriteLine($"Exception parsing replay: {hotsReplayResult.Exception?.Message}");
                 }
                 return false;
             }
         }
+
+        // lLastReplayFilePath=...
+        [GeneratedRegex(@"^lastReplayFilePath=(.*)$")]
+        private static partial Regex MyRegexLastReplayFilePath();
     }
     internal class JsonConfig
     {

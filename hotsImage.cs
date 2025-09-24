@@ -23,21 +23,21 @@ namespace HotsReplayReader
             switch (ResourceName)
             {
                 case "heroesicon":
-                    resourceManager = heroesIcon.ResourceManager;
+                    resourceManager = HeroesIcon.ResourceManager;
                     break;
                 case "hotsresources":
-                    resourceManager = hotsResources.ResourceManager;
+                    resourceManager = HotsResources.ResourceManager;
                     break;
                 case "abilitytalents":
-                    resourceManager = abilityTalents.ResourceManager;
+                    resourceManager = AbilityTalents.ResourceManager;
                     break;
                 case "emoticons":
-                    resourceManager = hotsEmoticons.ResourceManager;
+                    resourceManager = HotsEmoticons.ResourceManager;
                     ResxObjectName = $@"{ResxObjectName}{Extension}";
                     ResxObjectName = ResxObjectName.Replace("_0.gif", ".gif");
                     break;
                 case "minimapicons":
-                    resourceManager = minimapIcons.ResourceManager;
+                    resourceManager = MinimapIcons.ResourceManager;
                     break;
                 case "matchawards":
                     resourceManager = MatchAwardsImg.ResourceManager;
@@ -67,10 +67,8 @@ namespace HotsReplayReader
             {
                 return null;
             }
-            using (MemoryStream mStream = new MemoryStream(blob))
-            {
-                return new Bitmap(mStream, false);
-            }
+            using MemoryStream mStream = new(blob);
+            return new Bitmap(mStream, false);
         }
     }
 }

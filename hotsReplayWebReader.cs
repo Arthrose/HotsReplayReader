@@ -130,7 +130,7 @@ namespace HotsReplayReader
                     string? action = actionElement.GetString();
                     string? callbackId = callbackIdElement.GetString();
 
-                    // Vérifie si l'action est "translate" et si le message contient "text"
+                    // Vérifie si l'action est "Translate" et si le message contient "text"
                     if (action == "translate" && root.TryGetProperty("text", out var textElement))
                     {
                         // Récupère le texte à traduire
@@ -166,7 +166,7 @@ namespace HotsReplayReader
                 function translateWithCSharp(text) {
                     const callbackId = ""cb_"" + Date.now();
                     window.chrome.webview.postMessage({
-                        action: ""translate"",
+                        action: ""Translate"",
                         callbackId: callbackId,
                         text: text
                     });
@@ -194,12 +194,12 @@ namespace HotsReplayReader
                 string imageName = System.IO.Path.GetFileNameWithoutExtension(fileName);
                 string extension = System.IO.Path.GetExtension(fileName);
 
-                // Récupérer l'image depuis les ressources
+                // Récupérer l'Image depuis les ressources
                 Bitmap? image = new HotsImage(uri.Host, imageName, extension).Bitmap;
                 if (image == null) return;
 
                 MemoryStream ms = new();
-                // Convertir l'image en MemoryStream
+                // Convertir l'Image en MemoryStream
                 if (extension == ".png")
                 {
                     image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -316,7 +316,7 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeader()
         {
-            string css = System.Text.Encoding.UTF8.GetString(hotsResources.styles);
+            string css = System.Text.Encoding.UTF8.GetString(HotsResources.styles);
 
             if (hotsReplay != null)
                 if (hotsReplay.stormReplay?.Owner != null)
@@ -374,9 +374,9 @@ namespace HotsReplayReader
         {
             if (blueTeam == null || redTeam == null || hotsReplay == null) return "";
 
-            string isBlueTeamWinner = blueTeam.isWinner ? " teamBestScoreBlue" : "";
-            string isRedTeamWinner = redTeam.isWinner ? " teamBestScoreRed" : "";
-            string winnerTeamClass = blueTeam.isWinner ? "titleBlueTeam" : "titleRedTeam";
+            string isBlueTeamWinner = blueTeam.IsWinner ? " teamBestScoreBlue" : "";
+            string isRedTeamWinner = redTeam.IsWinner ? " teamBestScoreRed" : "";
+            string winnerTeamClass = blueTeam.IsWinner ? "titleBlueTeam" : "titleRedTeam";
             string html = $@"<table class=""headTable"">
   <tr>
     <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{hotsReplay?.stormReplay?.MapInfo.MapName}</td>
@@ -424,9 +424,9 @@ namespace HotsReplayReader
 
             html += $@"  <tr>
     <td>&nbsp;</td>
-    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.totalKills}</td>
+    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.TotalKills}</td>
     <td colSpan=""3"" class=""titleWhite"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
-    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.totalKills}</td>
+    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.TotalKills}</td>
     <td>&nbsp;</td>
   </tr>
 </table>
@@ -449,7 +449,7 @@ namespace HotsReplayReader
 
             if (stormPlayer.MatchAwardsCount > 0)
             {
-                string ressourceName = matchAwards[$"{stormPlayer.MatchAwards[0]}"].MvpScreenIcon;
+                string? ressourceName = matchAwards[$"{stormPlayer.MatchAwards[0]}"].MvpScreenIcon;
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
                 html += $"          <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\" />\n";
@@ -491,31 +491,31 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessages()
         {
-            if (hotsReplay == null || hotsPlayers == null) return "";
+            if (hotsReplay == null || hotsPlayers == null || hotsReplay.stormReplay == null) return "";
 
-            List<hotsMessage> hotsMessages = [];
+            List<HotsMessage> hotsMessages = [];
             foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
             {
                 string msg = HTMLGetChatMessageEmoticon(((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text);
                 if (chatMessage.MessageSender != null && GetHotsPlayer(chatMessage.MessageSender.BattleTagName) != null)
-                    hotsMessages.Add(new hotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg));
+                    hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg));
             }
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
-                foreach (PlayerDisconnect playerDisconnect in hotsPlayer.playerDisconnects)
+                foreach (PlayerDisconnect playerDisconnect in hotsPlayer.PlayerDisconnects)
                 {
-                    hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.From, "<span class=\"disconnected\">Disconnected</span>", false));
+                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From, "<span class=\"disconnected\">Disconnected</span>", false));
                     if (playerDisconnect.To != null)
-                        hotsMessages.Add(new hotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class=\"reconnected\">Reconnected</span>", false));
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class=\"reconnected\">Reconnected</span>", false));
                 }
             }
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
 
-            bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Int32.Parse(hotsMessages.Last().Hours) > 0;
+            bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Convert.ToInt32(hotsMessages.Last().Hours) > 0;
 
             string html = $@"";
             html += "<div class=\"chat-container\">\n";
-            foreach (hotsMessage hotsMessage in hotsMessages)
+            foreach (HotsMessage hotsMessage in hotsMessages)
             {
                 html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
             }
@@ -540,13 +540,13 @@ namespace HotsReplayReader
 </script>";
             return $"{html}\n";
         }
-        internal static string HTMLGetChatMessage(hotsMessage hotsMessage, bool lastMessageAfterAnHour)
+        internal static string HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
         {
             if (hotsMessage.HotsPlayer.PlayerHero == null) return "";
 
-            string msgHours = hotsMessage.Hours;
-            string msgMinutes = hotsMessage.Minutes;
-            string msgSeconds = hotsMessage.Seconds;
+            string? msgHours = hotsMessage.Hours;
+            string? msgMinutes = hotsMessage.Minutes;
+            string? msgSeconds = hotsMessage.Seconds;
             string msgSenderName = hotsMessage.HotsPlayer.Name;
 
             string html = "  <div class=\"chat-message\">\n";
@@ -556,7 +556,7 @@ namespace HotsReplayReader
                 html += $"    [{msgMinutes}:{msgSeconds}]\n";
             html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png\" class=\"chat-image\" title=\"{hotsMessage.HotsPlayer.PlayerHero.HeroName}\"/>\n";
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}\">{msgSenderName}: </span>\n";
-            if (hotsMessage.translate)
+            if (hotsMessage.Translate)
                 html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\" /></span>\n";
             else
                 html += $"    {hotsMessage.Message}\n";
@@ -569,14 +569,14 @@ namespace HotsReplayReader
             {
                 foreach (KeyValuePair<string, HotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
                 {
-                    foreach (string alias in hotsEmoticonData.Value.aliases)
+                    foreach (string alias in hotsEmoticonData.Value.Aliases)
                     {
-                        if (tag == alias)
+                        if (tag == alias && hotsEmoticonData.Value.Image != null)
                         {
-                            if (hotsEmoticonData.Value.image.Contains("storm_emoji_nexus"))
-                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.aliases[0]}"" />";
+                            if (hotsEmoticonData.Value.Image.Contains("storm_emoji_nexus"))
+                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.Aliases[0]}"" />";
                             else
-                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.aliases[0]}"" />";
+                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.Aliases[0]}"" />";
                         }
                     }
                 }
@@ -595,7 +595,7 @@ namespace HotsReplayReader
         }
         private string HTMLGetScoreTable()
         {
-            if (hotsReplay == null || blueTeam == null || redTeam == null) return "";
+            if (hotsReplay == null || hotsReplay.stormPlayers == null|| blueTeam == null || redTeam == null) return "";
 
             string html = @$"
 <table class=""tableScore"">
@@ -645,44 +645,44 @@ namespace HotsReplayReader
             html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{stormPlayer.PlayerHero.HeroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.SoloKills == team.maxKills)
+            if (stormPlayer.ScoreResult.SoloKills == team.MaxKills)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.SoloKills}</td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.Takedowns == team.maxTakedowns)
+            if (stormPlayer.ScoreResult.Takedowns == team.MaxTakedowns)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.Takedowns}</td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.Deaths == team.maxDeaths)
+            if (stormPlayer.ScoreResult.Deaths == team.MaxDeaths)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.Deaths}</td>\n";
 
             html += $"    <td>{timeSpentDead}</td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.SiegeDamage == team.maxSiegeDmg)
+            if (stormPlayer.ScoreResult.SiegeDamage == team.MaxSiegeDmg)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.SiegeDamage:n0}</td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.HeroDamage == team.maxHeroDmg)
+            if (stormPlayer.ScoreResult.HeroDamage == team.MaxHeroDmg)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.HeroDamage:n0}</td>\n";
 
             html += "    <td";
-            if ((stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing) == team.maxHealing)
+            if ((stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing) == team.MaxHealing)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing:n0}</td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.DamageTaken == team.maxDmgTaken)
+            if (stormPlayer.ScoreResult.DamageTaken == team.MaxDmgTaken)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.DamageTaken:n0}</td>\n";
 
             html += "    <td";
-            if (stormPlayer.ScoreResult.ExperienceContribution == team.maxExp)
+            if (stormPlayer.ScoreResult.ExperienceContribution == team.MaxExp)
                 html += " class=\"teamBestScore\"";
             html += $">{stormPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
@@ -691,7 +691,7 @@ namespace HotsReplayReader
                 if (stormPlayer.MatchAwards[0].ToString() == "MVP")
                     html += " class=\"teamBestScore\"";
             if (GetHotsPlayer(stormPlayer.BattleTagName) != null)
-                html += $">{Math.Round(GetHotsPlayer(stormPlayer.BattleTagName)!.mvpScore, 2)}</td>\n";
+                html += $">{Math.Round(GetHotsPlayer(stormPlayer.BattleTagName)!.MvpScore, 2)}</td>\n";
 
             html += "  </tr>\n";
             return html;
@@ -712,7 +712,7 @@ namespace HotsReplayReader
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
   </tr>
 ";
-            if (hotsReplay == null || blueTeam == null || redTeam == null) return "";
+            if (hotsReplay == null || hotsReplay.stormPlayers == null || blueTeam == null || redTeam == null) return "";
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
@@ -868,7 +868,7 @@ namespace HotsReplayReader
 
             // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = tier > 10 ? "Left" : "Right";
-            // Met une bordure sur les talents de niveau 10 et 20
+            // Met une bordure sur les Talents de niveau 10 et 20
             string imgTalentBorderClass;
             if (tier == 10 | tier == 20)
                 imgTalentBorderClass = "imgTalent10Border";
@@ -938,38 +938,38 @@ namespace HotsReplayReader
         }
         private void InitTeamDatas(HotsTeam team)
         {
-            if (hotsReplay == null) return;
+            if (hotsReplay == null || hotsReplay.stormPlayers == null || hotsReplay.stormReplay == null) return;
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
                 if (stormPlayer.Team.ToString() == team.Name && stormPlayer.ScoreResult != null)
                 {
-                    if (stormPlayer.ScoreResult.SoloKills >= team.maxKills)
-                        team.maxKills = stormPlayer.ScoreResult.SoloKills;
-                    if (stormPlayer.ScoreResult.Takedowns >= team.maxTakedowns)
-                        team.maxTakedowns = stormPlayer.ScoreResult.Takedowns;
-                    if (stormPlayer.ScoreResult.Deaths <= team.maxDeaths)
-                        team.maxDeaths = stormPlayer.ScoreResult.Deaths;
-                    if (stormPlayer.ScoreResult.SiegeDamage >= team.maxSiegeDmg)
-                        team.maxSiegeDmg = stormPlayer.ScoreResult.SiegeDamage;
-                    if (stormPlayer.ScoreResult.HeroDamage >= team.maxHeroDmg)
-                        team.maxHeroDmg = stormPlayer.ScoreResult.HeroDamage;
-                    if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing >= team.maxHealing)
-                        team.maxHealing = stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing;
-                    if (stormPlayer.ScoreResult.DamageTaken >= team.maxDmgTaken)
-                        team.maxDmgTaken = stormPlayer.ScoreResult.DamageTaken;
-                    if (stormPlayer.ScoreResult.ExperienceContribution >= team.maxExp)
-                        team.maxExp = stormPlayer.ScoreResult.ExperienceContribution;
-                    team.totalDeath += stormPlayer.ScoreResult.Deaths;
-                    team.totalKills += stormPlayer.ScoreResult.SoloKills;
+                    if (stormPlayer.ScoreResult.SoloKills >= team.MaxKills)
+                        team.MaxKills = stormPlayer.ScoreResult.SoloKills;
+                    if (stormPlayer.ScoreResult.Takedowns >= team.MaxTakedowns)
+                        team.MaxTakedowns = stormPlayer.ScoreResult.Takedowns;
+                    if (stormPlayer.ScoreResult.Deaths <= team.MaxDeaths)
+                        team.MaxDeaths = stormPlayer.ScoreResult.Deaths;
+                    if (stormPlayer.ScoreResult.SiegeDamage >= team.MaxSiegeDmg)
+                        team.MaxSiegeDmg = stormPlayer.ScoreResult.SiegeDamage;
+                    if (stormPlayer.ScoreResult.HeroDamage >= team.MaxHeroDmg)
+                        team.MaxHeroDmg = stormPlayer.ScoreResult.HeroDamage;
+                    if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing >= team.MaxHealing)
+                        team.MaxHealing = stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing;
+                    if (stormPlayer.ScoreResult.DamageTaken >= team.MaxDmgTaken)
+                        team.MaxDmgTaken = stormPlayer.ScoreResult.DamageTaken;
+                    if (stormPlayer.ScoreResult.ExperienceContribution >= team.MaxExp)
+                        team.MaxExp = stormPlayer.ScoreResult.ExperienceContribution;
+                    team.TotalDeath += stormPlayer.ScoreResult.Deaths;
+                    team.TotalKills += stormPlayer.ScoreResult.SoloKills;
                 }
             }
             if (team.Name == hotsReplay.stormReplay.WinningTeam.ToString())
-                team.isWinner = true;
+                team.IsWinner = true;
         }
         private void InitPlayersData()
         {
-            if (hotsReplay == null) return;
+            if (hotsReplay == null || hotsReplay.stormPlayers == null || hotsReplay.stormReplay == null) return;
 
             long? opponentsFirstParty = null;
             hotsPlayers = null;
@@ -993,67 +993,67 @@ namespace HotsReplayReader
             {
                 foreach (HotsPlayer hotsPlayer in hotsPlayers)
                 {
-                    if (stormPlayer.PlayerHero != null && stormPlayer.ScoreResult != null && hotsPlayer.playerTeam != null && hotsPlayer.enemyTeam != null)
+                    if (stormPlayer.PlayerHero != null && stormPlayer.ScoreResult != null && hotsPlayer.PlayerTeam != null && hotsPlayer.EnemyTeam != null)
                     {
                         if (hotsPlayer.BattleTagName == stormPlayer.BattleTagName)
                         {
                             // Kills
-                            hotsPlayer.mvpScore = stormPlayer.ScoreResult.SoloKills;
+                            hotsPlayer.MvpScore = stormPlayer.ScoreResult.SoloKills;
 
                             // Assists
                             if (stormPlayer.PlayerHero.HeroUnitId == "HeroLostVikingsController" || stormPlayer.PlayerHero.HeroUnitId == "HeroAbathur" || stormPlayer.PlayerHero.HeroUnitId == "HeroDVaPilot")
-                                hotsPlayer.mvpScore += stormPlayer.ScoreResult.Takedowns * 0.75;
+                                hotsPlayer.MvpScore += stormPlayer.ScoreResult.Takedowns * 0.75;
                             else
-                                hotsPlayer.mvpScore += stormPlayer.ScoreResult.Takedowns;
+                                hotsPlayer.MvpScore += stormPlayer.ScoreResult.Takedowns;
 
                             // Deaths
                             double timeSpentDead = (stormPlayer.ScoreResult.TimeSpentDead.TotalSeconds / hotsReplay.stormReplay.ReplayLength.TotalSeconds) * 100;
                             if (stormPlayer.PlayerHero.HeroUnitId == "HeroMurky" || stormPlayer.PlayerHero.HeroUnitId == "HeroGall")
-                                hotsPlayer.mvpScore += (timeSpentDead * -1);
+                                hotsPlayer.MvpScore += (timeSpentDead * -1);
                             else if (stormPlayer.PlayerHero.HeroUnitId == "HeroCho")
-                                hotsPlayer.mvpScore += (timeSpentDead * -0.85);
+                                hotsPlayer.MvpScore += (timeSpentDead * -0.85);
                             else
-                                hotsPlayer.mvpScore += (timeSpentDead * -0.5);
+                                hotsPlayer.MvpScore += (timeSpentDead * -0.5);
 
                             // Hero Damage
-                            if (stormPlayer.ScoreResult.HeroDamage == hotsPlayer.playerTeam.maxHeroDmg)
+                            if (stormPlayer.ScoreResult.HeroDamage == hotsPlayer.PlayerTeam.MaxHeroDmg)
                             {
-                                hotsPlayer.mvpScore += 1;
-                                if (stormPlayer.ScoreResult.HeroDamage >= hotsPlayer.enemyTeam.maxHeroDmg)
-                                    hotsPlayer.mvpScore += 1;
+                                hotsPlayer.MvpScore += 1;
+                                if (stormPlayer.ScoreResult.HeroDamage >= hotsPlayer.EnemyTeam.MaxHeroDmg)
+                                    hotsPlayer.MvpScore += 1;
                             }
 
                             // Siege Damage
-                            if (stormPlayer.ScoreResult.SiegeDamage == hotsPlayer.playerTeam.maxSiegeDmg)
+                            if (stormPlayer.ScoreResult.SiegeDamage == hotsPlayer.PlayerTeam.MaxSiegeDmg)
                             {
-                                hotsPlayer.mvpScore += 1;
-                                if (stormPlayer.ScoreResult.SiegeDamage >= hotsPlayer.enemyTeam.maxSiegeDmg)
-                                    hotsPlayer.mvpScore += 1;
+                                hotsPlayer.MvpScore += 1;
+                                if (stormPlayer.ScoreResult.SiegeDamage >= hotsPlayer.EnemyTeam.MaxSiegeDmg)
+                                    hotsPlayer.MvpScore += 1;
                             }
 
                             // Healing
-                            if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing == hotsPlayer.playerTeam.maxHealing)
+                            if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing == hotsPlayer.PlayerTeam.MaxHealing)
                             {
-                                hotsPlayer.mvpScore += 1;
-                                if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing >= hotsPlayer.enemyTeam.maxHealing)
-                                    hotsPlayer.mvpScore += 1;
+                                hotsPlayer.MvpScore += 1;
+                                if (stormPlayer.ScoreResult.Healing + stormPlayer.ScoreResult.SelfHealing >= hotsPlayer.EnemyTeam.MaxHealing)
+                                    hotsPlayer.MvpScore += 1;
                             }
 
                             // XP Contribution
-                            if (stormPlayer.ScoreResult.ExperienceContribution == hotsPlayer.playerTeam.maxExp)
+                            if (stormPlayer.ScoreResult.ExperienceContribution == hotsPlayer.PlayerTeam.MaxExp)
                             {
-                                hotsPlayer.mvpScore += 1;
-                                if (stormPlayer.ScoreResult.ExperienceContribution >= hotsPlayer.enemyTeam.maxExp)
-                                    hotsPlayer.mvpScore += 1;
+                                hotsPlayer.MvpScore += 1;
+                                if (stormPlayer.ScoreResult.ExperienceContribution >= hotsPlayer.EnemyTeam.MaxExp)
+                                    hotsPlayer.MvpScore += 1;
                             }
 
                             if (GetHeroIdRole(stormPlayer.PlayerHero.HeroUnitId) == "Tank" || GetHeroIdRole(stormPlayer.PlayerHero.HeroUnitId) == "Bruiser")
                             {
-                                if (stormPlayer.ScoreResult.DamageTaken == hotsPlayer.playerTeam.maxDmgTaken)
+                                if (stormPlayer.ScoreResult.DamageTaken == hotsPlayer.PlayerTeam.MaxDmgTaken)
                                 {
-                                    hotsPlayer.mvpScore += 0.5;
-                                    if (stormPlayer.ScoreResult.DamageTaken >= hotsPlayer.enemyTeam.maxDmgTaken)
-                                        hotsPlayer.mvpScore += 1;
+                                    hotsPlayer.MvpScore += 0.5;
+                                    if (stormPlayer.ScoreResult.DamageTaken >= hotsPlayer.EnemyTeam.MaxDmgTaken)
+                                        hotsPlayer.MvpScore += 1;
                                 }
                             }
                         }
@@ -1064,23 +1064,23 @@ namespace HotsReplayReader
         }
         private void InitPlayerData(StormPlayer stormPlayer, ref long? opponentsFirstParty, int id)
         {
-            if (hotsPlayers != null && hotsReplay != null && hotsReplay.stormReplay.Owner != null)
+            if (hotsPlayers != null && hotsReplay != null && hotsReplay?.stormReplay?.Owner != null)
             {
                 hotsPlayers[id] = new HotsPlayer(stormPlayer)
                 {
                     Party = "0",
-                    teamColor = stormPlayer.Team.ToString()
+                    TeamColor = stormPlayer.Team.ToString()
                 };
 
-                if (hotsPlayers[id].teamColor == "Blue")
+                if (hotsPlayers[id].TeamColor == "Blue")
                 {
-                    hotsPlayers[id].playerTeam = blueTeam;
-                    hotsPlayers[id].enemyTeam = redTeam;
+                    hotsPlayers[id].PlayerTeam = blueTeam;
+                    hotsPlayers[id].EnemyTeam = redTeam;
                 }
                 else
                 {
-                    hotsPlayers[id].playerTeam = redTeam;
-                    hotsPlayers[id].enemyTeam = blueTeam;
+                    hotsPlayers[id].PlayerTeam = redTeam;
+                    hotsPlayers[id].EnemyTeam = blueTeam;
                 }
 
                 if (stormPlayer.Team == hotsReplay.stormReplay.Owner.Team)
@@ -1268,12 +1268,12 @@ namespace HotsReplayReader
             // Correction de la version pour les replays. Par exemple, 2.55.10.94387 => 2.55.11.94387
             string? versionGitHubFolder = await FindVersionGitHubFolder(httpClient, version);
 
-            string rootFolder = $@"{Init.dbDirectory}\{version}";
+            string rootFolder = $@"{Init.DbDirectory}\{version}";
 
             string gitHubApiUrl = $@"https://api.github.com/repos/HeroesToolChest/heroes-data/contents/heroesdata/{versionGitHubFolder}";
 
-            if (!Directory.Exists(Init.dbDirectory) && Init.dbDirectory != null)
-                Directory.CreateDirectory(Init.dbDirectory);
+            if (!Directory.Exists(Init.DbDirectory) && Init.DbDirectory != null)
+                Directory.CreateDirectory(Init.DbDirectory);
 
             if (!Directory.Exists(rootFolder))
                 Directory.CreateDirectory(rootFolder);
@@ -1323,15 +1323,15 @@ namespace HotsReplayReader
 
             // https://github.com/HeroesToolChest/heroes-data/tree/master/heroesdata
             // Téléchargement des json des héros si besoin
-            if (!Directory.Exists($@"{Init.dbDirectory}\{replayVersion}"))
+            if (!Directory.Exists($@"{Init.DbDirectory}\{replayVersion}"))
             {
                 webView.CoreWebView2.NavigateToString($@"<center>T&eacute;l&eacute;chargement des fichiers json des h&eacute;ros pour la version {replayVersion}...</center>");
                 await DownloadHeroesJsonFiles(HttpClient, replayVersion);
             }
 
-            string? heroDataJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
-            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
-            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.dbDirectory}\{replayVersion}\gamestrings\", "gamestrings_*_enus.json").FirstOrDefault();
+            string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
+            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
+            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\gamestrings\", "gamestrings_*_enus.json").FirstOrDefault();
 
             if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
             {
