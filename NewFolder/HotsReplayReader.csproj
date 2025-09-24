@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="NewFolder\HotsReplayReader.ico" />
+    <Content Include="HotsReplayReader.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,32 +24,32 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="NewFolder\abilitytalents.Designer.cs">
+    <Compile Update="abilitytalents.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AbilityTalents.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewFolder\heroesIcon.Designer.cs">
+    <Compile Update="heroesIcon.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>HeroesIcon.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewFolder\hotsEmoticons.Designer.cs">
+    <Compile Update="hotsEmoticons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>HotsEmoticons.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewFolder\hotsResources.Designer.cs">
+    <Compile Update="hotsResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>HotsResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewFolder\MatchAwardsImg.Designer.cs">
+    <Compile Update="MatchAwardsImg.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MatchAwardsImg.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewFolder\minimapIcons.Designer.cs">
+    <Compile Update="minimapIcons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MinimapIcons.resx</DependentUpon>
@@ -57,27 +57,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="NewFolder\AbilityTalents.resx">
+    <EmbeddedResource Update="AbilityTalents.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>abilitytalents.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewFolder\HeroesIcon.resx">
+    <EmbeddedResource Update="HeroesIcon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>heroesIcon.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewFolder\HotsEmoticons.resx">
+    <EmbeddedResource Update="HotsEmoticons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>hotsEmoticons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewFolder\HotsResources.resx">
+    <EmbeddedResource Update="HotsResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>hotsResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewFolder\MatchAwardsImg.resx">
+    <EmbeddedResource Update="MatchAwardsImg.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MatchAwardsImg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewFolder\MinimapIcons.resx">
+    <EmbeddedResource Update="MinimapIcons.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>minimapIcons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -89,6 +89,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="NewFolder\" />
     <Folder Include="obj\Debug\net9.0-windows\" />
   </ItemGroup>
 </Project>
