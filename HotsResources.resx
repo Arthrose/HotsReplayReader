@@ -128,27 +128,27 @@
     <value>css/styles.css;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ui_ingame_loadscreen_partylink_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\ui_ingame_loadscreen_partylink_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\ui_ingame_loadscreen_partylink_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ui_ingame_loadscreen_partylink_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\ui_ingame_loadscreen_partylink_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\ui_ingame_loadscreen_partylink_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ui_ingame_loadscreen_partylink_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\ui_ingame_loadscreen_partylink_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\ui_ingame_loadscreen_partylink_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ui_ingame_loadscreen_partylink_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\ui_ingame_loadscreen_partylink_4.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\ui_ingame_loadscreen_partylink_4.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="talents10Border" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\talents10Border.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\talents10Border.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="talentsBorder" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\talentsBorder.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\talentsBorder.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="translate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\translate.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\translate.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Welcome" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\welcome.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\HotsResources\welcome.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

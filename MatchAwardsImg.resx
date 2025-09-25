@@ -99,573 +99,573 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="storm_ui_mvp_avenger_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_avenger_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_avenger_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_avenger_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_avenger_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_avenger_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_avenger_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_avenger_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_avenger_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_bulwark_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_bulwark_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_bulwark_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_bulwark_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_bulwark_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_bulwark_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_bulwark_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_bulwark_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_bulwark_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_cannoneer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_cannoneer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_cannoneer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_cannoneer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_cannoneer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_cannoneer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_cannoneer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_cannoneer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_cannoneer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_clutchhealer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_clutchhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_clutchhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_clutchhealer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_clutchhealer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_clutchhealer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_clutchhealer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_clutchhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_clutchhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_combatmedic_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_combatmedic_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_combatmedic_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_combatmedic_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_combatmedic_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_combatmedic_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_combatmedic_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_combatmedic_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_combatmedic_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_dabomb_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_dabomb_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_dabomb_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_dabomb_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_dabomb_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_dabomb_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_dabomb_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_dabomb_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_dabomb_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_daredevil_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_daredevil_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_daredevil_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_daredevil_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_daredevil_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_daredevil_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_daredevil_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_daredevil_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_daredevil_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_dominator_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_dominator_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_dominator_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_dominator_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_dominator_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_dominator_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_dominator_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_dominator_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_dominator_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_escapeartist_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_escapeartist_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_escapeartist_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_escapeartist_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_escapeartist_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_escapeartist_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_escapeartist_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_escapeartist_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_escapeartist_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_experienced_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_experienced_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_experienced_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_experienced_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_experienced_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_experienced_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_experienced_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_experienced_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_experienced_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_finisher_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_finisher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_finisher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_finisher_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_finisher_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_finisher_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_finisher_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_finisher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_finisher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_gardenterror_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_gardenterror_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_gardenterror_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_gardenterror_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_gardenterror_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_gardenterror_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_gardenterror_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_gardenterror_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_gardenterror_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_guardianslayer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_guardianslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_guardianslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_guardianslayer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_guardianslayer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_guardianslayer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_guardianslayer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_guardianslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_guardianslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_guardian_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_guardian_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_guardian_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_guardian_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_guardian_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_guardian_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_guardian_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_guardian_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_guardian_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_hattrick_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_hattrick_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_hattrick_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_hattrick_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_hattrick_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_hattrick_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_hattrick_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_hattrick_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_hattrick_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_headhunter_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_headhunter_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_headhunter_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_headhunter_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_headhunter_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_headhunter_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_headhunter_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_headhunter_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_headhunter_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_immortalslayer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_immortalslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_immortalslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_immortalslayer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_immortalslayer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_immortalslayer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_immortalslayer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_immortalslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_immortalslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_jeweler_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_jeweler_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_jeweler_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_jeweler_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_jeweler_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_jeweler_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_jeweler_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_jeweler_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_jeweler_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_loyaldefender_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_loyaldefender_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_loyaldefender_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_loyaldefender_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_loyaldefender_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_loyaldefender_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_loyaldefender_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_loyaldefender_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_loyaldefender_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_mainhealer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_mainhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_mainhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_mainhealer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_mainhealer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_mainhealer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_mainhealer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_mainhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_mainhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_masterofthecurse_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_masterofthecurse_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_masterofthecurse_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_masterofthecurse_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_masterofthecurse_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_masterofthecurse_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_masterofthecurse_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_masterofthecurse_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_masterofthecurse_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_moneybags_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_moneybags_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_moneybags_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_moneybags_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_moneybags_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_moneybags_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_moneybags_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_moneybags_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_moneybags_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_mvp_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_mvp_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_mvp_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_mvp_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_mvp_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_mvp_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_mvp_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_mvp_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_mvp_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_painbringer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_painbringer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_painbringer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_painbringer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_painbringer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_painbringer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_painbringer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_painbringer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_painbringer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_pointguard_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_pointguard_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_pointguard_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_pointguard_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_pointguard_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_pointguard_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_pointguard_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_pointguard_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_pointguard_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_protector_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_protector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_protector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_protector_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_protector_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_protector_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_protector_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_protector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_protector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_pusher_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_pusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_pusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_pusher_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_pusher_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_pusher_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_pusher_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_pusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_pusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_scrapper_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_scrapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_scrapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_scrapper_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_scrapper_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_scrapper_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_scrapper_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_scrapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_scrapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_shriner_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_shriner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_shriner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_shriner_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_shriner_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_shriner_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_shriner_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_shriner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_shriner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_siegemaster_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_siegemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_siegemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_siegemaster_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_siegemaster_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_siegemaster_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_siegemaster_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_siegemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_siegemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_silencer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_silencer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_silencer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_silencer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_silencer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_silencer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_silencer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_silencer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_silencer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_skullcollector_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_skullcollector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_skullcollector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_skullcollector_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_skullcollector_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_skullcollector_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_skullcollector_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_skullcollector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_skullcollector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_solesurvivor_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_solesurvivor_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_solesurvivor_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_solesurvivor_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_solesurvivor_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_solesurvivor_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_solesurvivor_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_solesurvivor_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_solesurvivor_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_stunner_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_stunner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_stunner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_stunner_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_stunner_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_stunner_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_stunner_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_stunner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_stunner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_teamplayer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_teamplayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_teamplayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_teamplayer_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_teamplayer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_teamplayer_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_teamplayer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_teamplayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_teamplayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_templemaster_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_templemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_templemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_templemaster_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_templemaster_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_templemaster_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_templemaster_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_templemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_templemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_trapper_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_trapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_trapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_trapper_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_trapper_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_trapper_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_trapper_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_trapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_trapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_zergcrusher_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_zergcrusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_zergcrusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_zergcrusher_gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_zergcrusher_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_zergcrusher_gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_mvp_zergcrusher_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_mvp_zergcrusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_mvp_zergcrusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_avenger_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_avenger_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_avenger_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_avenger_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_avenger_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_avenger_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_bulwark_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_bulwark_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_bulwark_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_bulwark_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_bulwark_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_bulwark_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_cannoneer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_cannoneer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_cannoneer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_cannoneer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_cannoneer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_cannoneer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_clutchhealer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_clutchhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_clutchhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_clutchhealer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_clutchhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_clutchhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_combatmedic_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_combatmedic_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_combatmedic_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_combatmedic_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_combatmedic_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_combatmedic_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_dabomb_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_dabomb_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_dabomb_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_dabomb_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_dabomb_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_dabomb_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_daredevil_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_daredevil_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_daredevil_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_daredevil_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_daredevil_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_daredevil_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_escapeartist_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_escapeartist_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_escapeartist_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_escapeartist_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_escapeartist_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_escapeartist_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_experienced_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_experienced_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_experienced_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_experienced_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_experienced_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_experienced_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_finisher_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_finisher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_finisher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_finisher_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_finisher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_finisher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_gardenterror_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_gardenterror_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_gardenterror_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_gardenterror_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_gardenterror_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_gardenterror_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_guardianslayer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_guardianslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_guardianslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_guardianslayer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_guardianslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_guardianslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_guardian_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_guardian_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_guardian_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_guardian_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_guardian_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_guardian_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_hattrick_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_hattrick_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_hattrick_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_hattrick_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_hattrick_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_hattrick_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_headhunter_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_headhunter_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_headhunter_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_headhunter_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_headhunter_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_headhunter_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_immortalslayer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_immortalslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_immortalslayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_immortalslayer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_immortalslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_immortalslayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_jeweler_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_jeweler_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_jeweler_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_jeweler_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_jeweler_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_jeweler_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_loyaldefender_wcav_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_loyaldefender_wcav_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_loyaldefender_wcav_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_loyaldefender_wcav_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_loyaldefender_wcav_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_loyaldefender_wcav_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_mainhealer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_mainhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_mainhealer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_mainhealer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_mainhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_mainhealer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_masterofthecurse_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_masterofthecurse_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_masterofthecurse_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_masterofthecurse_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_masterofthecurse_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_masterofthecurse_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_moneybags_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_moneybags_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_moneybags_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_moneybags_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_moneybags_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_moneybags_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_mvp_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_mvp_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_mvp_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_mvp_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_mvp_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_mvp_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_painbringer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_painbringer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_painbringer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_painbringer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_painbringer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_painbringer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_pointguard_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_pointguard_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_pointguard_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_pointguard_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_pointguard_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_pointguard_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_protector_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_protector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_protector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_protector_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_protector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_protector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_pusher_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_pusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_pusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_pusher_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_pusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_pusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_scrapper_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_scrapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_scrapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_scrapper_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_scrapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_scrapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_shriner_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_shriner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_shriner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_shriner_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_shriner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_shriner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_siegemaster_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_siegemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_siegemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_siegemaster_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_siegemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_siegemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_silencer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_silencer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_silencer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_silencer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_silencer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_silencer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_skullcollector_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_skullcollector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_skullcollector_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_skullcollector_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_skullcollector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_skullcollector_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_skull_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_skull_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_skull_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_skull_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_skull_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_skull_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_solesurvivor_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_solesurvivor_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_solesurvivor_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_solesurvivor_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_solesurvivor_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_solesurvivor_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_stunner_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_stunner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_stunner_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_stunner_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_stunner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_stunner_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_teamplayer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_teamplayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_teamplayer_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_teamplayer_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_teamplayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_teamplayer_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_templemaster_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_templemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_templemaster_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_templemaster_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_templemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_templemaster_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_trapper_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_trapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_trapper_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_trapper_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_trapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_trapper_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_zergcrusher_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_zergcrusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_zergcrusher_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="storm_ui_scorescreen_mvp_zergcrusher_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\matchawards\storm_ui_scorescreen_mvp_zergcrusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>images\MatchAwards\storm_ui_scorescreen_mvp_zergcrusher_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

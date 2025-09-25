@@ -6,7 +6,7 @@
 	  <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>HotsReplayReader.ico</ApplicationIcon>
+    <ApplicationIcon>images\HotsReplayReader.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="imagesnew\HotsReplayReader.ico" />
+    <Content Include="images\HotsReplayReader.ico" />
   </ItemGroup>
 
   <ItemGroup>

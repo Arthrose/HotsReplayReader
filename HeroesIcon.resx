@@ -119,279 +119,279 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Abathur" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Abathur.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Abathur.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Alarak" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Alarak.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Alarak.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Alexstrasza" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Alexstrasza.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Alexstrasza.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Ana" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Ana.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Ana.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Anduin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Anduin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Anduin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Anub'arak" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Anub'arak.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Anub'arak.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Artanis" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Artanis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Artanis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Arthas" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Arthas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Arthas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Auriel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Auriel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Auriel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Azmodan" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Azmodan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Azmodan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Blaze" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Blaze.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Blaze.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Brightwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Brightwing.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Brightwing.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Cassia" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Cassia.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Cassia.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Chen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Chen.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Chen.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Cho" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Cho.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Cho.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Chromie" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Chromie.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Chromie.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="D.Va" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\D.Va.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\D.Va.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Deathwing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Deathwing.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Deathwing.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Deckard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Deckard.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Deckard.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Dehaka" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Dehaka.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Dehaka.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Diablo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Diablo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Diablo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="E.T.C." type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\E.T.C..png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\E.T.C..png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Falstad" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Falstad.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Falstad.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Fenix" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Fenix.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Fenix.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Gall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Gall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Gall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Garrosh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Garrosh.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Garrosh.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Gazlowe" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Gazlowe.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Gazlowe.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Genji" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Genji.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Genji.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Greymane" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Greymane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Greymane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Gul'dan" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Gul'dan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Gul'dan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Hanzo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Hanzo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Hanzo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Hogger" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Hogger.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Hogger.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Illidan" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Illidan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Illidan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Imperius" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Imperius.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Imperius.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Jaina" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Jaina.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Jaina.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Johanna" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Johanna.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Johanna.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Junkrat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Junkrat.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Junkrat.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Kael'thas" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Kael'thas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Kael'thas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Kel'Thuzad" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Kel'Thuzad.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Kel'Thuzad.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Kerrigan" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Kerrigan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Kerrigan.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Kharazim" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Kharazim.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Kharazim.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Leoric" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Leoric.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Leoric.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Li Li" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Li Li.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Li Li.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Li-Ming" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Li-Ming.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Li-Ming.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Lt. Morales" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Lt. Morales.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Lt. Morales.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Lunara" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Lunara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Lunara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Lúcio" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Lúcio.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Lúcio.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Maiev" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Maiev.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Maiev.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Mal'Ganis" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Mal'Ganis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Mal'Ganis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Malfurion" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Malfurion.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Malfurion.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Malthael" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Malthael.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Malthael.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Medivh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Medivh.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Medivh.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Mei" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Mei.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Mei.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Mephisto" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Mephisto.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Mephisto.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Muradin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Muradin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Muradin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Murky" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Murky.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Murky.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Nazeebo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Nazeebo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Nazeebo.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Nova" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Nova.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Nova.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Orphea" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Orphea.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Orphea.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Probius" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Probius.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Probius.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Qhira" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Qhira.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Qhira.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Ragnaros" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Ragnaros.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Ragnaros.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Raynor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Raynor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Raynor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Rehgar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Rehgar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Rehgar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Rexxar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Rexxar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Rexxar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Samuro" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Samuro.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Samuro.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Sgt. Hammer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Sgt. Hammer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Sgt. Hammer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Sonya" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Sonya.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Sonya.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Stitches" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Stitches.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Stitches.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Stukov" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Stukov.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Stukov.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Sylvanas" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Sylvanas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Sylvanas.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Tassadar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Tassadar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Tassadar.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="The Butcher" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\The Butcher.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\The Butcher.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="The Lost Vikings" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\The Lost Vikings.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\The Lost Vikings.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Thrall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Thrall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Thrall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Tracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Tracer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Tracer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Tychus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Tychus.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Tychus.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Tyrael" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Tyrael.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Tyrael.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Tyrande" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Tyrande.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Tyrande.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Uther" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Uther.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Uther.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Valeera" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Valeera.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Valeera.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Valla" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Valla.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Valla.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Varian" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Varian.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Varian.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Whitemane" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Whitemane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Whitemane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Xul" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Xul.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Xul.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Yrel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Yrel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Yrel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Zagara" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Zagara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Zagara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Zarya" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Zarya.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Zarya.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Zeratul" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Zeratul.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Zeratul.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Zul'jin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\Zul'jin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\Zul'jin.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="NONE" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\NONE.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\NONE.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="_Null" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>images\heroes\_Null.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>images\Heroes\_Null.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
