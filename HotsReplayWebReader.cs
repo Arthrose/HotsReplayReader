@@ -1124,36 +1124,6 @@ namespace HotsReplayReader
                     hotsPlayers[id].PlayerTeam = redTeam;
                     hotsPlayers[id].EnemyTeam = blueTeam;
                 }
-
-/*
-                if (stormPlayer.Team == hotsReplay.stormReplay.Owner.Team)
-                {
-                    if (hotsReplay.stormReplay.Owner.BattleTagName == stormPlayer.BattleTagName)
-                    {
-                        hotsPlayers[id].Party = "1";
-                    }
-                    else if ((stormPlayer.PartyValue == hotsReplay.stormReplay.Owner.PartyValue) && (stormPlayer.PartyValue != null))
-                    {
-                        hotsPlayers[id].Party = "1";
-                    }
-                    else if (stormPlayer.PartyValue != null)
-                    {
-                        hotsPlayers[id].Party = "2";
-                    }
-                }
-                else
-                {
-                    if ((stormPlayer.PartyValue != null) && ((opponentsFirstParty == null) || (opponentsFirstParty == stormPlayer.PartyValue)))
-                    {
-                        opponentsFirstParty = stormPlayer.PartyValue;
-                        hotsPlayers[id].Party = "3";
-                    }
-                    else if ((stormPlayer.PartyValue != null) && (opponentsFirstParty != stormPlayer.PartyValue))
-                    {
-                        hotsPlayers[id].Party = "4";
-                    }
-                }
-*/
             }
         }
         public static string GetHeroIdRole(string HeroId)
