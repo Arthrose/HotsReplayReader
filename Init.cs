@@ -20,7 +20,7 @@ namespace HotsReplayReader
         public Init()
         {
             RegistryKey? regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders");
-            
+
             if (regKey == null) return;
 
             userDocumentsFolder = regKey.GetValue("Personal", "").ToString();

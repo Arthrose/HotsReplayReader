@@ -605,7 +605,7 @@ namespace HotsReplayReader
         }
         private string HTMLGetScoreTable()
         {
-            if (hotsReplay == null || hotsReplay.stormPlayers == null|| blueTeam == null || redTeam == null) return "";
+            if (hotsReplay == null || hotsReplay.stormPlayers == null || blueTeam == null || redTeam == null) return "";
 
             string html = @$"
 <table class=""tableScore"">
