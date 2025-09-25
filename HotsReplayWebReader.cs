@@ -21,9 +21,10 @@ namespace HotsReplayReader
         private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
         internal static string currentAccount = string.Empty;
 
-        HotsReplay? hotsReplay;
-        HotsTeam? redTeam;
-        HotsTeam? blueTeam;
+        private HotsReplay? hotsReplay;
+        private HotsTeam? redTeam;
+        private HotsTeam? blueTeam;
+        private Dictionary<string, string>? hotsParties;
         private HotsPlayer[]? hotsPlayers;
 
         private readonly string formTitle = "Hots Replay Reader";
@@ -445,7 +446,16 @@ namespace HotsReplayReader
             string html = $"    <td class=\"headTableTd\">\n";
             html += "      <span class=\"tooltip\">\n";
             html += "        <span class=\"heroPortrait\">\n";
-            html += $"          <img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon heroIconTeam{GetParty(stormPlayer.BattleTagName)}\" />\n";
+            html += $"          <img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
+
+            string? party = GetParty(stormPlayer.BattleTagName);
+            if (party != "0")
+            {
+                string? ressourceName = $"ui_ingame_loadscreen_partylink_{party}.png";
+                if (ressourceName != null)
+                    ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
+                html += $"          <img src=\"app://hotsresources/{ressourceName}\" class =\"heroPartyIcon\" />\n";
+            }
 
             if (stormPlayer.MatchAwardsCount > 0)
             {
@@ -971,22 +981,54 @@ namespace HotsReplayReader
         {
             if (hotsReplay == null || hotsReplay.stormPlayers == null || hotsReplay.stormReplay == null) return;
 
-            long? opponentsFirstParty = null;
             hotsPlayers = null;
             hotsPlayers = new HotsPlayer[10];
+
+            hotsParties = new Dictionary<string, string>()
+            {
+                { "1", "" },
+                { "2", "" },
+                { "3", "" },
+                { "4", "" }
+            };
+
             int i = 0;
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+            {
                 if (stormPlayer.Team.ToString() == "Blue")
                 {
-                    InitPlayerData(stormPlayer, ref opponentsFirstParty, i);
+                    InitPlayerData(stormPlayer, i);
                     i++;
                 }
+            }
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                 {
-                    InitPlayerData(stormPlayer, ref opponentsFirstParty, i);
+                    InitPlayerData(stormPlayer, i);
                     i++;
                 }
+
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
+            {
+                if (hotsPlayer.PartyValue != null)
+                {
+                    string? partyValue = hotsPlayer.PartyValue.ToString();
+                    for (int j = 1; j <= 4; j++)
+                    {
+                        if (hotsParties[$"{j}"] == partyValue)
+                        {
+                            hotsPlayer.Party = j.ToString();
+                            break;
+                        }
+                        else if (hotsParties[$"{j}"] == "")
+                        {
+                            hotsParties[$"{j}"] = partyValue!;
+                            hotsPlayer.Party = j.ToString();
+                            break;
+                        }
+                    }
+                }
+            }
 
             i = 0;
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
@@ -1062,7 +1104,7 @@ namespace HotsReplayReader
                 i++;
             }
         }
-        private void InitPlayerData(StormPlayer stormPlayer, ref long? opponentsFirstParty, int id)
+        private void InitPlayerData(StormPlayer stormPlayer, int id)
         {
             if (hotsPlayers != null && hotsReplay != null && hotsReplay?.stormReplay?.Owner != null)
             {
@@ -1083,6 +1125,7 @@ namespace HotsReplayReader
                     hotsPlayers[id].EnemyTeam = blueTeam;
                 }
 
+/*
                 if (stormPlayer.Team == hotsReplay.stormReplay.Owner.Team)
                 {
                     if (hotsReplay.stormReplay.Owner.BattleTagName == stormPlayer.BattleTagName)
@@ -1110,6 +1153,7 @@ namespace HotsReplayReader
                         hotsPlayers[id].Party = "4";
                     }
                 }
+*/
             }
         }
         public static string GetHeroIdRole(string HeroId)
@@ -1365,11 +1409,11 @@ namespace HotsReplayReader
         // Sélection d'un replay dans la liste
         private async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine(listBoxHotsReplays.SelectedIndex.ToString());
-            Debug.WriteLine(replayList[listBoxHotsReplays.SelectedIndex]);
-
             try
             {
+                Debug.WriteLine(listBoxHotsReplays.SelectedIndex.ToString());
+                Debug.WriteLine(replayList[listBoxHotsReplays.SelectedIndex]);
+
                 hotsReplay = new HotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
                 if (hotsReplay.stormReplay != null)
                 {

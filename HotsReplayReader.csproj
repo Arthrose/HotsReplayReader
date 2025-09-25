@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="HotsReplayReader.ico" />
+    <Content Include="imagesnew\HotsReplayReader.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -84,6 +84,14 @@ tr {
   position: relative;
   display: inline-block;
 }
+.heroPortrait .heroPartyIcon {
+  position: absolute;
+  bottom: 50;
+  right: -5;
+  width: 36px;
+  height: auto;
+  pointer-events: none;
+}
 .heroPortrait .heroAwardIcon {
   position: absolute;
   bottom: -5;
