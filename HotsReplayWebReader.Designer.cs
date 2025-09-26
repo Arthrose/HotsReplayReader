@@ -90,23 +90,26 @@
             webView.AllowExternalDrop = false;
             webView.CreationProperties = null;
             webView.DefaultBackgroundColor = Color.White;
-            webView.Location = new Point(260, 24);
+            webView.Location = new Point(0, 24);
             webView.Name = "webView";
-            webView.Size = new Size(1099, 784);
+            webView.Size = new Size(1359, 784);
             webView.Source = new Uri("about:blank", UriKind.Absolute);
-            webView.TabIndex = 1;
+            webView.TabIndex = 3;
             webView.ZoomFactor = 1D;
+            webView.MouseMove += webView_MouseMove;
             // 
             // listBoxHotsReplays
             // 
+            listBoxHotsReplays.Dock = DockStyle.Left;
             listBoxHotsReplays.FormattingEnabled = true;
             listBoxHotsReplays.Location = new Point(0, 24);
             listBoxHotsReplays.Name = "listBoxHotsReplays";
             listBoxHotsReplays.Size = new Size(254, 784);
-            listBoxHotsReplays.TabIndex = 3;
+            listBoxHotsReplays.TabIndex = 1;
+            listBoxHotsReplays.Visible = false;
             listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
             // 
-            // hotsReplayWebReader
+            // HotsReplayWebReader
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -117,7 +120,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MainMenuStrip = menuStrip;
-            Name = "hotsReplayWebReader";
+            Name = "HotsReplayWebReader";
             Text = "Hots Replay Reader";
             Load += HotsReplayWebReader_Load;
             Resize += HotsReplayWebReader_Resize;

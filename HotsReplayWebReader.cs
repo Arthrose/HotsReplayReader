@@ -95,20 +95,18 @@ namespace HotsReplayReader
         {
             webViewOriginalRectangle = new Rectangle(webViewOriginalRectangle.Location.X, webViewOriginalRectangle.Location.Y, webViewOriginalRectangle.Width, webViewOriginalRectangle.Height);
 
-            if (Directory.Exists(Init.lastReplayFilePath))
-            {
-                ListHotsReplays(Init.lastReplayFilePath);
-                this.Text = $"{formTitle} - {currentAccount}";
-                this.Update();
-            }
 
             await webView.EnsureCoreWebView2Async();
 
             Debug.WriteLine("WebView2 Runtime version: " + webView.CoreWebView2.Environment.BrowserVersionString);
 
             webView.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = false;
+
+            /* Activation / Desactivation de la console */
             webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
             webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+            /* Activation / Desactivation de la console */
+
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
 
@@ -124,16 +122,23 @@ namespace HotsReplayReader
                 var root = document.RootElement;
 
                 // Vérifie si le message contient les propriétés "action" et "callbackId"
-                if (root.TryGetProperty("action", out var actionElement) &&
-                    root.TryGetProperty("callbackId", out var callbackIdElement))
+                if (root.TryGetProperty("action", out var actionElement))
                 {
                     // Récupère les valeurs de "action" et "callbackId"
                     string? action = actionElement.GetString();
-                    string? callbackId = callbackIdElement.GetString();
 
-                    // Vérifie si l'action est "Translate" et si le message contient "text"
-                    if (action == "translate" && root.TryGetProperty("text", out var textElement))
+                    // Vérifie si l'action est "hoverLeft"
+                    if (action == "hoverLeft")
                     {
+                        bool isHover = root.GetProperty("isHover").GetBoolean();
+                        // affiche/masque la listBox
+                        listBoxHotsReplays.Visible = isHover;
+                    }
+
+                    // Vérifie si l'action est "Translate", si il y a une propriété callbackId et si le message contient "text"
+                    if (action == "translate" && root.TryGetProperty("callbackId", out var callbackIdElement) && root.TryGetProperty("text", out var textElement))
+                    {
+                        string? callbackId = callbackIdElement.GetString();
                         // Récupère le texte à traduire
                         string? inputText = textElement.GetString();
                         string translated = string.Empty;
@@ -158,30 +163,47 @@ namespace HotsReplayReader
                 }
             };
 
-            htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
 
-            // Bouton de test pour appeler la fonction translateWithCSharp
-            /*
-                        htmlContent = @"
-            <script>
-                function translateWithCSharp(text) {
-                    const callbackId = ""cb_"" + Date.now();
-                    window.chrome.webview.postMessage({
-                        action: ""Translate"",
-                        callbackId: callbackId,
-                        text: text
-                    });
-                    window[callbackId] = function(result) {
-                        alert(result);
-                    };
-                }
-            </script>
+            if (Directory.Exists(Init.lastReplayFilePath))
+            {
+                ListHotsReplays(Init.lastReplayFilePath);
+                this.Text = $"{formTitle} - {currentAccount}";
+                this.Update();
 
-            <button onclick = ""translateWithCSharp('Bonjour le monde!')"" >Get a response from C#</button>
-            ";
-            */
-            webView.NavigateToString(htmlContent);
+                this.Invoke(new Action(() =>
+                {
+                    if (listBoxHotsReplays.Items.Count > 0)
+                    {
+                        listBoxHotsReplays.SelectedIndex = 0; // sélection du premier élément
+                    }
+                }));
+            }
+            else
+            {
+                htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
 
+                // Bouton de test pour appeler la fonction translateWithCSharp
+                /*
+                            htmlContent = @"
+                <script>
+                    function translateWithCSharp(text) {
+                        const callbackId = ""cb_"" + Date.now();
+                        window.chrome.webview.postMessage({
+                            action: ""Translate"",
+                            callbackId: callbackId,
+                            text: text
+                        });
+                        window[callbackId] = function(result) {
+                            alert(result);
+                        };
+                    }
+                </script>
+
+                <button onclick = ""translateWithCSharp('Bonjour le monde!')"" >Get a response from C#</button>
+                ";
+                */
+                webView.NavigateToString(htmlContent);
+            }
         }
         private void CoreWebView2_WebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
@@ -233,7 +255,7 @@ namespace HotsReplayReader
         {
             int newWidth;
             if (growWidth)
-                newWidth = (int)(this.Width - 276); //384
+                newWidth = (int)(this.Width); // newWidth = (int)(this.Width - 276); //384
             else
                 newWidth = c.Width;
             int newHeight = (int)(this.Height - 63);
@@ -243,6 +265,22 @@ namespace HotsReplayReader
         {
             ResizeControl(listBoxHotsReplays, false);
             ResizeControl(webView, true);
+        }
+        private void webView_MouseMove(object sender, MouseEventArgs e)
+        {
+            Debug.WriteLine($"X: {e.X} - Y: {e.Y}");
+            // Si la souris est à moins de 20 pixels du bord gauche
+            if (e.X <= 20)
+            {
+                if (!listBoxHotsReplays.Visible)
+                    listBoxHotsReplays.Visible = true;
+            }
+            else
+            {
+                // Si la souris quitte la zone de la listBox, on la cache
+                if (listBoxHotsReplays.Visible && !listBoxHotsReplays.Bounds.Contains(e.Location))
+                    listBoxHotsReplays.Visible = false;
+            }
         }
         private void MenuItemClickHandler(object? sender, EventArgs e)
         {
@@ -340,6 +378,21 @@ namespace HotsReplayReader
       e.preventDefault()
     }})
   }})
+
+  // Affice la liste des replays
+  document.addEventListener(""mousemove"", function (e) {{
+    // Détection si la souris est dans les 50px à gauche
+    const isHover = e.clientX <= 50;
+    // On envoie à C# uniquement quand le statut change
+    if (window.__lastHover !== isHover) {{
+      console.log(`X: ${{event.clientX}}, Y: ${{event.clientY}}`);
+      window.chrome.webview.postMessage({{
+        action: ""hoverLeft"",
+        isHover: isHover
+      }});
+      window.__lastHover = isHover;
+    }}
+  }});
 
   // Traduit le texte avec C#
   function translateWithCSharp(text) {{
@@ -1496,10 +1549,7 @@ namespace HotsReplayReader
             }
             if (ready)
             {
-                this.Invoke(new Action(() =>
-                {
-                    ListHotsReplays(Path.GetDirectoryName(e.FullPath));
-                }));
+                this.Invoke(new Action(() => { ListHotsReplays(Path.GetDirectoryName(e.FullPath)); }));
             }
         }
 
