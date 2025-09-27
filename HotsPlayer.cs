@@ -9,6 +9,7 @@ namespace HotsReplayReader
         public double MvpScore { get; set; }
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
+        public string? HeroUnitId { get; set; }
         public new IReadOnlyList<HeroMasteryTier> HeroMasteryTiers { get; set; }
         public new int? HeroMasteryTiersCount { get; set; }
         public new IReadOnlyList<MatchAwardType>? MatchAwards { get; set; }

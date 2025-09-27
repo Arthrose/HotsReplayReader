@@ -14,6 +14,9 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
+        private readonly string LanguageCode = "en-US";
+
+
         private Rectangle webViewOriginalRectangle;
 
         private string? hotsReplayFolder;
@@ -29,10 +32,10 @@ namespace HotsReplayReader
 
         private readonly string formTitle = "Hots Replay Reader";
 
-        // Liste des replays avec leur index et leur chemin
+        // List ofs replays index and path
         readonly private Dictionary<int, string> replayList;
 
-        // Écoute les notifications de modifications du système de fichiers
+        // Listen to file system modification's notifications
         private FileSystemWatcher? fileSystemWatcher;
 
         internal string? htmlContent;
@@ -50,6 +53,9 @@ namespace HotsReplayReader
         public HotsReplayWebReader()
         {
             InitializeComponent();
+
+            LanguageCode = "fr-FR";
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageCode);
 
             translator = new DeepLTranslator(apiKey);
             replayList = [];
@@ -266,7 +272,7 @@ namespace HotsReplayReader
             ResizeControl(listBoxHotsReplays, false);
             ResizeControl(webView, true);
         }
-        private void webView_MouseMove(object sender, MouseEventArgs e)
+        private void WebView_MouseMove(object sender, MouseEventArgs e)
         {
             Debug.WriteLine($"X: {e.X} - Y: {e.Y}");
             // Si la souris est à moins de 20 pixels du bord gauche
@@ -427,7 +433,6 @@ namespace HotsReplayReader
         internal string HTMLGetHeadTable()
         {
             if (blueTeam == null || redTeam == null || hotsReplay == null) return "";
-
             string isBlueTeamWinner = blueTeam.IsWinner ? " teamBestScoreBlue" : "";
             string isRedTeamWinner = redTeam.IsWinner ? " teamBestScoreRed" : "";
             string winnerTeamClass = blueTeam.IsWinner ? "titleBlueTeam" : "titleRedTeam";
@@ -468,11 +473,11 @@ namespace HotsReplayReader
                 html += "  <tr>\n    <td>&nbsp;</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
-                        html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{GetHeroNameFromHeroId(draftPick.HeroSelected)}.png\" class=\"heroIcon\">\n";
+                        html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
                 html += "    <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 50%;\">Bans</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
-                        html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{GetHeroNameFromHeroId(draftPick.HeroSelected)}.png\" class=\"heroIcon\">\n";
+                        html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
                 html += "    <td>&nbsp;</td>\n  <tr>\n";
             }
 
@@ -499,7 +504,7 @@ namespace HotsReplayReader
             string html = $"    <td class=\"headTableTd\">\n";
             html += "      <span class=\"tooltip\">\n";
             html += "        <span class=\"heroPortrait\">\n";
-            html += $"          <img src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
+            html += $"          <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
 
             string? party = GetParty(stormPlayer.BattleTagName);
             if (party != "0")
@@ -704,8 +709,8 @@ namespace HotsReplayReader
             string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
-            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{stormPlayer.PlayerHero.HeroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
+            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
+            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}<br /><font size=\"-1\">{playerName}</font></td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.SoloKills == team.MaxKills)
@@ -806,8 +811,8 @@ namespace HotsReplayReader
             string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
-            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{stormPlayer.PlayerHero.HeroName}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{stormPlayer.PlayerHero.HeroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
+            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
+            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}<br /><font size=\"-1\">{playerName}</font></td>\n";
             for (int i = 0; i <= 6; i++)
             {
                 if (i < stormPlayer.Talents.Count)
@@ -817,42 +822,6 @@ namespace HotsReplayReader
             }
             html += "  </tr>\n";
             return html;
-        }
-        private static string GetHeroNameFromHeroId(string heroId)
-        {
-            return _ = heroId switch
-            {
-                "Anubarak" => "Anub'arak",
-                "Firebat" => "Blaze",
-                "FaerieDragon" => "Brightwing",
-                "Butcher" => "The Butcher",
-                "Amazon" => "Cassia",
-                "DVa" => "D.Va",
-                "L90ETC" => "E.T.C.",
-                "Tinker" => "Gazlowe",
-                "Guldan" => "Gul'dan",
-                "SgtHammer" => "Sgt. Hammer",
-                "Crusader" => "Johanna",
-                "Kaelthas" => "Kael'thas",
-                "KelThuzad" => "Kel'Thuzad",
-                "Monk" => "Kharazim",
-                "LiLi" => "Li Li",
-                "Wizard" => "Li-Ming",
-                "LostVikings" => "The Lost Vikings",
-                "Lucio" => "Lúcio",
-                "Dryad" => "Lunara",
-                "MalGanis" => "Mal'Ganis",
-                "MeiOW" => "Mei",
-                "Medic" => "Lt. Morales",
-                "WitchDoctor" => "Nazeebo",
-                "NexusHunter" => "Qhira",
-                "Barbarian" => "Sonya",
-                "DemonHunter" => "Valla",
-                "Necromancer" => "Xul",
-                "Zuljin" => "Zul'jin",
-                "NONE" => "NONE",
-                _ => heroId,
-            };
         }
         private string GetTalentImgString(StormPlayer stormPlayer, Hero heroData, int i)
         {
@@ -1142,7 +1111,7 @@ namespace HotsReplayReader
                                     hotsPlayer.MvpScore += 1;
                             }
 
-                            if (GetHeroIdRole(stormPlayer.PlayerHero.HeroUnitId) == "Tank" || GetHeroIdRole(stormPlayer.PlayerHero.HeroUnitId) == "Bruiser")
+                            if (Init.HeroRoleFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId] == "Tank" || Init.HeroRoleFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId] == "Bruiser")
                             {
                                 if (stormPlayer.ScoreResult.DamageTaken == hotsPlayer.PlayerTeam.MaxDmgTaken)
                                 {
@@ -1178,133 +1147,6 @@ namespace HotsReplayReader
                     hotsPlayers[id].EnemyTeam = blueTeam;
                 }
             }
-        }
-        public static string GetHeroIdRole(string HeroId)
-        {
-            List<string> Tanks =
-            [
-                "HeroAnubarak",              // Anub'arak
-                "HeroArthas",                // Arthas
-                "HeroFirebat",               // Blaze
-                "HeroCho",                   // Cho
-                "HeroDiablo",                // Diablo
-                "HeroL90ETC",                // E.T.C.
-                "HeroGarrosh",               // Garrosh
-                "HeroCrusader",              // Johanna
-                "HeroMalGanis",              // Mal'Ganis
-                "HeroMeiOW",                 // Mei
-                "HeroMuradin",               // Muradin
-                "HeroStitches",              // Stitches
-                "HeroTyrael"                 // Tyrael
-            ];
-            List<string> Bruisers =
-            [
-                "HeroArtanis",               // Artanis
-                "HeroChen",                  // Chen
-                "HeroDeathwing",             // Deathwing
-                "DeathwingDragonflightUnit", // Deathwing
-                "HeroDehaka",                // Dehaka
-                "HeroDVaPilot",              // D.Va
-                "HeroTinker",                // Gazlowe
-                "HeroHogger",                // Hogger
-                "HeroImperius",              // Imperius
-                "HeroLeoric",                // Leoric
-                "HeroMalthael",              // Malthael
-                "HeroRagnaros",              // Ragnaros
-                "HeroRexxar",                // Rexxar
-                "HeroBarbarian",             // Sonya
-                "HeroThrall",                // Thrall
-                "HeroVarian",                // Varian
-                "HeroNecromancer",           // Xul
-                "HeroYrel"                   // Yrel
-            ];
-            List<string> Rangeds =
-            [
-                "HeroAzmodan",               // Azmodan
-                "HeroAmazon",                // Cassia
-                "HeroChromie",               // Chromie
-                "HeroFalstad",               // Falstad
-                "HeroFenix",                 // Fenix
-                "HeroGall",                  // Cho'gall
-                "HeroGenji",                 // Genji
-                "HeroGreymane",              // Greymane
-                "HeroGuldan",                // Gul'dan
-                "HeroHanzo",                 // Hanzo
-                "HeroJaina",                 // Jaina
-                "HeroJunkrat",               // Junkrat
-                "HeroKaelthas",              // Kael'thas
-                "HeroKelThuzad",             // Kel'Thuzad
-                "HeroWizard",                // Li-Ming
-                "HeroDryad",                 // Lunara
-                "HeroMephisto",              // Mephisto
-                "HeroWitchDoctor",           // Nazeebo
-                "HeroNova",                  // Nova
-                "HeroOrphea",                // Orphea
-                "HeroProbius",               // Probius
-                "HeroRaynor",                // Raynor
-                "HeroSgtHammer",             // Sgt. Hammer
-                "HeroSylvanas",              // Sylvanas 
-                "HeroTassadar",              // Tassadar
-                "HeroTracer",                // Tracer
-                "HeroTychus",                // Tychus
-                "HeroDemonHunter",           // Valla
-                "HeroZagara",                // Zagara
-                "HeroZuljin"                 // Zul'jin
-            ];
-            List<string> Melees =
-            [
-                "HeroAlarak",                // Alarak
-                "HeroIllidan",               // Illidan
-                "HeroKerrigan",              // Kerrigan
-                "HeroMaiev",                 // Maiev
-                "HeroMurky",                 // Murky
-                "HeroNexusHunter",           // Qhira
-                "HeroSamuro",                // Samuro
-                "HeroButcher",               // The Butcher
-                "HeroValeera",               // Valeera
-                "HeroZeratul"                // Zeratul
-            ];
-            List<string> Healers =
-            [
-                "HeroAlexstrasza",           // Alexstrasza
-                "HeroAlexstraszaDragon",     // Alexstrasza
-                "HeroAna",                   // Ana
-                "HeroAnduin",                // Anduin
-                "HeroAuriel",                // Auriel
-                "HeroFaerieDragon",          // Brightwing
-                "HeroDeckard",               // Deckard
-                "HeroMonk",                  // Kharazim
-                "HeroLiLi",                  // Li Li
-                "HeroMedic",                 // Lt. Morales
-                "HeroLucio",                 // Lucio
-                "HeroMalfurion",             // Malfurion
-                "HeroRehgar",                // Rehgar
-                "HeroStukov",                // Stukov
-                "HeroTyrande",               // Tyrande
-                "HeroUther",                 // Uther
-                "HeroWhitemane"              // Whitemane
-            ];
-            List<string> Supports =
-            [
-                "HeroAbathur",               // Abathur
-                "HeroMedivh",                // Medivh
-                "HeroMedivhRaven",           // Medivh
-                "HeroLostVikingsController", // The Lost Vikings
-                "HeroZarya"                  // Zarya
-            ];
-            if (Tanks.Contains(HeroId))
-                return "Tank";
-            else if (Bruisers.Contains(HeroId))
-                return "Bruiser";
-            else if (Rangeds.Contains(HeroId))
-                return "Ranged";
-            else if (Melees.Contains(HeroId))
-                return "Melee";
-            else if (Healers.Contains(HeroId))
-                return "Healer";
-            else if (Supports.Contains(HeroId))
-                return "Support";
-            else return "";
         }
         public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
         {

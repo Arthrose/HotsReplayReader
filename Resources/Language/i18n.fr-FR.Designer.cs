@@ -22,14 +22,14 @@ namespace HotsReplayReader {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class HotsResources {
+    internal class i18n_frFR {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal HotsResources() {
+        internal i18n_frFR() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace HotsReplayReader {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HotsReplayReader.HotsResources", typeof(HotsResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HotsReplayReader.Resources.Language.i18n.frFR", typeof(i18n_frFR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,72 +61,11 @@ namespace HotsReplayReader {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to FR.
         /// </summary>
-        internal static byte[] emoticondata {
+        internal static string DeepLLanguage {
             get {
-                object obj = ResourceManager.GetObject("emoticondata", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] emoticonsaliases {
-            get {
-                object obj = ResourceManager.GetObject("emoticonsaliases", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] styles {
-            get {
-                object obj = ResourceManager.GetObject("styles", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] talents10Border {
-            get {
-                object obj = ResourceManager.GetObject("talents10Border", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] talentsBorder {
-            get {
-                object obj = ResourceManager.GetObject("talentsBorder", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] translate {
-            get {
-                object obj = ResourceManager.GetObject("translate", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Welcome {
-            get {
-                object obj = ResourceManager.GetObject("Welcome", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("DeepLLanguage", resourceCulture);
             }
         }
     }

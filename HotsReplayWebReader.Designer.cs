@@ -96,7 +96,7 @@
             webView.Source = new Uri("about:blank", UriKind.Absolute);
             webView.TabIndex = 3;
             webView.ZoomFactor = 1D;
-            webView.MouseMove += webView_MouseMove;
+            webView.MouseMove += WebView_MouseMove;
             // 
             // listBoxHotsReplays
             // 

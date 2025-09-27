@@ -39,7 +39,7 @@ namespace HotsReplayReader {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HotsReplayReader.HotsEmoticons", typeof(HotsEmoticons).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HotsReplayReader.Resources.HotsEmoticons", typeof(HotsEmoticons).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

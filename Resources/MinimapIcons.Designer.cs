@@ -22,14 +22,14 @@ namespace HotsReplayReader {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class HeroesIcon {
+    internal class MinimapIcons {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal HeroesIcon() {
+        internal MinimapIcons() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace HotsReplayReader {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HotsReplayReader.HeroesIcon", typeof(HeroesIcon).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HotsReplayReader.Resources.MinimapIcons", typeof(MinimapIcons).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,16 +57,6 @@ namespace HotsReplayReader {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] _Null {
-            get {
-                object obj = ResourceManager.GetObject("_Null", resourceCulture);
-                return ((byte[])(obj));
             }
         }
         
@@ -636,16 +626,6 @@ namespace HotsReplayReader {
         internal static byte[] Nazeebo {
             get {
                 object obj = ResourceManager.GetObject("Nazeebo", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] NONE {
-            get {
-                object obj = ResourceManager.GetObject("NONE", resourceCulture);
                 return ((byte[])(obj));
             }
         }
