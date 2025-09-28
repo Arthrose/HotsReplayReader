@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeepLLang" xml:space="preserve">
-    <value>EN-US</value>
+    <value>PL</value>
   </data>
   <data name="MapAlteracPass" xml:space="preserve">
-    <value>Alterac Pass</value>
+    <value>Przełęcz Alterak</value>
   </data>
   <data name="MapHauntedWoods" xml:space="preserve">
-    <value>Garden of Terror</value>
+    <value>Ogród Grozy</value>
   </data>
   <data name="MapHanamura" xml:space="preserve">
-    <value>Hanamura Temple</value>
+    <value>Świątynia w Hanamurze</value>
   </data>
   <data name="MapVolskaya" xml:space="preserve">
-    <value>Volskaya Foundry</value>
+    <value>Odlewnia Volskaya Industries</value>
   </data>
   <data name="MapHauntedMines" xml:space="preserve">
-    <value>Haunted Mines</value>
+    <value>Nawiedzone Kopalnie</value>
   </data>
   <data name="MapTowersOfDoom" xml:space="preserve">
-    <value>Towers of Doom</value>
+    <value>Wieże Zagłady</value>
   </data>
   <data name="MapShrines" xml:space="preserve">
-    <value>Infernal Shrines</value>
+    <value>Piekielne Kapliczki</value>
   </data>
   <data name="MapBattlefieldOfEternity" xml:space="preserve">
-    <value>Battlefield of Eternity</value>
+    <value>Pole Bitewne Wieczności</value>
   </data>
   <data name="MapCrypts" xml:space="preserve">
-    <value>Tomb of the Spider Queen</value>
+    <value>Grobowiec Pajęczej Królowej</value>
   </data>
   <data name="MapControlPoints" xml:space="preserve">
-    <value>Sky Temple</value>
+    <value>Podniebna Świątynia</value>
   </data>
   <data name="MapBlackheartsBay" xml:space="preserve">
-    <value>Blackheart's Bay</value>
+    <value>Zatoka Czarnosercego</value>
   </data>
   <data name="MapDragonShire" xml:space="preserve">
-    <value>Dragon Shire</value>
+    <value>Smocze Włości</value>
   </data>
   <data name="MapCursedHollow" xml:space="preserve">
-    <value>Cursed Hollow</value>
+    <value>Przeklęta Kotlina</value>
   </data>
   <data name="MapBraxisHoldout" xml:space="preserve">
-    <value>Braxis Holdout</value>
+    <value>Placówka na Braxis</value>
   </data>
   <data name="MapWarhead Junction" xml:space="preserve">
-    <value>Warhead Junction</value>
+    <value>Poligon Nuklearny</value>
   </data>
   <data name="strAI" xml:space="preserve">
-    <value>IA</value>
+    <value>SI</value>
   </data>
   <data name="strDuration" xml:space="preserve">
-    <value>Duration</value>
+    <value>Czas trwania</value>
   </data>
   <data name="strPlayer" xml:space="preserve">
-    <value>Player</value>
+    <value>Gracz</value>
   </data>
   <data name="strRedTeam" xml:space="preserve">
-    <value>Red Team</value>
+    <value>Czerwony Zespół</value>
   </data>
   <data name="strBlueTeam" xml:space="preserve">
-    <value>Blue Team</value>
+    <value>Niebieski Zespół</value>
   </data>
 </root>

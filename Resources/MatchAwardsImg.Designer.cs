@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HotsReplayReader {
+namespace HotsReplayReader.Resources {
     using System;
     
     

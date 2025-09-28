@@ -274,7 +274,7 @@
   <data name="Leoric" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\MinimapIcons\storm_ui_minimapicon_leoric.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Lúcio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Lucio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\MinimapIcons\storm_ui_minimapicon_lucio.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Lunara" type="System.Resources.ResXFileRef, System.Windows.Forms">

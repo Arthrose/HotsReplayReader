@@ -117,7 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DeepLLanguage" xml:space="preserve">
+  <data name="DeepLLang" xml:space="preserve">
     <value>FR</value>
+  </data>
+  <data name="MapAlteracPass" xml:space="preserve">
+    <value>La passe d’Alterac</value>
+  </data>
+  <data name="MapHauntedWoods" xml:space="preserve">
+    <value>Les jardins de terreur</value>
+  </data>
+  <data name="MapHanamura" xml:space="preserve">
+    <value>Le temple d’Hanamura</value>
+  </data>
+  <data name="MapVolskaya" xml:space="preserve">
+    <value>La fonderie Volskaya</value>
+  </data>
+  <data name="MapHauntedMines" xml:space="preserve">
+    <value>La mine hantée</value>
+  </data>
+  <data name="MapTowersOfDoom" xml:space="preserve">
+    <value>Les tours du destin</value>
+  </data>
+  <data name="MapShrines" xml:space="preserve">
+    <value>Les sanctuaires infernaux</value>
+  </data>
+  <data name="MapBattlefieldOfEternity" xml:space="preserve">
+    <value>Les champs de l’éternité</value>
+  </data>
+  <data name="MapCrypts" xml:space="preserve">
+    <value>La tombe de la reine araignée</value>
+  </data>
+  <data name="MapControlPoints" xml:space="preserve">
+    <value>Le temple céleste</value>
+  </data>
+  <data name="MapBlackheartsBay" xml:space="preserve">
+    <value>La baie de Cœur-Noir</value>
+  </data>
+  <data name="MapDragonShire" xml:space="preserve">
+    <value>Le comté du dragon</value>
+  </data>
+  <data name="MapCursedHollow" xml:space="preserve">
+    <value>Le val maudit</value>
+  </data>
+  <data name="MapBraxisHoldout" xml:space="preserve">
+    <value>Le laboratoire de Braxis</value>
+  </data>
+  <data name="MapWarhead Junction" xml:space="preserve">
+    <value>Menace nucléaire</value>
+  </data>
+  <data name="strAI" xml:space="preserve">
+    <value>IA</value>
+  </data>
+  <data name="strDuration" xml:space="preserve">
+    <value>Durée</value>
+  </data>
+  <data name="strPlayer" xml:space="preserve">
+    <value>Joueur</value>
+  </data>
+  <data name="strRedTeam" xml:space="preserve">
+    <value>Équipe Rouge</value>
+  </data>
+  <data name="strBlueTeam" xml:space="preserve">
+    <value>Équipe Bleue</value>
   </data>
 </root>

@@ -23,24 +23,24 @@ namespace HotsReplayReader
             switch (ResourceName)
             {
                 case "heroesicon":
-                    resourceManager = HeroesIcon.ResourceManager;
+                    resourceManager = Resources.HeroesIcon.ResourceManager;
                     break;
                 case "hotsresources":
-                    resourceManager = HotsResources.ResourceManager;
+                    resourceManager = Resources.HotsResources.ResourceManager;
                     break;
                 case "abilitytalents":
-                    resourceManager = AbilityTalents.ResourceManager;
+                    resourceManager = Resources.AbilityTalents.ResourceManager;
                     break;
                 case "emoticons":
-                    resourceManager = HotsEmoticons.ResourceManager;
+                    resourceManager = Resources.HotsEmoticons.ResourceManager;
                     ResxObjectName = $@"{ResxObjectName}{Extension}";
                     ResxObjectName = ResxObjectName.Replace("_0.gif", ".gif");
                     break;
                 case "minimapicons":
-                    resourceManager = MinimapIcons.ResourceManager;
+                    resourceManager = Resources.MinimapIcons.ResourceManager;
                     break;
                 case "matchawards":
-                    resourceManager = MatchAwardsImg.ResourceManager;
+                    resourceManager = Resources.MatchAwardsImg.ResourceManager;
                     break;
             }
             if (resourceManager != null)

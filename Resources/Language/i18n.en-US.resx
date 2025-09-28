@@ -117,7 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DeepLLanguage" xml:space="preserve">
-    <value>EN</value>
+  <data name="DeepLLang" xml:space="preserve">
+    <value>EN-US</value>
+  </data>
+  <data name="MapAlteracPass" xml:space="preserve">
+    <value>Alterac Pass</value>
+  </data>
+  <data name="MapHauntedWoods" xml:space="preserve">
+    <value>Garden of Terror</value>
+  </data>
+  <data name="MapHanamura" xml:space="preserve">
+    <value>Hanamura Temple</value>
+  </data>
+  <data name="MapVolskaya" xml:space="preserve">
+    <value>Volskaya Foundry</value>
+  </data>
+  <data name="MapHauntedMines" xml:space="preserve">
+    <value>Haunted Mines</value>
+  </data>
+  <data name="MapTowersOfDoom" xml:space="preserve">
+    <value>Towers of Doom</value>
+  </data>
+  <data name="MapShrines" xml:space="preserve">
+    <value>Infernal Shrines</value>
+  </data>
+  <data name="MapBattlefieldOfEternity" xml:space="preserve">
+    <value>Battlefield of Eternity</value>
+  </data>
+  <data name="MapCrypts" xml:space="preserve">
+    <value>Tomb of the Spider Queen</value>
+  </data>
+  <data name="MapControlPoints" xml:space="preserve">
+    <value>Sky Temple</value>
+  </data>
+  <data name="MapBlackheartsBay" xml:space="preserve">
+    <value>Blackheart's Bay</value>
+  </data>
+  <data name="MapDragonShire" xml:space="preserve">
+    <value>Dragon Shire</value>
+  </data>
+  <data name="MapCursedHollow" xml:space="preserve">
+    <value>Cursed Hollow</value>
+  </data>
+  <data name="MapBraxisHoldout" xml:space="preserve">
+    <value>Braxis Holdout</value>
+  </data>
+  <data name="MapWarhead Junction" xml:space="preserve">
+    <value>Warhead Junction</value>
+  </data>
+  <data name="strAI" xml:space="preserve">
+    <value>AI</value>
+  </data>
+  <data name="strDuration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="strPlayer" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="strRedTeam" xml:space="preserve">
+    <value>Red Team</value>
+  </data>
+  <data name="strBlueTeam" xml:space="preserve">
+    <value>Blue Team</value>
   </data>
 </root>

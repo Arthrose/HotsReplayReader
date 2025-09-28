@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeepLLang" xml:space="preserve">
-    <value>EN-US</value>
+    <value>ES</value>
   </data>
   <data name="MapAlteracPass" xml:space="preserve">
-    <value>Alterac Pass</value>
+    <value>Cañón de Alterac</value>
   </data>
   <data name="MapHauntedWoods" xml:space="preserve">
-    <value>Garden of Terror</value>
+    <value>Jardín del Terror</value>
   </data>
   <data name="MapHanamura" xml:space="preserve">
-    <value>Hanamura Temple</value>
+    <value>Templo de Hanamura</value>
   </data>
   <data name="MapVolskaya" xml:space="preserve">
-    <value>Volskaya Foundry</value>
+    <value>Fundición de Volskaya</value>
   </data>
   <data name="MapHauntedMines" xml:space="preserve">
-    <value>Haunted Mines</value>
+    <value>Minas Encantadas</value>
   </data>
   <data name="MapTowersOfDoom" xml:space="preserve">
-    <value>Towers of Doom</value>
+    <value>Torres de Fatalidad</value>
   </data>
   <data name="MapShrines" xml:space="preserve">
-    <value>Infernal Shrines</value>
+    <value>Santuarios Infernales</value>
   </data>
   <data name="MapBattlefieldOfEternity" xml:space="preserve">
-    <value>Battlefield of Eternity</value>
+    <value>Campos de Batalla de la Eternidad</value>
   </data>
   <data name="MapCrypts" xml:space="preserve">
-    <value>Tomb of the Spider Queen</value>
+    <value>Tumba de la Reina Araña</value>
   </data>
   <data name="MapControlPoints" xml:space="preserve">
-    <value>Sky Temple</value>
+    <value>Templo Celeste</value>
   </data>
   <data name="MapBlackheartsBay" xml:space="preserve">
-    <value>Blackheart's Bay</value>
+    <value>Bahía de Almanegra</value>
   </data>
   <data name="MapDragonShire" xml:space="preserve">
-    <value>Dragon Shire</value>
+    <value>Condado del Dragón</value>
   </data>
   <data name="MapCursedHollow" xml:space="preserve">
-    <value>Cursed Hollow</value>
+    <value>Cuenca Maldita</value>
   </data>
   <data name="MapBraxisHoldout" xml:space="preserve">
-    <value>Braxis Holdout</value>
+    <value>Resistencia en Braxis</value>
   </data>
   <data name="MapWarhead Junction" xml:space="preserve">
-    <value>Warhead Junction</value>
+    <value>Estación Nuclear</value>
   </data>
   <data name="strAI" xml:space="preserve">
     <value>IA</value>
   </data>
   <data name="strDuration" xml:space="preserve">
-    <value>Duration</value>
+    <value>Duración</value>
   </data>
   <data name="strPlayer" xml:space="preserve">
-    <value>Player</value>
+    <value>Jugador</value>
   </data>
   <data name="strRedTeam" xml:space="preserve">
-    <value>Red Team</value>
+    <value>Equipo Rojor</value>
   </data>
   <data name="strBlueTeam" xml:space="preserve">
-    <value>Blue Team</value>
+    <value>Equipo Azul</value>
   </data>
 </root>

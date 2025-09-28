@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeepLLang" xml:space="preserve">
-    <value>EN-US</value>
+    <value>KO</value>
   </data>
   <data name="MapAlteracPass" xml:space="preserve">
-    <value>Alterac Pass</value>
+    <value>알터랙 고개</value>
   </data>
   <data name="MapHauntedWoods" xml:space="preserve">
-    <value>Garden of Terror</value>
+    <value>공포의 정원</value>
   </data>
   <data name="MapHanamura" xml:space="preserve">
-    <value>Hanamura Temple</value>
+    <value>하나무라 사원</value>
   </data>
   <data name="MapVolskaya" xml:space="preserve">
-    <value>Volskaya Foundry</value>
+    <value>볼스카야 공장</value>
   </data>
   <data name="MapHauntedMines" xml:space="preserve">
-    <value>Haunted Mines</value>
+    <value>죽음의 광산</value>
   </data>
   <data name="MapTowersOfDoom" xml:space="preserve">
-    <value>Towers of Doom</value>
+    <value>파멸의 탑</value>
   </data>
   <data name="MapShrines" xml:space="preserve">
-    <value>Infernal Shrines</value>
+    <value>불지옥 신단</value>
   </data>
   <data name="MapBattlefieldOfEternity" xml:space="preserve">
-    <value>Battlefield of Eternity</value>
+    <value>영원의 전쟁터</value>
   </data>
   <data name="MapCrypts" xml:space="preserve">
-    <value>Tomb of the Spider Queen</value>
+    <value>거미 여왕의 무덤</value>
   </data>
   <data name="MapControlPoints" xml:space="preserve">
-    <value>Sky Temple</value>
+    <value>하늘 사원</value>
   </data>
   <data name="MapBlackheartsBay" xml:space="preserve">
-    <value>Blackheart's Bay</value>
+    <value>블랙하트 항만</value>
   </data>
   <data name="MapDragonShire" xml:space="preserve">
-    <value>Dragon Shire</value>
+    <value>용의 둥지</value>
   </data>
   <data name="MapCursedHollow" xml:space="preserve">
-    <value>Cursed Hollow</value>
+    <value>저주받은 골짜기</value>
   </data>
   <data name="MapBraxisHoldout" xml:space="preserve">
-    <value>Braxis Holdout</value>
+    <value>브락시스 항전</value>
   </data>
   <data name="MapWarhead Junction" xml:space="preserve">
-    <value>Warhead Junction</value>
+    <value>핵탄두 격전지</value>
   </data>
   <data name="strAI" xml:space="preserve">
-    <value>IA</value>
+    <value>AI</value>
   </data>
   <data name="strDuration" xml:space="preserve">
-    <value>Duration</value>
+    <value>지속 시간</value>
   </data>
   <data name="strPlayer" xml:space="preserve">
-    <value>Player</value>
+    <value>플레이어</value>
   </data>
   <data name="strRedTeam" xml:space="preserve">
-    <value>Red Team</value>
+    <value>레드팀</value>
   </data>
   <data name="strBlueTeam" xml:space="preserve">
-    <value>Blue Team</value>
+    <value>블루팀</value>
   </data>
 </root>

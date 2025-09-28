@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeepLLang" xml:space="preserve">
-    <value>EN-US</value>
+    <value>IT</value>
   </data>
   <data name="MapAlteracPass" xml:space="preserve">
-    <value>Alterac Pass</value>
+    <value>Passo d'Alterac</value>
   </data>
   <data name="MapHauntedWoods" xml:space="preserve">
-    <value>Garden of Terror</value>
+    <value>Giardino del Terrore</value>
   </data>
   <data name="MapHanamura" xml:space="preserve">
-    <value>Hanamura Temple</value>
+    <value>Tempio di Hanamura</value>
   </data>
   <data name="MapVolskaya" xml:space="preserve">
-    <value>Volskaya Foundry</value>
+    <value>Fonderia Volskaya</value>
   </data>
   <data name="MapHauntedMines" xml:space="preserve">
-    <value>Haunted Mines</value>
+    <value>Miniere Infestate</value>
   </data>
   <data name="MapTowersOfDoom" xml:space="preserve">
-    <value>Towers of Doom</value>
+    <value>Torri della Rovina</value>
   </data>
   <data name="MapShrines" xml:space="preserve">
-    <value>Infernal Shrines</value>
+    <value>Altari Infernali</value>
   </data>
   <data name="MapBattlefieldOfEternity" xml:space="preserve">
-    <value>Battlefield of Eternity</value>
+    <value>Campi di Battaglia Eterni</value>
   </data>
   <data name="MapCrypts" xml:space="preserve">
-    <value>Tomb of the Spider Queen</value>
+    <value>Tomba della Regina Ragno</value>
   </data>
   <data name="MapControlPoints" xml:space="preserve">
-    <value>Sky Temple</value>
+    <value>Tempio Celeste</value>
   </data>
   <data name="MapBlackheartsBay" xml:space="preserve">
-    <value>Blackheart's Bay</value>
+    <value>Baia di Cuornero</value>
   </data>
   <data name="MapDragonShire" xml:space="preserve">
-    <value>Dragon Shire</value>
+    <value>Contea del Drago</value>
   </data>
   <data name="MapCursedHollow" xml:space="preserve">
-    <value>Cursed Hollow</value>
+    <value>Valle Maledetta</value>
   </data>
   <data name="MapBraxisHoldout" xml:space="preserve">
-    <value>Braxis Holdout</value>
+    <value>Distaccamento di Braxis</value>
   </data>
   <data name="MapWarhead Junction" xml:space="preserve">
-    <value>Warhead Junction</value>
+    <value>Stazione Atomica</value>
   </data>
   <data name="strAI" xml:space="preserve">
     <value>IA</value>
   </data>
   <data name="strDuration" xml:space="preserve">
-    <value>Duration</value>
+    <value>Durata</value>
   </data>
   <data name="strPlayer" xml:space="preserve">
-    <value>Player</value>
+    <value>Giocatore</value>
   </data>
   <data name="strRedTeam" xml:space="preserve">
-    <value>Red Team</value>
+    <value>Squadra Rossa</value>
   </data>
   <data name="strBlueTeam" xml:space="preserve">
-    <value>Blue Team</value>
+    <value>Squadra Blu</value>
   </data>
 </root>

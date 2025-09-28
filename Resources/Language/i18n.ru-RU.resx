@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DeepLLang" xml:space="preserve">
-    <value>EN-US</value>
+    <value>RU</value>
   </data>
   <data name="MapAlteracPass" xml:space="preserve">
-    <value>Alterac Pass</value>
+    <value>Альтеракский перевал</value>
   </data>
   <data name="MapHauntedWoods" xml:space="preserve">
-    <value>Garden of Terror</value>
+    <value>Сад ужасов</value>
   </data>
   <data name="MapHanamura" xml:space="preserve">
-    <value>Hanamura Temple</value>
+    <value>Храм Ханамуры</value>
   </data>
   <data name="MapVolskaya" xml:space="preserve">
-    <value>Volskaya Foundry</value>
+    <value>Завод Вольской</value>
   </data>
   <data name="MapHauntedMines" xml:space="preserve">
-    <value>Haunted Mines</value>
+    <value>Призрачные копи</value>
   </data>
   <data name="MapTowersOfDoom" xml:space="preserve">
-    <value>Towers of Doom</value>
+    <value>Башни Рока</value>
   </data>
   <data name="MapShrines" xml:space="preserve">
-    <value>Infernal Shrines</value>
+    <value>Оскверненные святилища</value>
   </data>
   <data name="MapBattlefieldOfEternity" xml:space="preserve">
-    <value>Battlefield of Eternity</value>
+    <value>Вечная битва</value>
   </data>
   <data name="MapCrypts" xml:space="preserve">
-    <value>Tomb of the Spider Queen</value>
+    <value>Гробница Королевы Пауков</value>
   </data>
   <data name="MapControlPoints" xml:space="preserve">
-    <value>Sky Temple</value>
+    <value>Небесный храм</value>
   </data>
   <data name="MapBlackheartsBay" xml:space="preserve">
-    <value>Blackheart's Bay</value>
+    <value>Бухта Черносерда</value>
   </data>
   <data name="MapDragonShire" xml:space="preserve">
-    <value>Dragon Shire</value>
+    <value>Драконий край</value>
   </data>
   <data name="MapCursedHollow" xml:space="preserve">
-    <value>Cursed Hollow</value>
+    <value>Проклятая лощина</value>
   </data>
   <data name="MapBraxisHoldout" xml:space="preserve">
-    <value>Braxis Holdout</value>
+    <value>Бойня на Браксисе</value>
   </data>
   <data name="MapWarhead Junction" xml:space="preserve">
-    <value>Warhead Junction</value>
+    <value>Ядерный полигон</value>
   </data>
   <data name="strAI" xml:space="preserve">
-    <value>IA</value>
+    <value>ИИ</value>
   </data>
   <data name="strDuration" xml:space="preserve">
-    <value>Duration</value>
+    <value>Продолжительность</value>
   </data>
   <data name="strPlayer" xml:space="preserve">
-    <value>Player</value>
+    <value>Игрок</value>
   </data>
   <data name="strRedTeam" xml:space="preserve">
-    <value>Red Team</value>
+    <value>Красная команда</value>
   </data>
   <data name="strBlueTeam" xml:space="preserve">
-    <value>Blue Team</value>
+    <value>Синяя команда</value>
   </data>
 </root>

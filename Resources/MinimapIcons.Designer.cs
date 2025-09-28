@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HotsReplayReader {
+namespace HotsReplayReader.Resources {
     using System;
     
     
@@ -513,9 +513,9 @@ namespace HotsReplayReader {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Lúcio {
+        internal static byte[] Lucio {
             get {
-                object obj = ResourceManager.GetObject("Lúcio", resourceCulture);
+                object obj = ResourceManager.GetObject("Lucio", resourceCulture);
                 return ((byte[])(obj));
             }
         }

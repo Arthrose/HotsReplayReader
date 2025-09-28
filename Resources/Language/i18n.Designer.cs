@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HotsReplayReader {
+namespace HotsReplayReader.Resources.Language {
     using System;
     
     
@@ -61,11 +61,191 @@ namespace HotsReplayReader {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EN.
+        ///   Looks up a localized string similar to EN-US.
         /// </summary>
-        internal static string DeepLLanguage {
+        internal static string DeepLLang {
             get {
-                return ResourceManager.GetString("DeepLLanguage", resourceCulture);
+                return ResourceManager.GetString("DeepLLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alterac Pass.
+        /// </summary>
+        internal static string MapAlteracPass {
+            get {
+                return ResourceManager.GetString("MapAlteracPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battlefield of Eternity.
+        /// </summary>
+        internal static string MapBattlefieldOfEternity {
+            get {
+                return ResourceManager.GetString("MapBattlefieldOfEternity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blackheart&apos;s Bay.
+        /// </summary>
+        internal static string MapBlackheartsBay {
+            get {
+                return ResourceManager.GetString("MapBlackheartsBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Braxis Holdout.
+        /// </summary>
+        internal static string MapBraxisHoldout {
+            get {
+                return ResourceManager.GetString("MapBraxisHoldout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sky Temple.
+        /// </summary>
+        internal static string MapControlPoints {
+            get {
+                return ResourceManager.GetString("MapControlPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tomb of the Spider Queen.
+        /// </summary>
+        internal static string MapCrypts {
+            get {
+                return ResourceManager.GetString("MapCrypts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cursed Hollow.
+        /// </summary>
+        internal static string MapCursedHollow {
+            get {
+                return ResourceManager.GetString("MapCursedHollow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dragon Shire.
+        /// </summary>
+        internal static string MapDragonShire {
+            get {
+                return ResourceManager.GetString("MapDragonShire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hanamura Temple.
+        /// </summary>
+        internal static string MapHanamura {
+            get {
+                return ResourceManager.GetString("MapHanamura", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Haunted Mines.
+        /// </summary>
+        internal static string MapHauntedMines {
+            get {
+                return ResourceManager.GetString("MapHauntedMines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Garden of Terror.
+        /// </summary>
+        internal static string MapHauntedWoods {
+            get {
+                return ResourceManager.GetString("MapHauntedWoods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Infernal Shrines.
+        /// </summary>
+        internal static string MapShrines {
+            get {
+                return ResourceManager.GetString("MapShrines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Towers of Doom.
+        /// </summary>
+        internal static string MapTowersOfDoom {
+            get {
+                return ResourceManager.GetString("MapTowersOfDoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volskaya Foundry.
+        /// </summary>
+        internal static string MapVolskaya {
+            get {
+                return ResourceManager.GetString("MapVolskaya", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warhead Junction.
+        /// </summary>
+        internal static string MapWarhead_Junction {
+            get {
+                return ResourceManager.GetString("MapWarhead Junction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IA.
+        /// </summary>
+        internal static string strAI {
+            get {
+                return ResourceManager.GetString("strAI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blue Team.
+        /// </summary>
+        internal static string strBlueTeam {
+            get {
+                return ResourceManager.GetString("strBlueTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        internal static string strDuration {
+            get {
+                return ResourceManager.GetString("strDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player.
+        /// </summary>
+        internal static string strPlayer {
+            get {
+                return ResourceManager.GetString("strPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Red Team.
+        /// </summary>
+        internal static string strRedTeam {
+            get {
+                return ResourceManager.GetString("strRedTeam", resourceCulture);
             }
         }
     }

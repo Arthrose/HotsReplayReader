@@ -44,20 +44,275 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>HotsResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Language\i18n.Designer.cs">
-      <DependentUpon>i18n.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\Language\i18n.en-US.Designer.cs">
+    <Compile Update="Resources\Language\i18n - Copy %2810%29.en-US.Designer.cs">
       <DependentUpon>i18n.en-US.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resources\Language\i18n.fr-FR.Designer.cs">
-      <DependentUpon>i18n.fr-FR.resx</DependentUpon>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ru-RU.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pt-BR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pl-PL.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %285%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ko-KR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %286%29.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %287%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy %288%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %282%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.zh-TW.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pt-BR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pl-PL.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ko-KR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy %285%29.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy %286%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy %287%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.ru-RU.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pl-PL.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29 - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ko-KR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29 - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29 - Copy %285%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29 - Copy %286%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.pt-BR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %285%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ko-KR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %285%29 - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %285%29 - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %285%29 - Copy %285%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %285%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.pl-PL.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %285%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %286%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %286%29 - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %286%29 - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %286%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.ko-KR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %286%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %287%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %287%29 - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %287%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %287%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %288%29 - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %288%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %288%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %289%29 - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy %289%29.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %282%29.en-US.Designer.cs">
+      <DependentUpon>i18n.zh-TW.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %283%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ru-RU.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %284%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pt-BR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %285%29.en-US.Designer.cs">
+      <DependentUpon>i18n.pl-PL.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %286%29.en-US.Designer.cs">
+      <DependentUpon>i18n.ko-KR.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %287%29.en-US.Designer.cs">
+      <DependentUpon>i18n.it-IT.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %288%29.en-US.Designer.cs">
+      <DependentUpon>i18n.es-MX.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy - Copy %289%29.en-US.Designer.cs">
+      <DependentUpon>i18n.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n - Copy.en-US.Designer.cs">
+      <DependentUpon>i18n.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Language\i18n.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>i18n.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\MatchAwardsImg.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -88,17 +343,33 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>HotsResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Language\i18n.pt-BR.resx">
+      <LastGenOutput>i18n - Copy (5).en-US.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Language\i18n.pl-PL.resx">
+      <LastGenOutput>i18n - Copy (6).en-US.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Language\i18n.ko-KR.resx">
+      <LastGenOutput>i18n - Copy (7).en-US.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Language\i18n.it-IT.resx">
+      <LastGenOutput>i18n - Copy (8).en-US.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Language\i18n.es-MX.resx">
+      <LastGenOutput>i18n - Copy (9).en-US.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Language\i18n.es-ES.resx">
+      <LastGenOutput>i18n - Copy.en-US.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Language\i18n.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>i18n.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Language\i18n.en-US.resx">
-      <LastGenOutput>i18n.en-US.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Language\i18n.fr-FR.resx">
-      <LastGenOutput>i18n.fr-FR.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\MatchAwardsImg.resx">
       <Generator>ResXFileCodeGenerator</Generator>

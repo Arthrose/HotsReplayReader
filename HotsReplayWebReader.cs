@@ -14,8 +14,10 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        private readonly string LanguageCode = "en-US";
+        private readonly string LangCode = "ko-KR";
 
+        readonly bool fetchHero = true;
+        readonly string heroFetched = "Lùcio";
 
         private Rectangle webViewOriginalRectangle;
 
@@ -54,8 +56,7 @@ namespace HotsReplayReader
         {
             InitializeComponent();
 
-            LanguageCode = "fr-FR";
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageCode);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
 
             translator = new DeepLTranslator(apiKey);
             replayList = [];
@@ -361,7 +362,7 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeader()
         {
-            string css = System.Text.Encoding.UTF8.GetString(HotsResources.styles);
+            string css = System.Text.Encoding.UTF8.GetString(Resources.HotsResources.styles);
 
             if (hotsReplay != null)
                 if (hotsReplay.stormReplay?.Owner != null)
@@ -436,14 +437,20 @@ namespace HotsReplayReader
             string isBlueTeamWinner = blueTeam.IsWinner ? " teamBestScoreBlue" : "";
             string isRedTeamWinner = redTeam.IsWinner ? " teamBestScoreRed" : "";
             string winnerTeamClass = blueTeam.IsWinner ? "titleBlueTeam" : "titleRedTeam";
+
+            Debug.WriteLine($"{hotsReplay?.stormReplay?.MapInfo?.MapId?.ToString()}");
+
+            string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}")
+                           ?? hotsReplay?.stormReplay?.MapInfo.MapName;
+
             string html = $@"<table class=""headTable"">
   <tr>
-    <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{hotsReplay?.stormReplay?.MapInfo.MapName}</td>
+    <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td>
   </tr>
   <tr>
-    <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">Blue Team</td>
+    <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">{Resources.Language.i18n.ResourceManager.GetString("strBlueTeam")}</td>
     <td></td>
-    <td colspan=""5"" class=""titleRedTeam{isRedTeamWinner}"">Red Team</td>
+    <td colspan=""5"" class=""titleRedTeam{isRedTeamWinner}"">{Resources.Language.i18n.ResourceManager.GetString("strRedTeam")}</td>
   </tr>
   <tr>
 ";
@@ -484,7 +491,7 @@ namespace HotsReplayReader
             html += $@"  <tr>
     <td>&nbsp;</td>
     <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.TotalKills}</td>
-    <td colSpan=""3"" class=""titleWhite"" style=""zoom: 50%;"">Game Length<br />{replayLength}</td>
+    <td colSpan=""3"" class=""titleWhite"" style=""zoom: 50%;"">{Resources.Language.i18n.ResourceManager.GetString("strDuration")}<br />{replayLength}</td>
     <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.TotalKills}</td>
     <td>&nbsp;</td>
   </tr>
@@ -500,8 +507,15 @@ namespace HotsReplayReader
             string playerID;
             string accountLevel = stormPlayer.AccountLevel.HasValue ? stormPlayer.AccountLevel.Value.ToString() : "0";
             string toolTipPosition = stormPlayer.Team.ToString() == "Blue" ? "Left" : "Right";
+            int AIPlayers = 0;
 
-            string html = $"    <td class=\"headTableTd\">\n";
+            string html = "";
+
+            // Affiche une alerte si le heros joue est celui qu'on veut tester
+            if (fetchHero && Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId] == heroFetched)
+                html += $"    <script> alert('{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}'); </script>\n";
+
+            html += $"    <td class=\"headTableTd\">\n";
             html += "      <span class=\"tooltip\">\n";
             html += "        <span class=\"heroPortrait\">\n";
             html += $"          <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
@@ -547,7 +561,8 @@ namespace HotsReplayReader
             }
             else
             {
-                playerName = stormPlayer.Name + " (AI)";
+                AIPlayers++;
+                playerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {AIPlayers} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
                 html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{stormPlayer.ComputerDifficulty}</font>\n";
             }
 
@@ -608,7 +623,7 @@ namespace HotsReplayReader
 </script>";
             return $"{html}\n";
         }
-        internal static string HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
+        internal string HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
         {
             if (hotsMessage.HotsPlayer.PlayerHero == null) return "";
 
@@ -617,12 +632,14 @@ namespace HotsReplayReader
             string? msgSeconds = hotsMessage.Seconds;
             string msgSenderName = hotsMessage.HotsPlayer.Name;
 
+            string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[hotsMessage.HotsPlayer.PlayerHero.HeroId];
+
             string html = "  <div class=\"chat-message\">\n";
             if (lastMessageAfterAnHour)
                 html += $"    [{msgHours}:{msgMinutes}:{msgSeconds}]\n";
             else
                 html += $"    [{msgMinutes}:{msgSeconds}]\n";
-            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{hotsMessage.HotsPlayer.PlayerHero.HeroName}.png\" class=\"chat-image\" title=\"{hotsMessage.HotsPlayer.PlayerHero.HeroName}\"/>\n";
+            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"/>\n";
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}\">{msgSenderName}: </span>\n";
             if (hotsMessage.Translate)
                 html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\" /></span>\n";
@@ -697,6 +714,8 @@ namespace HotsReplayReader
         {
             if (stormPlayer.ScoreResult == null || stormPlayer.PlayerHero == null) return "";
 
+            string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
+
             string timeSpentDead = "&nbsp;";
             if (stormPlayer.ScoreResult.Deaths > 0)
             {
@@ -710,7 +729,7 @@ namespace HotsReplayReader
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}<br /><font size=\"-1\">{playerName}</font></td>\n";
+            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{heroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.SoloKills == team.MaxKills)
@@ -796,6 +815,8 @@ namespace HotsReplayReader
         {
             if (stormPlayer.PlayerHero == null || heroDataDocument == null) return "";
 
+            string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
+ 
             string heroUnitId = stormPlayer.PlayerHero.HeroUnitId;
             if (heroUnitId == "HeroDVaPilot")
                 heroUnitId = "HeroDVaMech";
@@ -812,7 +833,7 @@ namespace HotsReplayReader
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}<br /><font size=\"-1\">{playerName}</font></td>\n";
+            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{heroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
             for (int i = 0; i <= 6; i++)
             {
                 if (i < stormPlayer.Talents.Count)
@@ -1240,7 +1261,7 @@ namespace HotsReplayReader
 
             string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
             string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
-            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\gamestrings\", "gamestrings_*_enus.json").FirstOrDefault();
+            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\gamestrings\", $"gamestrings_*_{LangCode.ToLower().Replace("-", "")}.json").FirstOrDefault();
 
             if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
             {
