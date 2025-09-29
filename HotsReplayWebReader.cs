@@ -455,17 +455,17 @@ namespace HotsReplayReader
   <tr>
 ";
 
-            if (hotsReplay?.stormPlayers != null)
-                foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
-                    if (stormPlayer.Team.ToString() == "Blue")
-                        html += HTMLGetHeadTableCell(stormPlayer);
+            if (hotsPlayers != null)
+                foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                    if (hotsPlayer.Team.ToString() == "Blue")
+                        html += HTMLGetHeadTableCell(hotsPlayer);
 
             html += "    <td width=\"100\"></td>\n";
 
-            if (hotsReplay?.stormPlayers != null)
-                foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
-                    if (stormPlayer.Team.ToString() == "Red")
-                        html += HTMLGetHeadTableCell(stormPlayer);
+            if (hotsPlayers != null)
+                foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                    if (hotsPlayer.Team.ToString() == "Red")
+                        html += HTMLGetHeadTableCell(hotsPlayer);
 
             string replayLength;
             if (hotsReplay?.stormReplay?.ReplayLength.Hours == 0)
@@ -499,71 +499,69 @@ namespace HotsReplayReader
 ";
             return html;
         }
-        internal string HTMLGetHeadTableCell(StormPlayer stormPlayer)
+        internal string HTMLGetHeadTableCell(HotsPlayer hotsPlayer)
         {
-            if (stormPlayer == null || stormPlayer.PlayerHero == null || matchAwards == null || stormPlayer.MatchAwards == null) return "";
+            if (hotsPlayer == null || hotsPlayer.PlayerHero == null || matchAwards == null || hotsPlayer.MatchAwards == null) return "";
 
             string playerName;
             string playerID;
-            string accountLevel = stormPlayer.AccountLevel.HasValue ? stormPlayer.AccountLevel.Value.ToString() : "0";
-            string toolTipPosition = stormPlayer.Team.ToString() == "Blue" ? "Left" : "Right";
-            int AIPlayers = 0;
+            string accountLevel = hotsPlayer.AccountLevel.HasValue ? hotsPlayer.AccountLevel.Value.ToString() : "0";
+            string toolTipPosition = hotsPlayer.Team.ToString() == "Blue" ? "Left" : "Right";
 
             string html = "";
 
             // Affiche une alerte si le heros joue est celui qu'on veut tester
-            if (fetchHero && Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId] == heroFetched)
-                html += $"    <script> alert('{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}'); </script>\n";
+            if (fetchHero && Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId] == heroFetched)
+                html += $"    <script> alert('{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}'); </script>\n";
 
             html += $"    <td class=\"headTableTd\">\n";
             html += "      <span class=\"tooltip\">\n";
             html += "        <span class=\"heroPortrait\">\n";
-            html += $"          <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
+            html += $"          <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
 
-            string? party = GetParty(stormPlayer.BattleTagName);
+            string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
             {
                 string? ressourceName = $"ui_ingame_loadscreen_partylink_{party}.png";
                 if (ressourceName != null)
-                    ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
+                    ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
                 html += $"          <img src=\"app://hotsresources/{ressourceName}\" class =\"heroPartyIcon\" />\n";
             }
 
-            if (stormPlayer.MatchAwardsCount > 0)
+            if (hotsPlayer.MatchAwardsCount > 0)
             {
-                string? ressourceName = matchAwards[$"{stormPlayer.MatchAwards[0]}"].MvpScreenIcon;
+                string? ressourceName = matchAwards[$"{hotsPlayer.MatchAwards[0]}"].MvpScreenIcon;
                 if (ressourceName != null)
-                    ressourceName = ressourceName.Replace("%color%", stormPlayer.Team.ToString().ToLower());
+                    ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
                 html += $"          <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\" />\n";
             }
 
             html += "        </span>\n";
             html += $"        <span class=\"tooltipHero tooltipHero{toolTipPosition}\">\n";
 
-            if (stormPlayer.MatchAwardsCount > 0)
+            if (hotsPlayer.MatchAwardsCount > 0)
             {
                 html += $"          <center>\n";
-                html += $"            <font color=\"#ffd700\">{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Name}</font><br />\n";
-                html += $"            <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{stormPlayer.MatchAwards[0]}"].Description}</nobr></font><br />\n";
+                html += $"            <font color=\"#ffd700\">{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Name}</font><br />\n";
+                html += $"            <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Description}</nobr></font><br />\n";
                 html += $"          </center><br />\n";
             }
-            if (stormPlayer.BattleTagName.IndexOf('#') > 0)
+            if (hotsPlayer.BattleTagName.IndexOf('#') > 0)
             {
-                playerName = stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')];
-                playerID = stormPlayer.BattleTagName[(stormPlayer.BattleTagName.IndexOf('#') + 1)..];
+                playerName = hotsPlayer.BattleTagName[..hotsPlayer.BattleTagName.IndexOf('#')];
+                playerID = hotsPlayer.BattleTagName[(hotsPlayer.BattleTagName.IndexOf('#') + 1)..];
 
                 html += $"          <span class=\"nobr\">BattleTag:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br />\n";
                 html += $"          <span class=\"nobr\">AccountLevel:&nbsp;<font color=\"#bfd4fd\">{accountLevel}</font></span><br />\n";
-                if (stormPlayer.PlayerHero.HeroLevel >= 20)
+                if (hotsPlayer.PlayerHero.HeroLevel >= 20)
                     html += $"          <span class=\"nobr\">HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font></span><br />\n";
                 else
-                    html += $"          <span class=\"nobr\">HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{stormPlayer.PlayerHero.HeroLevel}</font></span><br />\n";
+                    html += $"          <span class=\"nobr\">HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br />\n";
             }
             else
             {
-                AIPlayers++;
-                playerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {AIPlayers} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
-                html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{stormPlayer.ComputerDifficulty}</font>\n";
+                playerName = hotsPlayer.ComputerName!;
+                html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{hotsPlayer.ComputerDifficulty}</font>\n";
             }
 
             html += $"        </span>\n";
@@ -700,19 +698,27 @@ namespace HotsReplayReader
   </tr>
 ";
 
-            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetScoreTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
-            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetScoreTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
             html += "</table>\n";
+
             return html;
         }
-        private string HTMLGetScoreTr(StormPlayer stormPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetScoreTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
         {
             if (stormPlayer.ScoreResult == null || stormPlayer.PlayerHero == null) return "";
+
+            string playerName;
+
+            if (stormPlayer.PlayerType == PlayerType.Computer)
+                playerName = stormPlayer.ComputerName!;
+            else
+                playerName = stormPlayer.Name;
 
             string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
 
@@ -725,7 +731,7 @@ namespace HotsReplayReader
                     timeSpentDead = $@"{stormPlayer.ScoreResult.TimeSpentDead}";
             }
 
-            string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
+            //string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
@@ -876,6 +882,7 @@ namespace HotsReplayReader
 
             AbilTalentEntry AbilTalentEntry;
 
+            //  stormPlayer.Talents[0].TalentNameId) renvoie une exception
             if (stormPlayer.Talents[i].TalentNameId != null)
                 AbilTalentEntry = GetAbilTalent(heroData, stormPlayer.Talents[i].TalentNameId!); // ! Assure au compilateur que TalentNameId n'est pas null
             else
@@ -1026,7 +1033,6 @@ namespace HotsReplayReader
 
             hotsPlayers = null;
             hotsPlayers = new HotsPlayer[10];
-
             hotsParties = new Dictionary<string, string>()
             {
                 { "1", "" },
@@ -1076,8 +1082,16 @@ namespace HotsReplayReader
             i = 0;
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
+                int ComputerID = 0;
                 foreach (HotsPlayer hotsPlayer in hotsPlayers)
                 {
+                    // i18n AI player name
+                    if (hotsPlayer.PlayerType == PlayerType.Computer)
+                    {
+                        ComputerID++;
+                        hotsPlayer.ComputerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {ComputerID} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
+                    }
+
                     if (stormPlayer.PlayerHero != null && stormPlayer.ScoreResult != null && hotsPlayer.PlayerTeam != null && hotsPlayer.EnemyTeam != null)
                     {
                         if (hotsPlayer.BattleTagName == stormPlayer.BattleTagName)

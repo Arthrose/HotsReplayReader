@@ -6,6 +6,7 @@ namespace HotsReplayReader
     {
         public string? Party { get; set; }
         public string? TeamColor { get; set; }
+        public string? ComputerName { get; set; }
         public double MvpScore { get; set; }
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
