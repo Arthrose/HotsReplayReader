@@ -807,35 +807,34 @@ namespace HotsReplayReader
 ";
             if (hotsReplay == null || hotsReplay.stormPlayers == null || blueTeam == null || redTeam == null) return "";
 
-            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+            foreach (HotsPlayer stormPlayer in hotsPlayers)
+            {
+                Debug.WriteLine($"Player: {stormPlayer.BattleTagName} - Team: {stormPlayer.Team}");
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
-            foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
+            }
+            foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
             html += "</table>\n";
             return html;
         }
-        private string HTMLGetTalentsTr(StormPlayer stormPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
         {
             if (stormPlayer.PlayerHero == null || heroDataDocument == null) return "";
 
             string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
  
-            string heroUnitId = stormPlayer.PlayerHero.HeroUnitId;
-            if (heroUnitId == "HeroDVaPilot")
-                heroUnitId = "HeroDVaMech";
-            if (heroUnitId == "HeroMedivhRaven")
-                heroUnitId = "HeroMedivh";
-            if (heroUnitId == "DeathwingDragonflightUnit")
-                heroUnitId = "HeroDeathwing";
-            if (heroUnitId == "HeroAlexstraszaDragon")
-                heroUnitId = "HeroAlexstrasza";
+            Hero heroData = heroDataDocument.GetHeroByUnitId(stormPlayer.PlayerHero.HeroUnitId, true, true, true, true);
 
-            Hero heroData = heroDataDocument.GetHeroByUnitId(heroUnitId, true, true, true, true);
+            string playerName;
 
-            string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
+            if (stormPlayer.PlayerType == PlayerType.Computer)
+                playerName = stormPlayer.ComputerName!;
+            else
+                playerName = stormPlayer.Name;
+
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
@@ -850,7 +849,7 @@ namespace HotsReplayReader
             html += "  </tr>\n";
             return html;
         }
-        private string GetTalentImgString(StormPlayer stormPlayer, Hero heroData, int i)
+        private string GetTalentImgString(HotsPlayer stormPlayer, Hero heroData, int i)
         {
             if (stormPlayer == null) return "    <td>&nbsp;</td>";
 
