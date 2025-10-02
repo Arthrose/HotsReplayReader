@@ -165,8 +165,8 @@
   <data name="MapWarhead Junction" xml:space="preserve">
     <value>Warhead Junction</value>
   </data>
-  <data name="strAI" xml:space="preserve">
-    <value>AI</value>
+  <data name="strAIElite" xml:space="preserve">
+    <value>Elite</value>
   </data>
   <data name="strDuration" xml:space="preserve">
     <value>Duration</value>
@@ -179,5 +179,23 @@
   </data>
   <data name="strBlueTeam" xml:space="preserve">
     <value>Blue Team</value>
+  </data>
+  <data name="strAIBeginner" xml:space="preserve">
+    <value>Beginner</value>
+  </data>
+  <data name="strAIRecruit" xml:space="preserve">
+    <value>Recruit</value>
+  </data>
+  <data name="strAIAdept" xml:space="preserve">
+    <value>Adept</value>
+  </data>
+  <data name="strAIVeteran" xml:space="preserve">
+    <value>Veteran</value>
+  </data>
+  <data name="strAI" xml:space="preserve">
+    <value>AI</value>
+  </data>
+  <data name="strAIDifficulty" xml:space="preserve">
+    <value>Difficulty</value>
   </data>
 </root>

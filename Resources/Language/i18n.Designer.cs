@@ -205,11 +205,65 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IA.
+        ///   Looks up a localized string similar to AI.
         /// </summary>
         internal static string strAI {
             get {
                 return ResourceManager.GetString("strAI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adept.
+        /// </summary>
+        internal static string strAIAdept {
+            get {
+                return ResourceManager.GetString("strAIAdept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beginner.
+        /// </summary>
+        internal static string strAIBeginner {
+            get {
+                return ResourceManager.GetString("strAIBeginner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Difficulty.
+        /// </summary>
+        internal static string strAIDifficulty {
+            get {
+                return ResourceManager.GetString("strAIDifficulty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite.
+        /// </summary>
+        internal static string strAIElite {
+            get {
+                return ResourceManager.GetString("strAIElite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recruit.
+        /// </summary>
+        internal static string strAIRecruit {
+            get {
+                return ResourceManager.GetString("strAIRecruit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Veteran.
+        /// </summary>
+        internal static string strAIVeteran {
+            get {
+                return ResourceManager.GetString("strAIVeteran", resourceCulture);
             }
         }
         

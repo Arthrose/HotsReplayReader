@@ -165,8 +165,8 @@
   <data name="MapWarhead Junction" xml:space="preserve">
     <value>核武戰地</value>
   </data>
-  <data name="strAI" xml:space="preserve">
-    <value>AI</value>
+  <data name="strAIElite" xml:space="preserve">
+    <value>精英</value>
   </data>
   <data name="strDuration" xml:space="preserve">
     <value>持續時間</value>
@@ -179,5 +179,24 @@
   </data>
   <data name="strBlueTeam" xml:space="preserve">
     <value>藍隊</value>
+  </data>
+  <data name="strAIBeginner" xml:space="preserve">
+    <value>新手</value>
+  </data>
+  <data name="strAIRecruit" xml:space="preserve">
+    <value>初級</value>
+  </data>
+  <data name="strAIAdept" xml:space="preserve">
+    <value>中級</value>
+  </data>
+  <data name="strAIVeteran" xml:space="preserve">
+    <value>高級</value>
+  </data>
+  <data name="strAI" xml:space="preserve">
+    <value>AI</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="strAIDifficulty" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

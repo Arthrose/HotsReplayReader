@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.Icons.DataDocument;
@@ -14,9 +16,9 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        private readonly string LangCode = "ko-KR";
+        private readonly string LangCode = "fr-FR";
 
-        readonly bool fetchHero = true;
+        readonly bool fetchHero = false;
         readonly string heroFetched = "Lùcio";
 
         private Rectangle webViewOriginalRectangle;
@@ -42,6 +44,7 @@ namespace HotsReplayReader
 
         internal string? htmlContent;
 
+        internal string? dbVersion;
         internal HeroDataDocument? heroDataDocument;
         internal GameStringsRoot? gameStringsRoot;
         internal MatchAwards? matchAwards;
@@ -50,6 +53,35 @@ namespace HotsReplayReader
         readonly string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
 
         readonly DeepLTranslator translator;
+
+        readonly private string welcomeHTML = $@"<html>
+<head>
+<script>
+  // Désactive le menu contextuel
+  document.addEventListener('DOMContentLoaded', () => {{
+    document.addEventListener('contextmenu', (e) => {{
+      e.preventDefault()
+    }})
+  }})
+
+  // Affice la liste des replays
+  document.addEventListener(""mousemove"", function (e) {{
+    // Détection si la souris est dans les 50px à gauche
+    const isHover = e.clientX <= 50;
+    // On envoie à C# uniquement quand le statut change
+    if (window.__lastHover !== isHover) {{
+      console.log(`X: ${{event.clientX}}, Y: ${{event.clientY}}`);
+      window.chrome.webview.postMessage({{
+        action: ""hoverLeft"",
+        isHover: isHover
+      }});
+      window.__lastHover = isHover;
+    }}
+  }});
+</script>
+</head>
+<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
+</html>";
 
         readonly Init Init = new();
         public HotsReplayWebReader()
@@ -109,10 +141,9 @@ namespace HotsReplayReader
 
             webView.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = false;
 
-            /* Activation / Desactivation de la console */
+            // Desactivation de la console
             webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
             webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
-            /* Activation / Desactivation de la console */
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
@@ -128,10 +159,10 @@ namespace HotsReplayReader
                 using var document = JsonDocument.Parse(json);
                 var root = document.RootElement;
 
-                // Vérifie si le message contient les propriétés "action" et "callbackId"
+                // Vérifie si le message contient les propriétés "action"
                 if (root.TryGetProperty("action", out var actionElement))
                 {
-                    // Récupère les valeurs de "action" et "callbackId"
+                    // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
 
                     // Vérifie si l'action est "hoverLeft"
@@ -152,7 +183,7 @@ namespace HotsReplayReader
 
                         try
                         {
-                            translated = await translator.TranslateText(inputText, "EN");
+                            translated = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
                         }
                         catch (Exception ex)
                         {
@@ -170,7 +201,6 @@ namespace HotsReplayReader
                 }
             };
 
-
             if (Directory.Exists(Init.lastReplayFilePath))
             {
                 ListHotsReplays(Init.lastReplayFilePath);
@@ -187,7 +217,7 @@ namespace HotsReplayReader
             }
             else
             {
-                htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
+                htmlContent = welcomeHTML;
 
                 // Bouton de test pour appeler la fonction translateWithCSharp
                 /*
@@ -272,22 +302,6 @@ namespace HotsReplayReader
         {
             ResizeControl(listBoxHotsReplays, false);
             ResizeControl(webView, true);
-        }
-        private void WebView_MouseMove(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine($"X: {e.X} - Y: {e.Y}");
-            // Si la souris est à moins de 20 pixels du bord gauche
-            if (e.X <= 20)
-            {
-                if (!listBoxHotsReplays.Visible)
-                    listBoxHotsReplays.Visible = true;
-            }
-            else
-            {
-                // Si la souris quitte la zone de la listBox, on la cache
-                if (listBoxHotsReplays.Visible && !listBoxHotsReplays.Bounds.Contains(e.Location))
-                    listBoxHotsReplays.Visible = false;
-            }
         }
         private void MenuItemClickHandler(object? sender, EventArgs e)
         {
@@ -443,10 +457,20 @@ namespace HotsReplayReader
             string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}")
                            ?? hotsReplay?.stormReplay?.MapInfo.MapName;
 
-            string html = $@"<table class=""headTable"">
-  <tr>
-    <td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td>
+            string html = "<table class=\"headTable\">\n";
+
+            if (hotsReplay?.stormReplay?.ReplayVersion.ToString() != dbVersion)
+            {
+                html += $@"  <tr>
+    <td colSpan=""5"">Game Version</td><td>&nbsp;</td><td colSpan=""5"">DB Version</td>
   </tr>
+  <tr>
+    <td colSpan=""5"">{hotsReplay?.stormReplay?.ReplayVersion.ToString()}</td><td>&nbsp;</td><td colSpan=""5"">{dbVersion}</td>
+  </tr>
+";
+            }
+
+            html += $@"  <tr><td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td></tr>
   <tr>
     <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">{Resources.Language.i18n.ResourceManager.GetString("strBlueTeam")}</td>
     <td></td>
@@ -490,9 +514,9 @@ namespace HotsReplayReader
 
             html += $@"  <tr>
     <td>&nbsp;</td>
-    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 50%;"">Kills<br />{blueTeam.TotalKills}</td>
+    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></td>
     <td colSpan=""3"" class=""titleWhite"" style=""zoom: 50%;"">{Resources.Language.i18n.ResourceManager.GetString("strDuration")}<br />{replayLength}</td>
-    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 50%;"">Kills<br />{redTeam.TotalKills}</td>
+    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}</td>
     <td>&nbsp;</td>
   </tr>
 </table>
@@ -561,7 +585,11 @@ namespace HotsReplayReader
             else
             {
                 playerName = hotsPlayer.ComputerName!;
-                html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{hotsPlayer.ComputerDifficulty}</font>\n";
+
+                string? computerDifficulty = Resources.Language.i18n.ResourceManager.GetString($"strAI{hotsPlayer.ComputerDifficulty}")
+                               ?? hotsPlayer.ComputerDifficulty.ToString();
+
+                html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{computerDifficulty}</font>\n";
             }
 
             html += $"        </span>\n";
@@ -678,7 +706,7 @@ namespace HotsReplayReader
         }
         private string HTMLGetScoreTable()
         {
-            if (hotsReplay == null || hotsReplay.stormPlayers == null || blueTeam == null || redTeam == null) return "";
+            if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
 
             string html = @$"
 <table class=""tableScore"">
@@ -805,7 +833,7 @@ namespace HotsReplayReader
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
   </tr>
 ";
-            if (hotsReplay == null || hotsReplay.stormPlayers == null || blueTeam == null || redTeam == null) return "";
+            if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
 
             foreach (HotsPlayer stormPlayer in hotsPlayers)
             {
@@ -1184,34 +1212,67 @@ namespace HotsReplayReader
         }
         public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
         {
-            string replayVersionShort = replayVersion[(replayVersion.LastIndexOf('.') + 1)..];
+            Debug.WriteLine($"FindVersionGitHubFolder {replayVersion}");
             string url = "https://api.github.com/repositories/214500273/contents/heroesdata";
 
+            Debug.WriteLine($"GetAsync {url}");
             using var response = await httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
 
             using var doc = JsonDocument.Parse(json);
+            List<string> folders = [];
+
             foreach (var item in doc.RootElement.EnumerateArray())
             {
-                string name = item.GetProperty("name").GetString() ?? "";
-                string type = item.GetProperty("type").GetString() ?? "";
-
-                if (type == "dir" && name.EndsWith(replayVersionShort, StringComparison.OrdinalIgnoreCase))
+                if (item.GetProperty("type").GetString() == "dir")
                 {
-                    return name;
+                    folders.Add(item.GetProperty("name").GetString() ?? "");
                 }
             }
 
-            return null;
+            bool isPtr = replayVersion.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase);
+
+            // --- Étape 1 : Chercher la correspondance exacte ---
+            string replayVersionShort = replayVersion[(replayVersion.LastIndexOf('.') + 1)..];
+            string? exact = folders
+                .FirstOrDefault(f => f.EndsWith(replayVersionShort, StringComparison.OrdinalIgnoreCase)
+                                     && (!isPtr || f.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase)));
+
+            if (exact != null)
+                return exact;
+
+            // --- Étape 2 : Chercher la version précédente ---
+            // On retire _ptr uniquement pour pouvoir parser le numéro
+            string cleanReplay = replayVersion.Replace("_ptr", "", StringComparison.OrdinalIgnoreCase);
+
+            if (!Version.TryParse(cleanReplay, out Version? targetVersion))
+                return null;
+
+            var previousCandidates = folders
+                .Where(f => isPtr || !f.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase)) // si PTR, on garde tout, sinon on exclut les PTR
+                .Select(f => new { Name = f, Version = Version.TryParse(f.Replace("_ptr", ""), out var v) ? v : null })
+                .Where(x => x.Version != null)
+                .OrderBy(x => x.Version)
+                .LastOrDefault(x => x.Version < targetVersion);
+
+            return previousCandidates?.Name;
         }
-        private async Task DownloadHeroesJsonFiles(HttpClient httpClient, string version)
+        private async Task<string?> DownloadHeroesJsonFiles(HttpClient httpClient, string version)
         {
-            // Correction de la version pour les replays. Par exemple, 2.55.10.94387 => 2.55.11.94387
+            Debug.WriteLine($"DownloadHeroesJsonFiles {version}");
+            // Recherche du dossier GitHub correspondant à la version du replay
             string? versionGitHubFolder = await FindVersionGitHubFolder(httpClient, version);
 
-            string rootFolder = $@"{Init.DbDirectory}\{version}";
+            Debug.WriteLine($"versionGitHubFolder {versionGitHubFolder}");
+            if (versionGitHubFolder == null)
+            {
+                Debug.WriteLine($"No GitHub folder found for version {versionGitHubFolder}");
+                return null;
+            }
+
+            string rootFolder = $@"{Init.DbDirectory}\{versionGitHubFolder}";
 
             string gitHubApiUrl = $@"https://api.github.com/repos/HeroesToolChest/heroes-data/contents/heroesdata/{versionGitHubFolder}";
 
@@ -1220,11 +1281,19 @@ namespace HotsReplayReader
 
             if (!Directory.Exists(rootFolder))
                 Directory.CreateDirectory(rootFolder);
+            else
+            {
+                Debug.WriteLine($"Older GitHub folder found for version {versionGitHubFolder}");
+                return versionGitHubFolder;
+            }
 
-            Debug.WriteLine($"Téléchargement des fichiers json des héros pour la version {version}...");
+            Debug.WriteLine($"Downloading heroes' Json files version {versionGitHubFolder}...");
             Debug.WriteLine($"{gitHubApiUrl}");
 
+            webView.CoreWebView2.NavigateToString($@"<center>T&eacute;l&eacute;chargement des fichiers json des h&eacute;ros pour la version {versionGitHubFolder}...</center>");
+
             await DownloadGitHubFolderRecursive(httpClient, gitHubApiUrl, rootFolder);
+            return versionGitHubFolder;
         }
         private static async Task DownloadGitHubFolderRecursive(HttpClient httpClient, string apiUrl, string localPath)
         {
@@ -1256,6 +1325,8 @@ namespace HotsReplayReader
         }
         private async Task CheckAndDownloadHeroesData(string replayVersion)
         {
+            dbVersion = null;
+
             using HttpClient HttpClient = new();
             HttpClient.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue(
@@ -1268,13 +1339,14 @@ namespace HotsReplayReader
             // Téléchargement des json des héros si besoin
             if (!Directory.Exists($@"{Init.DbDirectory}\{replayVersion}"))
             {
-                webView.CoreWebView2.NavigateToString($@"<center>T&eacute;l&eacute;chargement des fichiers json des h&eacute;ros pour la version {replayVersion}...</center>");
-                await DownloadHeroesJsonFiles(HttpClient, replayVersion);
+                dbVersion = await DownloadHeroesJsonFiles(HttpClient, replayVersion);
             }
 
-            string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
-            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
-            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{replayVersion}\gamestrings\", $"gamestrings_*_{LangCode.ToLower().Replace("-", "")}.json").FirstOrDefault();
+            if (dbVersion == null) return;
+
+            string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
+            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
+            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{LangCode.ToLower().Replace("-", "")}.json").FirstOrDefault();
 
             if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
             {
@@ -1320,7 +1392,8 @@ namespace HotsReplayReader
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
                     InitPlayersData();
 
-                    await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
+                    // await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
+                    await CheckAndDownloadHeroesData("2.55.13.95170");
 
                     htmlContent = $@"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}<br /><br />\n";
@@ -1331,12 +1404,12 @@ namespace HotsReplayReader
                 }
                 else
                 {
-                    htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
+                    htmlContent = welcomeHTML;
                 }
             }
             catch (Exception)
             {
-                htmlContent = $@"<body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>";
+                htmlContent = welcomeHTML;
             }
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
