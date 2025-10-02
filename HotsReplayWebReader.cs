@@ -594,7 +594,10 @@ namespace HotsReplayReader
 
             html += $"        </span>\n";
             html += $"      </span>\n";
-            html += $"      <div class=\"battleTag\">{playerName}</div>\n";
+
+            string? owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsPlayer.BattleTagName) ? " owner" : "";
+
+            html += $"      <div class=\"battleTag{owner}\">{playerName}</div>\n";
             html += $"    </td>\n";
             return html;
         }
