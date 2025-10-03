@@ -24,11 +24,23 @@ tr {
 }
 .titleBlueTeam {
   color: deepskyblue;
-  font-size: 300%;
+  font-size: 200%;
   font-weight: bold;
   font-family: Calibri;
 }
 .titleRedTeam {
+  color: crimson;
+  font-size: 200%;
+  font-weight: bold;
+  font-family: Calibri;
+}
+.mapTitleBlue {
+  color: deepskyblue;
+  font-size: 300%;
+  font-weight: bold;
+  font-family: Calibri;
+}
+.mapTitleRed {
   color: crimson;
   font-size: 300%;
   font-weight: bold;

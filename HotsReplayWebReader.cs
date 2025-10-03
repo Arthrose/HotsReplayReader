@@ -448,9 +448,9 @@ namespace HotsReplayReader
         internal string HTMLGetHeadTable()
         {
             if (blueTeam == null || redTeam == null || hotsReplay == null) return "";
-            string isBlueTeamWinner = blueTeam.IsWinner ? " teamBestScoreBlue" : "";
-            string isRedTeamWinner = redTeam.IsWinner ? " teamBestScoreRed" : "";
-            string winnerTeamClass = blueTeam.IsWinner ? "titleBlueTeam" : "titleRedTeam";
+            string isBlueTeamWinner = blueTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
+            string isRedTeamWinner = redTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
+            string winnerTeamClass = blueTeam.IsWinner ? "mapTitleBlue" : "mapTitleRed";
 
             Debug.WriteLine($"{hotsReplay?.stormReplay?.MapInfo?.MapId?.ToString()}");
 
@@ -472,9 +472,9 @@ namespace HotsReplayReader
 
             html += $@"  <tr><td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td></tr>
   <tr>
-    <td colspan=""5"" class=""titleBlueTeam{isBlueTeamWinner}"">{Resources.Language.i18n.ResourceManager.GetString("strBlueTeam")}</td>
+    <td colspan=""5"" class=""titleBlueTeam"">{isBlueTeamWinner}</td>
     <td></td>
-    <td colspan=""5"" class=""titleRedTeam{isRedTeamWinner}"">{Resources.Language.i18n.ResourceManager.GetString("strRedTeam")}</td>
+    <td colspan=""5"" class=""titleRedTeam"">{isRedTeamWinner}</td>
   </tr>
   <tr>
 ";
@@ -505,7 +505,7 @@ namespace HotsReplayReader
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
                         html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
-                html += "    <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 50%;\">Bans</td>\n";
+                html += "    <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">Bans</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
                         html += $"    <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
@@ -515,7 +515,7 @@ namespace HotsReplayReader
             html += $@"  <tr>
     <td>&nbsp;</td>
     <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></td>
-    <td colSpan=""3"" class=""titleWhite"" style=""zoom: 50%;"">{Resources.Language.i18n.ResourceManager.GetString("strDuration")}<br />{replayLength}</td>
+    <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;"">{replayLength}</td>
     <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}</td>
     <td>&nbsp;</td>
   </tr>
@@ -589,7 +589,7 @@ namespace HotsReplayReader
                 string? computerDifficulty = Resources.Language.i18n.ResourceManager.GetString($"strAI{hotsPlayer.ComputerDifficulty}")
                                ?? hotsPlayer.ComputerDifficulty.ToString();
 
-                html += $"          Difficulty:&nbsp;<font color=\"#bfd4fd\">{computerDifficulty}</font>\n";
+                html += $"          {Resources.Language.i18n.strAIDifficulty}:&nbsp;<font color=\"#bfd4fd\">{computerDifficulty}</font>\n";
             }
 
             html += $"        </span>\n";

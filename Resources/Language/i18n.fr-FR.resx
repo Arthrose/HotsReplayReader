@@ -198,4 +198,7 @@
   <data name="strAIDifficulty" xml:space="preserve">
     <value>Difficulté</value>
   </data>
+  <data name="strWinners" xml:space="preserve">
+    <value>Vainqueurs</value>
+  </data>
 </root>

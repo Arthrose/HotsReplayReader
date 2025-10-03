@@ -302,5 +302,14 @@ namespace HotsReplayReader.Resources.Language {
                 return ResourceManager.GetString("strRedTeam", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Winners.
+        /// </summary>
+        internal static string strWinners {
+            get {
+                return ResourceManager.GetString("strWinners", resourceCulture);
+            }
+        }
     }
 }
