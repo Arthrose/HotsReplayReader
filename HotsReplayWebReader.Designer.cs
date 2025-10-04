@@ -93,7 +93,6 @@
             webView.Location = new Point(0, 24);
             webView.Name = "webView";
             webView.Size = new Size(1359, 784);
-            webView.Source = new Uri("about:blank", UriKind.Absolute);
             webView.TabIndex = 3;
             webView.ZoomFactor = 1D;
             // 
@@ -121,6 +120,7 @@
             MainMenuStrip = menuStrip;
             Name = "HotsReplayWebReader";
             Text = "Hots Replay Reader";
+            FormClosed += HotsReplayWebReader_FormClosed;
             Load += HotsReplayWebReader_Load;
             Resize += HotsReplayWebReader_Resize;
             menuStrip.ResumeLayout(false);

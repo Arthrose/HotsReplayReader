@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Security.Policy;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.Icons.DataDocument;
@@ -24,7 +23,7 @@ namespace HotsReplayReader
         private Rectangle webViewOriginalRectangle;
 
         private string? hotsReplayFolder;
-        internal static string jsonConfigFile = "HotsReplayReader.json";
+        internal static string jsonConfigFile = "";
         private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
         internal static string currentAccount = string.Empty;
 
@@ -41,6 +40,8 @@ namespace HotsReplayReader
 
         // Listen to file system modification's notifications
         private FileSystemWatcher? fileSystemWatcher;
+        readonly string tempDataFolder = Path.Combine(Path.GetTempPath(), "HotsReplayReader");
+        readonly string webViewDllPath;
 
         internal string? htmlContent;
 
@@ -86,6 +87,13 @@ namespace HotsReplayReader
         readonly Init Init = new();
         public HotsReplayWebReader()
         {
+            webViewDllPath = Path.Combine(tempDataFolder, "WebView2Loader.dll");
+            byte[] webViewDllBytes = Resources.HotsResources.WebView2Loader;
+            Directory.CreateDirectory(tempDataFolder);
+            File.WriteAllBytes(webViewDllPath, webViewDllBytes);
+
+            jsonConfigFile = Init.jsonConfigFile!;
+
             InitializeComponent();
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
@@ -130,12 +138,22 @@ namespace HotsReplayReader
 
             fileSystemWatcher.Created += OnFileCreated;
         }
+        // Used to load WebView2Loader.dll from the specified folder
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool SetDllDirectory(string lpPathName);
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
             webViewOriginalRectangle = new Rectangle(webViewOriginalRectangle.Location.X, webViewOriginalRectangle.Location.Y, webViewOriginalRectangle.Width, webViewOriginalRectangle.Height);
 
+            // Ajouter ce dossier au chemin de recherche des DLL natives
+            if (!SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
+            {
+                Debug.WriteLine("Impossible d'ajouter le dossier au chemin des DLL");
+                throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error(), "Impossible d'ajouter le dossier au chemin des DLL");
+            }
 
-            await webView.EnsureCoreWebView2Async();
+            var env = await CoreWebView2Environment.CreateAsync(null, tempDataFolder);
+            await webView.EnsureCoreWebView2Async(env);
 
             Debug.WriteLine("WebView2 Runtime version: " + webView.CoreWebView2.Environment.BrowserVersionString);
 
@@ -317,11 +335,10 @@ namespace HotsReplayReader
 
                         string jsonFile;
                         JsonConfig? jsonConfig = new();
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), jsonConfigFile);
 
-                        if (File.Exists(path))
+                        if (File.Exists(jsonConfigFile))
                         {
-                            jsonFile = File.ReadAllText(path);
+                            jsonFile = File.ReadAllText(jsonConfigFile);
                             jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
                         }
 
@@ -329,7 +346,7 @@ namespace HotsReplayReader
                         jsonConfig.LastSelectedAccountDirectory = Init.hotsLocalAccounts[i].FullPath;
 
                         File.WriteAllText(
-                            path,
+                            jsonConfigFile,
                             JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions)
                         );
                     }
@@ -1420,9 +1437,9 @@ namespace HotsReplayReader
         {
             JsonConfig? jsonConfig = new();
             string jsonFile;
-            if (File.Exists($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}"))
+            if (File.Exists(jsonConfigFile))
             {
-                jsonFile = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}");
+                jsonFile = File.ReadAllText(jsonConfigFile);
                 jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
                 if (Directory.Exists(jsonConfig?.LastBrowseDirectory))
                     folderBrowserDialog.InitialDirectory = jsonConfig.LastBrowseDirectory;
@@ -1435,7 +1452,7 @@ namespace HotsReplayReader
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK && jsonConfig != null)
             {
                 jsonConfig.LastBrowseDirectory = folderBrowserDialog.SelectedPath;
-                File.WriteAllText($@"{Directory.GetCurrentDirectory()}\{jsonConfigFile}", JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
+                File.WriteAllText(jsonConfigFile, JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
 
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
                 ListHotsReplays(hotsReplayFolder);
@@ -1528,5 +1545,20 @@ namespace HotsReplayReader
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
         private static partial Regex MyRegexRenameReplayInList();
+        private void HotsReplayWebReader_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                webView.Dispose();
+                if (Directory.Exists(tempDataFolder))
+                {
+                    Directory.Delete(tempDataFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error during cleanup: {ex.Message}");
+            }
+        }
     }
 }

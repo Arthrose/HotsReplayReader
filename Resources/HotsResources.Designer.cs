@@ -61,6 +61,15 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Useless.
+        /// </summary>
+        internal static string _Useless {
+            get {
+                return ResourceManager.GetString("_Useless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] emoticondata {
@@ -76,6 +85,26 @@ namespace HotsReplayReader.Resources {
         internal static byte[] emoticonsaliases {
             get {
                 object obj = ResourceManager.GetObject("emoticonsaliases", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] KillsBlue {
+            get {
+                object obj = ResourceManager.GetObject("KillsBlue", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] KillsRed {
+            get {
+                object obj = ResourceManager.GetObject("KillsRed", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -156,6 +185,16 @@ namespace HotsReplayReader.Resources {
         internal static byte[] ui_ingame_loadscreen_partylink_4 {
             get {
                 object obj = ResourceManager.GetObject("ui_ingame_loadscreen_partylink_4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] WebView2Loader {
+            get {
+                object obj = ResourceManager.GetObject("WebView2Loader", resourceCulture);
                 return ((byte[])(obj));
             }
         }

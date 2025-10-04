@@ -17,6 +17,7 @@ namespace HotsReplayReader
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         internal string? DbDirectory { get; set; }
+        internal string? jsonConfigFile { get; set; }
         public Dictionary<string, string> HeroNameFromHeroUnitId = new()
         {
             ["HeroAbathur"]               = "Abathur",
@@ -413,22 +414,25 @@ namespace HotsReplayReader
 
             if (regKey == null) return;
 
+            //DbDirectory = $@"{Directory.GetCurrentDirectory()}\db";
+            // %AppData%\HotsReplayReader\db
+            DbDirectory = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\db";
+            jsonConfigFile = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\HotsReplayReader.json"; ;
+
             userDocumentsFolder = regKey.GetValue("Personal", "").ToString();
             hotsVariablesFile = userDocumentsFolder + @"\Heroes of the Storm\Variables.txt";
 
             ListHotsAccounts();
             lastReplayFilePath = GetLastReplayFilePath();
             LoadHotsEmoticons();
-
-            DbDirectory = $@"{Directory.GetCurrentDirectory()}\db";
         }
         internal string? GetLastReplayFilePath()
         {
             JsonConfig? jsonConfig;
             string jsonFile;
-            if (File.Exists($@"{Directory.GetCurrentDirectory()}\{HotsReplayWebReader.jsonConfigFile}"))
+            if (File.Exists(jsonConfigFile))
             {
-                jsonFile = File.ReadAllText($@"{Directory.GetCurrentDirectory()}\{HotsReplayWebReader.jsonConfigFile}");
+                jsonFile = File.ReadAllText(jsonConfigFile);
                 jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
                 if (jsonConfig == null) return @"";
                 if (Directory.Exists(jsonConfig.LastSelectedAccountDirectory))
