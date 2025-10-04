@@ -164,4 +164,49 @@
   <data name="WebView2Loader" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\dll\WebView2Loader.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="MapAlteracPass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapAlteracPass.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapBattlefieldOfEternity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapBattlefieldOfEternity.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapBlackheartsBay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapBlackheartsBay.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapBraxisHoldout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapBraxisHoldout.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapControlPoints" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapControlPoints.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapCrypts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapCrypts.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapCursedHollow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapCursedHollow.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapDragonShire" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapDragonShire.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapHanamura" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapHanamura.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapHauntedMines" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapHauntedMines.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapHauntedWoods" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapHauntedWoods.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapShrines" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapShrines.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapTowersOfDoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapTowersOfDoom.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapVolskaya" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapVolskaya.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapWarhead Junction" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapWarhead Junction.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
