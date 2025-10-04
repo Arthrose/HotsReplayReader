@@ -16,7 +16,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        private readonly string LangCode = "fr-FR";
+        private readonly string LangCode = "en-US";
 
         readonly bool fetchHero = false;
         readonly string heroFetched = "Lùcio";
@@ -450,7 +450,7 @@ namespace HotsReplayReader
             if (blueTeam == null || redTeam == null || hotsReplay == null) return "";
             string isBlueTeamWinner = blueTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
             string isRedTeamWinner = redTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
-            string winnerTeamClass = blueTeam.IsWinner ? "mapTitleBlue" : "mapTitleRed";
+            string winnerTeamClass = blueTeam.IsWinner ? "titleBlue" : "titleRed";
 
             Debug.WriteLine($"{hotsReplay?.stormReplay?.MapInfo?.MapId?.ToString()}");
 
@@ -472,9 +472,9 @@ namespace HotsReplayReader
 
             html += $@"  <tr><td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td></tr>
   <tr>
-    <td colspan=""5"" class=""titleBlueTeam"">{isBlueTeamWinner}</td>
+    <td colspan=""5"" class=""titleBlue"">{isBlueTeamWinner}</td>
     <td></td>
-    <td colspan=""5"" class=""titleRedTeam"">{isRedTeamWinner}</td>
+    <td colspan=""5"" class=""titleRed"">{isRedTeamWinner}</td>
   </tr>
   <tr>
 ";
@@ -514,9 +514,9 @@ namespace HotsReplayReader
 
             html += $@"  <tr>
     <td>&nbsp;</td>
-    <td colSpan=""3"" class=""titleBlueTeam"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></td>
+    <td colSpan=""3"" class=""titleBlue"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></td>
     <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;"">{replayLength}</td>
-    <td colSpan=""3"" class=""titleRedTeam"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}</td>
+    <td colSpan=""3"" class=""titleRed"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}</td>
     <td>&nbsp;</td>
   </tr>
 </table>
@@ -854,6 +854,12 @@ namespace HotsReplayReader
         private string HTMLGetTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
         {
             if (stormPlayer.PlayerHero == null || heroDataDocument == null) return "";
+
+            if (stormPlayer.PlayerHero.HeroUnitId == "HeroDVaPilot")
+                   Debug.WriteLine("HeroDVaPilot");
+
+            string heroId = Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
+            Debug.WriteLine(heroId);
 
             string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
  
@@ -1341,9 +1347,9 @@ namespace HotsReplayReader
             // https://github.com/HeroesToolChest/heroes-data/tree/master/heroesdata
             // Téléchargement des json des héros si besoin
             if (!Directory.Exists($@"{Init.DbDirectory}\{replayVersion}"))
-            {
                 dbVersion = await DownloadHeroesJsonFiles(HttpClient, replayVersion);
-            }
+            else
+                dbVersion = replayVersion;
 
             if (dbVersion == null) return;
 
@@ -1395,8 +1401,8 @@ namespace HotsReplayReader
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
                     InitPlayersData();
 
-                    // await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
-                    await CheckAndDownloadHeroesData("2.55.13.95170");
+                    await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
+                    //await CheckAndDownloadHeroesData("2.55.13.95170");
 
                     htmlContent = $@"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}<br /><br />\n";
