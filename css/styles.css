@@ -134,8 +134,8 @@ tr {
 .chat-container {
   zoom: 0.9;
 /*  width: 900px;*/
-  height: 400px;
-  overflow-y: scroll;
+  max-height: 400px;
+  overflow-y: auto;
   text-align: left;
   margin: 0 auto;
   background-color: #909090;

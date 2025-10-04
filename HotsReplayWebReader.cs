@@ -15,7 +15,21 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        private readonly string LangCode = "en-US";
+        private string LangCode = "en-US";
+        public Dictionary<string, string> LangCodeList = new()
+        {
+            ["de-DE"] = "Deutsch",
+            ["en-US"] = "English",
+            ["es-ES"] = "Español (España)",
+            ["es-MX"] = "Español (México)",
+            ["fr-FR"] = "Français",
+            ["it-IT"] = "Italiano",
+            ["ko-KR"] = "한국어",
+            ["pl-PL"] = "Polski﻿",
+            ["pt-BR"] = "Português",
+            ["ru-RU"] = "Русский",
+            ["zh-TW"] = "中文"
+        };
 
         readonly bool fetchHero = false;
         readonly string heroFetched = "Lùcio";
@@ -114,9 +128,25 @@ namespace HotsReplayReader
                         ? tag[..tag.IndexOf('#')]
                         : string.Empty
                 };
-                accountsToolStripMenu[i].Click += new EventHandler(MenuItemClickHandler);
+                accountsToolStripMenu[i].Click += new EventHandler(AccountMenuItemClickHandler);
             }
             accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
+
+            ToolStripMenuItem[] languageToolStripMenu = new ToolStripMenuItem[LangCodeList.Count];
+            int j = 0;
+            foreach (var lang in LangCodeList)
+            {
+                Debug.WriteLine($"Key: {lang.Key}, Value: {lang.Value}");
+                languageToolStripMenu[j] = new ToolStripMenuItem
+                {
+                    Name = lang.Key,
+                    Tag = lang.Key,
+                    Text = lang.Value
+                };
+                languageToolStripMenu[j].Click += new EventHandler(LanguageMenuItemClickHandler);
+                j++;
+            }
+            languageToolStripMenuItem.DropDownItems.AddRange(languageToolStripMenu);
         }
         private void InitFileWatcher(string path)
         {
@@ -321,7 +351,7 @@ namespace HotsReplayReader
             ResizeControl(listBoxHotsReplays, false);
             ResizeControl(webView, true);
         }
-        private void MenuItemClickHandler(object? sender, EventArgs e)
+        private void AccountMenuItemClickHandler(object? sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem clickedItem && clickedItem.Tag?.ToString() == "Account" && Init.hotsLocalAccounts != null)
             {
@@ -354,6 +384,27 @@ namespace HotsReplayReader
 
                 this.Text = $"{formTitle} - {currentAccount}";
                 this.Update();
+            }
+        }
+        private void LanguageMenuItemClickHandler(object? sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem clickedItem)
+            {
+                LangCode = clickedItem.Tag?.ToString()!;
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
+            }
+
+            if (listBoxHotsReplays.Items.Count == 0)
+                return;
+
+            // Aucun élément sélectionné : on sélectionne le premier
+            if (listBoxHotsReplays.SelectedIndex == -1)
+            {
+                listBoxHotsReplays.SelectedIndex = 0;
+            }
+            else
+            {
+                ListBoxHotsReplays_SelectedIndexChanged(listBoxHotsReplays, EventArgs.Empty);
             }
         }
         private void ListHotsReplays(string? path)
@@ -640,17 +691,19 @@ namespace HotsReplayReader
             }
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
 
-            bool lastMessageAfterAnHour = hotsMessages.Count > 0 && Convert.ToInt32(hotsMessages.Last().Hours) > 0;
-
-            string html = $@"";
-            html += "<div class=\"chat-container\">\n";
-            foreach (HotsMessage hotsMessage in hotsMessages)
+            if (hotsMessages.Count > 0)
             {
-                html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
-            }
-            html += "</div>\n";
+                bool lastMessageAfterAnHour = Convert.ToInt32(hotsMessages.Last().Hours) > 0;
 
-            html += @"<script>
+                string html = $@"";
+                html += "<div class=\"chat-container\">\n";
+                foreach (HotsMessage hotsMessage in hotsMessages)
+                {
+                    html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
+                }
+                html += "</div>\n";
+
+                html += @"<script>
   // Selectionne tous les elements avec la classe chat-message et ajoute un evenement de clic
   document.querySelectorAll("".chat-message"").forEach(function (element) {
     element.addEventListener(""click"", function () {
@@ -667,7 +720,10 @@ namespace HotsReplayReader
     });
   });
 </script>";
-            return $"{html}\n";
+                return $"{html}\n";
+            }
+            else
+                return "\n";
         }
         internal string HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
         {
@@ -1367,6 +1423,10 @@ namespace HotsReplayReader
             string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
             string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
             string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{LangCode.ToLower().Replace("-", "")}.json").FirstOrDefault();
+
+            Debug.WriteLine($"heroDataJsonPath: {heroDataJsonPath}");
+            Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
+            Debug.WriteLine($"gameStringsJsonPath: {gameStringsJsonPath}");
 
             if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
             {

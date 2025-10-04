@@ -35,6 +35,7 @@
             sourceToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             accountsToolStripMenuItem = new ToolStripMenuItem();
+            languageToolStripMenuItem = new ToolStripMenuItem();
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
@@ -44,7 +45,7 @@
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, accountsToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, accountsToolStripMenuItem, languageToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(1359, 24);
@@ -84,6 +85,12 @@
             accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
             accountsToolStripMenuItem.Size = new Size(69, 20);
             accountsToolStripMenuItem.Text = "Accounts";
+            // 
+            // languageToolStripMenuItem
+            // 
+            languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            languageToolStripMenuItem.Size = new Size(71, 20);
+            languageToolStripMenuItem.Text = "Language";
             // 
             // webView
             // 
@@ -141,5 +148,6 @@
         private FolderBrowserDialog folderBrowserDialog;
         private ToolStripMenuItem browseToolStripMenuItem;
         private ToolStripMenuItem sourceToolStripMenuItem;
+        private ToolStripMenuItem languageToolStripMenuItem;
     }
 }
