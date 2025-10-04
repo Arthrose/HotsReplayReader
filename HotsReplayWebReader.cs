@@ -855,15 +855,9 @@ namespace HotsReplayReader
         {
             if (stormPlayer.PlayerHero == null || heroDataDocument == null) return "";
 
-            if (stormPlayer.PlayerHero.HeroUnitId == "HeroDVaPilot")
-                   Debug.WriteLine("HeroDVaPilot");
-
-            string heroId = Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
-            Debug.WriteLine(heroId);
-
             string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
- 
-            Hero heroData = heroDataDocument.GetHeroByUnitId(stormPlayer.PlayerHero.HeroUnitId, true, true, true, true);
+
+            Hero heroData = heroDataDocument.GetHeroById(Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId], true, true, true, true);
 
             string playerName;
 
