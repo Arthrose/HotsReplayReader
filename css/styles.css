@@ -138,7 +138,7 @@ tr {
   overflow-y: auto;
   text-align: left;
   margin: 0 auto;
-  background-color: #001100;
+  background-color: #backColor#;
   border-radius: 10px;
   padding: 20px;
 }
