@@ -277,6 +277,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading datas.
+        /// </summary>
+        internal static string strDownloading {
+            get {
+                return ResourceManager.GetString("strDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         internal static string strDuration {

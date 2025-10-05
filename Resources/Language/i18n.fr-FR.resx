@@ -201,4 +201,7 @@
   <data name="strWinners" xml:space="preserve">
     <value>Vainqueurs</value>
   </data>
+  <data name="strDownloading" xml:space="preserve">
+    <value>Téléchargement des données</value>
+  </data>
 </root>

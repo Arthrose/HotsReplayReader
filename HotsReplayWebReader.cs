@@ -1369,7 +1369,99 @@ namespace HotsReplayReader
             Debug.WriteLine($"Downloading heroes' Json files version {versionGitHubFolder}...");
             Debug.WriteLine($"{gitHubApiUrl}");
 
-            webView.CoreWebView2.NavigateToString($@"<center>T&eacute;l&eacute;chargement des fichiers json des h&eacute;ros pour la version {versionGitHubFolder}...</center>");
+            string html = $@"
+<head>
+<script>
+  // Désactive le menu contextuel
+  document.addEventListener('DOMContentLoaded', () => {{
+    document.addEventListener('contextmenu', (e) => {{
+      e.preventDefault()
+    }})
+  }})
+
+  // Affice la liste des replays
+  document.addEventListener(""mousemove"", function (e) {{
+    // Détection si la souris est dans les 50px à gauche
+    const isHover = e.clientX <= 50;
+    // On envoie à C# uniquement quand le statut change
+    if (window.__lastHover !== isHover) {{
+      console.log(`X: ${{event.clientX}}, Y: ${{event.clientY}}`);
+      window.chrome.webview.postMessage({{
+        action: ""hoverLeft"",
+        isHover: isHover
+      }});
+      window.__lastHover = isHover;
+    }}
+  }});
+</script>
+<style>
+.body-div {{
+  display: flex;
+  justify-content: center; /* centre horizontalement */
+  align-items: center;     /* centre verticalement */
+  height: 100vh;           /* occupe toute la hauteur de la fenêtre */
+}}
+.parent {{
+  width: 900px;
+  overflow-y: auto;
+  text-align: left;
+  margin: 0 auto;
+  background-color: #000000;
+  border-radius: 10px;
+  padding: 20px;
+}}
+.header {{
+  font-family: Calibri;
+  font-size: 250%;
+  text-align: center;
+  color: White;
+}}
+.gameVersion {{
+  font-family: Calibri;
+  font-size: 150%;
+  text-align: center;
+  color: #ef8030;
+}}
+.loader {{
+  width: 800px;
+  height: 30px;
+  border-radius: 40px;
+  color: #ef8030;
+  border: 2px solid;
+  position: relative;
+  margin: 30 auto;
+}}
+.loader::before {{
+  content: """";
+  position: absolute;
+  margin: 2px;
+  width: 25%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l3 3s infinite linear;
+}}
+@keyframes l3 {{
+  50% {{left:100%;transform: translateX(calc(-100% - 4px))}}
+}}
+</style>
+</head>
+<body style=""background: url(app://hotsResources/DownloadingBG.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
+<br /><br />
+<div class=""body-div"">
+<div class=""parent"">
+<div class=""header"">Downloading game datas</div>
+<div class=""gameVersion"">{versionGitHubFolder}<br /><br /></div>
+<div class=""loader""></div>
+</div>
+</div>
+</body>
+</html>
+";
+
+            webView.CoreWebView2.NavigateToString(html);
 
             await DownloadGitHubFolderRecursive(httpClient, gitHubApiUrl, rootFolder);
             return versionGitHubFolder;
