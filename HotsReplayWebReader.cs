@@ -786,25 +786,42 @@ namespace HotsReplayReader
         private string HTMLGetScoreTable()
         {
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
-
+            /*
+                        string html = @$"
+            <table class=""tableScore"">
+              <tr class=""teamHeader"">
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;Takedown&nbsp;</td>
+                <td>&nbsp;&nbsp;Deaths&nbsp;</td>
+                <td>Time<br />&nbsp;Spent&nbsp;<br />Dead</td>
+                <td>Siege Dmg</td>
+                <td>&nbsp;Hero Dmg&nbsp;</td>
+                <td>&nbsp;Healing&nbsp;&nbsp;</td>
+                <td>Dmg Taken&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>MVP Score</td>
+              </tr>
+            ";
+            */
             string html = @$"
 <table class=""tableScore"">
   <tr class=""teamHeader"">
     <td>&nbsp;&nbsp;</td>
     <td>&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;Takedown&nbsp;</td>
-    <td>&nbsp;&nbsp;Deaths&nbsp;</td>
-    <td>Time<br />&nbsp;Spent&nbsp;<br />Dead</td>
-    <td>Siege Dmge</td>
-    <td>&nbsp;Hero Dmg&nbsp;</td>
-    <td>&nbsp;Healing&nbsp;&nbsp;</td>
-    <td>Dmg Taken&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>MVP Score</td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"" title=""Kills"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTakedowns.png"" title=""Takedown"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"" title=""Deaths"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"" title=""Time Spent Dead"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"" title=""Siege Dmg"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"" title=""Hero Dmg"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"" title=""Healing"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"" title=""Dmg Taken"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"" title=""Exp"" /></td>
+    <td><img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"" title=""MVP Score"" /></td>
   </tr>
 ";
-
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
                     html += HTMLGetScoreTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));

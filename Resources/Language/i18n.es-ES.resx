@@ -204,4 +204,34 @@
   <data name="strDownloading" xml:space="preserve">
     <value>Descargando datos</value>
   </data>
+  <data name="strScoreKills" xml:space="preserve">
+    <value>Asesinatos Totales de Héroes</value>
+  </data>
+  <data name="strScoreTakedowns" xml:space="preserve">
+    <value>Asistencias Totales en Asesinatos de Héroes</value>
+  </data>
+  <data name="strScoreDeaths" xml:space="preserve">
+    <value>Muertes Totales</value>
+  </data>
+  <data name="strScoreTimeSpentDead" xml:space="preserve">
+    <value>Tiempo Total Muerto</value>
+  </data>
+  <data name="strScoreSiegeDmg" xml:space="preserve">
+    <value>Daño de Asedio&lt;br /&gt;Daño infligido a estructuras enemigas y esbirros</value>
+  </data>
+  <data name="strScoreHeroDmg" xml:space="preserve">
+    <value>Daño a Héroes&lt;br /&gt;Cantidad de daño infligido a héroes enemigos</value>
+  </data>
+  <data name="strScoreHealing" xml:space="preserve">
+    <value>Curación/Escudo&lt;br /&gt;Cantidad de daño evitado y curación realizada a héroes aliados</value>
+  </data>
+  <data name="strScoreDmgTaken" xml:space="preserve">
+    <value>Daño Recibido</value>
+  </data>
+  <data name="strScoreMvp" xml:space="preserve">
+    <value>Puntuación MVP</value>
+  </data>
+  <data name="strScoreExp" xml:space="preserve">
+    <value>Contribución de Experiencia</value>
+  </data>
 </root>

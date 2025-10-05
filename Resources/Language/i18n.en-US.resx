@@ -204,4 +204,34 @@
   <data name="strDownloading" xml:space="preserve">
     <value>Downloading datas</value>
   </data>
+  <data name="strScoreKills" xml:space="preserve">
+    <value>Total Hero Kills</value>
+  </data>
+  <data name="strScoreTakedowns" xml:space="preserve">
+    <value>Total Hero Kill Assists</value>
+  </data>
+  <data name="strScoreDeaths" xml:space="preserve">
+    <value>Total Death</value>
+  </data>
+  <data name="strScoreTimeSpentDead" xml:space="preserve">
+    <value>Total Time Spent Dead</value>
+  </data>
+  <data name="strScoreSiegeDmg" xml:space="preserve">
+    <value>Siege Damage&lt;br /&gt;Amount of damage dealt to enemy Structures and Minions</value>
+  </data>
+  <data name="strScoreHeroDmg" xml:space="preserve">
+    <value>Hero Damage&lt;br /&gt;Amount of damage dealt to enemy Heroes</value>
+  </data>
+  <data name="strScoreHealing" xml:space="preserve">
+    <value>Healing/Shielding&lt;br /&gt;Amount of damage prevented and healing done to allied Heroes</value>
+  </data>
+  <data name="strScoreDmgTaken" xml:space="preserve">
+    <value>Damage Taken</value>
+  </data>
+  <data name="strScoreMvp" xml:space="preserve">
+    <value>MVP Score</value>
+  </data>
+  <data name="strScoreExp" xml:space="preserve">
+    <value>Experience Contribution</value>
+  </data>
 </root>

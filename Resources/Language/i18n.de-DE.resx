@@ -204,4 +204,34 @@
   <data name="strDownloading" xml:space="preserve">
     <value>Daten werden heruntergeladen</value>
   </data>
+  <data name="strScoreKills" xml:space="preserve">
+    <value>Gesamte Helden-Kills</value>
+  </data>
+  <data name="strScoreTakedowns" xml:space="preserve">
+    <value>Gesamte Helden-Kill-Assists</value>
+  </data>
+  <data name="strScoreDeaths" xml:space="preserve">
+    <value>Gesamttode</value>
+  </data>
+  <data name="strScoreTimeSpentDead" xml:space="preserve">
+    <value>Gesamtzeit tot verbracht</value>
+  </data>
+  <data name="strScoreSiegeDmg" xml:space="preserve">
+    <value>Belagerungsschaden&lt;br /&gt;Schaden an feindlichen Strukturen und Dienern</value>
+  </data>
+  <data name="strScoreHeroDmg" xml:space="preserve">
+    <value>Heldenschaden&lt;br /&gt;Schaden an feindlichen Helden</value>
+  </data>
+  <data name="strScoreHealing" xml:space="preserve">
+    <value>Heilung/Schildung&lt;br /&gt;Menge des verhinderten Schadens und der Heilung für verbündete Helden</value>
+  </data>
+  <data name="strScoreDmgTaken" xml:space="preserve">
+    <value>Erhaltener Schaden</value>
+  </data>
+  <data name="strScoreMvp" xml:space="preserve">
+    <value>MVP-Punktzahl</value>
+  </data>
+  <data name="strScoreExp" xml:space="preserve">
+    <value>Erfahrungseintrag</value>
+  </data>
 </root>

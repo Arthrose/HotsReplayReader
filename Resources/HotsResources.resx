@@ -212,4 +212,34 @@
   <data name="MapWarhead Junction" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Maps\MapWarhead Junction.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="scoreDeaths" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreDeaths.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreDmgTaken" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreDmgTaken.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreExp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreExp.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreHealing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreHealing.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreHeroDmg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreHeroDmg.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreKills" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreKills.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreMvp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreMvp.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreSiegeDmg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreSiegeDmg.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreTakedowns" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreTakedowns.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="scoreTimeSpentDead" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\scoreTimeSpentDead.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

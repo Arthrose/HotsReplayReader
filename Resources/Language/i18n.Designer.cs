@@ -313,6 +313,96 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Death.
+        /// </summary>
+        internal static string strScoreDeaths {
+            get {
+                return ResourceManager.GetString("strScoreDeaths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damage Taken.
+        /// </summary>
+        internal static string strScoreDmgTaken {
+            get {
+                return ResourceManager.GetString("strScoreDmgTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Experience Contribution.
+        /// </summary>
+        internal static string strScoreExp {
+            get {
+                return ResourceManager.GetString("strScoreExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Healing/Shielding&lt;br /&gt;Amount of damage prevented and healing done to allied Heroes.
+        /// </summary>
+        internal static string strScoreHealing {
+            get {
+                return ResourceManager.GetString("strScoreHealing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hero Damage&lt;br /&gt;Amount of damage dealt to enemy Heroes.
+        /// </summary>
+        internal static string strScoreHeroDmg {
+            get {
+                return ResourceManager.GetString("strScoreHeroDmg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Hero Kills.
+        /// </summary>
+        internal static string strScoreKills {
+            get {
+                return ResourceManager.GetString("strScoreKills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MVP Score.
+        /// </summary>
+        internal static string strScoreMvp {
+            get {
+                return ResourceManager.GetString("strScoreMvp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siege Damage&lt;br /&gt;Amount of damage dealt to enemy Structures and Minions.
+        /// </summary>
+        internal static string strScoreSiegeDmg {
+            get {
+                return ResourceManager.GetString("strScoreSiegeDmg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Hero Kill Assists.
+        /// </summary>
+        internal static string strScoreTakedowns {
+            get {
+                return ResourceManager.GetString("strScoreTakedowns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Time Spent Dead.
+        /// </summary>
+        internal static string strScoreTimeSpentDead {
+            get {
+                return ResourceManager.GetString("strScoreTimeSpentDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Winners.
         /// </summary>
         internal static string strWinners {
