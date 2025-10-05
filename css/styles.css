@@ -1,6 +1,9 @@
 body {
   color: white;
-  background-color: #backColor#;
+  background: #backColor# url("app://hotsResources/#backImg#.png") no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  height: 100%;
   text-align: center;
   cursor: default;
   user-select: none;
@@ -130,6 +133,14 @@ tr {
   text-align: left;
   vertical-align: center;
   font-family: Calibri;
+}
+.head-container {
+  overflow-y: auto;
+  text-align: left;
+  margin: 0 auto;
+  background-color: #001100;
+  border-radius: 10px;
+  padding: 20px;
 }
 .chat-container {
   zoom: 0.9;

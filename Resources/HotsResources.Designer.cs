@@ -112,6 +112,156 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] MapAlteracPass {
+            get {
+                object obj = ResourceManager.GetObject("MapAlteracPass", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapBattlefieldOfEternity {
+            get {
+                object obj = ResourceManager.GetObject("MapBattlefieldOfEternity", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapBlackheartsBay {
+            get {
+                object obj = ResourceManager.GetObject("MapBlackheartsBay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapBraxisHoldout {
+            get {
+                object obj = ResourceManager.GetObject("MapBraxisHoldout", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapControlPoints {
+            get {
+                object obj = ResourceManager.GetObject("MapControlPoints", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapCrypts {
+            get {
+                object obj = ResourceManager.GetObject("MapCrypts", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapCursedHollow {
+            get {
+                object obj = ResourceManager.GetObject("MapCursedHollow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapDragonShire {
+            get {
+                object obj = ResourceManager.GetObject("MapDragonShire", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapHanamura {
+            get {
+                object obj = ResourceManager.GetObject("MapHanamura", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapHauntedMines {
+            get {
+                object obj = ResourceManager.GetObject("MapHauntedMines", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapHauntedWoods {
+            get {
+                object obj = ResourceManager.GetObject("MapHauntedWoods", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapShrines {
+            get {
+                object obj = ResourceManager.GetObject("MapShrines", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapTowersOfDoom {
+            get {
+                object obj = ResourceManager.GetObject("MapTowersOfDoom", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapVolskaya {
+            get {
+                object obj = ResourceManager.GetObject("MapVolskaya", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapWarhead_Junction {
+            get {
+                object obj = ResourceManager.GetObject("MapWarhead Junction", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] styles {
             get {
                 object obj = ResourceManager.GetObject("styles", resourceCulture);
