@@ -205,33 +205,33 @@
     <value>Descargando datos</value>
   </data>
   <data name="strScoreKills" xml:space="preserve">
-    <value>Eliminaciones Totales de Héroes</value>
+    <value>Total de asesinatos</value>
   </data>
   <data name="strScoreTakedowns" xml:space="preserve">
-    <value>Daño de Asedio&lt;br /&gt;Daño causado a estructuras enemigas y súbditos</value>
+    <value>Asistencias totales</value>
   </data>
   <data name="strScoreDeaths" xml:space="preserve">
     <value>Muertes Totales</value>
   </data>
   <data name="strScoreTimeSpentDead" xml:space="preserve">
-    <value>Tiempo Total Muerto</value>
+    <value>Tiempo total muerto</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
     <value>Daño de Asedio&lt;br /&gt;Daño causado a estructuras enemigas y súbditos</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Daño a Héroes&lt;br /&gt;Cantidad de daño infligido a héroes enemigos</value>
+    <value>Daño a héroes&lt;br /&gt;Cantidad de daño infligido a héroes enemigos</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Curación/Escudo&lt;br /&gt;Cantidad de daño evitado y curación realizada a héroes aliados</value>
+    <value>Curación/Escudos&lt;br /&gt;Daño evitado y sanación realizada a héroes aliados</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
-    <value>Daño Recibido</value>
+    <value>Daño recibido</value>
   </data>
   <data name="strScoreMvp" xml:space="preserve">
     <value>Puntuación MVP</value>
   </data>
   <data name="strScoreExp" xml:space="preserve">
-    <value>Contribución de Experiencia</value>
+    <value>Contribución de experiencia</value>
   </data>
 </root>

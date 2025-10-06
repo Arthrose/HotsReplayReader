@@ -204,35 +204,34 @@
   <data name="strDownloading" xml:space="preserve">
     <value>데이터 다운로드 중</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="strScoreKills" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreKills" xml:space="preserve">
+    <value>총 영웅 처치</value>
   </data>
-  <data name="strScoreTakedowns" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreTakedowns" xml:space="preserve">
+    <value>총 영웅 처치 지원</value>
   </data>
-  <data name="strScoreDeaths" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreDeaths" xml:space="preserve">
+    <value>총 죽음 수</value>
   </data>
-  <data name="strScoreTimeSpentDead" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreTimeSpentDead" xml:space="preserve">
+    <value>총 사망 시간</value>
   </data>
-  <data name="strScoreSiegeDmg" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreSiegeDmg" xml:space="preserve">
+    <value>공성 피해&lt;br /&gt;적 건물 및 하수인에게 입힌 피해량</value>
   </data>
-  <data name="strScoreHeroDmg" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreHeroDmg" xml:space="preserve">
+    <value>영웅 피해&lt;br /&gt;적 영웅에게 입힌 피해량</value>
   </data>
-  <data name="strScoreHealing" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreHealing" xml:space="preserve">
+    <value>치유/보호막&lt;br /&gt;아군 영웅에게 준 치유 및 피해 방지량</value>
   </data>
-  <data name="strScoreDmgTaken" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreDmgTaken" xml:space="preserve">
+    <value>받은 피해량</value>
   </data>
-  <data name="strScoreMvp" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreMvp" xml:space="preserve">
+    <value>MVP 점수</value>
   </data>
-  <data name="strScoreExp" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreExp" xml:space="preserve">
+    <value>경험치 기여</value>
   </data>
 </root>

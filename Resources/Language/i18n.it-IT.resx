@@ -204,35 +204,34 @@
   <data name="strDownloading" xml:space="preserve">
     <value>Download dei dati</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="strScoreKills" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreKills" xml:space="preserve">
+    <value>Uccisioni totali</value>
   </data>
-  <data name="strScoreTakedowns" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreTakedowns" xml:space="preserve">
+    <value>Assist totale agli eroi</value>
   </data>
-  <data name="strScoreDeaths" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreDeaths" xml:space="preserve">
+    <value>Morti totali</value>
   </data>
-  <data name="strScoreTimeSpentDead" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreTimeSpentDead" xml:space="preserve">
+    <value>Tempo totale da morto</value>
   </data>
-  <data name="strScoreSiegeDmg" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreSiegeDmg" xml:space="preserve">
+    <value>Danni d'assedio&lt;br /&gt;Danni inflitti a strutture e servitori nemici</value>
   </data>
-  <data name="strScoreHeroDmg" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreHeroDmg" xml:space="preserve">
+    <value>Danni agli eroi&lt;br /&gt;Danni inflitti agli eroi nemici</value>
   </data>
-  <data name="strScoreHealing" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreHealing" xml:space="preserve">
+    <value>Cura/Scudi&lt;br /&gt;Danni prevenuti e cure effettuate agli eroi alleati</value>
   </data>
-  <data name="strScoreDmgTaken" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreDmgTaken" xml:space="preserve">
+    <value>Danni subiti</value>
   </data>
-  <data name="strScoreMvp" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreMvp" xml:space="preserve">
+    <value>Punteggio MVP</value>
   </data>
-  <data name="strScoreExp" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="strScoreExp" xml:space="preserve">
+    <value>Contributo di esperienza</value>
   </data>
 </root>

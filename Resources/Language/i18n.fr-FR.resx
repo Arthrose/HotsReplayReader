@@ -205,33 +205,33 @@
     <value>Téléchargement des données</value>
   </data>
   <data name="strScoreKills" xml:space="preserve">
-    <value>Éliminations Totales de Héros</value>
+    <value>Total de victimes</value>
   </data>
   <data name="strScoreTakedowns" xml:space="preserve">
-    <value>Assistances Totales aux Éliminations de Héros</value>
+    <value>Total de contributions</value>
   </data>
   <data name="strScoreDeaths" xml:space="preserve">
-    <value>Morts Totales</value>
+    <value>Total de morts</value>
   </data>
   <data name="strScoreTimeSpentDead" xml:space="preserve">
-    <value>Temps Total Passé Mort</value>
+    <value>Temps total passé mort</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>Dégâts de Siège&lt;br /&gt;Dégâts infligés aux structures ennemies et aux sbires</value>
+    <value>Dégâts de siège&lt;br /&gt;Montants de dégats infligés aux bâtiments et aux serviteurs adverses</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Dégâts aux Héros&lt;br /&gt;Dégâts infligés aux héros ennemis</value>
+    <value>Dégâts aux héros&lt;br /&gt;Montants de dégâts infligés aux héros adverses</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Soin/Bouclier&lt;br /&gt;Quantité de dégâts évités et soins prodigués aux héros alliés</value>
+    <value>Soutien&lt;br /&gt;Montants de dégâts absorbés et soins prodigués aux héros alliés</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
-    <value>Dégâts Subis</value>
+    <value>Dégâts subis</value>
   </data>
   <data name="strScoreMvp" xml:space="preserve">
     <value>Score MVP</value>
   </data>
   <data name="strScoreExp" xml:space="preserve">
-    <value>Contribution d’Expérience</value>
+    <value>Expérience apportée</value>
   </data>
 </root>
