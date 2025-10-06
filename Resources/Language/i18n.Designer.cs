@@ -106,6 +106,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Braxis Outpost.
+        /// </summary>
+        internal static string MapBraxisOutpost {
+            get {
+                return ResourceManager.GetString("MapBraxisOutpost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sky Temple.
         /// </summary>
         internal static string MapControlPoints {
@@ -169,11 +178,38 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Industrial District.
+        /// </summary>
+        internal static string MapIndustrialDistrict {
+            get {
+                return ResourceManager.GetString("MapIndustrialDistrict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lost Cavern.
+        /// </summary>
+        internal static string MapLostCavern {
+            get {
+                return ResourceManager.GetString("MapLostCavern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Infernal Shrines.
         /// </summary>
         internal static string MapShrines {
             get {
                 return ResourceManager.GetString("MapShrines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silver City.
+        /// </summary>
+        internal static string MapSilverCity {
+            get {
+                return ResourceManager.GetString("MapSilverCity", resourceCulture);
             }
         }
         

@@ -234,4 +234,16 @@
   <data name="strScoreExp" xml:space="preserve">
     <value>Вклад в опыт</value>
   </data>
+  <data name="MapSilverCity" xml:space="preserve">
+    <value>Серебряный город</value>
+  </data>
+  <data name="MapLostCavern" xml:space="preserve">
+    <value>Затерянный грот</value>
+  </data>
+  <data name="MapIndustrialDistrict" xml:space="preserve">
+    <value>Промзона</value>
+  </data>
+  <data name="MapBraxisOutpost" xml:space="preserve">
+    <value>Аванпост на Браксисе</value>
+  </data>
 </root>

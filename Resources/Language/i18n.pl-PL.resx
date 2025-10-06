@@ -234,4 +234,16 @@
   <data name="strScoreExp" xml:space="preserve">
     <value>Otrzymane obrażenia</value>
   </data>
+  <data name="MapSilverCity" xml:space="preserve">
+    <value>Srebrne Miasto</value>
+  </data>
+  <data name="MapLostCavern" xml:space="preserve">
+    <value>Zaginiona Pieczara</value>
+  </data>
+  <data name="MapIndustrialDistrict" xml:space="preserve">
+    <value>Dzielnica Przemysłowa</value>
+  </data>
+  <data name="MapBraxisOutpost" xml:space="preserve">
+    <value>Posterunek na Braxis</value>
+  </data>
 </root>

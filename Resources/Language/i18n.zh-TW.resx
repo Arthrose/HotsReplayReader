@@ -234,4 +234,16 @@
   <data name="strScoreExp" xml:space="preserve">
     <value>經驗值貢獻</value>
   </data>
+  <data name="MapSilverCity" xml:space="preserve">
+    <value>銀光之城</value>
+  </data>
+  <data name="MapLostCavern" xml:space="preserve">
+    <value>失落洞窟</value>
+  </data>
+  <data name="MapIndustrialDistrict" xml:space="preserve">
+    <value>機戰工業區</value>
+  </data>
+  <data name="MapBraxisOutpost" xml:space="preserve">
+    <value>布萊西斯哨站</value>
+  </data>
 </root>

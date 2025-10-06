@@ -234,4 +234,16 @@
   <data name="strScoreExp" xml:space="preserve">
     <value>경험치 기여</value>
   </data>
+  <data name="MapSilverCity" xml:space="preserve">
+    <value>은빛 도시</value>
+  </data>
+  <data name="MapLostCavern" xml:space="preserve">
+    <value>잃어버린 동굴</value>
+  </data>
+  <data name="MapIndustrialDistrict" xml:space="preserve">
+    <value>공업 지구</value>
+  </data>
+  <data name="MapBraxisOutpost" xml:space="preserve">
+    <value>브락시스 전초기지</value>
+  </data>
 </root>

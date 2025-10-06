@@ -106,11 +106,24 @@ namespace HotsReplayReader
             Directory.CreateDirectory(tempDataFolder);
             File.WriteAllBytes(webViewDllPath, webViewDllBytes);
 
+            // Charge la dernière langue utilisée
             jsonConfigFile = Init.jsonConfigFile!;
+            string jsonFile;
+            JsonConfig? jsonConfig = new();
+            if (File.Exists(jsonConfigFile))
+            {
+                jsonFile = File.ReadAllText(jsonConfigFile);
+                jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
+            }
+            if (jsonConfig?.langCode != null && LangCodeList.ContainsKey(jsonConfig.langCode))
+            {
+                LangCode = jsonConfig.langCode;
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(jsonConfig.langCode);
+            }
+            else
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
             InitializeComponent();
-
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
 
             translator = new DeepLTranslator(apiKey);
             replayList = [];
@@ -120,7 +133,7 @@ namespace HotsReplayReader
             ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
             for (int i = 0; i < accountsToolStripMenu.Length; i++)
             {
-                accountsToolStripMenu[i] = new ToolStripMenuItem
+                ToolStripMenuItem toolStripMenuItem = new()
                 {
                     Name = Init?.hotsLocalAccounts[i].BattleTagName,
                     Tag = "Account",
@@ -128,6 +141,7 @@ namespace HotsReplayReader
                         ? tag[..tag.IndexOf('#')]
                         : string.Empty
                 };
+                accountsToolStripMenu[i] = toolStripMenuItem;
                 accountsToolStripMenu[i].Click += new EventHandler(AccountMenuItemClickHandler);
             }
             accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
@@ -393,6 +407,17 @@ namespace HotsReplayReader
                 LangCode = clickedItem.Tag?.ToString()!;
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
             }
+
+            // Enregistre la langue dans le fichier de configuration
+            JsonConfig? jsonConfig = new();
+            string jsonFile;
+            if (File.Exists(jsonConfigFile))
+            {
+                jsonFile = File.ReadAllText(jsonConfigFile);
+                jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
+            }
+            jsonConfig!.langCode = LangCode;
+            File.WriteAllText(jsonConfigFile, JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
 
             if (listBoxHotsReplays.Items.Count == 0)
                 return;
@@ -786,25 +811,6 @@ namespace HotsReplayReader
         private string HTMLGetScoreTable()
         {
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
-            /*
-                        string html = @$"
-            <table class=""tableScore"">
-              <tr class=""teamHeader"">
-                <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;Kills&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;Takedown&nbsp;</td>
-                <td>&nbsp;&nbsp;Deaths&nbsp;</td>
-                <td>Time<br />&nbsp;Spent&nbsp;<br />Dead</td>
-                <td>Siege Dmg</td>
-                <td>&nbsp;Hero Dmg&nbsp;</td>
-                <td>&nbsp;Healing&nbsp;&nbsp;</td>
-                <td>Dmg Taken&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;Exp&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>MVP Score</td>
-              </tr>
-            ";
-            */
             string html = @$"
 <table class=""tableScore"">
   <tr class=""teamHeader"">

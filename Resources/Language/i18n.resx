@@ -234,4 +234,16 @@
   <data name="strScoreExp" xml:space="preserve">
     <value>Experience Contribution</value>
   </data>
+  <data name="MapSilverCity" xml:space="preserve">
+    <value>Silver City</value>
+  </data>
+  <data name="MapLostCavern" xml:space="preserve">
+    <value>Lost Cavern</value>
+  </data>
+  <data name="MapIndustrialDistrict" xml:space="preserve">
+    <value>Industrial District</value>
+  </data>
+  <data name="MapBraxisOutpost" xml:space="preserve">
+    <value>Braxis Outpost</value>
+  </data>
 </root>

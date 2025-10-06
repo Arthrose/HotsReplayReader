@@ -574,6 +574,7 @@ namespace HotsReplayReader
     }
     internal class JsonConfig
     {
+        public string? langCode { get; set; }
         public string? LastSelectedAccount { get; set; }
         public string? LastSelectedAccountDirectory { get; set; }
         public string? LastBrowseDirectory { get; set; }
