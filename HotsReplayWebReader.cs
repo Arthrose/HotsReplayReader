@@ -610,7 +610,7 @@ namespace HotsReplayReader
             html += $@"    <tr>
       <td>&nbsp;</td>
       <td colSpan=""3"" class=""titleBlue"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /><br /><font color=""#bfd4fd"" size=""5"">Level {blueTeam.Level}</font></td>
-      <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;"">{replayLength}</td>
+      <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;""><font color=""#bfd4fd"">{replayLength}</font></td>
       <td colSpan=""3"" class=""titleRed"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}<br /><font color=""#bfd4fd"" size=""5"">Level {redTeam.Level}</font></td>
       <td>&nbsp;</td>
     </tr>
