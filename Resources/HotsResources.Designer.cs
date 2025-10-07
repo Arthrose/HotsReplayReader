@@ -72,6 +72,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] DownloadingBG {
+            get {
+                object obj = ResourceManager.GetObject("DownloadingBG", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] emoticondata {
             get {
                 object obj = ResourceManager.GetObject("emoticondata", resourceCulture);
@@ -152,6 +162,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] MapBraxisOutpost {
+            get {
+                object obj = ResourceManager.GetObject("MapBraxisOutpost", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] MapControlPoints {
             get {
                 object obj = ResourceManager.GetObject("MapControlPoints", resourceCulture);
@@ -222,9 +242,39 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] MapIndustrialDistrict {
+            get {
+                object obj = ResourceManager.GetObject("MapIndustrialDistrict", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapLostCavern {
+            get {
+                object obj = ResourceManager.GetObject("MapLostCavern", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] MapShrines {
             get {
                 object obj = ResourceManager.GetObject("MapShrines", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MapSilverCity {
+            get {
+                object obj = ResourceManager.GetObject("MapSilverCity", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -255,6 +305,106 @@ namespace HotsReplayReader.Resources {
         internal static byte[] MapWarhead_Junction {
             get {
                 object obj = ResourceManager.GetObject("MapWarhead Junction", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreDeaths {
+            get {
+                object obj = ResourceManager.GetObject("scoreDeaths", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreDmgTaken {
+            get {
+                object obj = ResourceManager.GetObject("scoreDmgTaken", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreExp {
+            get {
+                object obj = ResourceManager.GetObject("scoreExp", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreHealing {
+            get {
+                object obj = ResourceManager.GetObject("scoreHealing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreHeroDmg {
+            get {
+                object obj = ResourceManager.GetObject("scoreHeroDmg", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreKills {
+            get {
+                object obj = ResourceManager.GetObject("scoreKills", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreMvp {
+            get {
+                object obj = ResourceManager.GetObject("scoreMvp", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreSiegeDmg {
+            get {
+                object obj = ResourceManager.GetObject("scoreSiegeDmg", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreTakedowns {
+            get {
+                object obj = ResourceManager.GetObject("scoreTakedowns", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] scoreTimeSpentDead {
+            get {
+                object obj = ResourceManager.GetObject("scoreTimeSpentDead", resourceCulture);
                 return ((byte[])(obj));
             }
         }

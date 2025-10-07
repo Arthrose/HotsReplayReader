@@ -242,4 +242,16 @@
   <data name="scoreTimeSpentDead" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\scoreTimeSpentDead.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="MapBraxisOutpost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapBraxisOutpost.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapIndustrialDistrict" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapIndustrialDistrict.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapLostCavern" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapLostCavern.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MapSilverCity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Maps\MapSilverCity.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

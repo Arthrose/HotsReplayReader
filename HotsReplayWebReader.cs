@@ -609,9 +609,9 @@ namespace HotsReplayReader
 
             html += $@"    <tr>
       <td>&nbsp;</td>
-      <td colSpan=""3"" class=""titleBlue"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></td>
+      <td colSpan=""3"" class=""titleBlue"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /><br /><font color=""#bfd4fd"" size=""5"">Level {blueTeam.Level}</font></td>
       <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;"">{replayLength}</td>
-      <td colSpan=""3"" class=""titleRed"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}</td>
+      <td colSpan=""3"" class=""titleRed"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}<br /><font color=""#bfd4fd"" size=""5"">Level {redTeam.Level}</font></td>
       <td>&nbsp;</td>
     </tr>
   </table>
@@ -1219,6 +1219,8 @@ namespace HotsReplayReader
                         team.MaxDmgTaken = stormPlayer.ScoreResult.DamageTaken;
                     if (stormPlayer.ScoreResult.ExperienceContribution >= team.MaxExp)
                         team.MaxExp = stormPlayer.ScoreResult.ExperienceContribution;
+                    if (stormPlayer.ScoreResult.Level >= team.Level)
+                        team.Level = stormPlayer.ScoreResult.Level;
                     team.TotalDeath += stormPlayer.ScoreResult.Deaths;
                     team.TotalKills += stormPlayer.ScoreResult.SoloKills;
                 }

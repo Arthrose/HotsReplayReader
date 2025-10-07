@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System.Diagnostics;
+using System.Resources;
 
 namespace HotsReplayReader
 {
@@ -20,6 +21,8 @@ namespace HotsReplayReader
             object? image = null;
             ResourceManager? resourceManager = null;
             string ResxObjectName = Name;
+            if (Name == "MapSilverCity")
+                Debug.WriteLine("Debug MapSilverCity");
             switch (ResourceName)
             {
                 case "heroesicon":

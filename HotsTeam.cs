@@ -3,6 +3,7 @@
     internal class HotsTeam(string Name)
     {
         public string Name { get; set; } = Name;
+        public int Level { get; set; } = 0;
         public int MaxKills { get; set; } = 0;
         public int MaxTakedowns { get; set; } = 0;
         public int MaxDeaths { get; set; } = 999999999;
