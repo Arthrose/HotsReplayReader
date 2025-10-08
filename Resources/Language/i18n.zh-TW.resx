@@ -246,4 +246,13 @@
   <data name="MapBraxisOutpost" xml:space="preserve">
     <value>布萊西斯哨站</value>
   </data>
+  <data name="strBattleTag" xml:space="preserve">
+    <value>戰網名稱</value>
+  </data>
+  <data name="strAccountLevel" xml:space="preserve">
+    <value>帳號等級</value>
+  </data>
+  <data name="strHeroLevel" xml:space="preserve">
+    <value>英雄等級</value>
+  </data>
 </root>

@@ -97,6 +97,7 @@
             webView.AllowExternalDrop = false;
             webView.CreationProperties = null;
             webView.DefaultBackgroundColor = Color.White;
+            webView.Dock = DockStyle.Fill;
             webView.Location = new Point(0, 24);
             webView.Name = "webView";
             webView.Size = new Size(1359, 784);
@@ -106,6 +107,7 @@
             // listBoxHotsReplays
             // 
             listBoxHotsReplays.Dock = DockStyle.Left;
+            listBoxHotsReplays.IntegralHeight = false;
             listBoxHotsReplays.FormattingEnabled = true;
             listBoxHotsReplays.Location = new Point(0, 24);
             listBoxHotsReplays.Name = "listBoxHotsReplays";
@@ -129,7 +131,7 @@
             Text = "Hots Replay Reader";
             FormClosed += HotsReplayWebReader_FormClosed;
             Load += HotsReplayWebReader_Load;
-            Resize += HotsReplayWebReader_Resize;
+            //Resize += HotsReplayWebReader_Resize;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)webView).EndInit();

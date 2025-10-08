@@ -241,6 +241,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Level.
+        /// </summary>
+        internal static string strAccountLevel {
+            get {
+                return ResourceManager.GetString("strAccountLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AI.
         /// </summary>
         internal static string strAI {
@@ -304,6 +313,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BattleTag.
+        /// </summary>
+        internal static string strBattleTag {
+            get {
+                return ResourceManager.GetString("strBattleTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blue Team.
         /// </summary>
         internal static string strBlueTeam {
@@ -327,6 +345,15 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strDuration {
             get {
                 return ResourceManager.GetString("strDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hero Level.
+        /// </summary>
+        internal static string strHeroLevel {
+            get {
+                return ResourceManager.GetString("strHeroLevel", resourceCulture);
             }
         }
         

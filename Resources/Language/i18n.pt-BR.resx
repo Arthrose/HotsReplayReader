@@ -246,4 +246,13 @@
   <data name="MapBraxisOutpost" xml:space="preserve">
     <value>Posto Avançado Braxis</value>
   </data>
+  <data name="strBattleTag" xml:space="preserve">
+    <value>BattleTag</value>
+  </data>
+  <data name="strAccountLevel" xml:space="preserve">
+    <value>Nível de conta</value>
+  </data>
+  <data name="strHeroLevel" xml:space="preserve">
+    <value>Nível de herói</value>
+  </data>
 </root>

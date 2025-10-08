@@ -246,4 +246,13 @@
   <data name="MapBraxisOutpost" xml:space="preserve">
     <value>브락시스 전초기지</value>
   </data>
+  <data name="strBattleTag" xml:space="preserve">
+    <value>배틀태그</value>
+  </data>
+  <data name="strAccountLevel" xml:space="preserve">
+    <value>계정 레벨</value>
+  </data>
+  <data name="strHeroLevel" xml:space="preserve">
+    <value>영웅 레벨</value>
+  </data>
 </root>

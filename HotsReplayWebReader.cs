@@ -34,8 +34,6 @@ namespace HotsReplayReader
         readonly bool fetchHero = false;
         readonly string heroFetched = "Lùcio";
 
-        private Rectangle webViewOriginalRectangle;
-
         private string? hotsReplayFolder;
         internal static string jsonConfigFile = "";
         private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
@@ -187,8 +185,6 @@ namespace HotsReplayReader
         static extern bool SetDllDirectory(string lpPathName);
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
-            webViewOriginalRectangle = new Rectangle(webViewOriginalRectangle.Location.X, webViewOriginalRectangle.Location.Y, webViewOriginalRectangle.Width, webViewOriginalRectangle.Height);
-
             // Ajouter ce dossier au chemin de recherche des DLL natives
             if (!SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
             {
@@ -349,21 +345,6 @@ namespace HotsReplayReader
                     e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
                 }
             }
-        }
-        private void ResizeControl(Control c, bool growWidth)
-        {
-            int newWidth;
-            if (growWidth)
-                newWidth = (int)(this.Width); // newWidth = (int)(this.Width - 276); //384
-            else
-                newWidth = c.Width;
-            int newHeight = (int)(this.Height - 63);
-            c.Size = new Size(newWidth, newHeight);
-        }
-        private void HotsReplayWebReader_Resize(object sender, EventArgs e)
-        {
-            ResizeControl(listBoxHotsReplays, false);
-            ResizeControl(webView, true);
         }
         private void AccountMenuItemClickHandler(object? sender, EventArgs e)
         {
@@ -609,9 +590,15 @@ namespace HotsReplayReader
 
             html += $@"    <tr>
       <td>&nbsp;</td>
-      <td colSpan=""3"" class=""titleBlue"" style=""zoom: 100%;"">{blueTeam.TotalKills} &nbsp; <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /><br /><font color=""#bfd4fd"" size=""5"">Level {blueTeam.Level}</font></td>
+      <td colSpan=""3"">
+        <span class=""titleBlue"">{blueTeam.TotalKills} <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></span><br />
+        <span class=""teamLevel"">Level {blueTeam.Level}</span>
+      </td>
       <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;""><font color=""#bfd4fd"">{replayLength}</font></td>
-      <td colSpan=""3"" class=""titleRed"" style=""zoom: 100%;""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> &nbsp; {redTeam.TotalKills}<br /><font color=""#bfd4fd"" size=""5"">Level {redTeam.Level}</font></td>
+      <td colSpan=""3"">
+        <span class=""titleRed""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> {redTeam.TotalKills}</span><br />
+        <span class=""teamLevel"">Level {redTeam.Level}</span>
+      </td>
       <td>&nbsp;</td>
     </tr>
   </table>
@@ -671,12 +658,23 @@ namespace HotsReplayReader
                 playerName = hotsPlayer.BattleTagName[..hotsPlayer.BattleTagName.IndexOf('#')];
                 playerID = hotsPlayer.BattleTagName[(hotsPlayer.BattleTagName.IndexOf('#') + 1)..];
 
-                html += $"            <span class=\"nobr\">BattleTag:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br />\n";
-                html += $"            <span class=\"nobr\">AccountLevel:&nbsp;<font color=\"#bfd4fd\">{accountLevel}</font></span><br />\n";
+                // Alignement des donées sur l'intitulé le plus long
+                int maxLength = new[] { Resources.Language.i18n.strBattleTag.Length, Resources.Language.i18n.strAccountLevel.Length, Resources.Language.i18n.strHeroLevel.Length }.Max();
+                Debug.WriteLine($"\"{Resources.Language.i18n.strBattleTag}\":".PadRight(maxLength + 2) + $" TEST");
+                Debug.WriteLine($"\"{Resources.Language.i18n.strAccountLevel}\":".PadRight(maxLength + 2) + $" TEST");
+                Debug.WriteLine($"\"{Resources.Language.i18n.strHeroLevel}\":".PadRight(maxLength + 2) + $" TEST");
+
+                string battleTagLabel = (Resources.Language.i18n.strBattleTag + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
+                html += $"            <span class=\"nobr\">{battleTagLabel}<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br />\n";
+
+                string accountLevelLabel = (Resources.Language.i18n.strAccountLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
+                html += $"            <span class=\"nobr\">{accountLevelLabel}<font color=\"#bfd4fd\">{accountLevel}</font></span><br />\n";
+
+                string heroLevelLabel = (Resources.Language.i18n.strHeroLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
                 if (hotsPlayer.PlayerHero.HeroLevel >= 20)
-                    html += $"            <span class=\"nobr\">HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font></span><br />\n";
+                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font></span><br />\n";
                 else
-                    html += $"            <span class=\"nobr\">HeroLevel:&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br />\n";
+                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br />\n";
             }
             else
             {
