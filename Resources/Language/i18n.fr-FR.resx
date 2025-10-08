@@ -247,13 +247,13 @@
     <value>L'avant-poste de Braxis</value>
   </data>
   <data name="strBattleTag" xml:space="preserve">
-    <value>BattleTag</value>
+    <value>BattleTag&amp;nbsp;</value>
   </data>
   <data name="strAccountLevel" xml:space="preserve">
-    <value>Niveau de compte</value>
+    <value>Niveau de compte&amp;nbsp;</value>
   </data>
   <data name="strHeroLevel" xml:space="preserve">
-    <value>Niveau de héros</value>
+    <value>Niveau de héros&amp;nbsp;</value>
   </data>
   <data name="strBanned" xml:space="preserve">
     <value>Bannis</value>
