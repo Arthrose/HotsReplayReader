@@ -313,6 +313,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Banned.
+        /// </summary>
+        internal static string strBanned {
+            get {
+                return ResourceManager.GetString("strBanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BattleTag.
         /// </summary>
         internal static string strBattleTag {
@@ -327,6 +336,15 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strBlueTeam {
             get {
                 return ResourceManager.GetString("strBlueTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected.
+        /// </summary>
+        internal static string strDisconnected {
+            get {
+                return ResourceManager.GetString("strDisconnected", resourceCulture);
             }
         }
         
@@ -358,11 +376,83 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        internal static string strLevel {
+            get {
+                return ResourceManager.GetString("strLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accounts.
+        /// </summary>
+        internal static string strMenuAccounts {
+            get {
+                return ResourceManager.GetString("strMenuAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        internal static string strMenuBrowse {
+            get {
+                return ResourceManager.GetString("strMenuBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string strMenuExit {
+            get {
+                return ResourceManager.GetString("strMenuExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        internal static string strMenuFile {
+            get {
+                return ResourceManager.GetString("strMenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        internal static string strMenuLanguage {
+            get {
+                return ResourceManager.GetString("strMenuLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        internal static string strMenuSource {
+            get {
+                return ResourceManager.GetString("strMenuSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player.
         /// </summary>
         internal static string strPlayer {
             get {
                 return ResourceManager.GetString("strPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reconnected.
+        /// </summary>
+        internal static string strReconnected {
+            get {
+                return ResourceManager.GetString("strReconnected", resourceCulture);
             }
         }
         

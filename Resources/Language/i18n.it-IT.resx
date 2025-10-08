@@ -255,4 +255,34 @@
   <data name="strHeroLevel" xml:space="preserve">
     <value>Livello eroe</value>
   </data>
+  <data name="strBanned" xml:space="preserve">
+    <value>Banditi</value>
+  </data>
+  <data name="strLevel" xml:space="preserve">
+    <value>Livello</value>
+  </data>
+  <data name="strDisconnected" xml:space="preserve">
+    <value>Disconnesso</value>
+  </data>
+  <data name="strReconnected" xml:space="preserve">
+    <value>Riconnesso</value>
+  </data>
+  <data name="strMenuFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="strMenuBrowse" xml:space="preserve">
+    <value>Sfoglia</value>
+  </data>
+  <data name="strMenuSource" xml:space="preserve">
+    <value>Sorgente</value>
+  </data>
+  <data name="strMenuExit" xml:space="preserve">
+    <value>Esci</value>
+  </data>
+  <data name="strMenuAccounts" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="strMenuLanguage" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
 </root>

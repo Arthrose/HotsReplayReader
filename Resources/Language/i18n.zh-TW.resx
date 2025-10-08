@@ -255,4 +255,34 @@
   <data name="strHeroLevel" xml:space="preserve">
     <value>英雄等級</value>
   </data>
+  <data name="strBanned" xml:space="preserve">
+    <value>已禁用</value>
+  </data>
+  <data name="strLevel" xml:space="preserve">
+    <value>级别</value>
+  </data>
+  <data name="strDisconnected" xml:space="preserve">
+    <value>断线</value>
+  </data>
+  <data name="strReconnected" xml:space="preserve">
+    <value>重新连接</value>
+  </data>
+  <data name="strMenuFile" xml:space="preserve">
+    <value>檔案</value>
+  </data>
+  <data name="strMenuBrowse" xml:space="preserve">
+    <value>瀏覽</value>
+  </data>
+  <data name="strMenuSource" xml:space="preserve">
+    <value>來源</value>
+  </data>
+  <data name="strMenuExit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="strMenuAccounts" xml:space="preserve">
+    <value>帳號</value>
+  </data>
+  <data name="strMenuLanguage" xml:space="preserve">
+    <value>語言</value>
+  </data>
 </root>

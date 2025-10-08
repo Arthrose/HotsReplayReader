@@ -389,6 +389,14 @@ namespace HotsReplayReader
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
             }
 
+            // Met à jour les textes de l'interface
+            fileToolStripMenuItem.Text = Resources.Language.i18n.strMenuFile;
+            browseToolStripMenuItem.Text = Resources.Language.i18n.strMenuBrowse;
+            sourceToolStripMenuItem.Text = Resources.Language.i18n.strMenuSource;
+            exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
+            accountsToolStripMenuItem.Text = Resources.Language.i18n.strMenuAccounts;
+            languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
+
             // Enregistre la langue dans le fichier de configuration
             JsonConfig? jsonConfig = new();
             string jsonFile;
@@ -581,7 +589,7 @@ namespace HotsReplayReader
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
                         html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
-                html += "      <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">Bans</td>\n";
+                html += $"      <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
                         html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
@@ -592,12 +600,12 @@ namespace HotsReplayReader
       <td>&nbsp;</td>
       <td colSpan=""3"">
         <span class=""titleBlue"">{blueTeam.TotalKills} <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></span><br />
-        <span class=""teamLevel"">Level {blueTeam.Level}</span>
+        <span class=""teamLevel"">{Resources.Language.i18n.strLevel} {blueTeam.Level}</span>
       </td>
       <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;""><font color=""#bfd4fd"">{replayLength}</font></td>
       <td colSpan=""3"">
         <span class=""titleRed""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> {redTeam.TotalKills}</span><br />
-        <span class=""teamLevel"">Level {redTeam.Level}</span>
+        <span class=""teamLevel"">{Resources.Language.i18n.strLevel} {redTeam.Level}</span>
       </td>
       <td>&nbsp;</td>
     </tr>
@@ -710,9 +718,9 @@ namespace HotsReplayReader
             {
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.PlayerDisconnects)
                 {
-                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From, "<span class=\"disconnected\">Disconnected</span>", false));
+                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From, $"<span class=\"disconnected\">{Resources.Language.i18n.strDisconnected}</span>", false));
                     if (playerDisconnect.To != null)
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, "<span class=\"reconnected\">Reconnected</span>", false));
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", false));
                 }
             }
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];

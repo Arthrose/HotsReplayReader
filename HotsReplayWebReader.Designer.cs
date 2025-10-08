@@ -57,40 +57,40 @@
             fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { browseToolStripMenuItem, sourceToolStripMenuItem, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
-            fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.Text = Resources.Language.i18n.strMenuFile;
             // 
             // browseToolStripMenuItem
             // 
             browseToolStripMenuItem.Name = "browseToolStripMenuItem";
             browseToolStripMenuItem.Size = new Size(112, 22);
-            browseToolStripMenuItem.Text = "Browse";
+            browseToolStripMenuItem.Text = Resources.Language.i18n.strMenuBrowse;
             browseToolStripMenuItem.Click += BrowseToolStripMenuItem_Click;
             // 
             // sourceToolStripMenuItem
             // 
             sourceToolStripMenuItem.Name = "sourceToolStripMenuItem";
             sourceToolStripMenuItem.Size = new Size(112, 22);
-            sourceToolStripMenuItem.Text = "Source";
+            sourceToolStripMenuItem.Text = Resources.Language.i18n.strMenuSource;
             sourceToolStripMenuItem.Click += SourceToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(112, 22);
-            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
             exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
             // 
             // accountsToolStripMenuItem
             // 
             accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
             accountsToolStripMenuItem.Size = new Size(69, 20);
-            accountsToolStripMenuItem.Text = "Accounts";
+            accountsToolStripMenuItem.Text = Resources.Language.i18n.strMenuAccounts;
             // 
             // languageToolStripMenuItem
             // 
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
             languageToolStripMenuItem.Size = new Size(71, 20);
-            languageToolStripMenuItem.Text = "Language";
+            languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
             // 
             // webView
             // 

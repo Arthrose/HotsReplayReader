@@ -255,4 +255,34 @@
   <data name="strHeroLevel" xml:space="preserve">
     <value>Heldenstufe</value>
   </data>
+  <data name="strBanned" xml:space="preserve">
+    <value>Gebannten</value>
+  </data>
+  <data name="strLevel" xml:space="preserve">
+    <value>Stufe</value>
+  </data>
+  <data name="strDisconnected" xml:space="preserve">
+    <value>Getrennt</value>
+  </data>
+  <data name="strReconnected" xml:space="preserve">
+    <value>Wieder verbunden</value>
+  </data>
+  <data name="strMenuFile" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="strMenuBrowse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="strMenuSource" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="strMenuExit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="strMenuAccounts" xml:space="preserve">
+    <value>Konten</value>
+  </data>
+  <data name="strMenuLanguage" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
 </root>
