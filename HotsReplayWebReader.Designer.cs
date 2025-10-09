@@ -106,9 +106,11 @@
             // 
             // listBoxHotsReplays
             // 
+            listBoxHotsReplays.BackColor = SystemColors.ControlDarkDark;
             listBoxHotsReplays.Dock = DockStyle.Left;
-            listBoxHotsReplays.IntegralHeight = false;
+            listBoxHotsReplays.ForeColor = SystemColors.Window;
             listBoxHotsReplays.FormattingEnabled = true;
+            listBoxHotsReplays.IntegralHeight = false;
             listBoxHotsReplays.Location = new Point(0, 24);
             listBoxHotsReplays.Name = "listBoxHotsReplays";
             listBoxHotsReplays.Size = new Size(254, 784);
@@ -127,11 +129,11 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MainMenuStrip = menuStrip;
+            MinimumSize = new Size(1041, 490);
             Name = "HotsReplayWebReader";
             Text = "Hots Replay Reader";
             FormClosed += HotsReplayWebReader_FormClosed;
             Load += HotsReplayWebReader_Load;
-            //Resize += HotsReplayWebReader_Resize;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)webView).EndInit();

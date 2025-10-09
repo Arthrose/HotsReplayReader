@@ -63,8 +63,6 @@ tr {
 }
 .owner {
   text-decoration: underline;
-/*  color: #e4b800; */
-/*  text-shadow: 0px 0px 5px crimson; */
 }
 .heroIcon {
     border-radius: 100%;
@@ -112,16 +110,16 @@ tr {
 }
 .heroPortrait .heroPartyIcon {
   position: absolute;
-  bottom: 50;
-  right: -5;
+  bottom: 50px;
+  right: -5px;
   width: 36px;
   height: auto;
   pointer-events: none;
 }
 .heroPortrait .heroAwardIcon {
   position: absolute;
-  bottom: -5;
-  right: -5;
+  bottom: -5px;
+  right: -5px;
   width: 36px;
   height: auto;
   pointer-events: none;
@@ -162,11 +160,18 @@ tr {
   padding: 20px;
 }
 .chat-message {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 26px;
   color: #fff;
   text-shadow: 1px 1px 3px black;
   line-height: 1.5;
+}
+.chat-time {
+  font-family: Courier New, Consolas, Lucida Console;
+  font-size: 90%;
+  color: lightgray;
+  font-weight: bolder;
+  vertical-align: central;
 }
 .chat-user {
   font-weight: bold;
@@ -189,11 +194,29 @@ tr {
 .nonBreakingText {
   white-space: nowrap;
 }
-.tableScore {
+.tableScoreAndTalents {
   text-align: center;
-  vertical-align: center;
   font-family: Calibri;
   width: 100%;
+}
+.tableScoreAndTalents tr {
+  height: 58px;
+}
+.tableScoreAndTalents tr.freeHeight {
+  height: auto !important;
+}
+
+.tableScoreAndTalents td:nth-child(1) {
+  width: 120px;
+}
+.tableScoreAndTalents td:nth-child(2) {
+  width: 100px;
+}
+.tableTalents {
+  table-layout: fixed;
+}
+.tableTalents td:nth-child(n+3) {
+  width: calc((100% - 220px) / 7);
 }
 .scoreHeaderIcon {
   width: 50px;

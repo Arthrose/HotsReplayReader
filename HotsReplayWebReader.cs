@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.StormReplayParser.Player;
+using Heroes.StormReplayParser.Replay;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
 
@@ -202,6 +203,7 @@ namespace HotsReplayReader
             // Desactivation de la console
             webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
             webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+            webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
@@ -222,6 +224,14 @@ namespace HotsReplayReader
                 {
                     // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
+
+                    // Vérifie si l'action est "closeMenu"
+                    if (action == "closeMenu")
+                    {
+                        fileToolStripMenuItem.HideDropDown();
+                        accountsToolStripMenuItem.HideDropDown();
+                        languageToolStripMenuItem.HideDropDown();
+                    }
 
                     // Vérifie si l'action est "hoverLeft"
                     if (action == "hoverLeft")
@@ -483,13 +493,19 @@ namespace HotsReplayReader
     }})
   }})
 
+  // Ferme le menu
+  document.addEventListener('click', function (e) {{
+    window.chrome.webview.postMessage({{
+      action: ""closeMenu""
+    }});
+  }});
+
   // Affice la liste des replays
   document.addEventListener(""mousemove"", function (e) {{
     // Détection si la souris est dans les 50px à gauche
     const isHover = e.clientX <= 50;
     // On envoie à C# uniquement quand le statut change
     if (window.__lastHover !== isHover) {{
-      console.log(`X: ${{event.clientX}}, Y: ${{event.clientY}}`);
       window.chrome.webview.postMessage({{
         action: ""hoverLeft"",
         isHover: isHover
@@ -526,7 +542,7 @@ namespace HotsReplayReader
         }
         internal static string HTMLGetFooter()
         {
-            string html = "\n<div>\n</body>\n</html>";
+            string html = "</div>\n</body>\n</html>";
             return html;
         }
         internal string HTMLGetHeadTable()
@@ -611,6 +627,7 @@ namespace HotsReplayReader
     </tr>
   </table>
 </div>
+<br /><br />
 ";
             return html;
         }
@@ -754,11 +771,12 @@ namespace HotsReplayReader
         })
     });
   });
-</script>";
+</script>
+<br /><br />";
                 return $"{html}\n";
             }
             else
-                return "\n";
+                return "";
         }
         internal string HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
         {
@@ -773,9 +791,9 @@ namespace HotsReplayReader
 
             string html = "  <div class=\"chat-message\">\n";
             if (lastMessageAfterAnHour)
-                html += $"    [{msgHours}:{msgMinutes}:{msgSeconds}]\n";
+                html += $"    <span class=\"chat-time\">[{msgHours}:{msgMinutes}:{msgSeconds}]</span>\n";
             else
-                html += $"    [{msgMinutes}:{msgSeconds}]\n";
+                html += $"    <span class=\"chat-time\">[{msgMinutes}:{msgSeconds}]</span>\n";
             html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"/>\n";
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}\">{msgSenderName}: </span>\n";
             if (hotsMessage.Translate)
@@ -818,12 +836,10 @@ namespace HotsReplayReader
         private string HTMLGetScoreTable()
         {
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
-            string html = @$"
-<table class=""tableScore"">
-  <tr class=""teamHeader"">
-    <td>&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;</td>
-    <td>
+            string html = @$"<table class=""tableScoreAndTalents"">
+  <tr class=""freeHeight"">
+    <td colspan=""2""></td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"" />
         <span class=""tooltipHero tooltipHeroLeft"">
@@ -831,7 +847,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTakedowns.png"" />
         <span class=""tooltipHero tooltipHeroLeft"">
@@ -839,7 +855,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"" />
         <span class=""tooltipHero tooltipHeroLeft"">
@@ -847,7 +863,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"" />
         <span class=""tooltipHero tooltipHeroLeft"">
@@ -855,7 +871,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"" />
         <span class=""tooltipHero tooltipHeroRight"">
@@ -863,7 +879,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"" />
         <span class=""tooltipHero tooltipHeroRight"">
@@ -871,7 +887,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"" />
         <span class=""tooltipHero tooltipHeroRight"">
@@ -879,7 +895,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"" />
         <span class=""tooltipHero tooltipHeroRight"">
@@ -887,7 +903,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"" />
         <span class=""tooltipHero tooltipHeroRight"">
@@ -895,7 +911,7 @@ namespace HotsReplayReader
         </span>
       </span>
     </td>
-    <td>
+    <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"" />
         <span class=""tooltipHero tooltipHeroRight"">
@@ -912,7 +928,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetScoreTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
-            html += "</table>\n";
+            html += "</table>\n<br /><br />\n";
 
             return html;
         }
@@ -942,7 +958,7 @@ namespace HotsReplayReader
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{heroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
+            html += $"    <td class=\"tdPlayerName team{partyColor}\">&nbsp;{heroName}<br /><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.SoloKills == team.MaxKills)
@@ -998,18 +1014,17 @@ namespace HotsReplayReader
         }
         private string HTMLGetTalentsTable()
         {
-            string html = @$"
-<table class=""tableScore"">
-  <tr class=""teamHeader"">
-    <td>&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            string html = @$"<table class=""tableScoreAndTalents tableTalents"">
+  <tr class=""freeHeight"">
+    <td></td>
+    <td></td>
+    <td class=""teamHeader"">1</td>
+    <td class=""teamHeader"">4</td>
+    <td class=""teamHeader"">7</td>
+    <td class=""teamHeader"">10</td>
+    <td class=""teamHeader"">13</td>
+    <td class=""teamHeader"">16</td>
+    <td class=""teamHeader"">20</td>
   </tr>
 ";
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
@@ -1024,7 +1039,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
-            html += "</table>\n";
+            html += "</table>\n<br /><br />\n";
             return html;
         }
         private string HTMLGetTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
@@ -1045,14 +1060,27 @@ namespace HotsReplayReader
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName {team.Name} team{partyColor}\">{heroName}<br /><font size=\"-1\">{playerName}</font></td>\n";
+            html += $"    <td class=\"tdPlayerName team{partyColor}\">&nbsp;{heroName}<br /><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
+
+            // Qustion mark for unselected talents
             for (int i = 0; i <= 6; i++)
             {
                 if (i < stormPlayer.Talents.Count)
                     html += $"{GetTalentImgString(stormPlayer, heroData, i)}\n";
                 else
-                    html += "    <td>&nbsp;</td>\n";
+                    if (i == 0 || (i == 1 && team.Level >= 4) || (i == 2 && team.Level >= 7) || (i == 3 && team.Level >= 10) || (i == 4 && team.Level >= 13) || (i == 5 && team.Level >= 16) || (i == 6 && team.Level >= 20))
+                    {
+                        string imgTalentBorderClass;
+                        if (i == 3 || i == 6)
+                            imgTalentBorderClass = "imgTalent10Border";
+                        else
+                            imgTalentBorderClass = "imgTalentBorder";
+                    html += $"    <td><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\" /></td>\n";
+                }
+                else
+                        html += "    <td>&nbsp;</td>\n";
             }
+
             html += "  </tr>\n";
             return html;
         }
@@ -1115,19 +1143,19 @@ namespace HotsReplayReader
             description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
 
             description = MyRegexConvertPercentPerLevel().Replace(description, match =>
-                {
-                    // Conversion du nombre capturé
-                    double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                    // Conversion en pourcentage (4% pour 0.04)
-                    int percent = (int)Math.Round(value * 100);
-                    // Mise en forme du texte final
-                    string replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> per level)";
-                    // Si la balise </font> était présente, la déplacer avant le texte remplacé
-                    if (match.Groups[2].Success)
-                        return $"{match.Groups[2].Value}{replacement}";
-                    else
-                        return replacement;
-                });
+            {
+                // Conversion du nombre capturé
+                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                // Conversion en pourcentage (4% pour 0.04)
+                int percent = (int)Math.Round(value * 100);
+                // Mise en forme du texte final
+                string replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> per level)";
+                // Si la balise </font> était présente, la déplacer avant le texte remplacé
+                if (match.Groups[2].Success)
+                    return $"{match.Groups[2].Value}{replacement}";
+                else
+                    return replacement;
+            });
 
             // Remplace <n/> par un saut de ligne <br />
             description = MyRegexNewLine().Replace(description, "<br \\>");
@@ -1136,7 +1164,7 @@ namespace HotsReplayReader
             string toolTipPosition = tier > 10 ? "Left" : "Right";
             // Met une bordure sur les Talents de niveau 10 et 20
             string imgTalentBorderClass;
-            if (tier == 10 | tier == 20)
+            if (tier == 10 || tier == 20)
                 imgTalentBorderClass = "imgTalent10Border";
             else
                 imgTalentBorderClass = "imgTalentBorder";
@@ -1672,12 +1700,12 @@ namespace HotsReplayReader
                     await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
                     //await CheckAndDownloadHeroesData("2.55.13.95170");
 
-                    htmlContent = $@"{HTMLGetHeader()}";
-                    htmlContent += $"{HTMLGetHeadTable()}<br /><br />\n";
-                    htmlContent += $@"{HTMLGetChatMessages()}<br /><br />";
-                    htmlContent += $@"{HTMLGetScoreTable()}<br /><br />";
-                    htmlContent += $@"{HTMLGetTalentsTable()}<br /><br />";
-                    htmlContent += $@"{HTMLGetFooter()}";
+                    htmlContent  = $"{HTMLGetHeader()}";
+                    htmlContent += $"{HTMLGetHeadTable()}";
+                    htmlContent += $"{HTMLGetChatMessages()}";
+                    htmlContent += $"{HTMLGetScoreTable()}";
+                    htmlContent += $"{HTMLGetTalentsTable()}";
+                    htmlContent += $"{HTMLGetFooter()}";
                 }
                 else
                 {
