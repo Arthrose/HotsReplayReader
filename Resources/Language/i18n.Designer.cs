@@ -70,6 +70,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to en-US.
+        /// </summary>
+        internal static string HTMLLang {
+            get {
+                return ResourceManager.GetString("HTMLLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alterac Pass.
         /// </summary>
         internal static string MapAlteracPass {
@@ -493,7 +502,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Healing/Shielding&lt;br /&gt;Amount of damage prevented and healing done to allied Heroes.
+        ///   Looks up a localized string similar to Healing/Shielding&lt;br&gt;Amount of damage prevented and healing done to allied Heroes.
         /// </summary>
         internal static string strScoreHealing {
             get {
@@ -502,7 +511,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hero Damage&lt;br /&gt;Amount of damage dealt to enemy Heroes.
+        ///   Looks up a localized string similar to Hero Damage&lt;br&gt;Amount of damage dealt to enemy Heroes.
         /// </summary>
         internal static string strScoreHeroDmg {
             get {
@@ -529,7 +538,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Siege Damage&lt;br /&gt;Amount of damage dealt to enemy Structures and Minions.
+        ///   Looks up a localized string similar to Siege Damage&lt;br&gt;Amount of damage dealt to enemy Structures and Minions.
         /// </summary>
         internal static string strScoreSiegeDmg {
             get {

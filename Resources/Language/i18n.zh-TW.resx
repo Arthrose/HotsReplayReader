@@ -217,13 +217,13 @@
     <value>總死亡時間</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>攻城傷害&lt;br /&gt;對敵方建築與手下造成的傷害</value>
+    <value>攻城傷害&lt;br&gt;對敵方建築與手下造成的傷害</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>對英雄傷害&lt;br /&gt;對敵方英雄造成的傷害</value>
+    <value>對英雄傷害&lt;br&gt;對敵方英雄造成的傷害</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>治療/護盾&lt;br /&gt;為友方英雄吸收的傷害與治療量</value>
+    <value>治療/護盾&lt;br&gt;為友方英雄吸收的傷害與治療量</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>受到的傷害</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>語言</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>zh-TW</value>
   </data>
 </root>

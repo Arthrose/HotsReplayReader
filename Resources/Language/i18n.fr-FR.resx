@@ -217,13 +217,13 @@
     <value>Temps total passé mort</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>Dégâts de siège&lt;br /&gt;Montants de dégats infligés aux bâtiments et aux serviteurs adverses</value>
+    <value>Dégâts de siège&lt;br&gt;Montants de dégats infligés aux bâtiments et aux serviteurs adverses</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Dégâts aux héros&lt;br /&gt;Montants de dégâts infligés aux héros adverses</value>
+    <value>Dégâts aux héros&lt;br&gt;Montants de dégâts infligés aux héros adverses</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Soutien&lt;br /&gt;Montants de dégâts absorbés et soins prodigués aux héros alliés</value>
+    <value>Soutien&lt;br&gt;Montants de dégâts absorbés et soins prodigués aux héros alliés</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>Dégâts subis</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>Langue</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>fr-FR</value>
   </data>
 </root>

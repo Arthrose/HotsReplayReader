@@ -217,13 +217,13 @@
     <value>총 사망 시간</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>공성 피해&lt;br /&gt;적 건물 및 하수인에게 입힌 피해량</value>
+    <value>공성 피해&lt;br&gt;적 건물 및 하수인에게 입힌 피해량</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>영웅 피해&lt;br /&gt;적 영웅에게 입힌 피해량</value>
+    <value>영웅 피해&lt;br&gt;적 영웅에게 입힌 피해량</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>치유/보호막&lt;br /&gt;아군 영웅에게 준 치유 및 피해 방지량</value>
+    <value>치유/보호막&lt;br&gt;아군 영웅에게 준 치유 및 피해 방지량</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>받은 피해량</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>언어</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>ko-KR</value>
   </data>
 </root>

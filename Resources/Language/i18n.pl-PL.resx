@@ -217,13 +217,13 @@
     <value>Całkowity czas spędzony martwym</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>Obrażenia oblężnicze&lt;br /&gt;Zadane obrażenia budynkom i sługom</value>
+    <value>Obrażenia oblężnicze&lt;br&gt;Zadane obrażenia budynkom i sługom</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Obrażenia bohaterów&lt;br /&gt;Zadane obrażenia wrogim bohaterom</value>
+    <value>Obrażenia bohaterów&lt;br&gt;Zadane obrażenia wrogim bohaterom</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Leczenie/Tarcze&lt;br /&gt;Obrażenia zapobiegane i leczenie sojuszniczych bohaterów</value>
+    <value>Leczenie/Tarcze&lt;br&gt;Obrażenia zapobiegane i leczenie sojuszniczych bohaterów</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>Otrzymane obrażenia</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>Język</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>pl-PL</value>
   </data>
 </root>

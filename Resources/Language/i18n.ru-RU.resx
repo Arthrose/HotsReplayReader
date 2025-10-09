@@ -217,13 +217,13 @@
     <value>Общее время в состоянии смерти</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>Урон по осаде&lt;br /&gt;Урон по зданиям и миньонам</value>
+    <value>Урон по осаде&lt;br&gt;Урон по зданиям и миньонам</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Урон героям&lt;br /&gt;Урон, нанесённый вражеским героям</value>
+    <value>Урон героям&lt;br&gt;Урон, нанесённый вражеским героям</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Лечение/Щиты&lt;br /&gt;Предотвращённый урон и лечение союзных героев</value>
+    <value>Лечение/Щиты&lt;br&gt;Предотвращённый урон и лечение союзных героев</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>Полученный урон</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>Язык</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>ru-RU</value>
   </data>
 </root>

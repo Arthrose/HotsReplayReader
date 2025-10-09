@@ -217,13 +217,13 @@
     <value>Gesamte Todeszeit</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>Belagerungsschaden&lt;br /&gt;Schaden an feindlichen Strukturen und Dienern</value>
+    <value>Belagerungsschaden&lt;br&gt;Schaden an feindlichen Strukturen und Dienern</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Heldenschaden&lt;br /&gt;Schaden an feindlichen Helden</value>
+    <value>Heldenschaden&lt;br&gt;Schaden an feindlichen Helden</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Heilung/Abschirmung&lt;br /&gt;Verhinderter Schaden und Heilung an verbündeten Helden</value>
+    <value>Heilung/Abschirmung&lt;br&gt;Verhinderter Schaden und Heilung an verbündeten Helden</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>Erlittener Schaden</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>Sprache</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>de-DE</value>
   </data>
 </root>

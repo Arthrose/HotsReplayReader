@@ -480,9 +480,10 @@ namespace HotsReplayReader
                 }
             css = css.Replace(@"#backImg#", $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}");
 
-            string html = $@"<html>
+            string html = $@"<!DOCTYPE html>
+<html lang=""{Resources.Language.i18n.ResourceManager.GetString("HTMLLang")!}"">
 <head>
-<style type=""text/css"">
+<style>
 {css}
 </style>
 <script>
@@ -535,14 +536,14 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
-<br />
+<br>
 <div class=""parentDiv"">
 ";
             return html;
         }
         internal static string HTMLGetFooter()
         {
-            string html = "</div>\n</body>\n</html>";
+            string html = "</div>\n</body>\n</html>\n";
             return html;
         }
         internal string HTMLGetHeadTable()
@@ -562,15 +563,15 @@ namespace HotsReplayReader
             if (hotsReplay?.stormReplay?.ReplayVersion.ToString() != dbVersion)
             {
                 html += $@"    <tr>
-      <td colSpan=""5"">Game Version</td><td>&nbsp;</td><td colSpan=""5"">DB Version</td>
+      <td colspan=""5"">Game Version</td><td>&nbsp;</td><td colspan=""5"">DB Version</td>
     </tr>
     <tr>
-      <td colSpan=""5"">{hotsReplay?.stormReplay?.ReplayVersion.ToString()}</td><td>&nbsp;</td><td colSpan=""5"">{dbVersion}</td>
+      <td colspan=""5"">{hotsReplay?.stormReplay?.ReplayVersion.ToString()}</td><td>&nbsp;</td><td colspan=""5"">{dbVersion}</td>
     </tr>
 ";
             }
 
-            html += $@"    <tr><td colSpan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td></tr>
+            html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td></tr>
     <tr>
       <td colspan=""5"" class=""titleBlue"">{isBlueTeamWinner}</td>
       <td></td>
@@ -605,7 +606,7 @@ namespace HotsReplayReader
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
                         html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
-                html += $"      <td colSpan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
+                html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
                         html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
@@ -614,20 +615,20 @@ namespace HotsReplayReader
 
             html += $@"    <tr>
       <td>&nbsp;</td>
-      <td colSpan=""3"">
-        <span class=""titleBlue"">{blueTeam.TotalKills} <img src=""app://hotsResources/KillsBlue.png"" height=""32"" /></span><br />
+      <td colspan=""3"">
+        <span class=""titleBlue"">{blueTeam.TotalKills} <img src=""app://hotsResources/KillsBlue.png"" height=""32""></span><br>
         <span class=""teamLevel"">{Resources.Language.i18n.strLevel} {blueTeam.Level}</span>
       </td>
-      <td colSpan=""3"" class=""titleWhite"" style=""zoom: 75%;""><font color=""#bfd4fd"">{replayLength}</font></td>
-      <td colSpan=""3"">
-        <span class=""titleRed""><img src=""app://hotsResources/KillsRed.png"" height=""32"" /> {redTeam.TotalKills}</span><br />
+      <td colspan=""3"" class=""titleWhite"" style=""zoom: 75%;""><font color=""#bfd4fd"">{replayLength}</font></td>
+      <td colspan=""3"">
+        <span class=""titleRed""><img src=""app://hotsResources/KillsRed.png"" height=""32""> {redTeam.TotalKills}</span><br>
         <span class=""teamLevel"">{Resources.Language.i18n.strLevel} {redTeam.Level}</span>
       </td>
       <td>&nbsp;</td>
     </tr>
   </table>
 </div>
-<br /><br />
+<br><br>
 ";
             return html;
         }
@@ -649,7 +650,7 @@ namespace HotsReplayReader
             html += $"      <td class=\"headTableTd\">\n";
             html += "        <span class=\"tooltip\">\n";
             html += "          <span class=\"heroPortrait\">\n";
-            html += $"            <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" />\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
+            html += $"            <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\">\n"; //  heroIconTeam{GetParty(stormPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
@@ -657,7 +658,7 @@ namespace HotsReplayReader
                 string? ressourceName = $"ui_ingame_loadscreen_partylink_{party}.png";
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
-                html += $"            <img src=\"app://hotsresources/{ressourceName}\" class =\"heroPartyIcon\" />\n";
+                html += $"            <img src=\"app://hotsresources/{ressourceName}\" class =\"heroPartyIcon\">\n";
             }
 
             if (hotsPlayer.MatchAwardsCount > 0)
@@ -665,7 +666,7 @@ namespace HotsReplayReader
                 string? ressourceName = matchAwards[$"{hotsPlayer.MatchAwards[0]}"].MvpScreenIcon;
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
-                html += $"            <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\" />\n";
+                html += $"            <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
             }
 
             html += "          </span>\n";
@@ -674,9 +675,9 @@ namespace HotsReplayReader
             if (hotsPlayer.MatchAwardsCount > 0)
             {
                 html += $"            <center>\n";
-                html += $"              <font color=\"#ffd700\">{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Name}</font><br />\n";
-                html += $"              <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Description}</nobr></font><br />\n";
-                html += $"            </center><br />\n";
+                html += $"              <font color=\"#ffd700\">{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Name}</font><br>\n";
+                html += $"              <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Description}</nobr></font><br>\n";
+                html += $"            </center><br>\n";
             }
             if (hotsPlayer.BattleTagName.IndexOf('#') > 0)
             {
@@ -690,16 +691,16 @@ namespace HotsReplayReader
                 Debug.WriteLine($"\"{Resources.Language.i18n.strHeroLevel}\":".PadRight(maxLength + 2) + $" TEST");
 
                 string battleTagLabel = (Resources.Language.i18n.strBattleTag + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
-                html += $"            <span class=\"nobr\">{battleTagLabel}<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br />\n";
+                html += $"            <span class=\"nobr\">{battleTagLabel}<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br>\n";
 
                 string accountLevelLabel = (Resources.Language.i18n.strAccountLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
-                html += $"            <span class=\"nobr\">{accountLevelLabel}<font color=\"#bfd4fd\">{accountLevel}</font></span><br />\n";
+                html += $"            <span class=\"nobr\">{accountLevelLabel}<font color=\"#bfd4fd\">{accountLevel}</font></span><br>\n";
 
                 string heroLevelLabel = (Resources.Language.i18n.strHeroLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
                 if (hotsPlayer.PlayerHero.HeroLevel >= 20)
-                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font></span><br />\n";
+                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font></span><br>\n";
                 else
-                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br />\n";
+                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
             }
             else
             {
@@ -772,7 +773,7 @@ namespace HotsReplayReader
     });
   });
 </script>
-<br /><br />";
+<br><br>";
                 return $"{html}\n";
             }
             else
@@ -794,10 +795,10 @@ namespace HotsReplayReader
                 html += $"    <span class=\"chat-time\">[{msgHours}:{msgMinutes}:{msgSeconds}]</span>\n";
             else
                 html += $"    <span class=\"chat-time\">[{msgMinutes}:{msgSeconds}]</span>\n";
-            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"/>\n";
+            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"></span>\n";
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}\">{msgSenderName}: </span>\n";
             if (hotsMessage.Translate)
-                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\" /></span>\n";
+                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\"></span>\n";
             else
                 html += $"    {hotsMessage.Message}\n";
             html += $"  </div>\n";
@@ -814,9 +815,9 @@ namespace HotsReplayReader
                         if (tag == alias && hotsEmoticonData.Value.Image != null)
                         {
                             if (hotsEmoticonData.Value.Image.Contains("storm_emoji_nexus"))
-                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.Aliases[0]}"" />";
+                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
                             else
-                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.Aliases[0]}"" />";
+                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
                         }
                     }
                 }
@@ -841,7 +842,7 @@ namespace HotsReplayReader
     <td colspan=""2""></td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
         <span class=""tooltipHero tooltipHeroLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
         </span>
@@ -849,7 +850,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTakedowns.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTakedowns.png"">
         <span class=""tooltipHero tooltipHeroLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTakedowns")!}</nobr>
         </span>
@@ -857,7 +858,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
         <span class=""tooltipHero tooltipHeroLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
         </span>
@@ -865,7 +866,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
         <span class=""tooltipHero tooltipHeroLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
         </span>
@@ -873,7 +874,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
         <span class=""tooltipHero tooltipHeroRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
         </span>
@@ -881,7 +882,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
         <span class=""tooltipHero tooltipHeroRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
         </span>
@@ -889,7 +890,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
         <span class=""tooltipHero tooltipHeroRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
         </span>
@@ -897,7 +898,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
         <span class=""tooltipHero tooltipHeroRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
         </span>
@@ -905,7 +906,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
         <span class=""tooltipHero tooltipHeroRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
         </span>
@@ -913,7 +914,7 @@ namespace HotsReplayReader
     </td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"" />
+        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
         <span class=""tooltipHero tooltipHeroRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
         </span>
@@ -928,7 +929,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetScoreTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
-            html += "</table>\n<br /><br />\n";
+            html += "</table>\n<br><br>\n";
 
             return html;
         }
@@ -957,8 +958,8 @@ namespace HotsReplayReader
             //string playerName = stormPlayer.BattleTagName.IndexOf('#') > 0 ? stormPlayer.BattleTagName[..stormPlayer.BattleTagName.IndexOf('#')] : stormPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
-            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName team{partyColor}\">&nbsp;{heroName}<br /><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
+            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+            html += $"    <td class=\"tdPlayerName team{partyColor}\">&nbsp;{heroName}<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             html += "    <td";
             if (stormPlayer.ScoreResult.SoloKills == team.MaxKills)
@@ -1039,7 +1040,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
-            html += "</table>\n<br /><br />\n";
+            html += "</table>\n<br><br>\n";
             return html;
         }
         private string HTMLGetTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
@@ -1059,8 +1060,8 @@ namespace HotsReplayReader
 
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
-            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\" /></td>\n";
-            html += $"    <td class=\"tdPlayerName team{partyColor}\">&nbsp;{heroName}<br /><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
+            html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+            html += $"    <td class=\"tdPlayerName team{partyColor}\">&nbsp;{heroName}<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             // Qustion mark for unselected talents
             for (int i = 0; i <= 6; i++)
@@ -1075,7 +1076,7 @@ namespace HotsReplayReader
                             imgTalentBorderClass = "imgTalent10Border";
                         else
                             imgTalentBorderClass = "imgTalentBorder";
-                    html += $"    <td><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\" /></td>\n";
+                    html += $"    <td><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\"></td>\n";
                 }
                 else
                         html += "    <td>&nbsp;</td>\n";
@@ -1132,9 +1133,9 @@ namespace HotsReplayReader
             // Affiche le coût en mana si il y en a un
             if (AbilTalentEntry.Energy != null)
                 AbilTalentEntry.Energy = MyRegexConvertEnergy().Replace(AbilTalentEntry.Energy, "<font color=\"#${1}\">${2}</font>");
-            string abilityManaCost = AbilTalentEntry.Energy != null ? $"<br />\n            {AbilTalentEntry.Energy}" : "";
+            string abilityManaCost = AbilTalentEntry.Energy != null ? $"<br>\n            {AbilTalentEntry.Energy}" : "";
             // Affiche le cooldown si il y en a un
-            string talentCooldown = AbilTalentEntry.Cooldown != null ? $"<br />\n            <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
+            string talentCooldown = AbilTalentEntry.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
 
             // Suppression des balises <img> dans la description
             string description = MyRegexRemoveImg().Replace(AbilTalentEntry.Full, string.Empty);
@@ -1160,8 +1161,8 @@ namespace HotsReplayReader
                     return replacement;
             });
 
-            // Remplace <n/> par un saut de ligne <br />
-            description = MyRegexNewLine().Replace(description, "<br \\>");
+            // Remplace <n/> par un saut de ligne <br>
+            description = MyRegexNewLine().Replace(description, "<br>");
 
             // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = tier > 10 ? "Left" : "Right";
@@ -1173,12 +1174,12 @@ namespace HotsReplayReader
                 imgTalentBorderClass = "imgTalentBorder";
             return @$"    <td>
       <div class=""tooltip"">
-        <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"" />
+        <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"">
         <span class=""tooltiptext tooltiptext{toolTipPosition}"">
           <font color=""White"">
             <b>{AbilTalentEntry.Name}</b>{abilityManaCost}{talentCooldown}
           </font>
-          <br /><br />
+          <br><br>
           {description}
         </span>
       </div>
@@ -1582,11 +1583,11 @@ namespace HotsReplayReader
 </style>
 </head>
 <body style=""background: url(app://hotsResources/DownloadingBG.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
-<br /><br />
+<br><br>
 <div class=""body-div"">
 <div class=""parent"">
 <div class=""header"">Downloading game datas</div>
-<div class=""gameVersion"">{versionGitHubFolder}<br /><br /></div>
+<div class=""gameVersion"">{versionGitHubFolder}<br><br></div>
 <div class=""loader""></div>
 </div>
 </div>

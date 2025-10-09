@@ -217,13 +217,13 @@
     <value>Tempo totale da morto</value>
   </data>
   <data name="strScoreSiegeDmg" xml:space="preserve">
-    <value>Danni d'assedio&lt;br /&gt;Danni inflitti a strutture e servitori nemici</value>
+    <value>Danni d'assedio&lt;br&gt;Danni inflitti a strutture e servitori nemici</value>
   </data>
   <data name="strScoreHeroDmg" xml:space="preserve">
-    <value>Danni agli eroi&lt;br /&gt;Danni inflitti agli eroi nemici</value>
+    <value>Danni agli eroi&lt;br&gt;Danni inflitti agli eroi nemici</value>
   </data>
   <data name="strScoreHealing" xml:space="preserve">
-    <value>Cura/Scudi&lt;br /&gt;Danni prevenuti e cure effettuate agli eroi alleati</value>
+    <value>Cura/Scudi&lt;br&gt;Danni prevenuti e cure effettuate agli eroi alleati</value>
   </data>
   <data name="strScoreDmgTaken" xml:space="preserve">
     <value>Danni subiti</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="strMenuLanguage" xml:space="preserve">
     <value>Lingua</value>
+  </data>
+  <data name="HTMLLang" xml:space="preserve">
+    <value>it-IT</value>
   </data>
 </root>
