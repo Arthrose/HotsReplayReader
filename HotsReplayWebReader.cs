@@ -1139,6 +1139,9 @@ namespace HotsReplayReader
             // Suppression des balises <img> dans la description
             string description = MyRegexRemoveImg().Replace(AbilTalentEntry.Full, string.Empty);
 
+            // Bug FR talent GreymaneLordofHisPack
+            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
+
             // Remplace <c val="color">text</c> par du texte coloré
             description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
 
