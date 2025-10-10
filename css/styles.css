@@ -270,12 +270,6 @@ tr {
   visibility: visible;
   opacity: 1;
 }
-.tooltip .tooltiptextRight {
-  left: 195%;
-}
-.tooltip .tooltiptextLeft {
-  right: 92%;
-}
 .tooltip .tooltipHero {
   visibility: hidden;
   background-color: #150C39;
@@ -300,6 +294,9 @@ tr {
 }
 .tooltip .tooltipHeroRight {
   right: 0%;
+}
+.tooltip .tooltipHeroMvpScore {
+  right: 150%;
 }
 .imgTalentBorder
 {
