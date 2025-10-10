@@ -10,6 +10,8 @@
         public int MaxSiegeDmg { get; set; } = 0;
         public int MaxHeroDmg { get; set; } = 0;
         public int MaxHealing { get; set; } = 0;
+        public int MaxSelfHealing { get; set; } = 0;
+        public int MaxTotalHealing { get; set; } = 0;
         public int MaxDmgTaken { get; set; } = 0;
         public int MaxExp { get; set; } = 0;
         public int TotalKills { get; set; } = 0;
