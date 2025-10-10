@@ -8,6 +8,7 @@ namespace HotsReplayReader
         public string? TeamColor { get; set; }
         public string? ComputerName { get; set; }
         public double MvpScore { get; set; }
+        public float MvpScoreTest { get; set; }
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
         public string? HeroUnitId { get; set; }
