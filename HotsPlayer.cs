@@ -8,7 +8,24 @@ namespace HotsReplayReader
         public string? TeamColor { get; set; }
         public string? ComputerName { get; set; }
         public double MvpScore { get; set; }
-        public float MvpScoreTest { get; set; }
+        public double? MvpScoreKills { get; set; } = null;
+        public double? MvpScoreAssists { get; set; } = null;
+        public double? MvpScoreTimeSpentDead { get; set; } = null;
+        public double? MvpScoreWinningTeam { get; set; } = null;
+        public double? MvpScoreTopHeroDamageOnTeam { get; set; } = null;
+        public double? MvpScoreTopHeroDamage { get; set; } = null;
+        public double? MvpScoreTopSiegeDamageOnTeam { get; set; } = null;
+        public double? MvpScoreTopSiegeDamage { get; set; } = null;
+        public double? MvpScoreTopXPContributionOnTeam { get; set; } = null;
+        public double? MvpScoreTopXPContribution { get; set; } = null;
+        public double? MvpScoreTopHealing { get; set; } = null;
+        public double? MvpScoreTopDamageTakenOnTeam { get; set; } = null;
+        public double? MvpScoreTopDamageTaken { get; set; } = null;
+        public double? MvpScoreHeroDamageBonus { get; set; } = null;
+        public double? MvpScoreSiegeDamageBonus { get; set; } = null;
+        public double? MvpScoreHealingBonus { get; set; } = null;
+        public double? MvpScoreXPContributionBonus { get; set; } = null;
+        public double? MvpScoreDamageTakenBonus { get; set; } = null; 
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
         public string? HeroUnitId { get; set; }

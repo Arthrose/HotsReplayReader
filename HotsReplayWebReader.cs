@@ -1369,52 +1369,88 @@ namespace HotsReplayReader
             float MVPScore = 0f;
 
             // Kills
-            MVPScore += hotsPlayer.ScoreResult.SoloKills * AwardForKill;
+            if (hotsPlayer.ScoreResult.SoloKills > 0)
+            {
+                MVPScore += hotsPlayer.ScoreResult.SoloKills * AwardForKill;
+                hotsPlayer.MvpScoreKills = hotsPlayer.ScoreResult.SoloKills * AwardForKill;
+            }
 
             // Assists (reduced for some heroes)
-            float assisCoef =
-                (hotsPlayer.PlayerHero.HeroUnitId == "HeroDVaPilot" ||
-                 hotsPlayer.PlayerHero.HeroUnitId == "HeroAbathur" ||
-                 hotsPlayer.PlayerHero.HeroUnitId == "HeroLostVikingsController")
-                ? 0.75f : AwardForAssist; //  
-            MVPScore += hotsPlayer.ScoreResult.Assists * assisCoef;
+            if (hotsPlayer.ScoreResult.Assists > 0)
+            {
+                float assisCoef =
+                    (hotsPlayer.PlayerHero.HeroUnitId == "HeroDVaPilot" ||
+                     hotsPlayer.PlayerHero.HeroUnitId == "HeroAbathur" ||
+                     hotsPlayer.PlayerHero.HeroUnitId == "HeroLostVikingsController")
+                    ? 0.75f : AwardForAssist;
+                MVPScore += hotsPlayer.ScoreResult.Assists * assisCoef;
+                hotsPlayer.MvpScoreAssists = hotsPlayer.ScoreResult.Assists * assisCoef;
+            }
 
             // Time spent dead (reduced for some heroes)
-            float deathCoef = AwardForTimeSpentDead;
-            if (hotsPlayer.PlayerHero.HeroUnitId == "HeroMurky" || hotsPlayer.PlayerHero.HeroUnitId == "HeroGall") deathCoef = -1.0f;
-            else if (hotsPlayer.PlayerHero.HeroUnitId == "HeroCho") deathCoef = -0.85f;
-
-            if (hotsReplay.stormReplay.ReplayLength.TotalSeconds > 0)
+            if (hotsPlayer.ScoreResult.Deaths > 0)
             {
-                float deathRatioPct = (float)(hotsPlayer.ScoreResult.TimeSpentDead.TotalSeconds / hotsReplay.stormReplay.ReplayLength.TotalSeconds) * 100.0f;
-                MVPScore += deathRatioPct * deathCoef;
+                float deathCoef = AwardForTimeSpentDead;
+                if (hotsPlayer.PlayerHero.HeroUnitId == "HeroMurky" || hotsPlayer.PlayerHero.HeroUnitId == "HeroGall") deathCoef = -1.0f;
+                else if (hotsPlayer.PlayerHero.HeroUnitId == "HeroCho") deathCoef = -0.85f;
+
+                if (hotsReplay.stormReplay.ReplayLength.TotalSeconds > 0)
+                {
+                    float deathRatioPct = (float)(hotsPlayer.ScoreResult.TimeSpentDead.TotalSeconds / hotsReplay.stormReplay.ReplayLength.TotalSeconds) * 100.0f;
+                    MVPScore += deathRatioPct * deathCoef;
+                    hotsPlayer.MvpScoreTimeSpentDead = deathRatioPct * deathCoef;
+                }
             }
 
             // Winning team bonus
             if (hotsPlayer.IsWinner)
+            {
                 MVPScore += AwardForWinningTeam;
+                hotsPlayer.MvpScoreWinningTeam = AwardForWinningTeam;
+            }
 
             // Hero damage
             if (hotsPlayer.ScoreResult.HeroDamage >= teamMaxHeroDmg)
+            {
                 MVPScore += AwardForTopHeroDamageOnTeam;
+                hotsPlayer.MvpScoreTopHeroDamageOnTeam = AwardForTopHeroDamageOnTeam;
+            }
             if (hotsPlayer.ScoreResult.HeroDamage >= maxHeroDmg)
+            {
                 MVPScore += AwardForTopHeroDamage;
+                hotsPlayer.MvpScoreTopHeroDamage = AwardForTopHeroDamage;
+            }
 
             // Siege damage
             if (hotsPlayer.ScoreResult.SiegeDamage >= teamMaxSiegeDmg)
+            {
                 MVPScore += AwardForTopSiegeDamageOnTeam;
+                hotsPlayer.MvpScoreTopSiegeDamageOnTeam = AwardForTopSiegeDamageOnTeam;
+            }
             if (hotsPlayer.ScoreResult.SiegeDamage >= maxSiegeDmg)
+            {
                 MVPScore += AwardForTopSiegeDamage;
+                hotsPlayer.MvpScoreTopSiegeDamage = AwardForTopSiegeDamage;
+            }
 
             // XP contribution
             if (hotsPlayer.ScoreResult.ExperienceContribution >= teamMaxExp)
+            {
                 MVPScore += AwardForTopXPContributionOnTeam;
+                hotsPlayer.MvpScoreTopXPContributionOnTeam = AwardForTopXPContributionOnTeam;
+            }
             if (hotsPlayer.ScoreResult.ExperienceContribution >= maxExp)
+            {
                 MVPScore += AwardForTopXPContribution;
+                hotsPlayer.MvpScoreTopXPContribution = AwardForTopXPContribution;
+            }
 
             // Healing
             if (hotsPlayer.ScoreResult.Healing >= maxHealing)
+            {
                 MVPScore += AwardForTopHealing;
+                hotsPlayer.MvpScoreTopHealing = AwardForTopHealing;
+            }
 
             // Damage Taken
             string role = Init.HeroRoleFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId];
@@ -1422,17 +1458,43 @@ namespace HotsReplayReader
             if (isTankOrBruiser)
             {
                 if (hotsPlayer.ScoreResult.DamageTaken >= teamMaxDmgTaken)
+                {
                     MVPScore += AwardForTopDamageTakenOnTeam;
+                    hotsPlayer.MvpScoreTopDamageTakenOnTeam = AwardForTopDamageTakenOnTeam;
+                }
                 if (hotsPlayer.ScoreResult.DamageTaken >= maxDmgTaken)
+                {
                     MVPScore += AwardForTopDamageTaken;
+                    hotsPlayer.MvpScoreTopDamageTaken = AwardForTopDamageTaken;
+                }
             }
 
             // Throughput bonus
-            if (maxHeroDmg > 0) MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)maxHeroDmg);
-            if (maxSiegeDmg > 0) MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)maxSiegeDmg);
-            if (maxHealing > 0) MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)maxHealing);
-            if (maxExp > 0) MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)maxExp);
-            if (isTankOrBruiser && maxDmgTaken > 0) MVPScore += ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
+            if (maxHeroDmg > 0)
+            {
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)maxHeroDmg);
+                hotsPlayer.MvpScoreHeroDamageBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)maxHeroDmg);
+            }
+            if (maxSiegeDmg > 0)
+            {
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)maxSiegeDmg);
+                hotsPlayer.MvpScoreSiegeDamageBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)maxSiegeDmg);
+            }
+            if (maxHealing > 0)
+            {
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)maxHealing);
+                hotsPlayer.MvpScoreHealingBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)maxHealing);
+            }
+            if (maxExp > 0)
+            {
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)maxExp);
+                hotsPlayer.MvpScoreXPContributionBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)maxExp);
+            }
+            if (isTankOrBruiser && maxDmgTaken > 0)
+            {
+                MVPScore += ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
+                hotsPlayer.MvpScoreDamageTakenBonus = ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
+            }
 
             return MVPScore;
         }
