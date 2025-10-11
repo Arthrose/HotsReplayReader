@@ -288,4 +288,10 @@
   <data name="HTMLLang" xml:space="preserve">
     <value>zh-TW</value>
   </data>
+  <data name="strPerLevel" xml:space="preserve">
+    <value>每級</value>
+  </data>
+  <data name="strPerLevelBefore" xml:space="preserve">
+    <value>true</value>
+  </data>
 </root>

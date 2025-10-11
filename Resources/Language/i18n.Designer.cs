@@ -448,6 +448,24 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to per level.
+        /// </summary>
+        internal static string strPerLevel {
+            get {
+                return ResourceManager.GetString("strPerLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to false.
+        /// </summary>
+        internal static string strPerLevelBefore {
+            get {
+                return ResourceManager.GetString("strPerLevelBefore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player.
         /// </summary>
         internal static string strPlayer {

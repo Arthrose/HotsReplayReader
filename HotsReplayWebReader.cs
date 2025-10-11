@@ -1175,7 +1175,12 @@ namespace HotsReplayReader
                 // Conversion en pourcentage (4% pour 0.04)
                 int percent = (int)Math.Round(value * 100);
                 // Mise en forme du texte final
-                string replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> per level)";
+                string replacement = "";
+                if (Resources.Language.i18n.strPerLevelBefore == "false")
+                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
+                else
+                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
+
                 // Si la balise </font> était présente, la déplacer avant le texte remplacé
                 if (match.Groups[2].Success)
                     return $"{match.Groups[2].Value}{replacement}";
@@ -1420,7 +1425,7 @@ namespace HotsReplayReader
                 hotsPlayer.MvpScoreAssists = hotsPlayer.ScoreResult.Assists * assisCoef;
             }
 
-            // Time spent dead (reduced for some heroes)
+            // Time spent dead (increased for some heroes)
             if (hotsPlayer.ScoreResult.Deaths > 0)
             {
                 float deathCoef = AwardForTimeSpentDead;

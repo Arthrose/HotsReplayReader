@@ -288,4 +288,10 @@
   <data name="HTMLLang" xml:space="preserve">
     <value>it-IT</value>
   </data>
+  <data name="strPerLevel" xml:space="preserve">
+    <value>per livello</value>
+  </data>
+  <data name="strPerLevelBefore" xml:space="preserve">
+    <value>false</value>
+  </data>
 </root>
