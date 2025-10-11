@@ -1359,6 +1359,10 @@ namespace HotsReplayReader
         }
         float GetMvpScore(HotsPlayer hotsPlayer)
         {
+            // Ladik's CASC Viewer http://www.zezula.net/en/casc/main.html
+            // mods\heroesdata.stormmod\base.stormdata\TriggerLibs\GameLib_h.galaxy
+            // mods\heroesdata.stormmod\base.stormdata\TriggerLibs\GameLib.galaxy
+
             if (hotsPlayer == null || hotsPlayer.ScoreResult == null || hotsPlayer.PlayerHero == null || hotsPlayer.PlayerTeam == null || hotsPlayer.EnemyTeam == null || hotsReplay == null || hotsReplay.stormReplay == null) return 0;
 
             const float AwardForKill = 1.0f;
@@ -1475,7 +1479,7 @@ namespace HotsReplayReader
             }
 
             // Healing
-            if (hotsPlayer.ScoreResult.Healing >= maxHealing)
+            if (hotsPlayer.ScoreResult.Healing >= maxHealing && maxHealing > 0)
             {
                 MVPScore += AwardForTopHealing;
                 hotsPlayer.MvpScoreTopHealing = AwardForTopHealing;
