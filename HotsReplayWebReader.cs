@@ -479,8 +479,7 @@ namespace HotsReplayReader
                 }
             css = css.Replace(@"#backImg#", $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}");
 
-            string html = $@"<!DOCTYPE html>
-<html lang=""{Resources.Language.i18n.ResourceManager.GetString("HTMLLang")!}"">
+            string html = $@"<html lang=""{Resources.Language.i18n.ResourceManager.GetString("HTMLLang")!}"">
 <head>
 <style>
 {css}
@@ -833,11 +832,12 @@ namespace HotsReplayReader
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
             string html = @$"<table class=""tableScoreAndTalents"">
   <tr class=""freeHeight"">
-    <td colspan=""2""></td>
+    <td></td>
+    <td></td>
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
-        <span class=""tooltipHero tooltipHeroLeft"">
+        <span class=""tooltipHero tooltipScoreHeaderLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
         </span>
       </span>
@@ -845,7 +845,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTakedowns.png"">
-        <span class=""tooltipHero tooltipHeroLeft"">
+        <span class=""tooltipHero tooltipScoreHeaderLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTakedowns")!}</nobr>
         </span>
       </span>
@@ -853,7 +853,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
-        <span class=""tooltipHero tooltipHeroLeft"">
+        <span class=""tooltipHero tooltipScoreHeaderLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
         </span>
       </span>
@@ -861,7 +861,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
-        <span class=""tooltipHero tooltipHeroLeft"">
+        <span class=""tooltipHero tooltipScoreHeaderLeft"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
         </span>
       </span>
@@ -869,7 +869,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
-        <span class=""tooltipHero tooltipHeroRight"">
+        <span class=""tooltipHero tooltipScoreHeaderRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
         </span>
       </span>
@@ -877,7 +877,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
-        <span class=""tooltipHero tooltipHeroRight"">
+        <span class=""tooltipHero tooltipScoreHeaderRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
         </span>
       </span>
@@ -885,7 +885,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
-        <span class=""tooltipHero tooltipHeroRight"">
+        <span class=""tooltipHero tooltipScoreHeaderRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
         </span>
       </span>
@@ -893,7 +893,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
-        <span class=""tooltipHero tooltipHeroRight"">
+        <span class=""tooltipHero tooltipScoreHeaderRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
         </span>
       </span>
@@ -901,7 +901,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
-        <span class=""tooltipHero tooltipHeroRight"">
+        <span class=""tooltipHero tooltipScoreHeaderRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
         </span>
       </span>
@@ -909,7 +909,7 @@ namespace HotsReplayReader
     <td class=""teamHeader"">
       <span class=""tooltip"">
         <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
-        <span class=""tooltipHero tooltipHeroRight"">
+        <span class=""tooltipHero tooltipScoreHeaderRight"">
           <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
         </span>
       </span>
@@ -949,7 +949,6 @@ namespace HotsReplayReader
                     timeSpentDead = $@"{hotsPlayer.ScoreResult.TimeSpentDead}";
             }
 
-            //string playerName = hotsPlayer.BattleTagName.IndexOf('#') > 0 ? hotsPlayer.BattleTagName[..hotsPlayer.BattleTagName.IndexOf('#')] : hotsPlayer.Name + " (AI)";
             string html = @"";
             html += $"  <tr class=\"team{team.Name}\">\n";
             html += $"    <td><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
@@ -997,11 +996,8 @@ namespace HotsReplayReader
                 html += " class=\"teamBestScore\"";
             html += $">{hotsPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
-            if (hotsPlayer.MatchAwardsCount > 0 && hotsPlayer.MatchAwards != null)
-                if (hotsPlayer.MatchAwards[0].ToString() == "MVP")
-                    html += " class=\"teamBestScore\"";
-
-            html += "    <td>\n";
+            // MVP Score with tooltip
+            html += "    <td class=\"tooltip-cell\">\n";
             html += "      <span class=\"tooltip\">\n        ";
             if (hotsPlayer.MatchAwardsCount > 0 && hotsPlayer.MatchAwards != null)
                 if (hotsPlayer.MatchAwards[0].ToString() == "MVP")
