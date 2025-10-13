@@ -302,12 +302,11 @@ tr {
   left: 75%;
 }
 .tooltip .tooltipScoreHeaderRight {
-  right: -23px;
+  right: -23%;
 }
 .tooltip .tooltipHeroMvpScore {
   right: 96px;
 }
-
 /* span.tooltip fills the cell */
 td.tooltip-cell {
   position: relative;

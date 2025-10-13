@@ -1,11 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
-using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.StormReplayParser.Player;
@@ -33,7 +34,7 @@ namespace HotsReplayReader
         };
 
         readonly bool fetchHero = false;
-        readonly string heroFetched = "Lùcio";
+        readonly string fetchedHero = "Lùcio";
 
         private string? hotsReplayFolder;
         internal static string jsonConfigFile = "";
@@ -640,7 +641,7 @@ namespace HotsReplayReader
             string html = "";
 
             // Affiche une alerte si le heros joue est celui qu'on veut tester
-            if (fetchHero && Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId] == heroFetched)
+            if (fetchHero && Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId] == fetchedHero)
                 html += $"      <script> alert('{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}'); </script>\n";
 
             html += $"      <td class=\"headTableTd\">\n";
@@ -1390,27 +1391,29 @@ namespace HotsReplayReader
 
             int teamMaxHeroDmg = hotsPlayer.PlayerTeam.MaxHeroDmg;
             int teamMaxSiegeDmg = hotsPlayer.PlayerTeam.MaxSiegeDmg;
+            int teamMaxHealing = hotsPlayer.PlayerTeam.MaxHealing;
             int teamMaxDmgTaken = hotsPlayer.PlayerTeam.MaxDmgTaken;
             int teamMaxExp = hotsPlayer.PlayerTeam.MaxExp;
 
             int enemyMaxHeroDmg = hotsPlayer.EnemyTeam.MaxHeroDmg;
             int enemyMaxSiegeDmg = hotsPlayer.EnemyTeam.MaxSiegeDmg;
+            int enemyMaxHealing = hotsPlayer.EnemyTeam.MaxHealing;
             int enemyMaxDmgTaken = hotsPlayer.EnemyTeam.MaxDmgTaken;
             int enemyMaxExp = hotsPlayer.EnemyTeam.MaxExp;
 
             int maxHeroDmg = Math.Max(teamMaxHeroDmg, enemyMaxHeroDmg);
             int maxSiegeDmg = Math.Max(teamMaxSiegeDmg, enemyMaxSiegeDmg);
             int maxDmgTaken = Math.Max(teamMaxDmgTaken, enemyMaxDmgTaken);
-            int maxHealing = Math.Max(hotsPlayer.PlayerTeam.MaxHealing, hotsPlayer.EnemyTeam.MaxHealing);
+            int maxHealing = Math.Max(teamMaxHealing, enemyMaxHealing);
             int maxExp = Math.Max(teamMaxExp, enemyMaxExp);
 
             float MVPScore = 0f;
 
             // Kills
-            if (hotsPlayer.ScoreResult.SoloKills > 0)
+            if (hotsPlayer.Kills > 0)
             {
-                MVPScore += hotsPlayer.ScoreResult.SoloKills * AwardForKill;
-                hotsPlayer.MvpScoreKills = hotsPlayer.ScoreResult.SoloKills * AwardForKill;
+                MVPScore += hotsPlayer.Kills * AwardForKill;
+                hotsPlayer.MvpScoreKills = hotsPlayer.Kills * AwardForKill;
             }
 
             // Assists (reduced for some heroes)
@@ -1435,6 +1438,7 @@ namespace HotsReplayReader
                 if (hotsReplay.stormReplay.ReplayLength.TotalSeconds > 0)
                 {
                     float deathRatioPct = (float)(hotsPlayer.ScoreResult.TimeSpentDead.TotalSeconds / hotsReplay.stormReplay.ReplayLength.TotalSeconds) * 100.0f;
+                    deathRatioPct *= (1 + 0.05f * hotsPlayer.ScoreResult.Deaths); // Penalize multiple deaths more
                     MVPScore += deathRatioPct * deathCoef;
                     hotsPlayer.MvpScoreTimeSpentDead = deathRatioPct * deathCoef;
                 }
@@ -1508,30 +1512,30 @@ namespace HotsReplayReader
             }
 
             // Throughput bonus
-            if (maxHeroDmg > 0 && hotsPlayer.ScoreResult.HeroDamage > 0)
+            if (teamMaxHeroDmg > 0 && hotsPlayer.ScoreResult.HeroDamage > 0)
             {
-                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)maxHeroDmg);
-                hotsPlayer.MvpScoreHeroDamageBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)maxHeroDmg);
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)teamMaxHeroDmg);
+                hotsPlayer.MvpScoreHeroDamageBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.HeroDamage / (float)teamMaxHeroDmg);
             }
-            if (maxSiegeDmg > 0 && hotsPlayer.ScoreResult.SiegeDamage > 0)
+            if (teamMaxSiegeDmg > 0 && hotsPlayer.ScoreResult.SiegeDamage > 0)
             {
-                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)maxSiegeDmg);
-                hotsPlayer.MvpScoreSiegeDamageBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)maxSiegeDmg);
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)teamMaxSiegeDmg);
+                hotsPlayer.MvpScoreSiegeDamageBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.SiegeDamage / (float)teamMaxSiegeDmg);
             }
-            if (maxHealing > 0 && hotsPlayer.ScoreResult.Healing > 0)
+            if (teamMaxHealing > 0 && hotsPlayer.ScoreResult.Healing > 0)
             {
-                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)maxHealing);
-                hotsPlayer.MvpScoreHealingBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)maxHealing);
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)teamMaxHealing);
+                hotsPlayer.MvpScoreHealingBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.Healing / (float)teamMaxHealing);
             }
-            if (maxExp > 0 && hotsPlayer.ScoreResult.ExperienceContribution > 0)
+            if (teamMaxExp > 0 && hotsPlayer.ScoreResult.ExperienceContribution > 0)
             {
-                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)maxExp);
-                hotsPlayer.MvpScoreXPContributionBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)maxExp);
+                MVPScore += ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)teamMaxExp);
+                hotsPlayer.MvpScoreXPContributionBonus = ThroughputBonusMultiplier * ((float)hotsPlayer.ScoreResult.ExperienceContribution / (float)teamMaxExp);
             }
-            if (isTankOrBruiser && maxDmgTaken > 0 && hotsPlayer.ScoreResult.DamageTaken > 0)
+            if (isTankOrBruiser && teamMaxDmgTaken > 0 && (hotsPlayer.ScoreResult.HeroDamage > 0 || hotsPlayer.ScoreResult.Healing > 0))
             {
-                MVPScore += ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
-                hotsPlayer.MvpScoreDamageTakenBonus = ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
+                MVPScore += ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)teamMaxDmgTaken);
+                hotsPlayer.MvpScoreDamageTakenBonus = ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)teamMaxDmgTaken);
             }
 
             return MVPScore;

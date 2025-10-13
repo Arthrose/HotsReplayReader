@@ -6,6 +6,7 @@ namespace HotsReplayReader
     {
         public string? Party { get; set; }
         public string? TeamColor { get; set; }
+        public int Kills { get; set; }
         public string? ComputerName { get; set; }
         public double MvpScore { get; set; }
         public double? MvpScoreKills { get; set; } = null;
@@ -63,6 +64,10 @@ namespace HotsReplayReader
             this.PlayerDisconnects = stormPlayer.PlayerDisconnects;
             this.ScoreResult = stormPlayer.ScoreResult;
             this.Talents = stormPlayer.Talents;
+            if (stormPlayer.ScoreResult != null)
+                this.Kills = stormPlayer.ScoreResult.SoloKills;
+            else
+                this.Kills = 0;
         }
     }
 }
