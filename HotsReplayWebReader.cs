@@ -182,7 +182,7 @@ namespace HotsReplayReader
             fileSystemWatcher.Created += OnFileCreated;
         }
         // Used to load WebView2Loader.dll from the specified folder
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         static extern bool SetDllDirectory(string lpPathName);
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
@@ -1030,7 +1030,7 @@ namespace HotsReplayReader
             if (hotsPlayer.MvpScoreHealingBonus != null) html += $"            HealingBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.MvpScoreHealingBonus, 2)}<br>\n";
             if (hotsPlayer.MvpScoreXPContributionBonus != null) html += $"            XPContributionBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.MvpScoreXPContributionBonus, 2)}<br>\n";
             if (hotsPlayer.MvpScoreDamageTakenBonus != null) html += $"            DamageTakenBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.MvpScoreDamageTakenBonus, 2)}<br>\n";
-
+            // if (hotsPlayer.ScoreResult.OnFireTimeonFire != null && hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds > 0) html += $"<br>\n            TimeOnFire:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ffd700\">{hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds} s</font><br>\n";
             html += "          </span>\n";
             html += "      </span>\n";
             html += "    </td>\n";
@@ -1560,9 +1560,6 @@ namespace HotsReplayReader
                 MVPScore += ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
                 hotsPlayer.MvpScoreDamageTakenBonus = ThroughputBonusMultiplier * ExtraStatMultiplierTank * ((float)hotsPlayer.ScoreResult.DamageTaken / (float)maxDmgTaken);
             }
-
-            if (hotsPlayer.ScoreResult.OnFireTimeonFire != null)
-                Debug.WriteLine(hotsPlayer.PlayerHero.HeroId + ": " + hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds);
 
             return MVPScore;
         }
