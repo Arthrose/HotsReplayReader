@@ -128,8 +128,16 @@ tr {
   background-color: #000000;
   font-family: Consolas, Lucida Console, Courier New;
 }
+.teamScoreHeader {
+  background-color: #000000;
+  font-family: Consolas, Lucida Console, Courier New;
+  font-size: 120%;
+  font-weight: bold;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
 .teamBlue {
-  background-color: #17203D;
+    background-color: #17203D;
 }
 .teamRed {
   background-color: #300F22;

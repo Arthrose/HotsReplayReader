@@ -1040,18 +1040,18 @@ namespace HotsReplayReader
         private string HTMLGetTalentsTable()
         {
             string html = @$"<table class=""tableScoreAndTalents tableTalents"">
-  <tr class=""freeHeight"">
-    <td></td>
-    <td></td>
-    <td class=""teamHeader"">1</td>
-    <td class=""teamHeader"">4</td>
-    <td class=""teamHeader"">7</td>
-    <td class=""teamHeader"">10</td>
-    <td class=""teamHeader"">13</td>
-    <td class=""teamHeader"">16</td>
-    <td class=""teamHeader"">20</td>
-  </tr>
-";
+              <tr class=""freeHeight"">
+                <td></td>
+                <td></td>
+                <td class=""teamScoreHeader""><font color=""#bfd4fd"">1</font></td>
+                <td class=""teamScoreHeader""><font color=""#bfd4fd"">4</font></td>
+                <td class=""teamScoreHeader""><font color=""#bfd4fd"">7</font></td>
+                <td class=""teamScoreHeader""><font color=""#ffd700"">10</font></td>
+                <td class=""teamScoreHeader""><font color=""#bfd4fd"">13</font></td>
+                <td class=""teamScoreHeader""><font color=""#bfd4fd"">16</font></td>
+                <td class=""teamScoreHeader""><font color=""#bfd4fd"">20</font></td>
+              </tr>
+            ";
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
 
             foreach (HotsPlayer stormPlayer in hotsPlayers)
@@ -1089,10 +1089,14 @@ namespace HotsReplayReader
             // Qustion mark for unselected talents
             for (int i = 0; i <= 6; i++)
             {
+                int talentEarlierLevel = 0;
+                if (stormPlayer.PlayerHero.HeroUnitId == "HeroChromie")
+                    talentEarlierLevel = 2;
+
                 if (i < stormPlayer.Talents.Count)
                     html += $"{GetTalentImgString(stormPlayer, heroData, i)}\n";
                 else
-                    if (i == 0 || (i == 1 && team.Level >= 4) || (i == 2 && team.Level >= 7) || (i == 3 && team.Level >= 10) || (i == 4 && team.Level >= 13) || (i == 5 && team.Level >= 16) || (i == 6 && team.Level >= 20))
+                    if (i == 0 || (i == 1 && team.Level >= 4 - talentEarlierLevel) || (i == 2 && team.Level >= 7 - talentEarlierLevel) || (i == 3 && team.Level >= 10 - talentEarlierLevel) || (i == 4 && team.Level >= 13 - talentEarlierLevel) || (i == 5 && team.Level >= 16 - talentEarlierLevel) || (i == 6 && team.Level >= 20 - talentEarlierLevel))
                     {
                         string imgTalentBorderClass;
                         if (i == 3 || i == 6)
