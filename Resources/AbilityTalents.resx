@@ -1909,6 +1909,9 @@
   <data name="storm_ui_icon_lunara_boundlessstride_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_lunara_boundlessstride_a.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="storm_ui_icon_lunara_forests_wrath" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_lunara_forests_wrath.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="storm_ui_icon_lunara_fullbloom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_lunara_fullbloom.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3271,6 +3274,9 @@
   <data name="storm_ui_icon_uther_holylight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_uther_holylight.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="storm_ui_icon_uther_holylight_var1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_uther_holylight_var1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="storm_ui_icon_uther_holyradiance" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_uther_holyradiance.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3633,6 +3639,9 @@
   </data>
   <data name="storm_ui_ingame_heroselect_btn_lostvikings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_ingame_heroselect_btn_lostvikings.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_ingame_heroselect_btn_lunara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_ingame_heroselect_btn_lunara.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="storm_ui_ingame_heroselect_btn_murky" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_ingame_heroselect_btn_murky.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

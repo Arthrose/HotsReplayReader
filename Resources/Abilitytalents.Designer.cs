@@ -6033,6 +6033,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] storm_ui_icon_lunara_forests_wrath {
+            get {
+                object obj = ResourceManager.GetObject("storm_ui_icon_lunara_forests_wrath", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] storm_ui_icon_lunara_fullbloom {
             get {
                 object obj = ResourceManager.GetObject("storm_ui_icon_lunara_fullbloom", resourceCulture);
@@ -10573,9 +10583,29 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] storm_ui_icon_uther_holylight_var1 {
+            get {
+                object obj = ResourceManager.GetObject("storm_ui_icon_uther_holylight_var1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] storm_ui_icon_uther_holyradiance {
             get {
                 object obj = ResourceManager.GetObject("storm_ui_icon_uther_holyradiance", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] storm_ui_icon_uther_holyshock {
+            get {
+                object obj = ResourceManager.GetObject("storm_ui_icon_uther_holyshock", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -11766,6 +11796,16 @@ namespace HotsReplayReader.Resources {
         internal static byte[] storm_ui_ingame_heroselect_btn_lostvikings {
             get {
                 object obj = ResourceManager.GetObject("storm_ui_ingame_heroselect_btn_lostvikings", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] storm_ui_ingame_heroselect_btn_lunara {
+            get {
+                object obj = ResourceManager.GetObject("storm_ui_ingame_heroselect_btn_lunara", resourceCulture);
                 return ((byte[])(obj));
             }
         }
