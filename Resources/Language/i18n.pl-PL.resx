@@ -207,7 +207,7 @@
   <data name="strScoreKills" xml:space="preserve">
     <value>Łączna liczba zabójstw bohaterów</value>
   </data>
-  <data name="strScoreTakedowns" xml:space="preserve">
+  <data name="strScoreAssists" xml:space="preserve">
     <value>Asysty przy zabójstwach bohaterów</value>
   </data>
   <data name="strScoreDeaths" xml:space="preserve">

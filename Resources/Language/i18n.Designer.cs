@@ -493,6 +493,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Hero Kill Assists.
+        /// </summary>
+        internal static string strScoreAssists {
+            get {
+                return ResourceManager.GetString("strScoreAssists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Death.
         /// </summary>
         internal static string strScoreDeaths {
@@ -561,15 +570,6 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strScoreSiegeDmg {
             get {
                 return ResourceManager.GetString("strScoreSiegeDmg", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total Hero Kill Assists.
-        /// </summary>
-        internal static string strScoreTakedowns {
-            get {
-                return ResourceManager.GetString("strScoreTakedowns", resourceCulture);
             }
         }
         

@@ -207,7 +207,7 @@
   <data name="strScoreKills" xml:space="preserve">
     <value>總擊殺數</value>
   </data>
-  <data name="strScoreTakedowns" xml:space="preserve">
+  <data name="strScoreAssists" xml:space="preserve">
     <value>總助攻數</value>
   </data>
   <data name="strScoreDeaths" xml:space="preserve">

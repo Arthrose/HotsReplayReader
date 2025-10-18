@@ -5,7 +5,7 @@
         public string Name { get; set; } = Name;
         public int Level { get; set; } = 0;
         public int MaxKills { get; set; } = 0;
-        public int MaxTakedowns { get; set; } = 0;
+        public int MaxAssists { get; set; } = 0;
         public int MaxDeaths { get; set; } = 999999999;
         public int MaxSiegeDmg { get; set; } = 0;
         public int MaxHeroDmg { get; set; } = 0;

@@ -207,7 +207,7 @@
   <data name="strScoreKills" xml:space="preserve">
     <value>총 영웅 처치</value>
   </data>
-  <data name="strScoreTakedowns" xml:space="preserve">
+  <data name="strScoreAssists" xml:space="preserve">
     <value>총 영웅 처치 지원</value>
   </data>
   <data name="strScoreDeaths" xml:space="preserve">

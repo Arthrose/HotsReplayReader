@@ -322,6 +322,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] scoreAssists {
+            get {
+                object obj = ResourceManager.GetObject("scoreAssists", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] scoreDeaths {
             get {
                 object obj = ResourceManager.GetObject("scoreDeaths", resourceCulture);
@@ -395,16 +405,6 @@ namespace HotsReplayReader.Resources {
         internal static byte[] scoreSiegeDmg {
             get {
                 object obj = ResourceManager.GetObject("scoreSiegeDmg", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] scoreTakedowns {
-            get {
-                object obj = ResourceManager.GetObject("scoreTakedowns", resourceCulture);
                 return ((byte[])(obj));
             }
         }

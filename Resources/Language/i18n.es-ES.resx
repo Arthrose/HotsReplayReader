@@ -207,7 +207,7 @@
   <data name="strScoreKills" xml:space="preserve">
     <value>Total de asesinatos</value>
   </data>
-  <data name="strScoreTakedowns" xml:space="preserve">
+  <data name="strScoreAssists" xml:space="preserve">
     <value>Asistencias totales</value>
   </data>
   <data name="strScoreDeaths" xml:space="preserve">
