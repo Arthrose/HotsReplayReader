@@ -615,7 +615,7 @@ namespace HotsReplayReader
         <span class=""titleBlue"">{blueTeam.TotalKills} <img src=""app://hotsResources/KillsBlue.png"" height=""32""></span><br>
         <span class=""teamLevel"">{Resources.Language.i18n.strLevel} {blueTeam.Level}</span>
       </td>
-      <td colspan=""3"" class=""titleWhite"" style=""zoom: 75%;""><font color=""#bfd4fd"">{replayLength}</font></td>
+      <td colspan=""3"" class=""titleWhite"" style=""zoom: 75%;"">{replayLength}</td>
       <td colspan=""3"">
         <span class=""titleRed""><img src=""app://hotsResources/KillsRed.png"" height=""32""> {redTeam.TotalKills}</span><br>
         <span class=""teamLevel"">{Resources.Language.i18n.strLevel} {redTeam.Level}</span>
@@ -1101,18 +1101,18 @@ namespace HotsReplayReader
         private string HTMLGetTalentsTable()
         {
             string html = @$"<table class=""tableScoreAndTalents tableTalents"">
-              <tr class=""freeHeight"">
-                <td></td>
-                <td></td>
-                <td class=""teamScoreHeader""><font color=""#bfd4fd"">1</font></td>
-                <td class=""teamScoreHeader""><font color=""#bfd4fd"">4</font></td>
-                <td class=""teamScoreHeader""><font color=""#bfd4fd"">7</font></td>
-                <td class=""teamScoreHeader""><font color=""#ffd700"">10</font></td>
-                <td class=""teamScoreHeader""><font color=""#bfd4fd"">13</font></td>
-                <td class=""teamScoreHeader""><font color=""#bfd4fd"">16</font></td>
-                <td class=""teamScoreHeader""><font color=""#bfd4fd"">20</font></td>
-              </tr>
-            ";
+  <tr class=""freeHeight"">
+    <td></td>
+    <td></td>
+    <td class=""teamScoreHeader"">1</td>
+    <td class=""teamScoreHeader"">4</td>
+    <td class=""teamScoreHeader"">7</td>
+    <td class=""teamScoreHeader""><font color=""#ffd700"">10</font></td>
+    <td class=""teamScoreHeader"">13</td>
+    <td class=""teamScoreHeader"">16</td>
+    <td class=""teamScoreHeader"">20</td>
+  </tr>
+";
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
 
             foreach (HotsPlayer stormPlayer in hotsPlayers)

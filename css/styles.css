@@ -56,7 +56,7 @@ tr {
   font-family: Calibri;
 }
 .teamLevel {
-  color: #bfd4fd;
+  color: white;
   font-size: 150%;
   font-weight: bold;
   font-family: Calibri;
@@ -130,7 +130,7 @@ tr {
 }
 .teamScoreHeader {
   background-color: #000000;
-  font-family: Consolas, Lucida Console, Courier New;
+  font-family: Arial, sans-serif;
   font-size: 120%;
   font-weight: bold;
   padding-top: 7px;
