@@ -1166,8 +1166,6 @@ namespace HotsReplayReader
                             imgTalentBorderClass = "imgTalentBorder";
                     html += $"    <td><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\"></td>\n";
                 }
-                else
-                        html += "    <td>&nbsp;</td>\n";
             }
 
             html += "  </tr>\n";
@@ -1211,12 +1209,23 @@ namespace HotsReplayReader
             else
                 return "    <td>&nbsp;</td>";
 
+            if (AbilTalentEntry == null)
+                return "    <td>&nbsp;</td>";
+
             string iconPath = $@"app://abilityTalents/{AbilTalentEntry.IconFileName}";
             iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
+            string description = "";
             // Si la description est vide, on n'affiche pas le talent
             if (AbilTalentEntry.Full == null || AbilTalentEntry.Full == string.Empty)
-                return "    <td>&nbsp;</td>";
+            {
+                if (AbilTalentEntry.Short == null || AbilTalentEntry.Short == string.Empty)
+                    description=  "ERROR!";
+                else
+                    description = "<i>" + AbilTalentEntry.Short + "</i>";
+            }
+            else
+                description = AbilTalentEntry.Full;
 
             // Affiche le coût en mana si il y en a un
             if (AbilTalentEntry.Energy != null)
@@ -1226,7 +1235,7 @@ namespace HotsReplayReader
             string talentCooldown = AbilTalentEntry.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
 
             // Suppression des balises <img> dans la description
-            string description = MyRegexRemoveImg().Replace(AbilTalentEntry.Full, string.Empty);
+            description = MyRegexRemoveImg().Replace(description, string.Empty);
 
             // Bug FR talent GreymaneLordofHisPack
             description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
