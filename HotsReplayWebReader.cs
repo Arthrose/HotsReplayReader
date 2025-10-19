@@ -26,7 +26,7 @@ namespace HotsReplayReader
             ["fr-FR"] = "Français",
             ["it-IT"] = "Italiano",
             ["ko-KR"] = "한국어",
-            ["pl-PL"] = "Polski﻿",
+            ["pl-PL"] = "Polski",
             ["pt-BR"] = "Português",
             ["ru-RU"] = "Русский",
             ["zh-TW"] = "中文"
@@ -1009,7 +1009,7 @@ namespace HotsReplayReader
                 if (hotsPlayer.MatchAwards[0].ToString() == "MVP")
                     html += "</span>";
 
-            html += "\n          <span class=\"tooltipHero tooltipHeroMvpScore\">\n";
+            html += $"\n          <span class=\"tooltipHeroMvpScore\">\n";
 
             bool firstLine = true;
 

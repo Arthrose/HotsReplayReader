@@ -192,8 +192,7 @@ tr {
 .chat-image-emoticon {
   height: 26px;
 }
-.translate-icon
-{
+.translate-icon {
   display: none;
 }
 .chat-message:hover .translate-icon {
@@ -213,7 +212,6 @@ tr {
 .tableScoreAndTalents tr.freeHeight {
   height: auto !important;
 }
-
 .tableScoreAndTalents td:nth-child(1) {
   width: 120px;
 }
@@ -313,7 +311,24 @@ tr {
   right: -23%;
 }
 .tooltip .tooltipHeroMvpScore {
+  visibility: hidden;
+  background-color: #150C39;
+  color: #8984C7;
+  font-family: Consolas;
+  text-align: left;
+  border-radius: 6px;
+  padding: 1em;
+  position: absolute;
+  z-index: 1;
   right: 96px;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.5s;
+  transform: translateY(-50%);
+}
+.tooltip:hover .tooltipHeroMvpScore {
+    visibility: visible;
+    opacity: 1;
 }
 /* span.tooltip fills the cell */
 td.tooltip-cell {
@@ -327,29 +342,24 @@ td.tooltip-cell > .tooltip {
   height: 100%;
   position: relative;
 }
-/* assurer l'affichage au hover (tolérant si tu as déjà des règles .tooltip:hover...) */
-td.tooltip-cell:hover > .tooltip .tooltipHero, td.tooltip-cell > .tooltip:hover .tooltipHero {
+/* assurer l'affichage au hover (tolÃ©rant si tu as dÃ©jÃ  des rÃ¨gles .tooltip:hover...) */
+td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .tooltip:hover .tooltipHeroMvpScore {
   visibility: visible;
   opacity: 1;
 }
-
-.imgTalentBorder
-{
+.imgTalentBorder {
   border: 6px solid transparent;
   border-image: url('app://hotsResources/talentsBorder.png') 6 stretch;
 }
-.imgTalent10Border
-{
+.imgTalent10Border {
   border: 6px solid transparent;
   border-image: url('app://hotsResources/talents10Border.png') 6 stretch;
 }
-.disconnected
-{
+.disconnected {
   color: Red;
   font-size: 0.75em;
 }
-.reconnected
-{
+.reconnected {
   color: Green;
   font-size: 0.75em;
 }
