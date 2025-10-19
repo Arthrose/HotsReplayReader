@@ -1157,6 +1157,7 @@ namespace HotsReplayReader
                 if (i < stormPlayer.Talents.Count)
                     html += $"{GetTalentImgString(stormPlayer, heroData, i)}\n";
                 else
+                {
                     if (i == 0 || (i == 1 && team.Level >= 4 - talentEarlierLevel) || (i == 2 && team.Level >= 7 - talentEarlierLevel) || (i == 3 && team.Level >= 10 - talentEarlierLevel) || (i == 4 && team.Level >= 13 - talentEarlierLevel) || (i == 5 && team.Level >= 16 - talentEarlierLevel) || (i == 6 && team.Level >= 20 - talentEarlierLevel))
                     {
                         string imgTalentBorderClass;
@@ -1164,7 +1165,10 @@ namespace HotsReplayReader
                             imgTalentBorderClass = "imgTalent10Border";
                         else
                             imgTalentBorderClass = "imgTalentBorder";
-                    html += $"    <td><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\"></td>\n";
+                        html += $"    <td><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\"></td>\n";
+                    }
+                    else
+                        html += "    <td>&nbsp;</td>\n";
                 }
             }
 
