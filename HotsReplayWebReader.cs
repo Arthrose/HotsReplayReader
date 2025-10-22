@@ -456,7 +456,7 @@ namespace HotsReplayReader
                 }
 
                 // Attends que le composant webView2 soit chargé
-                if (webView.CoreWebView2 != null && listBoxHotsReplays.SelectedIndices.Count < 0)
+                if (webView.CoreWebView2 != null && listBoxHotsReplays.Items.Count > 0)
                 {
                     this.Invoke(new Action(() =>
                     {
@@ -1988,6 +1988,8 @@ namespace HotsReplayReader
                     htmlContent += $"{HTMLGetScoreTable()}";
                     htmlContent += $"{HTMLGetTalentsTable()}";
                     htmlContent += $"{HTMLGetFooter()}";
+
+                    this.Text = $"{formTitle} - {hotsReplay?.stormReplay?.Owner?.BattleTagName}";
                 }
                 else
                 {
@@ -2088,6 +2090,21 @@ namespace HotsReplayReader
                 this.Invoke(new Action(() => { ListHotsReplays(Path.GetDirectoryName(e.FullPath)); }));
             }
         }
+        private void HotsReplayWebReader_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                webView.Dispose();
+                if (Directory.Exists(tempDataFolder))
+                {
+                    Directory.Delete(tempDataFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error during cleanup: {ex.Message}");
+            }
+        }
 
         // Colorie l'energie
         [GeneratedRegex(@"<s\s+val=""(.*?)""[^>]*>(.*?)</s>")]
@@ -2112,20 +2129,5 @@ namespace HotsReplayReader
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
         private static partial Regex MyRegexRenameReplayInList();
-        private void HotsReplayWebReader_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                webView.Dispose();
-                if (Directory.Exists(tempDataFolder))
-                {
-                    Directory.Delete(tempDataFolder, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error during cleanup: {ex.Message}");
-            }
-        }
     }
 }
