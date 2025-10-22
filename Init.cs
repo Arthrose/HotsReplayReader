@@ -4,16 +4,19 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;
 using Microsoft.Win32;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HotsReplayReader
 {
     internal partial class Init
     {
         internal string? lastReplayFilePath;
+
         private readonly string? hotsVariablesFile;
         private readonly string? userDocumentsFolder;
         internal List<HotsLocalAccount>? hotsLocalAccounts;
         internal HotsEmoticon? hotsEmoticons;
+        internal Dictionary<string, PsionicStormUnit> PsionicStormUnits;
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         internal string? DbDirectory { get; set; }
@@ -425,6 +428,7 @@ namespace HotsReplayReader
             ListHotsAccounts();
             lastReplayFilePath = GetLastReplayFilePath();
             LoadHotsEmoticons();
+            LoadPsionicStormUnits();
         }
         internal string? GetLastReplayFilePath()
         {
@@ -547,6 +551,18 @@ namespace HotsReplayReader
                 }
             }
         }
+        internal void LoadPsionicStormUnits()
+        {
+            PsionicStormUnitsData? psionicStormUnitsData;
+
+            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            psionicStormUnitsData = JsonSerializer.Deserialize<PsionicStormUnitsData>(Encoding.UTF8.GetString(Resources.HotsResources.PsionicStormUnits), jsonOptions);
+
+            PsionicStormUnits = psionicStormUnitsData.PsionicStormUnits
+                .Where(u => string.IsNullOrEmpty(u.SubSlug))
+                .ToDictionary(u => u.Name, u => u);
+        }
         private bool StormReplayParse(string hotsReplayFilePath)
         {
             StormReplayResult? hotsReplayResult = StormReplay.Parse(hotsReplayFilePath);
@@ -568,7 +584,7 @@ namespace HotsReplayReader
             }
         }
 
-        // lLastReplayFilePath=...
+        // lastReplayFilePath=...
         [GeneratedRegex(@"^lastReplayFilePath=(.*)$")]
         private static partial Regex MyRegexLastReplayFilePath();
     }

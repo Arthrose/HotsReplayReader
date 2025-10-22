@@ -456,7 +456,7 @@ namespace HotsReplayReader
                 }
 
                 // Attends que le composant webView2 soit chargé
-                if (webView.CoreWebView2 != null)
+                if (webView.CoreWebView2 != null && listBoxHotsReplays.SelectedIndices.Count < 0)
                 {
                     this.Invoke(new Action(() =>
                     {
@@ -1200,6 +1200,8 @@ namespace HotsReplayReader
         }
         private string HTMLGetAbilitiesTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
         {
+            // https://psionic-storm.com/en/wp-json/psionic/v0/units?region=live
+            // https://psionic-storm.com/en/wp-json/psionic/v0
             if (stormPlayer.PlayerHero == null || heroDataDocument == null) return "";
 
             int level = 1;
@@ -1528,6 +1530,7 @@ namespace HotsReplayReader
             // Ladik's CASC Viewer http://www.zezula.net/en/casc/main.html
             // mods\heroesdata.stormmod\base.stormdata\TriggerLibs\GameLib_h.galaxy
             // mods\heroesdata.stormmod\base.stormdata\TriggerLibs\GameLib.galaxy
+            // https://www.reddit.com/r/heroesofthestorm/comments/6hsqcb/current_mvp_algorithm/
 
             if (hotsPlayer == null || hotsPlayer.ScoreResult == null || hotsPlayer.PlayerHero == null || hotsPlayer.PlayerTeam == null || hotsPlayer.EnemyTeam == null || hotsReplay == null || hotsReplay.stormReplay == null) return 0f;
 

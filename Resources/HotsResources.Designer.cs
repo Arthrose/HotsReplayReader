@@ -322,6 +322,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] PsionicStormUnits {
+            get {
+                object obj = ResourceManager.GetObject("PsionicStormUnits", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] scoreAssists {
             get {
                 object obj = ResourceManager.GetObject("scoreAssists", resourceCulture);
