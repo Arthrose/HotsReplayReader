@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.StormReplayParser.Player;
@@ -1206,8 +1207,6 @@ namespace HotsReplayReader
 
             int level = 1;
 
-            string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
-
             Hero heroData = heroDataDocument.GetHeroById(Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId], true, true, true, true);
 
             string playerName;
@@ -1217,21 +1216,42 @@ namespace HotsReplayReader
             else
                 playerName = stormPlayer.Name;
 
+            string heroName = Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
+            if (heroName == "Lucio") heroName = "Lúcio";
+
+            if (Init.PsionicStormUnits == null || Init.PsionicStormUnits[heroName] == null) return "";
+
             string html = "";
             html += $"  <tr class=\"team{team.Name} trAblilities\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
+            html += $"      Health: {Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}<br>\n";
+            html += $"      Regen: {Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s<br><br>\n";
 
-            html += $"Health: {Math.Round(heroData.Life.LifeMax * (level + heroData.Life.LifeScaling), 0)}<br>";
-            html += $"Regen: {Math.Round(heroData.Life.LifeRegenerationRate * (level + heroData.Life.LifeRegenerationRateScaling), 2)}/s<br><br>";
-            html += $"Mana: {Math.Round(heroData.Energy.EnergyMax + ((level - 1) * 10), 0)}<br>";
-            html += $"Regen: {Math.Round(heroData.Energy.EnergyRegenerationRate, 2)}/s<br><br>";
-            html += "Damage per attack<br>";
-            html += "Attack speed<br>";
-            html += "Dps<br>";
-            html += "Attack range<br>";
-            html += "";
+            string mana = "";
+            string manaRegen = "";
+            if (Init.PsionicStormUnits[heroName].ManaBase == 500)
+            {
+                // Start with 500 Mana at level 1, except Probius who starts with 600 Mana, and gain 10 maximum Mana every level onwards
+                mana = Math.Round(heroData.Energy.EnergyMax + ((level - 1) * 10), 0).ToString();
+                // Start with 3 Mana per second at level 1 and gain 0.0975 Mana per second every level
+                manaRegen = Math.Round(3 + (level - 1) * 0.0975, 2).ToString();
+                html += $"      Mana: {mana}<br>\n";
+                html += $"      Regen: {manaRegen}/s<br><br>\n";
+            }
+            else if (Init.PsionicStormUnits[heroName].ManaBase > 0)
+            {
+                html += $"      Mana: {Init.PsionicStormUnits[heroName].ManaBase}<br>";
+                if (Init.PsionicStormUnits[heroName].ManaRegenBase > 0)
+                    html += $"\n      Regen: {Init.PsionicStormUnits[heroName].ManaRegenBase}/s<br>";
+                html += "<br>\n";
+            }
 
+            double aaDmg = Math.Round(Init.PsionicStormUnits[heroName].AaDmgBase * Math.Pow((1 + Init.PsionicStormUnits[heroName].AaDmgScaling), level), 1);
+            html += $"      Damage per attack: {aaDmg}<br>\n";
+            html += $"      Attack speed: {Init.PsionicStormUnits[heroName].AaSpeed}<br>\n";
+            html += $"      Dps: {Math.Round(aaDmg * Init.PsionicStormUnits[heroName].AaSpeed, 1)}<br>\n";
+            html += $"      Attack range: {Init.PsionicStormUnits[heroName].AaRange}<br>\n";
 
             html += "    </td>\n";
             html += "  </tr>\n";

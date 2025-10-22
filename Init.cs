@@ -16,7 +16,7 @@ namespace HotsReplayReader
         private readonly string? userDocumentsFolder;
         internal List<HotsLocalAccount>? hotsLocalAccounts;
         internal HotsEmoticon? hotsEmoticons;
-        internal Dictionary<string, PsionicStormUnit> PsionicStormUnits;
+        internal Dictionary<string, PsionicStormUnit>? PsionicStormUnits;
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         internal string? DbDirectory { get; set; }
@@ -558,6 +558,8 @@ namespace HotsReplayReader
             var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
             psionicStormUnitsData = JsonSerializer.Deserialize<PsionicStormUnitsData>(Encoding.UTF8.GetString(Resources.HotsResources.PsionicStormUnits), jsonOptions);
+
+            if (psionicStormUnitsData == null) return;
 
             PsionicStormUnits = psionicStormUnitsData.PsionicStormUnits
                 .Where(u => string.IsNullOrEmpty(u.SubSlug))
