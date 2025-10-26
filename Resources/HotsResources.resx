@@ -260,4 +260,13 @@
   <data name="PsionicStormUnits" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\json\PsionicStormUnits.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="abilityIconBorder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\abilityIconBorder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="abilityIconBorderRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\abilityIconBorderRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="abilityIconBorderBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\abilityIconBorderBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

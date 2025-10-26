@@ -129,15 +129,19 @@ tr {
   font-family: Consolas, Lucida Console, Courier New;
 }
 .teamScoreHeader {
-  background-color: #000000;
+  background-color: black;
   font-family: Arial, sans-serif;
   font-size: 120%;
   font-weight: bold;
   padding-top: 7px;
   padding-bottom: 7px;
 }
+.abilityHeader {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
 .teamBlue {
-    background-color: #17203D;
+  background-color: #17203D;
 }
 .teamRed {
   background-color: #300F22;
@@ -222,12 +226,36 @@ tr {
 .tableTalents {
   table-layout: fixed;
 }
-.trTalents:hover, .trAblilities:hover {
-  cursor: pointer;
-  filter: brightness(125%);
+.tableScoreAndTalents .tableAbilities td:nth-child(1),
+.tableScoreAndTalents .tableAbilities td:nth-child(2)
+{
+  width: unset;
+}
+.stats {
+  font-family: Consolas, Lucida Console, Courier New;
+  font-size: 80%;
+  text-align: left;
+  vertical-align: top;
+}
+.statsHealth {
+  color: crimson;
+  padding-right: 30px;
+}
+.statsDamage {
+  color: green;
+  padding-right: 30px;
 }
 .trAblilities {
-  display: none;
+    display: none;
+}
+tr.trTalents:hover {
+  filter: brightness(125%);
+}
+tr.trTalents.highlight {
+  filter: brightness(125%);
+}
+tr.trTalents, tr.trAblilities {
+  cursor: pointer;
 }
 .tdBorders {
   border: 1px solid #555;
@@ -257,9 +285,6 @@ tr {
   width: 45px;
   vertical-align: baseline;
 }
-.heroTalentIcon:hover {
-  filter: brightness(125%);
-}
 .tooltip {
   position: relative;
   display: inline-block;
@@ -274,7 +299,7 @@ tr {
   border-radius: 6px;
   padding: 1em;
   position: absolute;
-  z-index: 1;
+  z-index: 20;
   bottom: 90%;
   margin-left: -60px;
   opacity: 0;
@@ -338,8 +363,8 @@ tr {
   transform: translateY(-50%);
 }
 .tooltip:hover .tooltipHeroMvpScore {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 td.tooltip-cell {
   position: relative;
@@ -373,4 +398,31 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .toolti
 }
 .nobr {
   white-space: nowrap;
+}
+.abilityIconContainer {
+  position: relative;
+  width: 60px;
+  height: 69px;
+  display: inline-block;
+}
+.abilityIconBorder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  max-height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  width: auto;
+  height: auto;
+}
+.abilityIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 80%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 5;
 }

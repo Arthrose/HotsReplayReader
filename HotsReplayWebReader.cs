@@ -1146,6 +1146,24 @@ namespace HotsReplayReader
       this.style.display = 'none';
     });
   });
+
+
+  document.querySelectorAll('tr.trAblilities').forEach(tr => {
+    tr.addEventListener('mouseenter', () => {
+      const prev = tr.previousElementSibling;
+      if (prev && prev.classList.contains('trTalents')) {
+        prev.classList.add('highlight');
+      }
+    });
+    tr.addEventListener('mouseleave', () => {
+      const prev = tr.previousElementSibling;
+      if (prev && prev.classList.contains('trTalents')) {
+        prev.classList.remove('highlight');
+      }
+    });
+  });
+
+
 </script>
 <br><br>
 ";
@@ -1219,15 +1237,29 @@ namespace HotsReplayReader
             string heroName = Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
             if (heroName == "Lucio") heroName = "Lúcio";
 
+            if (heroName == "D.Va")
+                Debug.WriteLine(heroName);
+
             if (Init.PsionicStormUnits == null || Init.PsionicStormUnits[heroName] == null) return "";
 
             string html = "";
-            html += $"  <tr class=\"team{team.Name} trAblilities\">\n";
+            html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
-            html += $"      Health: {Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}<br>\n";
-            html += $"      Regen: {Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s<br><br>\n";
+            html += "      <table class=\"tableAbilities\">\n";
+            html += "        <tr>\n";
+            html += "          <td>\n";
 
+            html += "            <table>\n";
+            html += "              <tr class=\"stats\">\n";
+            html += "                <td class=\"statsHealth\">\n";
+
+            html += $"                Health:&nbsp;{Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}<br>\n";
+            html += $"                Regen:&nbsp;&nbsp;{Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s\n";
+
+            html += "                </td>\n";
+
+            /*
             string mana = "";
             string manaRegen = "";
             if (Init.PsionicStormUnits[heroName].ManaBase == 500)
@@ -1246,12 +1278,147 @@ namespace HotsReplayReader
                     html += $"\n      Regen: {Init.PsionicStormUnits[heroName].ManaRegenBase}/s<br>";
                 html += "<br>\n";
             }
+            */
+
+            html += "                <td class=\"statsDamage\">\n";
 
             double aaDmg = Math.Round(Init.PsionicStormUnits[heroName].AaDmgBase * Math.Pow((1 + Init.PsionicStormUnits[heroName].AaDmgScaling), level), 1);
-            html += $"      Damage per attack: {aaDmg}<br>\n";
-            html += $"      Attack speed: {Init.PsionicStormUnits[heroName].AaSpeed}<br>\n";
-            html += $"      Dps: {Math.Round(aaDmg * Init.PsionicStormUnits[heroName].AaSpeed, 1)}<br>\n";
-            html += $"      Attack range: {Init.PsionicStormUnits[heroName].AaRange}<br>\n";
+            html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{aaDmg}<br>\n";
+            html += $"                  Attack speed:&nbsp;{Init.PsionicStormUnits[heroName].AaSpeed}<br>\n";
+            html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round(aaDmg * Init.PsionicStormUnits[heroName].AaSpeed, 1)}<br>\n";
+            html += $"                  Attack range:&nbsp;{Init.PsionicStormUnits[heroName].AaRange}<br>\n";
+
+            html += "                </td>\n";
+            html += "              </tr>\n";
+            html += "            </table>\n";
+
+            html += "          </td>\n";
+
+            int heroicNumber = 1;
+            foreach (Heroes.Models.AbilityTalents.Ability ability in heroData.Abilities)
+            {
+                if ((ability.Tier.ToString() == "Basic" || ability.Tier.ToString() == "Heroic" || ability.Tier.ToString() == "Trait" || ability.Tier.ToString() == "Mount") && ability.ParentLink == null)
+                {
+
+                    html += "          <td>\n            <div class=\"tooltip\">\n";
+
+                    string iconPath = ability.IconFileName;
+                    iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
+
+                    // ability.AbilityTalentId.ReferenceId KaelthasFalestrike
+
+                    html += $"              <span class=\"abilityHeader\">";
+                    if (ability.AbilityTalentId.AbilityType.ToString() == "Mount")
+                        html += $"Z";
+                    else if (ability.AbilityTalentId.AbilityType.ToString() == "Trait")
+                        html += $"D";
+                    else if (ability.AbilityTalentId.AbilityType.ToString() == "Heroic")
+                    {
+                        html += $"<font color=\"#ffd700\">R{heroicNumber}</font>";
+                        heroicNumber++;
+                    }
+                    else
+                        html += $"{ability.AbilityTalentId.AbilityType}";
+
+                    html += $"</span>\n              <font size=\"50%\"<br><br></font>\n";
+                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+
+                    string abilityManaCost = "";
+                    string abilityName = "";
+                    string abilityCooldown = "";
+                    string description = "";
+                    AbilTalentEntry AbilTalentEntry;
+                    if (ability.AbilityTalentId.ReferenceId != null)
+                    {
+                        AbilTalentEntry = GetAbilTalent(heroData, ability.AbilityTalentId.ReferenceId!, ability.AbilityTalentId.Id);
+                        if (AbilTalentEntry != null)
+                        {
+                            // Si la description est vide, on n'affiche pas le talent
+                            if (AbilTalentEntry.Full == null || AbilTalentEntry.Full == string.Empty)
+                            {
+                                if (AbilTalentEntry.Short == null || AbilTalentEntry.Short == string.Empty)
+                                    description = "ERROR!";
+                                else
+                                    description = "<i>" + AbilTalentEntry.Short + "</i>";
+                            }
+                            else
+                                description = AbilTalentEntry.Full;
+
+
+                            if (AbilTalentEntry.Name != null)
+                                abilityName = AbilTalentEntry.Name;
+
+                            // Affiche le coût en mana si il y en a un
+                            if (AbilTalentEntry.Energy != null)
+                                AbilTalentEntry.Energy = MyRegexConvertEnergy().Replace(AbilTalentEntry.Energy, "<font color=\"#${1}\">${2}</font>");
+                            abilityManaCost = AbilTalentEntry.Energy != null ? $"<br>\n                  {AbilTalentEntry.Energy}" : "";
+                            // Affiche le cooldown si il y en a un
+                            abilityCooldown = AbilTalentEntry.Cooldown != null ? $"<br>\n                  <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
+
+                            // Suppression des balises <img> dans la description
+                            description = MyRegexRemoveImg().Replace(description, string.Empty);
+
+                            // Bug FR talent GreymaneLordofHisPack
+                            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
+
+                            // Remplace <c val="color">text</c> par du texte coloré
+                            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
+                            description = MyRegexStandardTooltipDetails().Replace(description, "<font color=\"#${1}\">${2}</font>");
+                            description = MyRegexStandardTooltipHeader().Replace(description, "<font color=\"#${1}\"><b>${2}</b></font>");
+
+                            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
+                            {
+                                // Conversion du nombre capturé
+                                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                                // Conversion en pourcentage (4% pour 0.04)
+                                int percent = (int)Math.Round(value * 100);
+                                // Mise en forme du texte final
+                                string replacement = "";
+                                if (Resources.Language.i18n.strPerLevelBefore == "false")
+                                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
+                                else
+                                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
+
+                                // Si la balise </font> était présente, la déplacer avant le texte remplacé
+                                if (match.Groups[2].Success)
+                                    return $"{match.Groups[2].Value}{replacement}";
+                                else
+                                    return replacement;
+                            });
+
+                            // Remplace <n/> par un saut de ligne <br>
+                            description = MyRegexNewLine().Replace(description, "<br>");
+
+
+
+
+                        }
+                    }
+
+                    if (description != "")
+                    {
+                        html += "              <span class=\"tooltiptext ";
+                        if (ability.Tier.ToString() == "Basic")
+                            html += "tooltiptextRight";
+                        else
+                            html += "tooltiptextLeft";
+                        html += "\">\n";
+
+                        html += @$"                <font color=""White"">
+                  <b>{abilityName}</b>{abilityManaCost}{abilityCooldown}
+                </font>
+                <br><br>
+                {description}";
+
+                        html += "              </span>\n";
+                    }
+
+                    html += "            </div>\n          </td>\n";
+                }
+            }
+
+            html += "  </tr>\n";
+            html += "  </table>\n";
 
             html += "    </td>\n";
             html += "  </tr>\n";
@@ -1373,11 +1540,13 @@ namespace HotsReplayReader
       </div>
     </td>";
         }
-        private AbilTalentEntry GetAbilTalent(Hero heroData, string TalentNameId)
+        private AbilTalentEntry GetAbilTalent(Hero heroData, string TalentNameId, string? TalentId = null)
         {
             AbilTalentEntry abilTalentEntry = new();
 
-            bool MatchPrefix(string key) => key.Split('|')[0].Equals(TalentNameId, StringComparison.OrdinalIgnoreCase);
+            if (TalentNameId == "DVaMechBunnyHopHeroic")
+                Debug.WriteLine(TalentNameId);
+
             abilTalentEntry.HeroId = heroData.CHeroId;
             abilTalentEntry.AbilityId = TalentNameId;
 
@@ -1388,6 +1557,28 @@ namespace HotsReplayReader
                          .Equals(TalentNameId, StringComparison.OrdinalIgnoreCase))
                     ?.IconFileName
                 ?? string.Empty;
+
+            bool MatchPrefix(string key) => key.Split('|')[0].Equals(TalentNameId, StringComparison.OrdinalIgnoreCase);
+
+            if (TalentId != null)
+            {
+                string? talentValue;
+
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Cooldown != null && gameStringsRoot.Gamestrings.AbilTalent.Cooldown.TryGetValue(TalentId, out talentValue))
+                    abilTalentEntry.Cooldown = talentValue;
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Energy != null && gameStringsRoot.Gamestrings.AbilTalent.Energy.TryGetValue(TalentId, out talentValue))
+                    abilTalentEntry.Energy = talentValue;
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Full != null && gameStringsRoot.Gamestrings.AbilTalent.Full.TryGetValue(TalentId, out talentValue))
+                    abilTalentEntry.Full = talentValue;
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Life != null && gameStringsRoot.Gamestrings.AbilTalent.Life.TryGetValue(TalentId, out talentValue))
+                    abilTalentEntry.Life = talentValue;
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Name != null && gameStringsRoot.Gamestrings.AbilTalent.Name.TryGetValue(TalentId, out talentValue))
+                    abilTalentEntry.Name = talentValue;
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Short != null && gameStringsRoot.Gamestrings.AbilTalent.Short.TryGetValue(TalentId, out talentValue))
+                    abilTalentEntry.Short = talentValue;
+
+                return abilTalentEntry;
+            }
 
             abilTalentEntry.Cooldown = gameStringsRoot?.Gamestrings?.AbilTalent?.Cooldown?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
             abilTalentEntry.Energy = gameStringsRoot?.Gamestrings?.AbilTalent?.Energy?.FirstOrDefault(kv => MatchPrefix(kv.Key)).Value;
@@ -2137,6 +2328,14 @@ namespace HotsReplayReader
         // Converti les couleurs
         [GeneratedRegex(@"<c\s+val=""(.*?)"">(.*?)</c>")]
         private static partial Regex MyRegexConvertColor();
+
+        // Converti les TooltipDetails (par ex: ToolTip Mout)
+        [GeneratedRegex(@"<s\s+val=""(.*?)""\s+name=""StandardTooltipDetails"">(.*?)<\/s>")]
+        private static partial Regex MyRegexStandardTooltipDetails();
+
+        // Converti les TooltipHeader (par ex: Ana's trait)
+        [GeneratedRegex(@"<s\s+val=""(.*?)""\s+name=""StandardTooltipHeader"">(.*?)<\/s>")]
+        private static partial Regex MyRegexStandardTooltipHeader();
 
         // Affiche (+x% per level)
         [GeneratedRegex(@"\~\~([0-9.]+)\~\~(</font>)?")]
