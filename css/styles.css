@@ -136,9 +136,14 @@ tr {
   padding-top: 7px;
   padding-bottom: 7px;
 }
+.abilityHeaderDiv {
+  padding-bottom: 7px;
+}
 .abilityHeader {
   font-family: Arial, sans-serif;
   font-weight: bold;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 .teamBlue {
   background-color: #17203D;
@@ -238,11 +243,11 @@ tr {
   vertical-align: top;
 }
 .statsHealth {
-  color: crimson;
+  color: #8af968;
   padding-right: 30px;
 }
 .statsDamage {
-  color: green;
+  color: #fe3338;
   padding-right: 30px;
 }
 .trAblilities {
@@ -250,6 +255,8 @@ tr {
 }
 tr.trTalents:hover {
   filter: brightness(125%);
+  position: relative;
+  z-index: 10;
 }
 tr.trTalents.highlight {
   filter: brightness(125%);
@@ -284,6 +291,7 @@ tr.trTalents, tr.trAblilities {
 .heroTalentIcon {
   width: 45px;
   vertical-align: baseline;
+  z-index: 10;
 }
 .tooltip {
   position: relative;
@@ -324,7 +332,7 @@ tr.trTalents, tr.trAblilities {
   border-radius: 6px;
   padding: 1em;
   position: absolute;
-  z-index: 1;
+  z-index: 20;
   bottom: 90%;
   margin-left: -60px;
   opacity: 0;
@@ -355,7 +363,7 @@ tr.trTalents, tr.trAblilities {
   border-radius: 6px;
   padding: 1em;
   position: absolute;
-  z-index: 1;
+  z-index: 20;
   right: 96px;
   margin-left: -60px;
   opacity: 0;
@@ -365,6 +373,32 @@ tr.trTalents, tr.trAblilities {
 .tooltip:hover .tooltipHeroMvpScore {
   visibility: visible;
   opacity: 1;
+}
+.tooltip .tooltipAbilityText {
+  visibility: hidden;
+  width: 300px;
+  background-color: #150C39;
+  color: #8984C7;
+  font-family: Calibri;
+  text-align: left;
+  border-radius: 6px;
+  padding: 1em;
+  position: absolute;
+  z-index: 20;
+  bottom: 70%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.tooltip:hover .tooltipAbilityText {
+  visibility: visible;
+  opacity: 1;
+}
+.tooltip .tooltipAbilityTextRight {
+  left: 170%;
+}
+.tooltip .tooltipAbilityTextLeft {
+  right: 80%;
 }
 td.tooltip-cell {
   position: relative;
@@ -404,6 +438,7 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .toolti
   width: 60px;
   height: 69px;
   display: inline-block;
+  overflow: hidden;
 }
 .abilityIconBorder {
   position: absolute;
@@ -412,7 +447,7 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .toolti
   max-width: 100%;
   max-height: 100%;
   pointer-events: none;
-  z-index: 10;
+  z-index: 2;
   width: auto;
   height: auto;
 }
@@ -424,5 +459,15 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .toolti
   height: 80%;
   transform: translate(-50%, -50%);
   object-fit: cover;
-  z-index: 5;
+  z-index: 1;
+}
+.abilityMountIcon {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 4px);
+  width: 92%;
+  height: 92%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 1;
 }

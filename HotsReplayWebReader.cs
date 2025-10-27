@@ -790,7 +790,10 @@ namespace HotsReplayReader
             else
                 html += $"    <span class=\"chat-time\">[{msgMinutes}:{msgSeconds}]</span>\n";
             html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"></span>\n";
-            html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}\">{msgSenderName}: </span>\n";
+
+            string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
+
+            html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
             if (hotsMessage.Translate)
                 html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\"></span>\n";
             else
@@ -957,39 +960,39 @@ namespace HotsReplayReader
 
             html += "    <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.SoloKills == team.MaxKills)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.SoloKills}</td>\n";
 
             html += "    <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.Assists == team.MaxAssists)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Assists}</td>\n";
 
             html += "    <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.Deaths == team.MaxDeaths)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Deaths}</td>\n";
 
             html += $"    <td class=\"tdBorders\">{timeSpentDead}</td>\n";
 
             html += "    <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.SiegeDamage == team.MaxSiegeDmg)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.SiegeDamage:n0}</td>\n";
 
             html += "    <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.HeroDamage == team.MaxHeroDmg)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.HeroDamage:n0}</td>\n";
 
             html += "    <td class=\"tdBorders";
             if ((hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing) == team.MaxTotalHealing)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing:n0}</td>\n";
 
             html += "    <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.DamageTaken == team.MaxDmgTaken)
-                html += " teamBestScore\"";
+                html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.DamageTaken:n0}</td>\n";
 
             html += "    <td class=\"tdBorders";
@@ -1146,8 +1149,6 @@ namespace HotsReplayReader
       this.style.display = 'none';
     });
   });
-
-
   document.querySelectorAll('tr.trAblilities').forEach(tr => {
     tr.addEventListener('mouseenter', () => {
       const prev = tr.previousElementSibling;
@@ -1162,8 +1163,6 @@ namespace HotsReplayReader
       }
     });
   });
-
-
 </script>
 <br><br>
 ";
@@ -1254,8 +1253,8 @@ namespace HotsReplayReader
             html += "              <tr class=\"stats\">\n";
             html += "                <td class=\"statsHealth\">\n";
 
-            html += $"                Health:&nbsp;{Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}<br>\n";
-            html += $"                Regen:&nbsp;&nbsp;{Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s\n";
+            html += $"                Health:&nbsp;<font color=\"White\">{Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}</font><br>\n";
+            html += $"                Regen:&nbsp;&nbsp;<font color=\"White\">{Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s</font>\n";
 
             html += "                </td>\n";
 
@@ -1283,10 +1282,10 @@ namespace HotsReplayReader
             html += "                <td class=\"statsDamage\">\n";
 
             double aaDmg = Math.Round(Init.PsionicStormUnits[heroName].AaDmgBase * Math.Pow((1 + Init.PsionicStormUnits[heroName].AaDmgScaling), level), 1);
-            html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{aaDmg}<br>\n";
-            html += $"                  Attack speed:&nbsp;{Init.PsionicStormUnits[heroName].AaSpeed}<br>\n";
-            html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round(aaDmg * Init.PsionicStormUnits[heroName].AaSpeed, 1)}<br>\n";
-            html += $"                  Attack range:&nbsp;{Init.PsionicStormUnits[heroName].AaRange}<br>\n";
+            html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{aaDmg}</font><br>\n";
+            html += $"                  Attack speed:&nbsp;<font color=\"White\">{Init.PsionicStormUnits[heroName].AaSpeed}/s</font><br>\n";
+            html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{Math.Round(aaDmg * Init.PsionicStormUnits[heroName].AaSpeed, 1)}</font><br><br>\n";
+            html += $"                  <font color=\"#31ccff\">Attack range:</font>&nbsp;<font color=\"White\">{Init.PsionicStormUnits[heroName].AaRange}</font><br>\n";
 
             html += "                </td>\n";
             html += "              </tr>\n";
@@ -1295,24 +1294,28 @@ namespace HotsReplayReader
             html += "          </td>\n";
 
             int heroicNumber = 1;
+            string abilityIcon = "abilityIcon";
             foreach (Heroes.Models.AbilityTalents.Ability ability in heroData.Abilities)
             {
                 if ((ability.Tier.ToString() == "Basic" || ability.Tier.ToString() == "Heroic" || ability.Tier.ToString() == "Trait" || ability.Tier.ToString() == "Mount") && ability.ParentLink == null)
                 {
-
-                    html += "          <td>\n            <div class=\"tooltip\">\n";
+                    abilityIcon = "abilityIcon";
+                    html += "          <td>\n            <div class=\"tooltip abilityHeaderDiv\">\n";
 
                     string iconPath = ability.IconFileName;
                     iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
                     // ability.AbilityTalentId.ReferenceId KaelthasFalestrike
 
-                    html += $"              <span class=\"abilityHeader\">";
-                    if (ability.AbilityTalentId.AbilityType.ToString() == "Mount")
+                    html += $"              <div class=\"abilityHeader\">";
+                    if (ability.Tier.ToString() == "Mount")
+                    {
                         html += $"Z";
-                    else if (ability.AbilityTalentId.AbilityType.ToString() == "Trait")
+                        abilityIcon = "abilityMountIcon";
+                    }
+                    else if (ability.Tier.ToString() == "Trait")
                         html += $"D";
-                    else if (ability.AbilityTalentId.AbilityType.ToString() == "Heroic")
+                    else if (ability.Tier.ToString() == "Heroic")
                     {
                         html += $"<font color=\"#ffd700\">R{heroicNumber}</font>";
                         heroicNumber++;
@@ -1320,8 +1323,8 @@ namespace HotsReplayReader
                     else
                         html += $"{ability.AbilityTalentId.AbilityType}";
 
-                    html += $"</span>\n              <font size=\"50%\"<br><br></font>\n";
-                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                    html += $"</div>\n";
+                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}\" class=\"{abilityIcon}\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
                     string abilityManaCost = "";
                     string abilityName = "";
@@ -1388,20 +1391,16 @@ namespace HotsReplayReader
 
                             // Remplace <n/> par un saut de ligne <br>
                             description = MyRegexNewLine().Replace(description, "<br>");
-
-
-
-
                         }
                     }
 
                     if (description != "")
                     {
-                        html += "              <span class=\"tooltiptext ";
+                        html += "              <span class=\"tooltipAbilityText ";
                         if (ability.Tier.ToString() == "Basic")
-                            html += "tooltiptextRight";
+                            html += "tooltipAbilityTextRight";
                         else
-                            html += "tooltiptextLeft";
+                            html += "tooltipAbilityTextLeft";
                         html += "\">\n";
 
                         html += @$"                <font color=""White"">
@@ -1410,15 +1409,15 @@ namespace HotsReplayReader
                 <br><br>
                 {description}";
 
-                        html += "              </span>\n";
+                        html += "\n              </span>\n";
                     }
 
                     html += "            </div>\n          </td>\n";
                 }
             }
 
-            html += "  </tr>\n";
-            html += "  </table>\n";
+            html += "        </tr>\n";
+            html += "      </table>\n";
 
             html += "    </td>\n";
             html += "  </tr>\n";
