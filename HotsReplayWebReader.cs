@@ -1304,6 +1304,7 @@ namespace HotsReplayReader
 
                     string iconPath = ability.IconFileName;
                     iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
+                    iconPath = iconPath.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
                     // ability.AbilityTalentId.ReferenceId KaelthasFalestrike
 
