@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Specialized;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
@@ -6,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Windows.Forms;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
@@ -321,11 +323,13 @@ namespace HotsReplayReader
                 string fileName = Path.GetFileName(uri.LocalPath);
                 string imageName = Path.GetFileNameWithoutExtension(fileName);
                 string extension = Path.GetExtension(fileName);
-                string? action = null;
-                if (uri.AbsolutePath.Split('/').Length >= 3) action = uri.AbsolutePath.Split('/')[1];
+                string? actions = null;
+
+                if (!String.IsNullOrEmpty(uri.Query))
+                    actions = HttpUtility.ParseQueryString(uri.Query)["actions"];
 
                 // Récupérer l'Image depuis les ressources
-                Bitmap? image = new HotsImage(uri.Host, imageName, extension, action).Bitmap;
+                Bitmap? image = new HotsImage(uri.Host, imageName, extension, actions).Bitmap;
                 if (image == null) return;
 
                 MemoryStream ms = new();
@@ -1296,7 +1300,7 @@ namespace HotsReplayReader
             html += "          </td>\n";
 
             int heroicNumber = 1;
-            string ImgEdit = "";
+            string actions = "";
             foreach (Heroes.Models.AbilityTalents.Ability ability in heroData.Abilities)
             {
                 if ((ability.Tier.ToString() == "Basic" || ability.Tier.ToString() == "Heroic" || ability.Tier.ToString() == "Trait" || ability.Tier.ToString() == "Mount") && ability.ParentLink == null)
@@ -1311,7 +1315,7 @@ namespace HotsReplayReader
                     if (ability.Tier.ToString() == "Mount")
                     {
                         html += $"Z";
-                        ImgEdit = "crop_left_5/";
+                        actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
                     }
                     else if (ability.Tier.ToString() == "Trait")
                         html += $"D";
@@ -1324,7 +1328,7 @@ namespace HotsReplayReader
                         html += $"{ability.AbilityTalentId.AbilityType}";
 
                     html += $"</div>\n";
-                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{ImgEdit}{iconPath}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
                     string abilityManaCost = "";
                     string abilityName = "";

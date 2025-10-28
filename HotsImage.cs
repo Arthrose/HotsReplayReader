@@ -11,54 +11,48 @@ namespace HotsReplayReader
         public string Name { get; set; }
         public string? Extension { get; set; }
         public string ResourceName { get; set; }
-        private enum CropDirection
-        {
-            Left,
-            Right,
-            Top,
-            Bottom
-        }
-        public HotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null, string? action = null)
+        private enum CropDirection { Left, Right, Top, Bottom }
+        public HotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null, string? queryActions = null)
         {
             Name = imageName;
             ResourceName = resourceName;
             Extension = extension ?? ".png";
             SetBitmap();
 
-            if (action != null && Bitmap != null)
+            if (queryActions != null && Bitmap != null)
             {
-                if (action.Split('_').Length >= 3)
+                var actions = queryActions.Split(';');
+                foreach (var action in actions)
                 {
-                    if (action.Split('_')[0] == "crop")
-                    {
-                        string uriDirection = action.Split("_")[1];
-                        CropDirection direction;
-                        switch (uriDirection)
-                        {
-                            case "left":
-                                direction = CropDirection.Left;
-                                break;
-                            case "right":
-                                direction = CropDirection.Right;
-                                break;
-                            case "top":
-                                direction = CropDirection.Top;
-                                break;
-                            case "bottom":
-                                direction = CropDirection.Bottom;
-                                break;
-                            default:
-                                direction = CropDirection.Left;
-                                break;
-                        }
+                    var parts = action.Split(':');
+                    if (parts.Length < 2) continue;
 
-                        int uriPixels;
-                        if (int.TryParse(action.Split("_")[2], out uriPixels))
-                            Bitmap = CropImage(Bitmap, direction, uriPixels);
+                    var actionName = parts[0].ToLower();
+                    var parameters = parts[1].Split(',');
+
+                    switch (actionName)
+                    {
+                        case "crop":
+                            if (parameters.Length == 2 &&
+                                Enum.TryParse<CropDirection>(Capitalize(parameters[0]), out var dir) &&
+                                int.TryParse(parameters[1], out int px)
+                            )
+                            {
+                                Bitmap = CropImage(Bitmap, dir, px);
+                            }
+                            break;
+                        case "border":
+                            if (parameters.Length == 2 &&
+                                int.TryParse(parameters[1], out int borderSize))
+                            {
+                                Bitmap = AddBorder(Bitmap, parameters[0], borderSize);
+                            }
+                            break;
                     }
                 }
             }
         }
+        private static string Capitalize(string s) => char.ToUpperInvariant(s[0]) + s.Substring(1).ToLower();
         private static Bitmap CropImage(Bitmap source, CropDirection direction, int pixels)
         {
             int x = 0, y = 0, width = source.Width, height = source.Height;
@@ -93,6 +87,29 @@ namespace HotsReplayReader
                     GraphicsUnit.Pixel);
             }
             return cropped;
+        }
+        private static Bitmap AddBorder(Bitmap source, string borderColor, int borderSize)
+        {
+            int newWidth = source.Width + 2 * borderSize;
+            int newHeight = source.Height + 2 * borderSize;
+
+            // Convert hex string to Color
+            Color color = ColorTranslator.FromHtml(borderColor);
+
+            Bitmap output = new Bitmap(newWidth, newHeight, source.PixelFormat);
+
+            using (Graphics g = Graphics.FromImage(output))
+            {
+                // Dessine fond de la couleur de la bordure partout
+                using (SolidBrush brush = new SolidBrush(color))
+                {
+                    g.FillRectangle(brush, 0, 0, newWidth, newHeight);
+                }
+                // Dessine l'image d'origine au centre
+                g.DrawImage(source, borderSize, borderSize, source.Width, source.Height);
+            }
+
+            return output;
         }
         public void SetBitmap()
         {
