@@ -206,7 +206,7 @@ namespace HotsReplayReader
             webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
-            webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+            webView.CoreWebView2.WebResourceRequested += WebViewWebResourceRequested;
 
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
@@ -310,7 +310,7 @@ namespace HotsReplayReader
                 webView.NavigateToString(htmlContent);
             }
         }
-        private void CoreWebView2_WebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+        private void WebViewWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
             Uri uri = new(e.Request.Uri);
 
@@ -318,12 +318,14 @@ namespace HotsReplayReader
             if (uri.Scheme == "app")
             {
                 // Récupérer le nom du fichier
-                string fileName = System.IO.Path.GetFileName(uri.LocalPath);
-                string imageName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-                string extension = System.IO.Path.GetExtension(fileName);
+                string fileName = Path.GetFileName(uri.LocalPath);
+                string imageName = Path.GetFileNameWithoutExtension(fileName);
+                string extension = Path.GetExtension(fileName);
+                string? action = null;
+                if (uri.AbsolutePath.Split('/').Length >= 3) action = uri.AbsolutePath.Split('/')[1];
 
                 // Récupérer l'Image depuis les ressources
-                Bitmap? image = new HotsImage(uri.Host, imageName, extension).Bitmap;
+                Bitmap? image = new HotsImage(uri.Host, imageName, extension, action).Bitmap;
                 if (image == null) return;
 
                 MemoryStream ms = new();
@@ -1294,25 +1296,22 @@ namespace HotsReplayReader
             html += "          </td>\n";
 
             int heroicNumber = 1;
-            string abilityIcon = "abilityIcon";
+            string ImgEdit = "";
             foreach (Heroes.Models.AbilityTalents.Ability ability in heroData.Abilities)
             {
                 if ((ability.Tier.ToString() == "Basic" || ability.Tier.ToString() == "Heroic" || ability.Tier.ToString() == "Trait" || ability.Tier.ToString() == "Mount") && ability.ParentLink == null)
                 {
-                    abilityIcon = "abilityIcon";
                     html += "          <td>\n            <div class=\"tooltip abilityHeaderDiv\">\n";
 
                     string iconPath = ability.IconFileName;
                     iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
                     iconPath = iconPath.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
-                    // ability.AbilityTalentId.ReferenceId KaelthasFalestrike
-
                     html += $"              <div class=\"abilityHeader\">";
                     if (ability.Tier.ToString() == "Mount")
                     {
                         html += $"Z";
-                        abilityIcon = "abilityMountIcon";
+                        ImgEdit = "crop_left_5/";
                     }
                     else if (ability.Tier.ToString() == "Trait")
                         html += $"D";
@@ -1325,7 +1324,7 @@ namespace HotsReplayReader
                         html += $"{ability.AbilityTalentId.AbilityType}";
 
                     html += $"</div>\n";
-                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}\" class=\"{abilityIcon}\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{ImgEdit}{iconPath}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
                     string abilityManaCost = "";
                     string abilityName = "";

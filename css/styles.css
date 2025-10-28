@@ -461,13 +461,3 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .toolti
   object-fit: cover;
   z-index: 1;
 }
-.abilityMountIcon {
-  position: absolute;
-  top: 50%;
-  left: calc(50% - 4px);
-  width: 92%;
-  height: 92%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: 1;
-}

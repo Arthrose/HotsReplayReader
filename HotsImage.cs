@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Resources;
 
 namespace HotsReplayReader
@@ -9,20 +11,94 @@ namespace HotsReplayReader
         public string Name { get; set; }
         public string? Extension { get; set; }
         public string ResourceName { get; set; }
-        public HotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null)
+        private enum CropDirection
+        {
+            Left,
+            Right,
+            Top,
+            Bottom
+        }
+        public HotsImage(string resourceName = "heroesicon", string imageName = "_Null", string? extension = null, string? action = null)
         {
             Name = imageName;
             ResourceName = resourceName;
             Extension = extension ?? ".png";
             SetBitmap();
+
+            if (action != null && Bitmap != null)
+            {
+                if (action.Split('_').Length >= 3)
+                {
+                    if (action.Split('_')[0] == "crop")
+                    {
+                        string uriDirection = action.Split("_")[1];
+                        CropDirection direction;
+                        switch (uriDirection)
+                        {
+                            case "left":
+                                direction = CropDirection.Left;
+                                break;
+                            case "right":
+                                direction = CropDirection.Right;
+                                break;
+                            case "top":
+                                direction = CropDirection.Top;
+                                break;
+                            case "bottom":
+                                direction = CropDirection.Bottom;
+                                break;
+                            default:
+                                direction = CropDirection.Left;
+                                break;
+                        }
+
+                        int uriPixels;
+                        if (int.TryParse(action.Split("_")[2], out uriPixels))
+                            Bitmap = CropImage(Bitmap, direction, uriPixels);
+                    }
+                }
+            }
+        }
+        private static Bitmap CropImage(Bitmap source, CropDirection direction, int pixels)
+        {
+            int x = 0, y = 0, width = source.Width, height = source.Height;
+
+            switch (direction)
+            {
+                case CropDirection.Left:
+                    x = pixels;
+                    width = source.Width - pixels;
+                    break;
+                case CropDirection.Right:
+                    width = source.Width - pixels;
+                    break;
+                case CropDirection.Top:
+                    y = pixels;
+                    height = source.Height - pixels;
+                    break;
+                case CropDirection.Bottom:
+                    height = source.Height - pixels;
+                    break;
+            }
+
+            if (width <= 0 || height <= 0)
+                throw new ArgumentException("Invalid crop parameters.");
+
+            Bitmap cropped = new Bitmap(width, height, source.PixelFormat);
+            using (Graphics g = Graphics.FromImage(cropped))
+            {
+                g.DrawImage(source,
+                    new Rectangle(0, 0, width, height),
+                    new Rectangle(x, y, width, height),
+                    GraphicsUnit.Pixel);
+            }
+            return cropped;
         }
         public void SetBitmap()
         {
             object? image = null;
             ResourceManager? resourceManager = null;
             string ResxObjectName = Name;
-            if (Name == "MapSilverCity")
-                Debug.WriteLine("Debug MapSilverCity");
             switch (ResourceName)
             {
                 case "heroesicon":
