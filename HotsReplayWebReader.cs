@@ -797,7 +797,7 @@ namespace HotsReplayReader
 
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
             if (hotsMessage.Translate)
-                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\"></span>\n";
+                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\">\n";
             else
                 html += $"    {hotsMessage.Message}\n";
             html += $"  </div>\n";
