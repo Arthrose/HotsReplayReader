@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Data;
+﻿using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
@@ -8,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Windows.Forms;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.StormReplayParser.Player;
@@ -548,7 +546,7 @@ namespace HotsReplayReader
         }
         internal static string HTMLGetFooter()
         {
-            string html = "</div>\n</body>\n</html>\n";
+            string html = "</div>\n<br><br><br>\n</body>\n</html>\n";
             return html;
         }
         internal string HTMLGetHeadTable()
@@ -608,11 +606,11 @@ namespace HotsReplayReader
                 html += "    <tr>\n    <td>&nbsp;</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
-                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
+                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"bannedHeroIcon\">\n";
                 html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
-                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"heroIcon\">\n";
+                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"bannedHeroIcon\">\n";
                 html += "      <td>&nbsp;</td>\n    <tr>\n";
             }
 
@@ -697,39 +695,50 @@ namespace HotsReplayReader
                 html += $"            <span class=\"nobr\">{accountLevelLabel}<font color=\"#bfd4fd\">{accountLevel}</font></span><br>\n";
 
                 string heroLevelLabel = (Resources.Language.i18n.strHeroLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
-                if (hotsPlayer.PlayerHero.HeroLevel >= 20)
+
+                if (hotsReplay?.stormReplay?.GameMode.ToString() == "ARAM" || hotsReplay?.stormReplay?.GameMode.ToString() == "Brawl")
                 {
-                    string heroLevel;
-                    switch (hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero.HeroAttributeId)?.TierLevel ?? 0)
+                    int tierLevel = hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == Init.HeroAttributeIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId])?.TierLevel ?? 0;
+
+                    string heroLevel = tierLevel switch
                     {
-                        case 0:
-                            heroLevel = "&GreaterEqual;&nbsp;20";
-                            break;
-                        case 1:
-                            heroLevel = "20-25";
-                            break;
-                        case 2:
-                            heroLevel = "25-50";
-                            break;
-                        case 3:
-                            heroLevel = "50-75";
-                            break;
-                        case 4:
-                            heroLevel = "75-100";
-                            break;
-                        case 5:
-                            heroLevel = "100+";
-                            break;
-                        default:
-                            heroLevel = "&GreaterEqual;&nbsp;20";
-                            break;
-                    }
-                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                        0 => "&lt;&nbsp;15",
+                        1 => "15-25",
+                        2 => "25-50",
+                        3 => "50-75",
+                        4 => "75-100",
+                        5 => "100+",
+                        _ => "&lt;&nbsp;15",
+                    };
+
+                    if (tierLevel >= 1)
+                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                    else
+                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{heroLevel}</font></span><br>\n";
                 }
-                else if (hotsPlayer.PlayerHero.HeroLevel >= 15)
-                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                 else
-                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+                {
+                    int tierLevel = hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero.HeroAttributeId)?.TierLevel ?? 0;
+
+                    if (hotsPlayer.PlayerHero.HeroLevel >= 20)
+                    {
+                        string heroLevel = tierLevel switch
+                        {
+                            0 => "&GreaterEqual;&nbsp;20",
+                            1 => "20-25",
+                            2 => "25-50",
+                            3 => "50-75",
+                            4 => "75-100",
+                            5 => "100+",
+                            _ => "&GreaterEqual;&nbsp;20",
+                        };
+                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                    }
+                    else if (hotsPlayer.PlayerHero.HeroLevel >= 15)
+                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+                    else
+                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+                }
             }
             else
             {
@@ -1199,7 +1208,6 @@ namespace HotsReplayReader
     });
   });
 </script>
-<br><br>
 ";
             return html;
         }
@@ -1270,9 +1278,6 @@ namespace HotsReplayReader
 
             string heroName = Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
             if (heroName == "Lucio") heroName = "Lúcio";
-
-            if (heroName == "D.Va")
-                Debug.WriteLine(heroName);
 
             if (Init.PsionicStormUnits == null || Init.PsionicStormUnits[heroName] == null) return "";
 

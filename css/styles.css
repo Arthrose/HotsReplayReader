@@ -65,11 +65,16 @@ tr {
   text-decoration: underline;
 }
 .heroIcon {
-    border-radius: 100%;
-    width: 80px;
-    height: 80px;
+  border-radius: 100%;
+  width: 80px;
+  height: 80px;
 }
-.heroIcon:hover {
+.bannedHeroIcon {
+  border-radius: 100%;
+  width: 70px;
+  height: 70px;
+}
+.heroIcon:hover, .bannedHeroIcon:hover {
   filter: brightness(125%);
 }
 .battleTag {

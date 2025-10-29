@@ -21,7 +21,7 @@ namespace HotsReplayReader
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         internal string? DbDirectory { get; set; }
         internal string? jsonConfigFile { get; set; }
-        public Dictionary<string, string> HeroNameFromHeroUnitId = new()
+        public Dictionary<string, string> HeroNameFromHeroUnitId { get; } = new()
         {
             ["HeroAbathur"]               = "Abathur",
             ["HeroAlarak"]                = "Alarak",
@@ -118,7 +118,7 @@ namespace HotsReplayReader
             ["HeroZeratul"]               = "Zeratul",
             ["HeroZuljin"]                = "Zul'jin"
         };
-        public Dictionary<string, string> HeroNameFromHeroId = new()
+        public Dictionary<string, string> HeroNameFromHeroId { get; } = new()
         {
             ["Abathur"]      = "Abathur",
             ["Alarak"]       = "Alarak",
@@ -212,7 +212,7 @@ namespace HotsReplayReader
             ["Zuljin"]       = "Zul'jin",
             ["NONE"]         = "NONE"
         };
-        public Dictionary<string, string> HeroRoleFromHeroUnitId = new()
+        public Dictionary<string, string> HeroRoleFromHeroUnitId { get; } = new()
         {
             ["HeroAnubarak"]              = "Tank",
             ["HeroArthas"]                = "Tank",
@@ -313,7 +313,7 @@ namespace HotsReplayReader
             ["HeroLostVikingsController"] = "Support",
             ["HeroZarya"]                 = "Support" 
         };
-        public Dictionary<string, string> HeroIdFromHeroUnitId = new()
+        public Dictionary<string, string> HeroIdFromHeroUnitId { get; } = new()
         {
             ["HeroAbathur"]               = "Abathur",
             ["HeroAlarak"]                = "Alarak",
@@ -410,6 +410,104 @@ namespace HotsReplayReader
             ["HeroZarya"]                 = "Zarya",
             ["HeroZeratul"]               = "Zeratul",
             ["HeroZuljin"]                = "Zuljin"
+        };
+        public Dictionary<string, string> HeroAttributeIdFromHeroUnitId { get; } = new ()
+        {
+            ["HeroAbathur"] = "Abat",
+            ["HeroAlarak"] = "Alar",
+            ["HeroAlexstrasza"] = "Alex",
+            ["HeroAlexstraszaDragon"] = "Alex",
+            ["HeroAna"] = "HANA",
+            ["HeroAnduin"] = "Andu",
+            ["HeroAnubarak"] = "Anub",
+            ["HeroArtanis"] = "Arts",
+            ["HeroArthas"] = "Arth",
+            ["HeroAuriel"] = "Auri",
+            ["HeroAzmodan"] = "Azmo",
+            ["HeroFirebat"] = "Fire",
+            ["HeroFaerieDragon"] = "Faer",
+            ["HeroAmazon"] = "Amaz",
+            ["HeroChen"] = "Chen",
+            ["HeroCho"] = "CCho",
+            ["HeroChromie"] = "Chro",
+            ["HeroDVaMech"] = "DVA0",
+            ["HeroDVaPilot"] = "DVA0",
+            ["DeathwingDragonflightUnit"] = "DEAT",
+            ["HeroDeathwing"] = "DEAT",
+            ["HeroDeckard"] = "DECK",
+            ["HeroDehaka"] = "Deha",
+            ["HeroDiablo"] = "Diab",
+            ["HeroL90ETC"] = "L90E",
+            ["HeroFalstad"] = "Fals",
+            ["HeroFenix"] = "FENX",
+            ["HeroGall"] = "Gall",
+            ["HeroGarrosh"] = "Garr",
+            ["HeroTinker"] = "Tink",
+            ["HeroGenji"] = "Genj",
+            ["HeroGreymane"] = "Genn",
+            ["HeroGuldan"] = "Guld",
+            ["HeroHanzo"] = "Hanz",
+            ["HeroHogger"] = "HOGG",
+            ["HeroIllidan"] = "Illi",
+            ["HeroImperius"] = "IMPE",
+            ["HeroJaina"] = "Jain",
+            ["HeroCrusader"] = "Crus",
+            ["HeroJunkrat"] = "Junk",
+            ["HeroKaelthas"] = "Kael",
+            ["HeroKelThuzad"] = "KelT",
+            ["HeroKerrigan"] = "Kerr",
+            ["HeroMonk"] = "Monk",
+            ["HeroLeoric"] = "Leor",
+            ["HeroLiLi"] = "LiLi",
+            ["HeroWizard"] = "Wiza",
+            ["HeroMedic"] = "Medi",
+            ["HeroLucio"] = "Luci",
+            ["HeroDryad"] = "Drya",
+            ["HeroMaiev"] = "Maie",
+            ["HeroMalfurion"] = "Malf",
+            ["HeroMalGanis"] = "MalG",
+            ["HeroMalthael"] = "MALT",
+            ["HeroMedivh"] = "Mdvh",
+            ["HeroMedivhRaven"] = "Mdvh",
+            ["HeroMeiOW"] = "HMEI",
+            ["HeroMephisto"] = "MEPH",
+            ["HeroMuradin"] = "Mura",
+            ["HeroMurky"] = "Murk",
+            ["HeroWitchDoctor"] = "WHIT",
+            ["HeroNova"] = "Nova",
+            ["HeroOrphea"] = "ORPH",
+            ["HeroProbius"] = "Prob",
+            ["HeroNexusHunter"] = "NXHU",
+            ["HeroRagnaros"] = "Ragn",
+            ["HeroRaynor"] = "Rayn",
+            ["HeroRehgar"] = "Rehg",
+            ["HeroRexxar"] = "Rexx",
+            ["HeroSamuro"] = "Samu",
+            ["HeroSgtHammer"] = "Sgth",
+            ["HeroBarbarian"] = "Barb",
+            ["HeroStitches"] = "Stit",
+            ["HeroStukov"] = "STUK",
+            ["HeroSylvanas"] = "Sylv",
+            ["HeroTassadar"] = "Tass",
+            ["HeroButcher"] = "Butc",
+            ["HeroLostVikings"] = "Lost",
+            ["HeroLostVikingsController"] = "Lost",
+            ["HeroThrall"] = "Thra",
+            ["HeroTracer"] = "Tra0",
+            ["HeroTychus"] = "Tych",
+            ["HeroTyrael"] = "Tyrl",
+            ["HeroTyrande"] = "Tyrd",
+            ["HeroUther"] = "Uthe",
+            ["HeroValeera"] = "VALE",
+            ["HeroDemonHunter"] = "Demo",
+            ["HeroVarian"] = "Vari",
+            ["HeroWhitemane"] = "WHIT",
+            ["HeroNecromancer"] = "Necr",
+            ["HeroYrel"] = "YREL",
+            ["HeroZagara"] = "Zaga",
+            ["HeroZarya"] = "Zary",
+            ["HeroZeratul"] = "Zera",
+            ["HeroZuljin"] = "ZULJ"
         };
         public Init()
         {
