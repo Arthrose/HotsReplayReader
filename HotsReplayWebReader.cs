@@ -698,7 +698,36 @@ namespace HotsReplayReader
 
                 string heroLevelLabel = (Resources.Language.i18n.strHeroLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
                 if (hotsPlayer.PlayerHero.HeroLevel >= 20)
-                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">&GreaterEqual;&nbsp;20</font></span><br>\n";
+                {
+                    string heroLevel;
+                    switch (hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero.HeroAttributeId)?.TierLevel ?? 0)
+                    {
+                        case 0:
+                            heroLevel = "&GreaterEqual;&nbsp;20";
+                            break;
+                        case 1:
+                            heroLevel = "20-25";
+                            break;
+                        case 2:
+                            heroLevel = "25-50";
+                            break;
+                        case 3:
+                            heroLevel = "50-75";
+                            break;
+                        case 4:
+                            heroLevel = "75-100";
+                            break;
+                        case 5:
+                            heroLevel = "100+";
+                            break;
+                        default:
+                            heroLevel = "&GreaterEqual;&nbsp;20";
+                            break;
+                    }
+                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                }
+                else if (hotsPlayer.PlayerHero.HeroLevel >= 15)
+                    html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                 else
                     html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
             }
