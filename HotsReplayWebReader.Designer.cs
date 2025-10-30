@@ -34,18 +34,22 @@
             browseToolStripMenuItem = new ToolStripMenuItem();
             sourceToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            regionToolStripMenuItem = new ToolStripMenuItem();
             accountsToolStripMenuItem = new ToolStripMenuItem();
             languageToolStripMenuItem = new ToolStripMenuItem();
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
+            americasRegionToolStripMenuItem = new ToolStripMenuItem();
+            europeRegionToolStripMenuItem = new ToolStripMenuItem();
+            asiaRegionToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView).BeginInit();
             SuspendLayout();
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, accountsToolStripMenuItem, languageToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, regionToolStripMenuItem, accountsToolStripMenuItem, languageToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(1359, 24);
@@ -79,6 +83,13 @@
             exitToolStripMenuItem.Size = new Size(112, 22);
             exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
             exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
+            // 
+            // regionToolStripMenuItem
+            // 
+            regionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { americasRegionToolStripMenuItem, europeRegionToolStripMenuItem, asiaRegionToolStripMenuItem });
+            regionToolStripMenuItem.Name = "regionToolStripMenuItem";
+            regionToolStripMenuItem.Size = new Size(56, 20);
+            regionToolStripMenuItem.Text = Resources.Language.i18n.strRegion;
             // 
             // accountsToolStripMenuItem
             // 
@@ -118,6 +129,33 @@
             listBoxHotsReplays.Visible = false;
             listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
             // 
+            // americasRegionToolStripMenuItem
+            // 
+            americasRegionToolStripMenuItem.CheckOnClick = true;
+            americasRegionToolStripMenuItem.Name = "americasRegionToolStripMenuItem";
+            americasRegionToolStripMenuItem.Size = new Size(180, 22);
+            americasRegionToolStripMenuItem.Tag = "1";
+            americasRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAmercas;
+            americasRegionToolStripMenuItem.Click += RegionToolStripMenuItem_Click;
+            // 
+            // europeRegionToolStripMenuItem
+            // 
+            europeRegionToolStripMenuItem.CheckOnClick = true;
+            europeRegionToolStripMenuItem.Name = "europeRegionToolStripMenuItem";
+            europeRegionToolStripMenuItem.Size = new Size(180, 22);
+            europeRegionToolStripMenuItem.Tag = "2";
+            europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
+            europeRegionToolStripMenuItem.Click += RegionToolStripMenuItem_Click;
+            // 
+            // asiaRegionToolStripMenuItem
+            // 
+            asiaRegionToolStripMenuItem.CheckOnClick = true;
+            asiaRegionToolStripMenuItem.Name = "asiaRegionToolStripMenuItem";
+            asiaRegionToolStripMenuItem.Size = new Size(180, 22);
+            asiaRegionToolStripMenuItem.Tag = "3";
+            asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
+            asiaRegionToolStripMenuItem.Click += RegionToolStripMenuItem_Click;
+            // 
             // HotsReplayWebReader
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -153,5 +191,9 @@
         private ToolStripMenuItem browseToolStripMenuItem;
         private ToolStripMenuItem sourceToolStripMenuItem;
         private ToolStripMenuItem languageToolStripMenuItem;
+        private ToolStripMenuItem regionToolStripMenuItem;
+        private ToolStripMenuItem americasRegionToolStripMenuItem;
+        private ToolStripMenuItem europeRegionToolStripMenuItem;
+        private ToolStripMenuItem asiaRegionToolStripMenuItem;
     }
 }

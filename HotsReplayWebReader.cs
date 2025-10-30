@@ -115,10 +115,10 @@ namespace HotsReplayReader
                 jsonFile = File.ReadAllText(jsonConfigFile);
                 jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
             }
-            if (jsonConfig?.langCode != null && LangCodeList.ContainsKey(jsonConfig.langCode))
+            if (jsonConfig?.LangCode != null && LangCodeList.ContainsKey(jsonConfig.LangCode))
             {
-                LangCode = jsonConfig.langCode;
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(jsonConfig.langCode);
+                LangCode = jsonConfig.LangCode;
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(jsonConfig.LangCode);
             }
             else
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
@@ -128,23 +128,21 @@ namespace HotsReplayReader
             translator = new DeepLTranslator(apiKey);
             replayList = [];
 
-            if (Init.hotsLocalAccounts == null) return;
-
-            ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
-            for (int i = 0; i < accountsToolStripMenu.Length; i++)
+            // Coche la région sélectionnée
+            switch (Init.Region)
             {
-                ToolStripMenuItem toolStripMenuItem = new()
-                {
-                    Name = Init?.hotsLocalAccounts[i].BattleTagName,
-                    Tag = "Account",
-                    Text = Init?.hotsLocalAccounts[i]?.BattleTagName is string tag && tag.Contains('#')
-                        ? tag[..tag.IndexOf('#')]
-                        : string.Empty
-                };
-                accountsToolStripMenu[i] = toolStripMenuItem;
-                accountsToolStripMenu[i].Click += new EventHandler(AccountMenuItemClickHandler);
+                case "1":
+                    americasRegionToolStripMenuItem.Checked = true;
+                    break;
+                case "2":
+                    europeRegionToolStripMenuItem.Checked = true;
+                    break;
+                case "3":
+                    asiaRegionToolStripMenuItem.Checked = true;
+                    break;
             }
-            accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
+
+            LoadAccountsToolStipMenu();
 
             ToolStripMenuItem[] languageToolStripMenu = new ToolStripMenuItem[LangCodeList.Count];
             int j = 0;
@@ -230,6 +228,7 @@ namespace HotsReplayReader
                     {
                         fileToolStripMenuItem.HideDropDown();
                         accountsToolStripMenuItem.HideDropDown();
+                        regionToolStripMenuItem.HideDropDown();
                         languageToolStripMenuItem.HideDropDown();
                     }
 
@@ -274,6 +273,17 @@ namespace HotsReplayReader
                 ListHotsReplays(Init.lastReplayFilePath);
                 this.Text = $"{formTitle} - {currentAccount}";
                 this.Update();
+
+                foreach (ToolStripItem item in accountsToolStripMenuItem.DropDownItems)
+                {
+                    if (item is ToolStripMenuItem submenu)
+                    {
+                        if (submenu.Name == currentAccount)
+                            submenu.Checked = true;
+                        else
+                            submenu.Checked = false;
+                    }
+                }
 
                 this.Invoke(new Action(() =>
                 {
@@ -360,6 +370,29 @@ namespace HotsReplayReader
                 }
             }
         }
+        private void LoadAccountsToolStipMenu()
+        {
+            accountsToolStripMenuItem.DropDownItems.Clear();
+
+            if (Init.hotsLocalAccounts == null) return;
+
+            ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
+            for (int i = 0; i < accountsToolStripMenu.Length; i++)
+            {
+                ToolStripMenuItem toolStripMenuItem = new()
+                {
+                    Name = Init?.hotsLocalAccounts[i].BattleTagName,
+                    Tag = "Account",
+                    Text = Init?.hotsLocalAccounts[i]?.BattleTagName is string tag && tag.Contains('#')
+                        ? tag[..tag.IndexOf('#')]
+                        : string.Empty
+                };
+                accountsToolStripMenu[i] = toolStripMenuItem;
+                accountsToolStripMenu[i].Click += new EventHandler(AccountMenuItemClickHandler);
+                accountsToolStripMenu[i].CheckOnClick = true;
+            }
+            accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
+        }
         private void AccountMenuItemClickHandler(object? sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem clickedItem && clickedItem.Tag?.ToString() == "Account" && Init.hotsLocalAccounts != null)
@@ -391,6 +424,17 @@ namespace HotsReplayReader
                     }
                 }
 
+                foreach (ToolStripItem item in accountsToolStripMenuItem.DropDownItems)
+                {
+                    if (item is ToolStripMenuItem submenu)
+                    {
+                        if (submenu == sender)
+                            submenu.Checked = true;
+                        else
+                            submenu.Checked = false;
+                    }
+                }
+
                 this.Text = $"{formTitle} - {currentAccount}";
                 this.Update();
             }
@@ -409,6 +453,10 @@ namespace HotsReplayReader
             sourceToolStripMenuItem.Text = Resources.Language.i18n.strMenuSource;
             exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
             accountsToolStripMenuItem.Text = Resources.Language.i18n.strMenuAccounts;
+            regionToolStripMenuItem.Text = Resources.Language.i18n.strRegion;
+            americasRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAmercas;
+            europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
+            asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
             languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
 
             // Enregistre la langue dans le fichier de configuration
@@ -419,7 +467,7 @@ namespace HotsReplayReader
                 jsonFile = File.ReadAllText(jsonConfigFile);
                 jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
             }
-            jsonConfig!.langCode = LangCode;
+            jsonConfig!.LangCode = LangCode;
             File.WriteAllText(jsonConfigFile, JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
 
             if (listBoxHotsReplays.Items.Count == 0)
@@ -756,7 +804,7 @@ namespace HotsReplayReader
             string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsPlayer.BattleTagName) ? " owner" : "";
             string partyColor = (party != "0") ? $" team{party}" : "";
 
-                html += $"        <div class=\"battleTag{owner}{partyColor}\">{playerName}</div>\n";
+            html += $"        <div class=\"battleTag{owner}{partyColor}\">{playerName}</div>\n";
             html += $"      </td>\n";
             return html;
         }
@@ -1510,7 +1558,7 @@ namespace HotsReplayReader
             if (AbilTalentEntry.Full == null || AbilTalentEntry.Full == string.Empty)
             {
                 if (AbilTalentEntry.Short == null || AbilTalentEntry.Short == string.Empty)
-                    description=  "ERROR!";
+                    description = "ERROR!";
                 else
                     description = "<i>" + AbilTalentEntry.Short + "</i>";
             }
@@ -1580,9 +1628,6 @@ namespace HotsReplayReader
         private AbilTalentEntry GetAbilTalent(Hero heroData, string TalentNameId, string? TalentId = null)
         {
             AbilTalentEntry abilTalentEntry = new();
-
-            if (TalentNameId == "DVaMechBunnyHopHeroic")
-                Debug.WriteLine(TalentNameId);
 
             abilTalentEntry.HeroId = heroData.CHeroId;
             abilTalentEntry.AbilityId = TalentNameId;
@@ -2230,7 +2275,7 @@ namespace HotsReplayReader
                     await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
                     //await CheckAndDownloadHeroesData("2.55.13.95170");
 
-                    htmlContent  = $"{HTMLGetHeader()}";
+                    htmlContent = $"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}";
                     htmlContent += $"{HTMLGetChatMessages()}";
                     htmlContent += $"{HTMLGetScoreTable()}";
@@ -2312,6 +2357,35 @@ namespace HotsReplayReader
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HotsReplayReader.Program.ExitApp();
+        }
+        private void RegionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            americasRegionToolStripMenuItem.Checked = false;
+            europeRegionToolStripMenuItem.Checked = false;
+            asiaRegionToolStripMenuItem.Checked = false;
+            ((ToolStripMenuItem)sender).Checked = true;
+            if (((ToolStripMenuItem)sender)?.Tag != null)
+            {
+                Init.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
+                Init.ListHotsAccounts();
+                LoadAccountsToolStipMenu();
+
+                if (accountsToolStripMenuItem.DropDownItems.Count > 0)
+                    accountsToolStripMenuItem.DropDownItems[0].PerformClick();
+
+                string jsonFile;
+                JsonConfig? jsonConfig = new();
+
+                if (File.Exists(jsonConfigFile))
+                {
+                    jsonFile = File.ReadAllText(jsonConfigFile);
+                    jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
+                }
+
+                jsonConfig!.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
+
+                File.WriteAllText(jsonConfigFile,JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
+            }
         }
         private void OnFileCreated(object sender, FileSystemEventArgs e)
         {

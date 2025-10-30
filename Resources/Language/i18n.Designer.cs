@@ -493,6 +493,42 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Region.
+        /// </summary>
+        internal static string strRegion {
+            get {
+                return ResourceManager.GetString("strRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Americas.
+        /// </summary>
+        internal static string strRegionAmercas {
+            get {
+                return ResourceManager.GetString("strRegionAmercas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asia.
+        /// </summary>
+        internal static string strRegionAsia {
+            get {
+                return ResourceManager.GetString("strRegionAsia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Europe.
+        /// </summary>
+        internal static string strRegionEurope {
+            get {
+                return ResourceManager.GetString("strRegionEurope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Hero Kill Assists.
         /// </summary>
         internal static string strScoreAssists {

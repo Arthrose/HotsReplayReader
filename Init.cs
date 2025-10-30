@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Heroes.StormReplayParser;
 using Microsoft.Win32;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HotsReplayReader
 {
@@ -14,6 +13,7 @@ namespace HotsReplayReader
 
         private readonly string? hotsVariablesFile;
         private readonly string? userDocumentsFolder;
+        internal string Region { get; set; } = "2";
         internal List<HotsLocalAccount>? hotsLocalAccounts;
         internal HotsEmoticon? hotsEmoticons;
         internal Dictionary<string, PsionicStormUnit>? PsionicStormUnits;
@@ -519,6 +519,15 @@ namespace HotsReplayReader
             // %AppData%\HotsReplayReader\db
             DbDirectory = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\db";
             jsonConfigFile = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\HotsReplayReader.json"; ;
+            JsonConfig? jsonConfig;
+            string jsonFile;
+            if (File.Exists(jsonConfigFile))
+            {
+                jsonFile = File.ReadAllText(jsonConfigFile);
+                jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
+                if (jsonConfig != null && jsonConfig.Region != null)
+                    Region = jsonConfig.Region;
+            }
 
             userDocumentsFolder = regKey.GetValue("Personal", "").ToString();
             hotsVariablesFile = userDocumentsFolder + @"\Heroes of the Storm\Variables.txt";
@@ -592,14 +601,24 @@ namespace HotsReplayReader
             if (Directory.Exists(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts"))
             {
                 accountsDirs = Directory.GetDirectories(Path.GetDirectoryName(hotsVariablesFile) + @"\Accounts");
-                foreach (string accountDir in accountsDirs)
+
+                string[] orderedDirs = [.. accountsDirs
+                    .OrderBy(dir => {
+                        var folderName = Path.GetFileName(dir);
+                        // Try parse folderName as number
+                        bool isNumeric = long.TryParse(folderName, out long num);
+                        // If numeric, sort by num; if not, use a fixed large value for numeric sort and alphabetically for secondary sort
+                        return isNumeric ? (0, num, "") : (1, 0L, folderName);
+                    })];
+
+                foreach (string accountDir in orderedDirs)
                 {
                     DirectoryInfo directoryInfo = new(accountDir);
                     string[] multiplayersReplayDirs = Directory.GetDirectories(accountDir);
                     foreach (string multiplayersReplayDir in multiplayersReplayDirs)
                     {
                         DirectoryInfo multiplayersReplayDirInfo = new(multiplayersReplayDir);
-                        if (multiplayersReplayDirInfo.Name[..7] == @"2-Hero-")
+                        if (multiplayersReplayDirInfo.Name[..7] == $"{Region}-Hero-")
                         {
                             DirectoryInfo hotsReplayFolder = new(multiplayersReplayDir + @"\Replays\Multiplayer");
                             FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
@@ -690,7 +709,8 @@ namespace HotsReplayReader
     }
     internal class JsonConfig
     {
-        public string? langCode { get; set; }
+        public string? LangCode { get; set; }
+        public string? Region { get; set; }
         public string? LastSelectedAccount { get; set; }
         public string? LastSelectedAccountDirectory { get; set; }
         public string? LastBrowseDirectory { get; set; }

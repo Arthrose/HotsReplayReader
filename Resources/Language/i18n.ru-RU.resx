@@ -294,4 +294,16 @@
   <data name="strPerLevelBefore" xml:space="preserve">
     <value>false</value>
   </data>
+  <data name="strRegionAmercas" xml:space="preserve">
+    <value>Америка</value>
+  </data>
+  <data name="strRegionEurope" xml:space="preserve">
+    <value>Европа</value>
+  </data>
+  <data name="strRegionAsia" xml:space="preserve">
+    <value>Азия</value>
+  </data>
+  <data name="strRegion" xml:space="preserve">
+    <value>Регион</value>
+  </data>
 </root>
