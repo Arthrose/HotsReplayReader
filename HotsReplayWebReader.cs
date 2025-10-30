@@ -603,15 +603,15 @@ namespace HotsReplayReader
 
             if (hotsReplay?.stormReplay?.DraftPicks.Count > 0)
             {
-                html += "    <tr>\n    <td>&nbsp;</td>\n";
+                html += "    <tr>\n      <td>&nbsp;</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
-                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"bannedHeroIcon\">\n";
+                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"bannedHeroIcon\"></td>\n";
                 html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
-                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"bannedHeroIcon\">\n";
-                html += "      <td>&nbsp;</td>\n    <tr>\n";
+                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{Init.HeroNameFromHeroId[draftPick.HeroSelected]}.png\" class=\"bannedHeroIcon\"></td>\n";
+                html += "      <td>&nbsp;</td>\n    </tr>\n";
             }
 
             html += $@"    <tr>
