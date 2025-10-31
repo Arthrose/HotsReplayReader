@@ -553,6 +553,8 @@ namespace HotsReplayReader
                     return jsonConfig.LastSelectedAccountDirectory;
                 }
             }
+            return null;
+/*
             lastReplayFilePath = @"";
             bool lastReplayFilePathFound = false;
             if (File.Exists(hotsVariablesFile))
@@ -593,6 +595,7 @@ namespace HotsReplayReader
                 }
             }
             return lastReplayFilePath;
+*/
         }
         internal void ListHotsAccounts()
         {
