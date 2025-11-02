@@ -515,8 +515,6 @@ namespace HotsReplayReader
 
             if (regKey == null) return;
 
-            //DbDirectory = $@"{Directory.GetCurrentDirectory()}\db";
-            // %AppData%\HotsReplayReader\db
             DbDirectory = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\db";
             jsonConfigFile = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\HotsReplayReader.json"; ;
             JsonConfig? jsonConfig;
@@ -706,9 +704,11 @@ namespace HotsReplayReader
             }
         }
 
+/*
         // lastReplayFilePath=...
         [GeneratedRegex(@"^lastReplayFilePath=(.*)$")]
         private static partial Regex MyRegexLastReplayFilePath();
+*/
     }
     internal class JsonConfig
     {
