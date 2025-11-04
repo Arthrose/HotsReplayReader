@@ -138,7 +138,7 @@ namespace HotsReplayReader
 
             ToolStripMenuItem[] languageToolStripMenu = new ToolStripMenuItem[LangCodeList.Count];
             int j = 0;
-            foreach (var lang in LangCodeList)
+            foreach (KeyValuePair<string, string> lang in LangCodeList)
             {
                 languageToolStripMenu[j] = new ToolStripMenuItem
                 {
@@ -147,6 +147,11 @@ namespace HotsReplayReader
                     Text = lang.Value
                 };
                 languageToolStripMenu[j].Click += new EventHandler(LanguageMenuItemClickHandler);
+                languageToolStripMenu[j].CheckOnClick = true;
+
+                if (lang.Key == Init.config.LangCode)
+                    languageToolStripMenu[j].Checked = true;
+
                 j++;
             }
             languageToolStripMenuItem.DropDownItems.AddRange(languageToolStripMenu);
@@ -180,7 +185,7 @@ namespace HotsReplayReader
                 throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error(), "Impossible d'ajouter le dossier au chemin des DLL");
             }
 
-            var env = await CoreWebView2Environment.CreateAsync(null, tempDataFolder);
+            CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, tempDataFolder);
             await webView.EnsureCoreWebView2Async(env);
 
             Debug.WriteLine("WebView2 Runtime version: " + webView.CoreWebView2.Environment.BrowserVersionString);
@@ -201,13 +206,13 @@ namespace HotsReplayReader
             // Traite les messages de JavaScript vers C#
             webView.CoreWebView2.WebMessageReceived += async (sender, args) =>
             {
-                var json = args.WebMessageAsJson;
+                string json = args.WebMessageAsJson;
 
-                using var document = JsonDocument.Parse(json);
-                var root = document.RootElement;
+                using JsonDocument document = JsonDocument.Parse(json);
+                JsonElement root = document.RootElement;
 
                 // Vérifie si le message contient les propriétés "action"
-                if (root.TryGetProperty("action", out var actionElement))
+                if (root.TryGetProperty("action", out JsonElement actionElement))
                 {
                     // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
@@ -230,7 +235,7 @@ namespace HotsReplayReader
                     }
 
                     // Vérifie si l'action est "Translate", si il y a une propriété callbackId et si le message contient "text"
-                    if (action == "translate" && root.TryGetProperty("callbackId", out var callbackIdElement) && root.TryGetProperty("text", out var textElement))
+                    if (action == "translate" && root.TryGetProperty("callbackId", out JsonElement callbackIdElement) && root.TryGetProperty("text", out JsonElement textElement))
                     {
                         string? callbackId = callbackIdElement.GetString();
                         // Récupère le texte à traduire
@@ -429,9 +434,20 @@ namespace HotsReplayReader
             if (sender is ToolStripMenuItem clickedItem)
             {
                 LangCode = clickedItem.Tag?.ToString()!;
+                Init.config!.LangCode = LangCode;
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
             }
 
+            foreach (ToolStripItem item in languageToolStripMenuItem.DropDownItems)
+            {
+                if (item is ToolStripMenuItem submenu)
+                {
+                    if (submenu == sender)
+                        submenu.Checked = true;
+                    else
+                        submenu.Checked = false;
+                }
+            }
             // Met à jour les textes de l'interface
             fileToolStripMenuItem.Text = Resources.Language.i18n.strMenuFile;
             browseToolStripMenuItem.Text = Resources.Language.i18n.strMenuBrowse;
@@ -1978,15 +1994,15 @@ namespace HotsReplayReader
             string url = "https://api.github.com/repositories/214500273/contents/heroesdata";
 
             Debug.WriteLine($"GetAsync {url}");
-            using var response = await httpClient.GetAsync(url);
+            using HttpResponseMessage response = await httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
 
-            using var doc = JsonDocument.Parse(json);
+            using JsonDocument doc = JsonDocument.Parse(json);
             List<string> folders = [];
 
-            foreach (var item in doc.RootElement.EnumerateArray())
+            foreach (JsonElement item in doc.RootElement.EnumerateArray())
             {
                 if (item.GetProperty("type").GetString() == "dir")
                 {
@@ -2152,7 +2168,7 @@ namespace HotsReplayReader
         private static async Task DownloadGitHubFolderRecursive(HttpClient httpClient, string apiUrl, string localPath)
         {
             string json = await httpClient.GetStringAsync(apiUrl);
-            var items = JsonSerializer.Deserialize<GitHubFileInfo[]>(json);
+            GitHubFileInfo[]? items = JsonSerializer.Deserialize<GitHubFileInfo[]>(json);
 
             if (items == null) return;
 

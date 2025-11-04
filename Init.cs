@@ -529,7 +529,7 @@ namespace HotsReplayReader
 
                 string[] orderedDirs = [.. accountsDirs
                     .OrderBy(dir => {
-                        var folderName = Path.GetFileName(dir);
+                        string? folderName = Path.GetFileName(dir);
                         // Try parse folderName as number
                         bool isNumeric = long.TryParse(folderName, out long num);
                         // If numeric, sort by num; if not, use a fixed large value for numeric sort and alphabetically for secondary sort
@@ -577,7 +577,7 @@ namespace HotsReplayReader
         }
         internal void LoadHotsEmoticons()
         {
-            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            JsonSerializerOptions jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
             hotsEmoticons = JsonSerializer.Deserialize<HotsEmoticon>(Encoding.UTF8.GetString(Resources.HotsResources.emoticondata), jsonOptions);
             HotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<HotsEmoticonAliase>(Encoding.UTF8.GetString(Resources.HotsResources.emoticonsaliases), jsonOptions);
@@ -628,7 +628,7 @@ namespace HotsReplayReader
     }
     internal class Config
     {
-        public string? LangCode { get; set; }
+        public string? LangCode { get; set; } = "en-US";
         public string? Region { get; set; } = "2";
         public string? LastSelectedAccount { get; set; }
         public string? LastSelectedAccountDirectory { get; set; }
