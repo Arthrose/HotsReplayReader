@@ -171,13 +171,10 @@ namespace HotsReplayReader
 
             fileSystemWatcher.Created += OnFileCreated;
         }
-        // Used to load WebView2Loader.dll from the specified folder
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        static extern bool SetDllDirectory(string lpPathName);
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
             // Ajouter ce dossier au chemin de recherche des DLL natives
-            if (!SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
+            if (!NativeMethods.SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
             {
                 Debug.WriteLine("Impossible d'ajouter le dossier au chemin des DLL");
                 throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error(), "Impossible d'ajouter le dossier au chemin des DLL");
@@ -1195,14 +1192,14 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Blue")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAbilitiesTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
+                    html += HTMLGetAbilitiesTr(stormPlayer, blueTeam);
                 }
             }
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAbilitiesTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
+                    html += HTMLGetAbilitiesTr(stormPlayer, redTeam);
                 }
 
             html += @"</table>
@@ -1286,7 +1283,7 @@ namespace HotsReplayReader
             html += "  </tr>\n";
             return html;
         }
-        private string HTMLGetAbilitiesTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetAbilitiesTr(HotsPlayer stormPlayer, HotsTeam team)
         {
             // https://psionic-storm.com/en/wp-json/psionic/v0/units?region=live
             // https://psionic-storm.com/en/wp-json/psionic/v0
@@ -1368,9 +1365,9 @@ namespace HotsReplayReader
                 {
                     html += "          <td>\n            <div class=\"tooltip abilityHeaderDiv\">\n";
 
-                    string iconPath = ability.IconFileName;
-                    iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
-                    iconPath = iconPath.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
+                    string? iconPath = ability.IconFileName;
+                    iconPath = iconPath?.Replace("kel'thuzad", "kelthuzad");
+                    iconPath = iconPath?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
                     html += $"              <div class=\"abilityHeader\">";
                     if (ability.Tier.ToString() == "Mount")
@@ -1606,26 +1603,25 @@ namespace HotsReplayReader
         }
         private AbilTalentEntry GetAbilTalent(Hero heroData, string TalentNameId, string? TalentId = null)
         {
-            AbilTalentEntry abilTalentEntry = new();
+            AbilTalentEntry abilTalentEntry = new()
+            {
+                HeroId = heroData.CHeroId,
+                AbilityId = TalentNameId,
 
-            abilTalentEntry.HeroId = heroData.CHeroId;
-            abilTalentEntry.AbilityId = TalentNameId;
-
-            abilTalentEntry.IconFileName =
-                heroData.Talents
-                    .FirstOrDefault(t =>
-                        t.AbilityTalentId.ToString().Split('|')[0]
-                         .Equals(TalentNameId, StringComparison.OrdinalIgnoreCase))
-                    ?.IconFileName
-                ?? string.Empty;
+                IconFileName =
+                    heroData.Talents
+                        .FirstOrDefault(t =>
+                            t.AbilityTalentId.ToString().Split('|')[0]
+                             .Equals(TalentNameId, StringComparison.OrdinalIgnoreCase))
+                        ?.IconFileName
+                    ?? string.Empty
+            };
 
             bool MatchPrefix(string key) => key.Split('|')[0].Equals(TalentNameId, StringComparison.OrdinalIgnoreCase);
 
             if (TalentId != null)
             {
-                string? talentValue;
-
-                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Cooldown != null && gameStringsRoot.Gamestrings.AbilTalent.Cooldown.TryGetValue(TalentId, out talentValue))
+                if (gameStringsRoot?.Gamestrings?.AbilTalent?.Cooldown != null && gameStringsRoot.Gamestrings.AbilTalent.Cooldown.TryGetValue(TalentId, out string? talentValue))
                     abilTalentEntry.Cooldown = talentValue;
                 if (gameStringsRoot?.Gamestrings?.AbilTalent?.Energy != null && gameStringsRoot.Gamestrings.AbilTalent.Energy.TryGetValue(TalentId, out talentValue))
                     abilTalentEntry.Energy = talentValue;
@@ -2417,5 +2413,13 @@ namespace HotsReplayReader
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
         private static partial Regex MyRegexRenameReplayInList();
+    }
+
+    // Used to load WebView2Loader.dll from the specified folder
+    internal static partial class NativeMethods
+    {
+        [LibraryImport("kernel32.dll", EntryPoint = "SetDllDirectoryW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static partial bool SetDllDirectory(string lpPathName);
     }
 }

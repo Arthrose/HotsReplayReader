@@ -13,6 +13,7 @@ namespace HotsReplayReader
         internal Dictionary<string, PsionicStormUnit>? PsionicStormUnits;
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
+        internal JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
         internal string? DbDirectory { get; set; }
         internal Config? config = new();
         public Dictionary<string, string> HeroNameFromHeroUnitId { get; } = new()
@@ -596,15 +597,13 @@ namespace HotsReplayReader
         {
             PsionicStormUnitsData? psionicStormUnitsData;
 
-            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
             psionicStormUnitsData = JsonSerializer.Deserialize<PsionicStormUnitsData>(Encoding.UTF8.GetString(Resources.HotsResources.PsionicStormUnits), jsonOptions);
 
             if (psionicStormUnitsData == null) return;
 
-            PsionicStormUnits = psionicStormUnitsData.PsionicStormUnits
+            PsionicStormUnits = psionicStormUnitsData.PsionicStormUnits?
                 .Where(u => string.IsNullOrEmpty(u.SubSlug))
-                .ToDictionary(u => u.Name, u => u);
+                .ToDictionary(u => u.Name!, u => u);
         }
         private bool StormReplayParse(string hotsReplayFilePath)
         {
@@ -634,9 +633,10 @@ namespace HotsReplayReader
         public string? LastSelectedAccount { get; set; }
         public string? LastSelectedAccountDirectory { get; set; }
         public string? LastBrowseDirectory { get; set; }
+        internal JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
         private static string GetConfigPath()
         {
-            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader");
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader");
             Directory.CreateDirectory(folder);
             return Path.Combine(folder, "HotsReplayReader.json");
         }
@@ -646,13 +646,22 @@ namespace HotsReplayReader
             if (!File.Exists(file)) return new Config();
 
             string json = File.ReadAllText(file);
-            Config? config = JsonSerializer.Deserialize<Config>(json);
-            return config ?? new Config();
+            if (json != null)
+            {
+                Config? config = JsonSerializer.Deserialize<Config>(json);
+                if (config != null)
+                {
+                    config.LangCode ??= "en-US";
+                    config.Region ??= "2";
+                    return config;
+                }
+            }
+            return new Config();
         }
         internal void Save()
         {
             string file = GetConfigPath();
-            string json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            string json = JsonSerializer.Serialize(this, jsonOptions);
             File.WriteAllText(file, json);
         }
     }

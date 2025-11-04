@@ -52,7 +52,7 @@ namespace HotsReplayReader
                 }
             }
         }
-        private static string Capitalize(string s) => char.ToUpperInvariant(s[0]) + s.Substring(1).ToLower();
+        private static string Capitalize(string s) => char.ToUpperInvariant(s[0]) + s[1..].ToLower();
         private static Bitmap CropImage(Bitmap source, CropDirection direction, int pixels)
         {
             int x = 0, y = 0, width = source.Width, height = source.Height;
@@ -78,7 +78,7 @@ namespace HotsReplayReader
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("Invalid crop parameters.");
 
-            Bitmap cropped = new Bitmap(width, height, source.PixelFormat);
+            Bitmap cropped = new(width, height, source.PixelFormat);
             using (Graphics g = Graphics.FromImage(cropped))
             {
                 g.DrawImage(source,
@@ -96,12 +96,12 @@ namespace HotsReplayReader
             // Convert hex string to Color
             Color color = ColorTranslator.FromHtml(borderColor);
 
-            Bitmap output = new Bitmap(newWidth, newHeight, source.PixelFormat);
+            Bitmap output = new(newWidth, newHeight, source.PixelFormat);
 
             using (Graphics g = Graphics.FromImage(output))
             {
                 // Dessine fond de la couleur de la bordure partout
-                using (SolidBrush brush = new SolidBrush(color))
+                using (SolidBrush brush = new(color))
                 {
                     g.FillRectangle(brush, 0, 0, newWidth, newHeight);
                 }

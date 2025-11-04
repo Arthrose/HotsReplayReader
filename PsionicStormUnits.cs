@@ -5,40 +5,40 @@ namespace HotsReplayReader
     public class PsionicStormUnitsData
     {
         [JsonPropertyName("region")]
-        public string Region { get; set; }
+        public string? Region { get; set; }
 
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonPropertyName("units")]
-        public List<PsionicStormUnit> PsionicStormUnits { get; set; }
+        public List<PsionicStormUnit>? PsionicStormUnits { get; set; }
     }
 
     public class PsionicStormUnit
     {
         [JsonPropertyName("slug")]
-        public string Slug { get; set; }
+        public string? Slug { get; set; }
 
         [JsonPropertyName("role")]
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
         [JsonPropertyName("universe")]
-        public string Universe { get; set; }
+        public string? Universe { get; set; }
 
         [JsonPropertyName("price_gems")]
-        public int PriceGems { get; set; }
+        public int? PriceGems { get; set; }
 
         [JsonPropertyName("price_gold")]
         public int PriceGold { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonPropertyName("sub_slug")]
-        public string SubSlug { get; set; }
+        public string? SubSlug { get; set; }
 
         [JsonPropertyName("flags")]
         public int Flags { get; set; }
@@ -80,7 +80,7 @@ namespace HotsReplayReader
         public int ArmorPts { get; set; }
 
         [JsonPropertyName("armor_type")]
-        public string ArmorType { get; set; }
+        public string? ArmorType { get; set; }
 
         [JsonPropertyName("unit_radius")]
         public double UnitRadius { get; set; }
