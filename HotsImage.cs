@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Resources;
+﻿using System.Resources;
 
 namespace HotsReplayReader
 {

@@ -26,7 +26,7 @@ namespace HotsReplayReader
         public double? MvpScoreSiegeDamageBonus { get; set; } = null;
         public double? MvpScoreHealingBonus { get; set; } = null;
         public double? MvpScoreXPContributionBonus { get; set; } = null;
-        public double? MvpScoreDamageTakenBonus { get; set; } = null; 
+        public double? MvpScoreDamageTakenBonus { get; set; } = null;
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
         public string? HeroUnitId { get; set; }
