@@ -579,7 +579,7 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
-<br>
+<br><br><br>
 <div class=""parentDiv"">
 ";
             return html;
@@ -2328,9 +2328,9 @@ namespace HotsReplayReader
         private void SourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string path = @$"{Environment.GetEnvironmentVariable("TEMP")}\HotsReplayReader.html";
-            if (System.IO.File.Exists(path))
-                System.IO.File.Delete(path);
-            using (StreamWriter sw = System.IO.File.CreateText(path))
+            if (File.Exists(path))
+                File.Delete(path);
+            using (StreamWriter sw = File.CreateText(path))
                 sw.Write(htmlContent);
 
             Process.Start(GetNotepadPath(), path);
