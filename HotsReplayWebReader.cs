@@ -37,8 +37,6 @@ namespace HotsReplayReader
         readonly string fetchedHero = "Lùcio";
 
         private string? hotsReplayFolder;
-        internal static string jsonConfigFile = "";
-        private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
         internal static string currentAccount = string.Empty;
 
         private HotsReplay? hotsReplay;
@@ -107,18 +105,9 @@ namespace HotsReplayReader
             File.WriteAllBytes(webViewDllPath, webViewDllBytes);
 
             // Charge la dernière langue utilisée
-            jsonConfigFile = Init.jsonConfigFile!;
-            string jsonFile;
-            JsonConfig? jsonConfig = new();
-            if (File.Exists(jsonConfigFile))
+            if (Init.config!.LangCode != null && LangCodeList.ContainsKey(Init.config.LangCode))
             {
-                jsonFile = File.ReadAllText(jsonConfigFile);
-                jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
-            }
-            if (jsonConfig?.LangCode != null && LangCodeList.ContainsKey(jsonConfig.LangCode))
-            {
-                LangCode = jsonConfig.LangCode;
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(jsonConfig.LangCode);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
             }
             else
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
@@ -129,7 +118,7 @@ namespace HotsReplayReader
             replayList = [];
 
             // Coche la région sélectionnée
-            switch (Init.Region)
+            switch (Init.config!.Region)
             {
                 case "1":
                     americasRegionToolStripMenuItem.Checked = true;
@@ -139,6 +128,9 @@ namespace HotsReplayReader
                     break;
                 case "3":
                     asiaRegionToolStripMenuItem.Checked = true;
+                    break;
+                default:
+                    europeRegionToolStripMenuItem.Checked = true;
                     break;
             }
 
@@ -268,10 +260,20 @@ namespace HotsReplayReader
                 }
             };
 
-            if (Directory.Exists(Init.lastReplayFilePath))
+            if (Directory.Exists(Init.config!.LastSelectedAccountDirectory))
             {
-                ListHotsReplays(Init.lastReplayFilePath);
-                this.Text = $"{formTitle} - {currentAccount}";
+                ListHotsReplays(Init.config.LastSelectedAccountDirectory);
+                if (Init.config!.LastSelectedAccount != null)
+                {
+                    currentAccount = Init.config!.LastSelectedAccount;
+                    this.Text = $"{formTitle} - {currentAccount}";
+                }
+                else
+                {
+                    currentAccount = "";
+                    this.Text = $"{formTitle}";
+                }
+
                 this.Update();
 
                 foreach (ToolStripItem item in accountsToolStripMenuItem.DropDownItems)
@@ -405,22 +407,8 @@ namespace HotsReplayReader
                         currentAccount = clickedItem.Name;
                         ListHotsReplays(Init.hotsLocalAccounts[i].FullPath);
 
-                        string jsonFile;
-                        JsonConfig? jsonConfig = new();
-
-                        if (File.Exists(jsonConfigFile))
-                        {
-                            jsonFile = File.ReadAllText(jsonConfigFile);
-                            jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
-                        }
-
-                        jsonConfig!.LastSelectedAccount = clickedItem.Name;
-                        jsonConfig.LastSelectedAccountDirectory = Init.hotsLocalAccounts[i].FullPath;
-
-                        File.WriteAllText(
-                            jsonConfigFile,
-                            JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions)
-                        );
+                        Init.config!.LastSelectedAccount = clickedItem.Name;
+                        Init.config.LastSelectedAccountDirectory = Init.hotsLocalAccounts[i].FullPath;
                     }
                 }
 
@@ -459,16 +447,7 @@ namespace HotsReplayReader
             asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
             languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
 
-            // Enregistre la langue dans le fichier de configuration
-            JsonConfig? jsonConfig = new();
-            string jsonFile;
-            if (File.Exists(jsonConfigFile))
-            {
-                jsonFile = File.ReadAllText(jsonConfigFile);
-                jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
-            }
-            jsonConfig!.LangCode = LangCode;
-            File.WriteAllText(jsonConfigFile, JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
+            Init.config!.LangCode = LangCode;
 
             if (listBoxHotsReplays.Items.Count == 0)
                 return;
@@ -2297,24 +2276,14 @@ namespace HotsReplayReader
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            JsonConfig? jsonConfig = new();
-            string jsonFile;
-            if (File.Exists(jsonConfigFile))
-            {
-                jsonFile = File.ReadAllText(jsonConfigFile);
-                jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
-                if (Directory.Exists(jsonConfig?.LastBrowseDirectory))
-                    folderBrowserDialog.InitialDirectory = jsonConfig.LastBrowseDirectory;
-                else
-                    folderBrowserDialog.InitialDirectory = hotsReplayFolder ?? "";
-            }
+            if (Directory.Exists(Init.config!.LastBrowseDirectory))
+                folderBrowserDialog.InitialDirectory = Init.config.LastBrowseDirectory;
             else
                 folderBrowserDialog.InitialDirectory = hotsReplayFolder ?? "";
 
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK && jsonConfig != null)
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK && Init.config != null)
             {
-                jsonConfig.LastBrowseDirectory = folderBrowserDialog.SelectedPath;
-                File.WriteAllText(jsonConfigFile, JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
+                Init.config.LastBrowseDirectory = folderBrowserDialog.SelectedPath;
 
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
                 ListHotsReplays(hotsReplayFolder);
@@ -2366,25 +2335,13 @@ namespace HotsReplayReader
             ((ToolStripMenuItem)sender).Checked = true;
             if (((ToolStripMenuItem)sender)?.Tag != null)
             {
-                Init.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
+                Init.config!.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
+
                 Init.ListHotsAccounts();
                 LoadAccountsToolStipMenu();
 
                 if (accountsToolStripMenuItem.DropDownItems.Count > 0)
                     accountsToolStripMenuItem.DropDownItems[0].PerformClick();
-
-                string jsonFile;
-                JsonConfig? jsonConfig = new();
-
-                if (File.Exists(jsonConfigFile))
-                {
-                    jsonFile = File.ReadAllText(jsonConfigFile);
-                    jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonFile);
-                }
-
-                jsonConfig!.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
-
-                File.WriteAllText(jsonConfigFile,JsonSerializer.Serialize(jsonConfig, jsonSerializerOptions));
             }
         }
         private void OnFileCreated(object sender, FileSystemEventArgs e)
@@ -2414,6 +2371,7 @@ namespace HotsReplayReader
         }
         private void HotsReplayWebReader_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Init.config!.Save();
             try
             {
                 webView.Dispose();
