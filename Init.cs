@@ -577,7 +577,7 @@ namespace HotsReplayReader
         }
         internal void LoadHotsEmoticons()
         {
-            JsonSerializerOptions jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
 
             hotsEmoticons = JsonSerializer.Deserialize<HotsEmoticon>(Encoding.UTF8.GetString(Resources.HotsResources.emoticondata), jsonOptions);
             HotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<HotsEmoticonAliase>(Encoding.UTF8.GetString(Resources.HotsResources.emoticonsaliases), jsonOptions);
@@ -633,7 +633,8 @@ namespace HotsReplayReader
         public string? LastSelectedAccount { get; set; }
         public string? LastSelectedAccountDirectory { get; set; }
         public string? LastBrowseDirectory { get; set; }
-        internal JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
+        public string? DeepLAPIKey {  get; set; }
+        internal JsonSerializerOptions jsonOptions = new() { WriteIndented = true };
         private static string GetConfigPath()
         {
             string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader");

@@ -6,7 +6,6 @@ namespace HotsReplayReader
     {
         private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
-
         public async Task<string> TranslateText(string? text, string targetLang)
         {
             if (text != null)
@@ -46,6 +45,14 @@ namespace HotsReplayReader
             }
             else
                 return "";
+        }
+        public async Task<bool> CheckApiKeyValidity()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://api-free.deepl.com/v2/usage");
+            request.Headers.Add("Authorization", $"DeepL-Auth-Key {_apiKey}");
+
+            var response = await _httpClient.SendAsync(request);
+            return response.IsSuccessStatusCode;
         }
     }
 }

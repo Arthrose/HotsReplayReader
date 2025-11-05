@@ -17,7 +17,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        private string LangCode = "en-US";
+        readonly private string defaultLangCode = "en-US";
         public Dictionary<string, string> LangCodeList = new()
         {
             ["de-DE"] = "Deutsch",
@@ -62,10 +62,9 @@ namespace HotsReplayReader
         internal GameStringsRoot? gameStringsRoot;
         internal MatchAwards? matchAwards;
 
-        //string apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xx";
-        readonly string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
+        //readonly string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
 
-        readonly DeepLTranslator translator;
+        internal DeepLTranslator? translator;
 
         readonly private string welcomeHTML = $@"<html>
 <head>
@@ -96,7 +95,7 @@ namespace HotsReplayReader
 <body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
 </html>";
 
-        readonly Init Init = new();
+        internal Init Init = new();
         public HotsReplayWebReader()
         {
             webViewDllPath = Path.Combine(tempDataFolder, "WebView2Loader.dll");
@@ -110,11 +109,18 @@ namespace HotsReplayReader
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
             }
             else
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            {
+                Init.config.LangCode = defaultLangCode;
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
+            }
 
             InitializeComponent();
 
-            translator = new DeepLTranslator(apiKey);
+            if (Init.config.DeepLAPIKey != null)
+            {
+                translator = new DeepLTranslator(Init.config.DeepLAPIKey);
+            }
+
             replayList = [];
 
             // Coche la région sélectionnée
@@ -244,7 +250,8 @@ namespace HotsReplayReader
 
                         try
                         {
-                            translated = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
+                            if (translator != null)
+                                translated = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
                         }
                         catch (Exception ex)
                         {
@@ -296,6 +303,10 @@ namespace HotsReplayReader
                         listBoxHotsReplays.SelectedIndex = 0; // sélection du premier élément
                     }
                 }));
+            }
+            else if (accountsToolStripMenuItem.DropDownItems.Count > 0)
+            {
+                AccountMenuItemClickHandler(accountsToolStripMenuItem.DropDownItems[0], EventArgs.Empty);
             }
             else
             {
@@ -433,9 +444,8 @@ namespace HotsReplayReader
         {
             if (sender is ToolStripMenuItem clickedItem)
             {
-                LangCode = clickedItem.Tag?.ToString()!;
-                Init.config!.LangCode = LangCode;
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(LangCode);
+                Init.config!.LangCode = clickedItem.Tag?.ToString()!;
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config!.LangCode);
             }
 
             foreach (ToolStripItem item in languageToolStripMenuItem.DropDownItems)
@@ -459,8 +469,6 @@ namespace HotsReplayReader
             europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
             asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
             languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
-
-            Init.config!.LangCode = LangCode;
 
             if (listBoxHotsReplays.Items.Count == 0)
                 return;
@@ -486,13 +494,13 @@ namespace HotsReplayReader
                 InitFileWatcher(path);
 
                 DirectoryInfo hotsReplayFolder = new(path);
-                FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
+                FileInfo[] replayFiles = hotsReplayFolder.GetFiles("*.StormReplay");
                 Array.Reverse(replayFiles);
                 string replayDisplayedName = string.Empty;
                 int i = 0;
                 foreach (FileInfo replayFile in replayFiles)
                 {
-                    replayDisplayedName = replayFile.Name.ToString().Replace(replayFile.Extension.ToString(), @"");
+                    replayDisplayedName = replayFile.Name.ToString().Replace(replayFile.Extension.ToString(), "");
                     replayDisplayedName = MyRegexRenameReplayInList().Replace(replayDisplayedName, "$3/$2/$1 $4:$5 $7");
                     listBoxHotsReplays.Items.Add(replayDisplayedName);
 
@@ -2216,7 +2224,7 @@ namespace HotsReplayReader
 
             string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
             string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
-            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{LangCode.ToLower().Replace("-", "")}.json").FirstOrDefault();
+            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{Init.config!.LangCode?.ToLower().Replace("-", "")}.json").FirstOrDefault();
 
             Debug.WriteLine($"heroDataJsonPath: {heroDataJsonPath}");
             Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
@@ -2334,6 +2342,17 @@ namespace HotsReplayReader
                 sw.Write(htmlContent);
 
             Process.Start(GetNotepadPath(), path);
+        }
+        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PropertiesForm propertiesForm = new(this) { Location = new Point(this.Location.X + 150, this.Location.Y + 150) };
+            propertiesForm.ShowDialog(this);
+            propertiesForm.Dispose();
+            if (Init.config != null)
+            {
+                Init.config.DeepLAPIKey ??= "";
+                translator = new DeepLTranslator(Init.config.DeepLAPIKey);
+            }
         }
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
