@@ -1982,7 +1982,7 @@ namespace HotsReplayReader
                 MVPScore += AwardForTopHeroDamageOnTeam;
                 hotsPlayer.MvpScoreTopHeroDamageOnTeam = AwardForTopHeroDamageOnTeam;
             }
-            if (hotsPlayer.ScoreResult.HeroDamage > enemyMaxHeroDmg && maxHeroDmg > 0)
+            if (hotsPlayer.ScoreResult.HeroDamage >= maxHeroDmg && maxHeroDmg > 0)
             {
                 MVPScore += AwardForTopHeroDamage;
                 hotsPlayer.MvpScoreTopHeroDamage = AwardForTopHeroDamage;
@@ -1994,7 +1994,7 @@ namespace HotsReplayReader
                 MVPScore += AwardForTopSiegeDamageOnTeam;
                 hotsPlayer.MvpScoreTopSiegeDamageOnTeam = AwardForTopSiegeDamageOnTeam;
             }
-            if (hotsPlayer.ScoreResult.SiegeDamage > enemyMaxSiegeDmg && maxSiegeDmg > 0)
+            if (hotsPlayer.ScoreResult.SiegeDamage > maxSiegeDmg && maxSiegeDmg > 0)
             {
                 MVPScore += AwardForTopSiegeDamage;
                 hotsPlayer.MvpScoreTopSiegeDamage = AwardForTopSiegeDamage;
@@ -2008,7 +2008,7 @@ namespace HotsReplayReader
                     MVPScore += AwardForTopDamageTakenOnTeam;
                     hotsPlayer.MvpScoreTopDamageTakenOnTeam = AwardForTopDamageTakenOnTeam;
                 }
-                if (hotsPlayer.ScoreResult.DamageTaken > enemyMaxDmgTaken && maxDmgTaken > 0)
+                if (hotsPlayer.ScoreResult.DamageTaken > maxDmgTaken && maxDmgTaken > 0)
                 {
                     MVPScore += AwardForTopDamageTaken;
                     hotsPlayer.MvpScoreTopDamageTaken = AwardForTopDamageTaken;
@@ -2028,7 +2028,7 @@ namespace HotsReplayReader
                 MVPScore += AwardForTopXPContributionOnTeam;
                 hotsPlayer.MvpScoreTopXPContributionOnTeam = AwardForTopXPContributionOnTeam;
             }
-            if (hotsPlayer.ScoreResult.ExperienceContribution >= enemyMaxExp && maxExp > 0)
+            if (hotsPlayer.ScoreResult.ExperienceContribution >= maxExp && maxExp > 0)
             {
                 MVPScore += AwardForTopXPContribution;
                 hotsPlayer.MvpScoreTopXPContribution = AwardForTopXPContribution;
