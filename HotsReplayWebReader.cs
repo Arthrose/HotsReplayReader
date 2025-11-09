@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
+using Heroes.Models.AbilityTalents;
 using Heroes.StormReplayParser.Player;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
@@ -34,7 +35,7 @@ namespace HotsReplayReader
         };
 
         readonly bool fetchHero = false;
-        readonly string fetchedHero = "Lùcio";
+        readonly string fetchedHeroName = "The Lost Vikings";
 
         private string? hotsReplayFolder;
         internal static string currentAccount = string.Empty;
@@ -693,7 +694,7 @@ namespace HotsReplayReader
             string html = "";
 
             // Affiche une alerte si le heros joue est celui qu'on veut tester
-            if (fetchHero && Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId] == fetchedHero)
+            if (fetchHero && Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId] == fetchedHeroName)
                 html += $"      <script> alert('{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}'); </script>\n";
 
             html += $"      <td class=\"headTableTd\">\n";
@@ -1333,16 +1334,17 @@ namespace HotsReplayReader
             html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
-            html += "      <table class=\"tableAbilities\">\n";
+            html += "      <table class=\"tableAbilities\" width=\"100%\">\n";
             html += "        <tr>\n";
-            html += "          <td>\n";
+            html += "          <td valign=\"top\">\n";
 
             html += "            <table>\n";
             html += "              <tr class=\"stats\">\n";
             html += "                <td class=\"statsHealth\">\n";
 
-            html += $"                Health:&nbsp;<font color=\"White\">{Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}</font><br>\n";
-            html += $"                Regen:&nbsp;&nbsp;<font color=\"White\">{Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s</font>\n";
+            html += "                  <br>\n";
+            html += $"                  Health:&nbsp;<font color=\"White\">{Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}</font><br>\n";
+            html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s</font>\n";
 
             html += "                </td>\n";
 
@@ -1368,6 +1370,7 @@ namespace HotsReplayReader
             */
 
             html += "                <td class=\"statsDamage\">\n";
+            html += "                  <br>\n";
 
             double aaDmg = Math.Round(Init.PsionicStormUnits[heroName].AaDmgBase * Math.Pow((1 + Init.PsionicStormUnits[heroName].AaDmgScaling), level), 1);
             html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{aaDmg}</font><br>\n";
@@ -1380,133 +1383,197 @@ namespace HotsReplayReader
             html += "            </table>\n";
 
             html += "          </td>\n";
+            html += "          <td width=\"100%\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n";
 
-            int heroicNumber = 1;
-            string actions = "";
-            foreach (Heroes.Models.AbilityTalents.Ability ability in heroData.Abilities)
-            {
-                if ((ability.Tier.ToString() == "Basic" || ability.Tier.ToString() == "Heroic" || ability.Tier.ToString() == "Trait" || ability.Tier.ToString() == "Mount") && ability.ParentLink == null)
-                {
-                    html += "          <td>\n            <div class=\"tooltip abilityHeaderDiv\">\n";
-
-                    string? iconPath = ability.IconFileName;
-                    iconPath = iconPath?.Replace("kel'thuzad", "kelthuzad");
-                    iconPath = iconPath?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
-
-                    html += $"              <div class=\"abilityHeader\">";
-                    if (ability.Tier.ToString() == "Mount")
-                    {
-                        html += $"Z";
-                        actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
-                    }
-                    else if (ability.Tier.ToString() == "Trait")
-                        html += $"D";
-                    else if (ability.Tier.ToString() == "Heroic")
-                    {
-                        html += $"<font color=\"#ffd700\">R{heroicNumber}</font>";
-                        heroicNumber++;
-                    }
-                    else
-                        html += $"{ability.AbilityTalentId.AbilityType}";
-
-                    html += $"</div>\n";
-                    html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
-
-                    string abilityManaCost = "";
-                    string abilityName = "";
-                    string abilityCooldown = "";
-                    string description = "";
-                    AbilTalentEntry AbilTalentEntry;
-                    if (ability.AbilityTalentId.ReferenceId != null)
-                    {
-                        AbilTalentEntry = GetAbilTalent(heroData, ability.AbilityTalentId.ReferenceId!, ability.AbilityTalentId.Id);
-                        if (AbilTalentEntry != null)
-                        {
-                            // Si la description est vide, on n'affiche pas le talent
-                            if (AbilTalentEntry.Full == null || AbilTalentEntry.Full == string.Empty)
-                            {
-                                if (AbilTalentEntry.Short == null || AbilTalentEntry.Short == string.Empty)
-                                    description = "ERROR!";
-                                else
-                                    description = "<i>" + AbilTalentEntry.Short + "</i>";
-                            }
-                            else
-                                description = AbilTalentEntry.Full;
-
-
-                            if (AbilTalentEntry.Name != null)
-                                abilityName = AbilTalentEntry.Name;
-
-                            // Affiche le coût en mana si il y en a un
-                            if (AbilTalentEntry.Energy != null)
-                                AbilTalentEntry.Energy = MyRegexConvertEnergy().Replace(AbilTalentEntry.Energy, "<font color=\"#${1}\">${2}</font>");
-                            abilityManaCost = AbilTalentEntry.Energy != null ? $"<br>\n                  {AbilTalentEntry.Energy}" : "";
-                            // Affiche le cooldown si il y en a un
-                            abilityCooldown = AbilTalentEntry.Cooldown != null ? $"<br>\n                  <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
-
-                            // Suppression des balises <img> dans la description
-                            description = MyRegexRemoveImg().Replace(description, string.Empty);
-
-                            // Bug FR talent GreymaneLordofHisPack
-                            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
-
-                            // Remplace <c val="color">text</c> par du texte coloré
-                            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
-                            description = MyRegexStandardTooltipDetails().Replace(description, "<font color=\"#${1}\">${2}</font>");
-                            description = MyRegexStandardTooltipHeader().Replace(description, "<font color=\"#${1}\"><b>${2}</b></font>");
-
-                            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
-                            {
-                                // Conversion du nombre capturé
-                                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                                // Conversion en pourcentage (4% pour 0.04)
-                                int percent = (int)Math.Round(value * 100);
-                                // Mise en forme du texte final
-                                string replacement = "";
-                                if (Resources.Language.i18n.strPerLevelBefore == "false")
-                                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
-                                else
-                                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
-
-                                // Si la balise </font> était présente, la déplacer avant le texte remplacé
-                                if (match.Groups[2].Success)
-                                    return $"{match.Groups[2].Value}{replacement}";
-                                else
-                                    return replacement;
-                            });
-
-                            // Remplace <n/> par un saut de ligne <br>
-                            description = MyRegexNewLine().Replace(description, "<br>");
-                        }
-                    }
-
-                    if (description != "")
-                    {
-                        html += "              <span class=\"tooltipAbilityText ";
-                        if (ability.Tier.ToString() == "Basic")
-                            html += "tooltipAbilityTextRight";
-                        else
-                            html += "tooltipAbilityTextLeft";
-                        html += "\">\n";
-
-                        html += @$"                <font color=""White"">
-                  <b>{abilityName}</b>{abilityManaCost}{abilityCooldown}
-                </font>
-                <br><br>
-                {description}";
-
-                        html += "\n              </span>\n";
-                    }
-
-                    html += "            </div>\n          </td>\n";
-                }
-            }
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.Q, team);
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.W, team);
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.E, team);
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.Heroic, team);
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.Heroic, team, 2);
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.Trait, team);
+            html += HTMLGetAbilityTd(heroData, AbilityTypes.Z, team);
 
             html += "        </tr>\n";
             html += "      </table>\n";
 
             html += "    </td>\n";
             html += "  </tr>\n";
+            return html;
+        }
+        private string HTMLGetAbilityTd(Hero heroData, AbilityTypes abilityType, HotsTeam team, int heroicNumber = 1)
+        {
+            string html = string.Empty;
+
+            string abilityHeader = abilityType.ToString();
+
+            switch (abilityType)
+            {
+                case AbilityTypes.Heroic:
+                    abilityHeader = $"<font color=\"#ffd700\">R{heroicNumber}</font>";
+                    break;
+                case AbilityTypes.Trait:
+                    abilityHeader = "D";
+                    break;
+            }
+
+            html += "          <td>\n";
+            html += $"            <div class=\"abilityHeader\">{abilityHeader}</div>\n";
+
+            Ability? ability = null;
+
+            if (heroData.Id == "LostVikings" && (abilityType == AbilityTypes.Q || abilityType == AbilityTypes.W || abilityType == AbilityTypes.E))
+            {
+                switch (abilityType)
+                {
+                    case AbilityTypes.Q:
+                        ability = heroData.Abilities.FirstOrDefault(a => a.AbilityTalentId.AbilityType == AbilityTypes.Active);
+                        break;
+                    case AbilityTypes.W:
+                        ability = heroData.Abilities.Where(a => a.AbilityTalentId.AbilityType == AbilityTypes.Active).Skip(1).FirstOrDefault();
+                        break;
+                    case AbilityTypes.E:
+                        ability = heroData.Abilities.Where(a => a.AbilityTalentId.AbilityType == AbilityTypes.Active).Skip(2).FirstOrDefault();
+                        break;
+                }
+            }
+            else
+            {
+                if (heroicNumber == 1)
+                    ability = heroData.Abilities.FirstOrDefault(a => a.AbilityTalentId.AbilityType == abilityType);
+                else
+                    ability = heroData.Abilities.Where(a => a.AbilityTalentId.AbilityType == abilityType).Skip(1).FirstOrDefault();
+            }
+
+            html += HTMLGetAbility(heroData, team, ability);
+
+            // Displays Abathur, Alexstrasza, D.Va and Ragnaros other abilities
+            if (heroData.Id != "Chen" && heroData.Id != "LostVikings" && heroData.Id != "Rexxar")
+            {
+                foreach (Hero heroUnit in heroData.HeroUnits)
+                {
+                    Ability? unitAbility;
+                    if (heroicNumber == 1)
+                        unitAbility = heroUnit.Abilities.FirstOrDefault(a => a.AbilityTalentId.AbilityType == abilityType);
+                    else
+                        unitAbility = heroUnit.Abilities.Where(a => a.AbilityTalentId.AbilityType == abilityType).Skip(1).FirstOrDefault();
+
+                    html += "            <br>\n";
+                    html += HTMLGetAbility(heroData, team, unitAbility);
+                }
+            }
+
+            html += "          </td>\n";
+
+            return html;
+        }
+        private string HTMLGetAbility(Hero heroData, HotsTeam team, Ability? ability)
+        {
+            string html = string.Empty;
+
+            if (ability != null)
+            {
+                string? iconPath = ability.IconFileName;
+                iconPath = iconPath?.Replace("kel'thuzad", "kelthuzad");
+                iconPath = iconPath?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
+
+                string actions = string.Empty;
+                if (ability.AbilityTalentId.AbilityType == AbilityTypes.Z)
+                    actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
+
+                html += "            <div class=\"tooltip abilityHeaderDiv\">\n";
+                html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{iconPath}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+
+                string abilityManaCost = "";
+                string abilityName = "";
+                string abilityCooldown = "";
+                string description = "";
+                AbilTalentEntry AbilTalentEntry;
+                if (ability.AbilityTalentId.ReferenceId != null)
+                {
+                    AbilTalentEntry = GetAbilTalent(heroData, ability.AbilityTalentId.ReferenceId!, ability.AbilityTalentId.Id);
+                    if (AbilTalentEntry != null)
+                    {
+                        // Si la description est vide, on n'affiche pas le talent
+                        if (AbilTalentEntry.Full == null || AbilTalentEntry.Full == string.Empty)
+                        {
+                            if (AbilTalentEntry.Short == null || AbilTalentEntry.Short == string.Empty)
+                                description = "ERROR!";
+                            else
+                                description = "<i>" + AbilTalentEntry.Short + "</i>";
+                        }
+                        else
+                            description = AbilTalentEntry.Full;
+
+
+                        if (AbilTalentEntry.Name != null)
+                            abilityName = AbilTalentEntry.Name;
+
+                        // Affiche le coût en mana si il y en a un
+                        if (AbilTalentEntry.Energy != null)
+                            AbilTalentEntry.Energy = MyRegexConvertEnergy().Replace(AbilTalentEntry.Energy, "<font color=\"#${1}\">${2}</font>");
+                        abilityManaCost = AbilTalentEntry.Energy != null ? $"<br>\n                  {AbilTalentEntry.Energy}" : "";
+                        // Affiche le cooldown si il y en a un
+                        abilityCooldown = AbilTalentEntry.Cooldown != null ? $"<br>\n                  <font color=\"#bfd4fd\">{AbilTalentEntry.Cooldown}</font>" : "";
+
+                        // Suppression des balises <img> dans la description
+                        description = MyRegexRemoveImg().Replace(description, string.Empty);
+
+                        // Bug FR talent GreymaneLordofHisPack
+                        description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
+
+                        // Remplace <c val="color">text</c> par du texte coloré
+                        description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
+                        description = MyRegexStandardTooltipDetails().Replace(description, "<font color=\"#${1}\">${2}</font>");
+                        description = MyRegexStandardTooltipHeader().Replace(description, "<font color=\"#${1}\"><b>${2}</b></font>");
+
+                        description = MyRegexConvertPercentPerLevel().Replace(description, match =>
+                        {
+                            // Conversion du nombre capturé
+                            double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                            // Conversion en pourcentage (4% pour 0.04)
+                            int percent = (int)Math.Round(value * 100);
+                            // Mise en forme du texte final
+                            string replacement = "";
+                            if (Resources.Language.i18n.strPerLevelBefore == "false")
+                                replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
+                            else
+                                replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
+
+                            // Si la balise </font> était présente, la déplacer avant le texte remplacé
+                            if (match.Groups[2].Success)
+                                return $"{match.Groups[2].Value}{replacement}";
+                            else
+                                return replacement;
+                        });
+
+                        // Remplace <n/> par un saut de ligne <br>
+                        description = MyRegexNewLine().Replace(description, "<br>");
+                    }
+                }
+
+                if (description != "")
+                {
+                    html += "              <span class=\"tooltipAbilityText ";
+                    if (ability.Tier.ToString() == "Basic")
+                        html += "tooltipAbilityTextRight";
+                    else
+                        html += "tooltipAbilityTextLeft";
+                    html += "\">\n";
+
+                    html += @$"                <font color=""White"">
+                  <b>{abilityName}</b>{abilityManaCost}{abilityCooldown}
+                </font>
+                <br><br>
+                {description}";
+
+                    html += "\n              </span>\n";
+                }
+
+                html += "            </div>\n";
+            }
+            else
+                html += $"            &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://hotsResources/noAbility.png\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+
             return html;
         }
         private string GetTalentImgString(HotsPlayer stormPlayer, Hero heroData, int i)
