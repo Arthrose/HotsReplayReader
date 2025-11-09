@@ -1334,7 +1334,7 @@ namespace HotsReplayReader
             html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
-            html += "      <table width=\"100%\" border>\n";
+            html += "      <table width=\"100%\">\n";
             html += "        <tr>\n";
             html += "          <td valign=\"top\">\n";
 
