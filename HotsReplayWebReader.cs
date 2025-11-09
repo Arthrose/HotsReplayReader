@@ -1334,11 +1334,11 @@ namespace HotsReplayReader
             html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
-            html += "      <table class=\"tableAbilities\" width=\"100%\">\n";
+            html += "      <table width=\"100%\" border>\n";
             html += "        <tr>\n";
             html += "          <td valign=\"top\">\n";
 
-            html += "            <table>\n";
+            html += "            <table width=\"315px;\">\n";
             html += "              <tr class=\"stats\">\n";
             html += "                <td class=\"statsHealth\">\n";
 
@@ -1374,7 +1374,7 @@ namespace HotsReplayReader
 
             double aaDmg = Math.Round(Init.PsionicStormUnits[heroName].AaDmgBase * Math.Pow((1 + Init.PsionicStormUnits[heroName].AaDmgScaling), level), 1);
             html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{aaDmg}</font><br>\n";
-            html += $"                  Attack speed:&nbsp;<font color=\"White\">{Init.PsionicStormUnits[heroName].AaSpeed}/s</font><br>\n";
+            html += $"                  Attack&nbsp;speed:&nbsp;<font color=\"White\">{Init.PsionicStormUnits[heroName].AaSpeed}/s</font><br>\n";
             html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{Math.Round(aaDmg * Init.PsionicStormUnits[heroName].AaSpeed, 1)}</font><br><br>\n";
             html += $"                  <font color=\"#31ccff\">Attack range:</font>&nbsp;<font color=\"White\">{Init.PsionicStormUnits[heroName].AaRange}</font><br>\n";
 
@@ -1383,7 +1383,7 @@ namespace HotsReplayReader
             html += "            </table>\n";
 
             html += "          </td>\n";
-            html += "          <td width=\"100%\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n";
+            html += "          <td width=\"100%\">&nbsp;</td>\n";
 
             html += HTMLGetAbilityTd(heroData, AbilityTypes.Q, team);
             html += HTMLGetAbilityTd(heroData, AbilityTypes.W, team);

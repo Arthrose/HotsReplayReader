@@ -342,6 +342,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] noAbility {
+            get {
+                object obj = ResourceManager.GetObject("noAbility", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] noTalent {
             get {
                 object obj = ResourceManager.GetObject("noTalent", resourceCulture);

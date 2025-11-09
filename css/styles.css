@@ -236,8 +236,8 @@ tr {
 .tableTalents {
   table-layout: fixed;
 }
-.tableScoreAndTalents .tableAbilities td:nth-child(1),
-.tableScoreAndTalents .tableAbilities td:nth-child(2)
+.tableScoreAndTalents td:nth-child(1),
+.tableScoreAndTalents td:nth-child(2)
 {
   width: unset;
 }
