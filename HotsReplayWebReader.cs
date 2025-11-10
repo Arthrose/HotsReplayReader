@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Windows.Forms;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.Models.AbilityTalents;
@@ -55,6 +56,10 @@ namespace HotsReplayReader
         private FileSystemWatcher? fileSystemWatcher;
         readonly string tempDataFolder = Path.Combine(Path.GetTempPath(), "HotsReplayReader");
         readonly string webViewDllPath;
+
+        // Dark mode
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
 
         internal string? htmlContent;
 
@@ -162,6 +167,46 @@ namespace HotsReplayReader
                 j++;
             }
             languageToolStripMenuItem.DropDownItems.AddRange(languageToolStripMenu);
+        }
+        // Dark Mode
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            int useDarkMode = ((int?)Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", -1) == 0) ? 1 : 0;
+
+            // Try latest first
+            if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int)) != 0)
+            {
+                // Fallback for older Windows 10 builds
+                NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref useDarkMode, sizeof(int));
+            }
+
+            if (useDarkMode == 1)
+            {
+                // Mise en sombre du MenuStrip
+                menuStrip.BackColor = Color.FromArgb(30, 30, 30);
+                menuStrip.ForeColor = Color.White;
+                menuStrip.Renderer = new DarkModeRenderer();
+
+                foreach (ToolStripMenuItem menuItem in menuStrip.Items)
+                {
+                    menuItem.BackColor = Color.FromArgb(30, 30, 30);
+                    menuItem.ForeColor = Color.White;
+
+                    //menuItem.MouseEnter += (sender, args) => { menuItem.BackColor = Color.FromArgb(50, 50, 50); }; // Couleur survolée
+                    //menuItem.MouseLeave += (sender, args) => { menuItem.BackColor = Color.FromArgb(30, 30, 30); }; // Couleur normale 
+
+                    foreach (ToolStripItem subItem in menuItem.DropDownItems)
+                    {
+                        subItem.BackColor = Color.FromArgb(30, 30, 30);
+                        subItem.ForeColor = Color.White;
+
+                        //subItem.MouseEnter += (sender, args) => { subItem.BackColor = Color.FromArgb(50, 50, 50); }; // Couleur survolée
+                        //subItem.MouseLeave += (sender, args) => { subItem.BackColor = Color.FromArgb(30, 30, 30); }; // Couleur normale
+                    }
+                }
+            }
         }
         private void InitFileWatcher(string path)
         {
@@ -2517,11 +2562,31 @@ namespace HotsReplayReader
         private static partial Regex MyRegexRenameReplayInList();
     }
 
+
+    public class DarkModeColorTable : ProfessionalColorTable
+    {
+        public override Color MenuItemBorder => Color.FromArgb(60, 60, 60); // Couleur de la bordure
+        public override Color MenuItemPressedGradientBegin => Color.FromArgb(50, 50, 50);
+        public override Color MenuItemPressedGradientEnd => Color.FromArgb(50, 50, 50);
+        public override Color MenuItemSelected => Color.FromArgb(70, 70, 70); // Couleur de l'élément sélectionné
+        public override Color MenuItemSelectedGradientBegin => Color.FromArgb(70, 70, 70);
+        public override Color MenuItemSelectedGradientEnd => Color.FromArgb(70, 70, 70);
+        public override Color ToolStripDropDownBackground => Color.FromArgb(30, 30, 30); // Fond du sous-menu
+
+    }
+    public class DarkModeRenderer : ToolStripProfessionalRenderer
+    {
+        public DarkModeRenderer() : base(new DarkModeColorTable()) { }
+    }
+
     // Used to load WebView2Loader.dll from the specified folder
     internal static partial class NativeMethods
     {
         [LibraryImport("kernel32.dll", EntryPoint = "SetDllDirectoryW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static partial bool SetDllDirectory(string lpPathName);
+
+        [LibraryImport("dwmapi.dll", EntryPoint = "DwmSetWindowAttribute", SetLastError = true)]
+        internal static partial int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
     }
 }
