@@ -184,26 +184,22 @@ namespace HotsReplayReader
 
             if (useDarkMode == 1)
             {
-                // Mise en sombre du MenuStrip
+                // Mode en sombre de la barre menuStrip
                 menuStrip.BackColor = Color.FromArgb(30, 30, 30);
                 menuStrip.ForeColor = Color.White;
                 menuStrip.Renderer = new DarkModeRenderer();
 
+                // Mode en sombre des menus (File, Edit...)
                 foreach (ToolStripMenuItem menuItem in menuStrip.Items)
                 {
                     menuItem.BackColor = Color.FromArgb(30, 30, 30);
                     menuItem.ForeColor = Color.White;
 
-                    //menuItem.MouseEnter += (sender, args) => { menuItem.BackColor = Color.FromArgb(50, 50, 50); }; // Couleur survolée
-                    //menuItem.MouseLeave += (sender, args) => { menuItem.BackColor = Color.FromArgb(30, 30, 30); }; // Couleur normale 
-
+                    // Mode en sombre des sous-menu
                     foreach (ToolStripItem subItem in menuItem.DropDownItems)
                     {
                         subItem.BackColor = Color.FromArgb(30, 30, 30);
                         subItem.ForeColor = Color.White;
-
-                        //subItem.MouseEnter += (sender, args) => { subItem.BackColor = Color.FromArgb(50, 50, 50); }; // Couleur survolée
-                        //subItem.MouseLeave += (sender, args) => { subItem.BackColor = Color.FromArgb(30, 30, 30); }; // Couleur normale
                     }
                 }
             }
@@ -2562,17 +2558,20 @@ namespace HotsReplayReader
         private static partial Regex MyRegexRenameReplayInList();
     }
 
-
+    // Override des couleurs pour le mode sombre
     public class DarkModeColorTable : ProfessionalColorTable
     {
-        public override Color MenuItemBorder => Color.FromArgb(60, 60, 60); // Couleur de la bordure
-        public override Color MenuItemPressedGradientBegin => Color.FromArgb(50, 50, 50);
-        public override Color MenuItemPressedGradientEnd => Color.FromArgb(50, 50, 50);
-        public override Color MenuItemSelected => Color.FromArgb(70, 70, 70); // Couleur de l'élément sélectionné
-        public override Color MenuItemSelectedGradientBegin => Color.FromArgb(70, 70, 70);
-        public override Color MenuItemSelectedGradientEnd => Color.FromArgb(70, 70, 70);
-        public override Color ToolStripDropDownBackground => Color.FromArgb(30, 30, 30); // Fond du sous-menu
+        public override Color MenuItemPressedGradientBegin => Color.FromArgb(61, 61, 61);    // Mouseover menu top
+        public override Color MenuItemPressedGradientEnd => Color.FromArgb(61, 61, 61);      // Mouseover menu bottom
+        public override Color MenuItemSelectedGradientBegin => Color.FromArgb(61, 61, 61);   // Mouseover sub-menu top
+        public override Color MenuItemSelectedGradientEnd => Color.FromArgb(61, 61, 61);     // Mouseover sub-menu bottom
 
+        public override Color MenuItemBorder => Color.FromArgb(112, 112, 112);               // Border mouseover item
+
+        private readonly Color borderColor = Color.FromArgb(61, 61, 61);
+        public override Color ToolStripDropDownBackground => borderColor;                    // Bordure sub-menu
+        public override Color ImageMarginGradientBegin => borderColor;                       // Bordure sub-menu
+        public override Color ImageMarginGradientEnd => borderColor;                         // Bordure sub-menu
     }
     public class DarkModeRenderer : ToolStripProfessionalRenderer
     {
