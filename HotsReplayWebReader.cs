@@ -184,6 +184,9 @@ namespace HotsReplayReader
 
             if (useDarkMode == 1)
             {
+                listBoxHotsReplays.BackColor = Color.FromArgb(30, 30, 30);
+                listBoxHotsReplays.ForeColor = Color.FromArgb(200, 200, 200);
+
                 // Mode en sombre de la barre menuStrip
                 menuStrip.BackColor = Color.FromArgb(30, 30, 30);
                 menuStrip.ForeColor = Color.White;
