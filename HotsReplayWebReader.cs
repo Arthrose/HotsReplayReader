@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Windows.Forms;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.Models.AbilityTalents;
