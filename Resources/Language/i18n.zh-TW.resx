@@ -306,4 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>區域</value>
   </data>
+  <data name="strProperties" xml:space="preserve">
+    <value>屬性</value>
+  </data>
+  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+    <value>DeepL API 金鑰</value>
+  </data>
+  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+    <value>造訪 DeepL 網站</value>
+  </data>
+  <data name="strPropertiesTest" xml:space="preserve">
+    <value>測試</value>
+  </data>
+  <data name="strPropertiesOK" xml:space="preserve">
+    <value>確定</value>
+  </data>
+  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+    <value>有效的 API 金鑰。</value>
+  </data>
+  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+    <value>無效的 API 金鑰。</value>
+  </data>
 </root>

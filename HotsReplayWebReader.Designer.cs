@@ -68,7 +68,7 @@
             // 
             propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             propertiesToolStripMenuItem.Size = new Size(180, 22);
-            propertiesToolStripMenuItem.Text = "Properties";
+            propertiesToolStripMenuItem.Text = Resources.Language.i18n.strProperties;
             propertiesToolStripMenuItem.Click += PropertiesToolStripMenuItem_Click;
             // 
             // browseToolStripMenuItem

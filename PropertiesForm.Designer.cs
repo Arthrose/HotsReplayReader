@@ -47,13 +47,14 @@
             // 
             // deepLLinkLabel
             // 
-            deepLLinkLabel.AutoSize = true;
-            deepLLinkLabel.Location = new Point(231, 9);
+            deepLLinkLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            deepLLinkLabel.Location = new Point(139, 9);
             deepLLinkLabel.Name = "deepLLinkLabel";
-            deepLLinkLabel.Size = new Size(108, 15);
+            deepLLinkLabel.Size = new Size(200, 15);
             deepLLinkLabel.TabIndex = 4;
             deepLLinkLabel.TabStop = true;
             deepLLinkLabel.Text = "Visit DeepL website";
+            deepLLinkLabel.TextAlign = ContentAlignment.TopRight;
             deepLLinkLabel.LinkClicked += DeepLLinkLabel_LinkClicked;
             // 
             // OKButton
@@ -96,11 +97,13 @@
             Controls.Add(deepLLabel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "PropertiesForm";
             StartPosition = FormStartPosition.Manual;
             Text = "Properties";
+            KeyDown += PropertiesForm_KeyDown;
             ResumeLayout(false);
             PerformLayout();
         }

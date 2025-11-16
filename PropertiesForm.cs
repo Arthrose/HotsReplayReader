@@ -14,6 +14,13 @@ namespace HotsReplayReader
         {
             InitializeComponent();
             this.hotsReplayWebReader = hotsReplayWebReader;
+
+            this.Text = Resources.Language.i18n.ResourceManager.GetString("strProperties");
+            deepLLabel.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesDeepLAPIKey");
+            deepLLinkLabel.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesVisitDeepLWebsite");
+            testButton.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesTest");
+            OKButton.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesOK");
+
             if (this.hotsReplayWebReader.Init.config != null)
                 deepLTextBox.Text = this.hotsReplayWebReader.Init.config.DeepLAPIKey;
         }
@@ -39,9 +46,9 @@ namespace HotsReplayReader
             {
                 bool isValid = await translator.CheckApiKeyValidity();
                 if (isValid)
-                    MessageBox.Show("La clé API est valide.");
+                    MessageBox.Show(Resources.Language.i18n.ResourceManager.GetString("strPropertiesValidAPIKey"));
                 else
-                    MessageBox.Show("La clé API est invalide.");
+                    MessageBox.Show(Resources.Language.i18n.ResourceManager.GetString("strPropertiesInvalidAPIKey"));
             }
         }
         protected override void OnHandleCreated(EventArgs e)
@@ -78,6 +85,12 @@ namespace HotsReplayReader
                 OKButton.FlatAppearance.MouseOverBackColor = buttonMouseOverColor;
                 OKButton.FlatAppearance.BorderColor = buttonBorderColor;
             }
+        }
+
+        private void PropertiesForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Close();
         }
     }
 }

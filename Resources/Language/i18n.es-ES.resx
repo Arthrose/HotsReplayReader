@@ -306,4 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>Región</value>
   </data>
+  <data name="strProperties" xml:space="preserve">
+    <value>Propiedades</value>
+  </data>
+  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+    <value>Clave API de DeepL</value>
+  </data>
+  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+    <value>Visitar el sitio web de DeepL</value>
+  </data>
+  <data name="strPropertiesTest" xml:space="preserve">
+    <value>Probar</value>
+  </data>
+  <data name="strPropertiesOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+    <value>Clave API válida.</value>
+  </data>
+  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+    <value>Clave API no válida.</value>
+  </data>
 </root>

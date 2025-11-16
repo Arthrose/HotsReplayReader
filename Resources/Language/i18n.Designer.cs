@@ -19,7 +19,7 @@ namespace HotsReplayReader.Resources.Language {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class i18n {
@@ -471,6 +471,69 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strPlayer {
             get {
                 return ResourceManager.GetString("strPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Properties.
+        /// </summary>
+        internal static string strProperties {
+            get {
+                return ResourceManager.GetString("strProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeepL API key.
+        /// </summary>
+        internal static string strPropertiesDeepLAPIKey {
+            get {
+                return ResourceManager.GetString("strPropertiesDeepLAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid API key..
+        /// </summary>
+        internal static string strPropertiesInvalidAPIKey {
+            get {
+                return ResourceManager.GetString("strPropertiesInvalidAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string strPropertiesOK {
+            get {
+                return ResourceManager.GetString("strPropertiesOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        internal static string strPropertiesTest {
+            get {
+                return ResourceManager.GetString("strPropertiesTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid API key..
+        /// </summary>
+        internal static string strPropertiesValidAPIKey {
+            get {
+                return ResourceManager.GetString("strPropertiesValidAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit DeepL website.
+        /// </summary>
+        internal static string strPropertiesVisitDeepLWebsite {
+            get {
+                return ResourceManager.GetString("strPropertiesVisitDeepLWebsite", resourceCulture);
             }
         }
         

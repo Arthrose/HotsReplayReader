@@ -306,4 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>지역</value>
   </data>
+  <data name="strProperties" xml:space="preserve">
+    <value>속성</value>
+  </data>
+  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+    <value>DeepL API 키</value>
+  </data>
+  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+    <value>DeepL 웹사이트 방문</value>
+  </data>
+  <data name="strPropertiesTest" xml:space="preserve">
+    <value>테스트</value>
+  </data>
+  <data name="strPropertiesOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+    <value>유효한 API 키입니다.</value>
+  </data>
+  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+    <value>잘못된 API 키입니다.</value>
+  </data>
 </root>

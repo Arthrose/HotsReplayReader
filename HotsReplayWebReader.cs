@@ -18,7 +18,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly private string defaultLangCode = "en-US";
+        readonly internal string defaultLangCode = "en-US";
         public Dictionary<string, string> LangCodeList = new()
         {
             ["de-DE"] = "Deutsch",
@@ -506,6 +506,7 @@ namespace HotsReplayReader
             fileToolStripMenuItem.Text = Resources.Language.i18n.strMenuFile;
             browseToolStripMenuItem.Text = Resources.Language.i18n.strMenuBrowse;
             sourceToolStripMenuItem.Text = Resources.Language.i18n.strMenuSource;
+            propertiesToolStripMenuItem.Text = Resources.Language.i18n.strProperties;
             exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
             accountsToolStripMenuItem.Text = Resources.Language.i18n.strMenuAccounts;
             regionToolStripMenuItem.Text = Resources.Language.i18n.strRegion;
