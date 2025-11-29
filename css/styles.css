@@ -121,6 +121,12 @@ tr {
   height: auto;
   pointer-events: none;
 }
+.heroPortrait .isSilenced {
+  position: absolute;
+  bottom: 70px;
+  right: 28px;
+  pointer-events: none;
+}
 .heroPortrait .heroAwardIcon {
   position: absolute;
   bottom: -5px;

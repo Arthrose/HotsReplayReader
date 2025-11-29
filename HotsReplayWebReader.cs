@@ -34,6 +34,8 @@ namespace HotsReplayReader
             ["zh-TW"] = "中文"
         };
 
+        readonly bool release = false;
+
         readonly bool fetchHero = false;
         readonly string fetchedHeroName = "The Lost Vikings";
 
@@ -121,10 +123,11 @@ namespace HotsReplayReader
 
             InitializeComponent();
 
+            if (release)
+                sourceToolStripMenuItem.Visible = false;
+
             if (Init.config.DeepLAPIKey != null)
-            {
                 translator = new DeepLTranslator(Init.config.DeepLAPIKey);
-            }
 
             replayList = [];
 
@@ -744,7 +747,7 @@ namespace HotsReplayReader
             html += $"      <td class=\"headTableTd\">\n";
             html += "        <span class=\"tooltip\">\n";
             html += "          <span class=\"heroPortrait\">\n";
-            html += $"            <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\">\n"; //  heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+            html += $"            <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\">\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
@@ -753,6 +756,11 @@ namespace HotsReplayReader
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
                 html += $"            <img src=\"app://hotsresources/{ressourceName}\" class =\"heroPartyIcon\">\n";
+            }
+
+            if (hotsPlayer.IsSilenced == true)
+            {
+                html += $"            <img src=\"app://hotsresources/isSilenced.png\" class =\"isSilenced\">\n";
             }
 
             if (hotsPlayer.MatchAwardsCount > 0)
