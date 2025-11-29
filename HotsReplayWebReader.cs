@@ -760,7 +760,7 @@ namespace HotsReplayReader
 
             if (hotsPlayer.IsSilenced == true)
             {
-                html += $"            <img src=\"app://hotsresources/isSilenced.png\" class =\"isSilenced\">\n";
+                html += $"            <img src=\"app://hotsresources/isSilenced.png\" class=\"isSilenced\">\n";
             }
 
             if (hotsPlayer.MatchAwardsCount > 0)
