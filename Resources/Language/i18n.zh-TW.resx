@@ -327,4 +327,7 @@
   <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
     <value>無效的 API 金鑰。</value>
   </data>
+  <data name="strTimeSpentAFK" xml:space="preserve">
+    <value>AFK</value>
+  </data>
 </root>

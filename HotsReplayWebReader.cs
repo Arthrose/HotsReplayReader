@@ -1,18 +1,21 @@
-﻿using System.Data;
+﻿using Heroes.Icons.DataDocument;
+using Heroes.Models;
+using Heroes.Models.AbilityTalents;
+using Heroes.StormReplayParser.GameEvent;
+using Heroes.StormReplayParser.Player;
+using Heroes.StormReplayParser.TrackerEvent;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Win32;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
-using Heroes.Icons.DataDocument;
-using Heroes.Models;
-using Heroes.Models.AbilityTalents;
-using Heroes.StormReplayParser.Player;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Win32;
 
 namespace HotsReplayReader
 {
@@ -47,6 +50,8 @@ namespace HotsReplayReader
         private HotsTeam? blueTeam;
         private Dictionary<string, string>? hotsParties;
         private HotsPlayer[]? hotsPlayers;
+
+        private TimeSpan timeGateOpen = TimeSpan.Zero;
 
         private readonly string formTitle = "Hots Replay Reader";
 
@@ -787,7 +792,7 @@ namespace HotsReplayReader
                 playerID = hotsPlayer.BattleTagName[(hotsPlayer.BattleTagName.IndexOf('#') + 1)..];
 
                 // Alignement des donées sur l'intitulé le plus long
-                int maxLength = new[] { Resources.Language.i18n.strBattleTag.Length, Resources.Language.i18n.strAccountLevel.Length, Resources.Language.i18n.strHeroLevel.Length }.Max();
+                int maxLength = new[] { Resources.Language.i18n.strBattleTag.Length, Resources.Language.i18n.strAccountLevel.Length, Resources.Language.i18n.strHeroLevel.Length, Resources.Language.i18n.strTimeSpentAFK.Length }.Max();
 
                 string battleTagLabel = (Resources.Language.i18n.strBattleTag + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
                 html += $"            <span class=\"nobr\">{battleTagLabel}<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br>\n";
@@ -839,6 +844,17 @@ namespace HotsReplayReader
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                     else
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+                }
+
+                if (hotsPlayer.TimeSpentAFK != TimeSpan.Zero && hotsPlayer.TimeSpentAFK != null)
+                {
+                    string AFKLabel = (Resources.Language.i18n.strTimeSpentAFK + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
+
+                    string formattedTimeSpentAFK = hotsPlayer.TimeSpentAFK?.Hours > 0
+                        ? $"{hotsPlayer.TimeSpentAFK?.Hours:D2}:{hotsPlayer.TimeSpentAFK?.Minutes:D2}:{hotsPlayer.TimeSpentAFK?.Seconds:D2}"
+                        : $"{hotsPlayer.TimeSpentAFK?.Minutes:D2}:{hotsPlayer.TimeSpentAFK?.Seconds:D2}";
+
+                    html += $"            <br>\n            <span class=\"nobr\">{AFKLabel}<font color=\"#bfd4fd\">&#8771; {formattedTimeSpentAFK}</font></span><br>\n";
                 }
             }
             else
@@ -1906,6 +1922,9 @@ namespace HotsReplayReader
                 // Calculate MVP score
                 hotsPlayer.MvpScore = GetMvpScore(hotsPlayer);
 
+                // Calculate time spent AFK
+                hotsPlayer.TimeSpentAFK = GetTimeSpentAFK(hotsPlayer);
+
                 // i18n AI player name
                 if (hotsPlayer.PlayerType == PlayerType.Computer)
                 {
@@ -2114,6 +2133,78 @@ namespace HotsReplayReader
             }
 
             return MVPScore;
+        }
+        private TimeSpan? GetTimeSpentAFK(HotsPlayer hotsPlayer)
+        {
+            if (hotsReplay == null || hotsReplay.stormReplay == null|| hotsPlayer.PlayerType == PlayerType.Computer) return TimeSpan.Zero;
+
+            TimeSpan timeSpentAFK = TimeSpan.Zero;
+            TimeSpan lastTimestamp = timeGateOpen;
+            TimeSpan AFKThreshold = TimeSpan.FromSeconds(20);
+
+            List<StormGameEvent> userGameEvents = [];
+            IReadOnlyList<PlayerDisconnect> playerDisconnects = hotsPlayer.PlayerDisconnects;
+
+            foreach (StormGameEvent gameEvent in hotsReplay.stormReplay.GameEvents)
+            {
+                if (gameEvent.MessageSender != null && gameEvent.MessageSender.BattleTagName != null)
+                {
+                    if (gameEvent.MessageSender.BattleTagName == hotsPlayer.BattleTagName)
+                    {
+                        // Vérifie si l'événement se produit pendant une déconnexion
+                        bool isDuringDisconnect = false;
+                        foreach (var disconnect in playerDisconnects)
+                        {
+                            if (gameEvent.Timestamp >= disconnect.From && gameEvent.Timestamp <= disconnect.To)
+                            {
+                                isDuringDisconnect = true;
+                                break;  // On n'a pas besoin de continuer à vérifier si un seul intervalle de déconnexion correspond
+                            }
+                        }
+
+                        if (isDuringDisconnect)
+                        {
+                            // Si l'événement est pendant une déconnexion, on ne met pas à jour lastTimestamp
+                            continue;
+                        }
+
+                        userGameEvents.Add(gameEvent);
+                        // SGameUserLeaveEvent
+                        // SGameUserJoinEvent
+                        // SCmdEvent -> lance un sort ou se déplace ou autoattaque ?
+                        // SCameraUpdateEvent -> bouge la camera
+                        // SCmdUpdateTargetPointEvent -> Se déplace
+                        if (gameEvent.GameEventType == StormGameEventType.SCmdEvent|| gameEvent.GameEventType == StormGameEventType.SCmdUpdateTargetPointEvent)
+                        {
+                            if ((gameEvent.Timestamp - lastTimestamp) > AFKThreshold)
+                            {
+                                timeSpentAFK += gameEvent.Timestamp - lastTimestamp;
+                                // Debug.WriteLine($"AFK: {gameEvent.Timestamp} - {lastTimestamp}");
+                            }
+                            lastTimestamp = gameEvent.Timestamp;
+                        }
+                    }
+                }
+            }
+
+            if ((hotsReplay.stormReplay.ReplayLength - lastTimestamp) > AFKThreshold)
+            {
+                timeSpentAFK += hotsReplay.stormReplay.ReplayLength - lastTimestamp;
+                //Debug.WriteLine($"AFK: {hotsReplay.stormReplay.ReplayLength} - {lastTimestamp}");
+            }
+
+            if (hotsPlayer?.ScoreResult?.TimeSpentDead != null)
+                timeSpentAFK -= hotsPlayer.ScoreResult.TimeSpentDead;
+
+            if (timeSpentAFK < TimeSpan.Zero)
+                timeSpentAFK = TimeSpan.Zero;
+
+            string formattedTimeSpentAFK = timeSpentAFK.Hours > 0
+                ? $"{timeSpentAFK.Hours:D2}:{timeSpentAFK.Minutes:D2}:{timeSpentAFK.Seconds:D2}"
+                : $"{timeSpentAFK.Minutes:D2}:{timeSpentAFK.Seconds:D2}";
+            Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {formattedTimeSpentAFK}");
+
+            return timeSpentAFK;
         }
         public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
         {
@@ -2386,6 +2477,16 @@ namespace HotsReplayReader
                 hotsReplay = new HotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
                 if (hotsReplay.stormReplay != null)
                 {
+                    StormTrackerEvent gatesOpenEvent = hotsReplay.stormReplay.TrackerEvents
+                        .FirstOrDefault(trackerEvent =>
+                            trackerEvent.TrackerEventType == StormTrackerEventType.StatGameEvent &&
+                            trackerEvent.VersionedDecoder != null &&
+                            trackerEvent.VersionedDecoder.Structure != null &&
+                            trackerEvent.VersionedDecoder.Structure.Any(decoder => decoder.Value != null &&
+                                Encoding.UTF8.GetString(decoder.Value) == "GatesOpen"));
+                    if (gatesOpenEvent != null)
+                        timeGateOpen = gatesOpenEvent.Timestamp;
+
                     InitTeamDatas(redTeam = new HotsTeam("Red"));
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
                     InitPlayersData();
@@ -2411,6 +2512,7 @@ namespace HotsReplayReader
             {
                 htmlContent = welcomeHTML;
             }
+            
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)

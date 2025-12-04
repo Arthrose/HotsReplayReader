@@ -682,6 +682,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AFK.
+        /// </summary>
+        internal static string strTimeSpentAFK {
+            get {
+                return ResourceManager.GetString("strTimeSpentAFK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Winners.
         /// </summary>
         internal static string strWinners {

@@ -327,4 +327,7 @@
   <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
     <value>Nieprawidłowy klucz API.</value>
   </data>
+  <data name="strTimeSpentAFK" xml:space="preserve">
+    <value>AFK</value>
+  </data>
 </root>
