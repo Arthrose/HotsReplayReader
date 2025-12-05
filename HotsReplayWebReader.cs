@@ -74,8 +74,6 @@ namespace HotsReplayReader
         internal GameStringsRoot? gameStringsRoot;
         internal MatchAwards? matchAwards;
 
-        //readonly string apiKey = "f67e8f89-a1e6-40d0-9f65-df409134342f:fx";
-
         internal DeepLTranslator? translator;
 
         readonly private string welcomeHTML = $@"<html>
@@ -846,7 +844,7 @@ namespace HotsReplayReader
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                 }
 
-                if (hotsPlayer.TimeSpentAFK != TimeSpan.Zero && hotsPlayer.TimeSpentAFK != null)
+                if (hotsPlayer.TimeSpentAFK != TimeSpan.Zero && hotsPlayer.TimeSpentAFK?.TotalSeconds > 1 && hotsPlayer.TimeSpentAFK != null)
                 {
                     string AFKLabel = (Resources.Language.i18n.strTimeSpentAFK + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
 
