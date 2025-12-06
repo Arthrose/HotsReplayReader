@@ -2133,7 +2133,9 @@ namespace HotsReplayReader
         }
         private TimeSpan? GetTimeSpentAFK(HotsPlayer hotsPlayer)
         {
-            if (hotsReplay == null || hotsReplay.stormReplay == null|| hotsPlayer.PlayerType == PlayerType.Computer) return TimeSpan.Zero;
+            string[] buggedHeroes = { "Abathur", "DVa", "Gall", "Rexxar", "LostVikings" };
+            if (hotsReplay == null || hotsReplay.stormReplay == null|| hotsPlayer.PlayerType == PlayerType.Computer || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId))
+                return TimeSpan.Zero;
 
             TimeSpan timeSpentAFK = TimeSpan.Zero;
             TimeSpan lastTimestamp = timeGateOpen;
@@ -2146,9 +2148,9 @@ namespace HotsReplayReader
             {
                 if (gameEvent.MessageSender != null && gameEvent.MessageSender.BattleTagName != null)
                 {
-                    if (gameEvent.MessageSender.BattleTagName == hotsPlayer.BattleTagName)
+                    if (gameEvent.MessageSender.BattleTagName == hotsPlayer?.BattleTagName)
                     {
-                        // Si l'event ets pdt une déco, on n'en tient pas compte
+                        // Si l'event est pendant une déco, on n'en tient pas compte
                         bool isDuringDisconnect = false;
                         foreach (var disconnect in playerDisconnects)
                         {
@@ -2165,8 +2167,8 @@ namespace HotsReplayReader
 
                         userGameEvents.Add(gameEvent);
                         // SCmdEvent -> lance un sort ou auto-attaque ?
-                        // SCameraUpdateEvent -> bouge la camera
                         // SCmdUpdateTargetPointEvent -> Se déplace
+                        // SCameraUpdateEvent -> bouge la camera
                         if
                         (
                             (gameEvent.GameEventType == StormGameEventType.SCmdEvent || gameEvent.GameEventType == StormGameEventType.SCmdUpdateTargetPointEvent)
