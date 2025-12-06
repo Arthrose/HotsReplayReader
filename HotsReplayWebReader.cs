@@ -2133,6 +2133,8 @@ namespace HotsReplayReader
         }
         private TimeSpan? GetTimeSpentAFK(HotsPlayer hotsPlayer)
         {
+            bool debug = false;
+
             string[] buggedHeroes = { "Abathur", "DVa", "Gall", "Rexxar", "LostVikings" };
             if (hotsReplay == null || hotsReplay.stormReplay == null|| hotsPlayer.PlayerType == PlayerType.Computer || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId))
                 return TimeSpan.Zero;
@@ -2179,7 +2181,7 @@ namespace HotsReplayReader
                             if ((gameEvent.Timestamp - lastTimestamp) > AFKThreshold)
                             {
                                 timeSpentAFK += gameEvent.Timestamp - lastTimestamp;
-                                Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} {lastTimestamp} - {gameEvent.Timestamp} > {timeSpentAFK}");
+                                if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} {lastTimestamp} - {gameEvent.Timestamp} > {timeSpentAFK}");
                             }
                             lastTimestamp = gameEvent.Timestamp;
                         }
@@ -2191,7 +2193,7 @@ namespace HotsReplayReader
             if ((endOfGame - lastTimestamp) > AFKThreshold)
             {
                 timeSpentAFK += endOfGame - lastTimestamp;
-                Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: ReplayLength {lastTimestamp} - {endOfGame} > {timeSpentAFK}");
+                if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: ReplayLength {lastTimestamp} - {endOfGame} > {timeSpentAFK}");
             }
 
             // retire le temps passé mort et threshold * nb de mort
@@ -2199,7 +2201,7 @@ namespace HotsReplayReader
             if (hotsPlayer != null && hotsPlayer?.ScoreResult?.TimeSpentDead != null)
             {
                 timeSpentAFK -= hotsPlayer.ScoreResult.TimeSpentDead;
-                Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: TimeSpentDead > {timeSpentAFK}");
+                if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: TimeSpentDead > {timeSpentAFK}");
                 if (hotsPlayer != null && hotsPlayer.ScoreResult != null)
                     timeSpentAFK -= hotsPlayer.ScoreResult.Deaths * AFKThreshold;
             }
@@ -2210,7 +2212,7 @@ namespace HotsReplayReader
             string formattedTimeSpentAFK = timeSpentAFK.Hours > 0
                 ? $"{timeSpentAFK.Hours:D2}:{timeSpentAFK.Minutes:D2}:{timeSpentAFK.Seconds:D2}"
                 : $"{timeSpentAFK.Minutes:D2}:{timeSpentAFK.Seconds:D2}";
-            Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {formattedTimeSpentAFK}\n");
+            if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {formattedTimeSpentAFK}\n");
 
             return timeSpentAFK;
         }
