@@ -2148,20 +2148,19 @@ namespace HotsReplayReader
                 {
                     if (gameEvent.MessageSender.BattleTagName == hotsPlayer.BattleTagName)
                     {
-                        // Vérifie si l'événement se produit pendant une déconnexion
+                        // Si l'event ets pdt une déco, on n'en tient pas compte
                         bool isDuringDisconnect = false;
                         foreach (var disconnect in playerDisconnects)
                         {
                             if (gameEvent.Timestamp >= disconnect.From && gameEvent.Timestamp <= disconnect.To)
                             {
                                 isDuringDisconnect = true;
-                                break;  // On n'a pas besoin de continuer à vérifier si un seul intervalle de déconnexion correspond
+                                break;  // Quitte au premier intervalle de déconnexion correspondant
                             }
                         }
                         if (isDuringDisconnect)
                         {
-                            // Si l'événement est pendant une déconnexion, on ne met pas à jour lastTimestamp
-                            continue;
+                            continue; // Si l'event est pendant une déco, on ne met pas à jour lastTimestamp
                         }
 
                         userGameEvents.Add(gameEvent);
@@ -2186,12 +2185,15 @@ namespace HotsReplayReader
                 }
             }
 
+            // check le dernier event avant le EndOfGame
             if ((endOfGame - lastTimestamp) > AFKThreshold)
             {
                 timeSpentAFK += endOfGame - lastTimestamp;
                 Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: ReplayLength {lastTimestamp} - {endOfGame} > {timeSpentAFK}");
             }
 
+            // retire le temps passé mort et threshold * nb de mort
+            // bug avec des persos comme TLV, D.Va ou Rexxar
             if (hotsPlayer != null && hotsPlayer?.ScoreResult?.TimeSpentDead != null)
             {
                 timeSpentAFK -= hotsPlayer.ScoreResult.TimeSpentDead;
