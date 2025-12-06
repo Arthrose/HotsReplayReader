@@ -52,6 +52,7 @@ namespace HotsReplayReader
         private HotsPlayer[]? hotsPlayers;
 
         private TimeSpan timeGateOpen = TimeSpan.Zero;
+        private TimeSpan endOfGame = TimeSpan.Zero;
 
         private readonly string formTitle = "Hots Replay Reader";
 
@@ -62,10 +63,6 @@ namespace HotsReplayReader
         private FileSystemWatcher? fileSystemWatcher;
         readonly string tempDataFolder = Path.Combine(Path.GetTempPath(), "HotsReplayReader");
         readonly string webViewDllPath;
-
-        // Dark mode
-        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
-        private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
 
         internal string? htmlContent;
 
@@ -180,7 +177,9 @@ namespace HotsReplayReader
 
             int useDarkMode = ((int?)Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", -1) == 0) ? 1 : 0;
 
-            // Try latest first
+            // Dark mode
+            const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+            const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
             if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int)) != 0)
             {
                 // Fallback for older Windows 10 builds
@@ -2159,7 +2158,6 @@ namespace HotsReplayReader
                                 break;  // On n'a pas besoin de continuer à vérifier si un seul intervalle de déconnexion correspond
                             }
                         }
-
                         if (isDuringDisconnect)
                         {
                             // Si l'événement est pendant une déconnexion, on ne met pas à jour lastTimestamp
@@ -2167,17 +2165,20 @@ namespace HotsReplayReader
                         }
 
                         userGameEvents.Add(gameEvent);
-                        // SGameUserLeaveEvent
-                        // SGameUserJoinEvent
-                        // SCmdEvent -> lance un sort ou se déplace ou autoattaque ?
+                        // SCmdEvent -> lance un sort ou auto-attaque ?
                         // SCameraUpdateEvent -> bouge la camera
                         // SCmdUpdateTargetPointEvent -> Se déplace
-                        if (gameEvent.GameEventType == StormGameEventType.SCmdEvent|| gameEvent.GameEventType == StormGameEventType.SCmdUpdateTargetPointEvent)
+                        if
+                        (
+                            (gameEvent.GameEventType == StormGameEventType.SCmdEvent || gameEvent.GameEventType == StormGameEventType.SCmdUpdateTargetPointEvent)
+                            && gameEvent.Timestamp > timeGateOpen
+                        )
                         {
+                            //Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} - {gameEvent.Timestamp}");
                             if ((gameEvent.Timestamp - lastTimestamp) > AFKThreshold)
                             {
                                 timeSpentAFK += gameEvent.Timestamp - lastTimestamp;
-                                // Debug.WriteLine($"AFK: {gameEvent.Timestamp} - {lastTimestamp}");
+                                Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} {lastTimestamp} - {gameEvent.Timestamp} > {timeSpentAFK}");
                             }
                             lastTimestamp = gameEvent.Timestamp;
                         }
@@ -2185,14 +2186,19 @@ namespace HotsReplayReader
                 }
             }
 
-            if ((hotsReplay.stormReplay.ReplayLength - lastTimestamp) > AFKThreshold)
+            if ((endOfGame - lastTimestamp) > AFKThreshold)
             {
-                timeSpentAFK += hotsReplay.stormReplay.ReplayLength - lastTimestamp;
-                //Debug.WriteLine($"AFK: {hotsReplay.stormReplay.ReplayLength} - {lastTimestamp}");
+                timeSpentAFK += endOfGame - lastTimestamp;
+                Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: ReplayLength {lastTimestamp} - {endOfGame} > {timeSpentAFK}");
             }
 
-            if (hotsPlayer?.ScoreResult?.TimeSpentDead != null)
+            if (hotsPlayer != null && hotsPlayer?.ScoreResult?.TimeSpentDead != null)
+            {
                 timeSpentAFK -= hotsPlayer.ScoreResult.TimeSpentDead;
+                Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: TimeSpentDead > {timeSpentAFK}");
+                if (hotsPlayer != null && hotsPlayer.ScoreResult != null)
+                    timeSpentAFK -= hotsPlayer.ScoreResult.Deaths * AFKThreshold;
+            }
 
             if (timeSpentAFK < TimeSpan.Zero)
                 timeSpentAFK = TimeSpan.Zero;
@@ -2200,7 +2206,7 @@ namespace HotsReplayReader
             string formattedTimeSpentAFK = timeSpentAFK.Hours > 0
                 ? $"{timeSpentAFK.Hours:D2}:{timeSpentAFK.Minutes:D2}:{timeSpentAFK.Seconds:D2}"
                 : $"{timeSpentAFK.Minutes:D2}:{timeSpentAFK.Seconds:D2}";
-            Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {formattedTimeSpentAFK}");
+            Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {formattedTimeSpentAFK}\n");
 
             return timeSpentAFK;
         }
@@ -2475,6 +2481,7 @@ namespace HotsReplayReader
                 hotsReplay = new HotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
                 if (hotsReplay.stormReplay != null)
                 {
+                    // Get GatesOpen Timestamp
                     StormTrackerEvent gatesOpenEvent = hotsReplay.stormReplay.TrackerEvents
                         .FirstOrDefault(trackerEvent =>
                             trackerEvent.TrackerEventType == StormTrackerEventType.StatGameEvent &&
@@ -2484,6 +2491,25 @@ namespace HotsReplayReader
                                 Encoding.UTF8.GetString(decoder.Value) == "GatesOpen"));
                     if (gatesOpenEvent != null)
                         timeGateOpen = gatesOpenEvent.Timestamp;
+
+                    // Get EndOfGame Timestamp
+                    TimeSpan timeEndOfGameXPBreakdown;
+                    StormTrackerEvent endOfGameXPBreakdown = hotsReplay.stormReplay.TrackerEvents
+                        .FirstOrDefault(trackerEvent =>
+                            trackerEvent.TrackerEventType == StormTrackerEventType.StatGameEvent &&
+                            trackerEvent.VersionedDecoder != null &&
+                            trackerEvent.VersionedDecoder.Structure != null &&
+                            trackerEvent.VersionedDecoder.Structure.Any(decoder => decoder.Value != null &&
+                                Encoding.UTF8.GetString(decoder.Value) == "EndOfGameXPBreakdown"));
+                    if (endOfGameXPBreakdown != null)
+                    {
+                        timeEndOfGameXPBreakdown = endOfGameXPBreakdown.Timestamp;
+                        StormTrackerEvent previousEvent = hotsReplay.stormReplay.TrackerEvents
+                            .Where(trackerEvent => trackerEvent.Timestamp < timeEndOfGameXPBreakdown)
+                            .OrderByDescending(trackerEvent => trackerEvent.Timestamp)
+                            .FirstOrDefault();
+                        endOfGame = previousEvent.Timestamp;
+                    }
 
                     InitTeamDatas(redTeam = new HotsTeam("Red"));
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
