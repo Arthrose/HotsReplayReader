@@ -843,13 +843,13 @@ namespace HotsReplayReader
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                 }
 
-                if (hotsPlayer.TimeSpentAFK != TimeSpan.Zero && hotsPlayer.TimeSpentAFK?.TotalSeconds > 1 && hotsPlayer.TimeSpentAFK != null)
+                if (hotsPlayer.TimeSpentAFK != TimeSpan.Zero && hotsPlayer.TimeSpentAFK.TotalSeconds > 1)
                 {
                     string AFKLabel = (Resources.Language.i18n.strTimeSpentAFK + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
 
-                    string formattedTimeSpentAFK = hotsPlayer.TimeSpentAFK?.Hours > 0
-                        ? $"{hotsPlayer.TimeSpentAFK?.Hours:D2}:{hotsPlayer.TimeSpentAFK?.Minutes:D2}:{hotsPlayer.TimeSpentAFK?.Seconds:D2}"
-                        : $"{hotsPlayer.TimeSpentAFK?.Minutes:D2}:{hotsPlayer.TimeSpentAFK?.Seconds:D2}";
+                    string formattedTimeSpentAFK = hotsPlayer.TimeSpentAFK.Hours > 0
+                        ? $"{hotsPlayer.TimeSpentAFK.Hours:D2}:{hotsPlayer.TimeSpentAFK.Minutes:D2}:{hotsPlayer.TimeSpentAFK.Seconds:D2}"
+                        : $"{hotsPlayer.TimeSpentAFK.Minutes:D2}:{hotsPlayer.TimeSpentAFK.Seconds:D2}";
 
                     html += $"            <br>\n            <span class=\"nobr\">{AFKLabel}<font color=\"#bfd4fd\">&#8771; {formattedTimeSpentAFK}</font></span><br>\n";
                 }
@@ -2131,8 +2131,11 @@ namespace HotsReplayReader
 
             return MVPScore;
         }
-        private TimeSpan? GetTimeSpentAFK(HotsPlayer hotsPlayer)
+        private TimeSpan GetTimeSpentAFK(HotsPlayer hotsPlayer)
         {
+            // https://github.com/Blizzard/heroprotocol
+            // There's a known issue where revived units are not tracked, and placeholder units track death but not birth.
+
             bool debug = false;
 
             string[] buggedHeroes = { "Abathur", "DVa", "Gall", "Rexxar", "LostVikings" };

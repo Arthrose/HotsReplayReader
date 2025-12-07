@@ -1,74 +1,64 @@
 ﻿using Heroes.StormReplayParser.Player;
+using Heroes.StormReplayParser.Replay;
 
 namespace HotsReplayReader
 {
-    internal class HotsPlayer : StormPlayer
+    internal class HotsPlayer(StormPlayer stormPlayer)
     {
+        // Copie de StormPlayer
+        public int? AccountLevel { get; set; } = stormPlayer.AccountLevel;
+        public string BattleTagName { get; set; } = stormPlayer.BattleTagName;
+        public ComputerDifficulty ComputerDifficulty { get; set; } = stormPlayer.ComputerDifficulty;
+        public int Handicap { get; set; } = stormPlayer.Handicap;
+        public bool? HasActiveBoost { get; set; } = stormPlayer.HasActiveBoost;
+        public bool IsAutoSelect { get; set; } = stormPlayer.IsAutoSelect;
+        public bool? IsBlizzardStaff { get; set; } = stormPlayer.IsBlizzardStaff;
+        public bool IsPlatformMac { get; set; } = stormPlayer.IsPlatformMac;
+        public bool IsSilenced { get; set; } = stormPlayer.IsSilenced;
+        public bool? IsVoiceSilenced { get; set; } = stormPlayer.IsVoiceSilenced;
+        public bool IsWinner { get; set; } = stormPlayer.IsWinner;
+        public string Name { get; set; } = stormPlayer.Name;
+        public long? PartyValue { get; set; } = stormPlayer.PartyValue;
+        public PlayerHero? PlayerHero { get; set; } = stormPlayer.PlayerHero;
+        public PlayerLoadout PlayerLoadout { get; set; } = stormPlayer.PlayerLoadout;
+        public PlayerType PlayerType { get; set; } = stormPlayer.PlayerType;
+        public StormTeam Team { get; set; } = stormPlayer.Team;
+        public ToonHandle? ToonHandle { get; set; } = stormPlayer.ToonHandle;
+        public IReadOnlyList<HeroMasteryTier> HeroMasteryTiers { get; set; } = stormPlayer.HeroMasteryTiers;
+        public int HeroMasteryTiersCount { get; set; } = stormPlayer.HeroMasteryTiersCount;
+        public IReadOnlyList<MatchAwardType>? MatchAwards { get; set; } = stormPlayer.MatchAwards;
+        public int? MatchAwardsCount { get; set; } = stormPlayer.MatchAwardsCount;
+        public IReadOnlyList<PlayerDisconnect> PlayerDisconnects { get; set; } = stormPlayer.PlayerDisconnects;
+        public ScoreResult? ScoreResult { get; set; } = stormPlayer.ScoreResult;
+        public IReadOnlyList<HeroTalent> Talents { get; set; } = stormPlayer.Talents;
+
+        // Nouvelles propriétés
         public string? Party { get; set; }
         public string? TeamColor { get; set; }
-        public int Kills { get; set; }
+        public int Kills { get; set; } = stormPlayer.ScoreResult?.SoloKills ?? 0;
         public string? ComputerName { get; set; }
-        public double MvpScore { get; set; }
-        public double? MvpScoreKills { get; set; } = null;
-        public double? MvpScoreAssists { get; set; } = null;
-        public double? MvpScoreTimeSpentDead { get; set; } = null;
-        public double? MvpScoreWinningTeam { get; set; } = null;
-        public double? MvpScoreTopHeroDamageOnTeam { get; set; } = null;
-        public double? MvpScoreTopHeroDamage { get; set; } = null;
-        public double? MvpScoreTopSiegeDamageOnTeam { get; set; } = null;
-        public double? MvpScoreTopSiegeDamage { get; set; } = null;
-        public double? MvpScoreTopXPContributionOnTeam { get; set; } = null;
-        public double? MvpScoreTopXPContribution { get; set; } = null;
-        public double? MvpScoreTopHealing { get; set; } = null;
-        public double? MvpScoreTopDamageTakenOnTeam { get; set; } = null;
-        public double? MvpScoreTopDamageTaken { get; set; } = null;
-        public double? MvpScoreHeroDamageBonus { get; set; } = null;
-        public double? MvpScoreSiegeDamageBonus { get; set; } = null;
-        public double? MvpScoreHealingBonus { get; set; } = null;
-        public double? MvpScoreXPContributionBonus { get; set; } = null;
-        public double? MvpScoreDamageTakenBonus { get; set; } = null;
-        public TimeSpan? TimeSpentAFK { get; set; } = null;
+        public double MvpScore { get; set; } = 0;
+        public double? MvpScoreKills { get; set; }
+        public double? MvpScoreAssists { get; set; }
+        public double? MvpScoreTimeSpentDead { get; set; }
+        public double? MvpScoreWinningTeam { get; set; }
+        public double? MvpScoreTopHeroDamageOnTeam { get; set; }
+        public double? MvpScoreTopHeroDamage { get; set; }
+        public double? MvpScoreTopSiegeDamageOnTeam { get; set; }
+        public double? MvpScoreTopSiegeDamage { get; set; }
+        public double? MvpScoreTopXPContributionOnTeam { get; set; }
+        public double? MvpScoreTopXPContribution { get; set; }
+        public double? MvpScoreTopHealing { get; set; }
+        public double? MvpScoreTopDamageTakenOnTeam { get; set; }
+        public double? MvpScoreTopDamageTaken { get; set; }
+        public double? MvpScoreHeroDamageBonus { get; set; }
+        public double? MvpScoreSiegeDamageBonus { get; set; }
+        public double? MvpScoreHealingBonus { get; set; }
+        public double? MvpScoreXPContributionBonus { get; set; }
+        public double? MvpScoreDamageTakenBonus { get; set; }
+        public TimeSpan TimeSpentAFK { get; set; } = TimeSpan.Zero;
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
         public string? HeroUnitId { get; set; }
-        public new IReadOnlyList<HeroMasteryTier> HeroMasteryTiers { get; set; }
-        public new int? HeroMasteryTiersCount { get; set; }
-        public new IReadOnlyList<MatchAwardType>? MatchAwards { get; set; }
-        public new int? MatchAwardsCount { get; set; }
-        public new IReadOnlyList<PlayerDisconnect> PlayerDisconnects { get; set; }
-        public new ScoreResult? ScoreResult { get; set; }
-        public new IReadOnlyList<HeroTalent> Talents { get; set; }
-        public HotsPlayer(StormPlayer stormPlayer)
-        {
-            this.AccountLevel = stormPlayer.AccountLevel;
-            this.BattleTagName = stormPlayer.BattleTagName;
-            this.ComputerDifficulty = stormPlayer.ComputerDifficulty;
-            this.Handicap = stormPlayer.Handicap;
-            this.HasActiveBoost = stormPlayer.HasActiveBoost;
-            this.IsAutoSelect = stormPlayer.IsAutoSelect;
-            this.IsBlizzardStaff = stormPlayer.IsBlizzardStaff;
-            this.IsPlatformMac = stormPlayer.IsPlatformMac;
-            this.IsSilenced = stormPlayer.IsSilenced;
-            this.IsVoiceSilenced = stormPlayer.IsVoiceSilenced;
-            this.IsWinner = stormPlayer.IsWinner;
-            this.Name = stormPlayer.Name;
-            this.PartyValue = stormPlayer.PartyValue;
-            this.PlayerHero = stormPlayer.PlayerHero;
-            this.PlayerLoadout = stormPlayer.PlayerLoadout;
-            this.PlayerType = stormPlayer.PlayerType;
-            this.Team = stormPlayer.Team;
-            this.ToonHandle = stormPlayer.ToonHandle;
-            this.HeroMasteryTiers = stormPlayer.HeroMasteryTiers;
-            this.HeroMasteryTiersCount = stormPlayer.HeroMasteryTiersCount;
-            this.MatchAwards = stormPlayer.MatchAwards;
-            this.MatchAwardsCount = stormPlayer.MatchAwardsCount;
-            this.PlayerDisconnects = stormPlayer.PlayerDisconnects;
-            this.ScoreResult = stormPlayer.ScoreResult;
-            this.Talents = stormPlayer.Talents;
-            if (stormPlayer.ScoreResult != null)
-                this.Kills = stormPlayer.ScoreResult.SoloKills;
-            else
-                this.Kills = 0;
-        }
     }
 }
