@@ -1,6 +1,7 @@
 ﻿using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.Models.AbilityTalents;
+using Heroes.StormReplayParser.Decoders;
 using Heroes.StormReplayParser.GameEvent;
 using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
@@ -1894,8 +1895,11 @@ namespace HotsReplayReader
                 }
 
             int ComputerID = 0;
+            int playerId = 1;
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
+                // Assign PlayerId
+                hotsPlayer.PlayerID = playerId++;
                 // Assign party number
                 if (hotsPlayer.PartyValue != null)
                 {
@@ -1927,6 +1931,59 @@ namespace HotsReplayReader
                 {
                     ComputerID++;
                     hotsPlayer.ComputerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {ComputerID} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
+                }
+            }
+
+            // Add deaths to the hotsPlayer objects
+            foreach (StormTrackerEvent trackerEvent in hotsReplay.stormReplay.TrackerEvents
+                .Where(trackerEvent =>
+                    trackerEvent.TrackerEventType == StormTrackerEventType.StatGameEvent &&
+                    trackerEvent.VersionedDecoder?.Structure is { Count: > 2 } structure &&
+                    structure[0].Value is byte[] nameBytes &&
+                    Encoding.UTF8.GetString(nameBytes) == "PlayerDeath" &&
+                    structure[2].OptionalData?.ArrayData != null))
+            {
+                List<VersionedDecoder>? structure = trackerEvent.VersionedDecoder!.Structure!;
+                VersionedDecoder[]? data = structure[2].OptionalData!.ArrayData!;
+
+                int thisPlayerID = 0;
+                List<int> killers = [];
+
+                foreach (VersionedDecoder? entry in data)
+                {
+                    string key = Encoding.UTF8.GetString((entry.Structure?[0]?.Structure?[0]?.Value as byte[]) ?? []);
+
+                    if (entry.Structure != null && entry.Structure.Count > 1)
+                    {
+                        VersionedDecoder? valDecoder = entry.Structure[1];
+                        int value = int.Parse(valDecoder.ToString() ?? "0");
+
+                        if (key == "PlayerID")
+                            thisPlayerID = value;
+                        else if (key == "KillingPlayer")
+                            killers.Add(value);
+                    }
+                }
+
+                PlayerDeath? death = new()
+                {
+                    Timestamp = trackerEvent.Timestamp,
+                    KillingPlayers = killers
+                };
+
+                HotsPlayer? player = hotsPlayers.FirstOrDefault(p => p.PlayerID == thisPlayerID);
+                if (player != null)
+                {
+                    IReadOnlyList<Heroes.StormReplayParser.Replay.StormTeamLevel>? levels = hotsReplay.stormReplay.GetTeamLevels(player.Team);
+
+                    if (levels != null)
+                        death.Level = levels
+                            .Where(l => l.Time <= trackerEvent.Timestamp)
+                            .OrderByDescending(l => l.Level)
+                            .Select(l => l.Level)
+                            .FirstOrDefault();
+
+                    player.PlayerDeaths.Add(death);
                 }
             }
         }
@@ -2138,9 +2195,34 @@ namespace HotsReplayReader
 
             bool debug = false;
 
-            string[] buggedHeroes = { "Abathur", "DVa", "Gall", "Rexxar", "LostVikings" };
-            if (hotsReplay == null || hotsReplay.stormReplay == null|| hotsPlayer.PlayerType == PlayerType.Computer || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId))
-                return TimeSpan.Zero;
+            Dictionary<int, int> deathDureation;
+            if (hotsPlayer?.PlayerHero?.HeroId == "Murky")
+                deathDureation = new()
+                {
+                    { 1, 8}, { 2, 8}, { 3, 8}, { 4, 8}, { 5, 8}, { 6, 8}, { 7, 8}, { 8, 8}, { 9, 8}, {10, 8},
+                    {11, 8}, {12, 8}, {13, 8}, {14, 8}, {15, 8}, {16, 8}, {17, 8}, {18, 8}, {19, 8}, {20, 8}
+                };
+            else if (hotsReplay?.stormReplay?.GameMode == Heroes.StormReplayParser.Replay.StormGameMode.ARAM)
+                deathDureation = new()
+                {
+                    { 1,  5}, { 2,  5}, { 3,  6}, { 4,  7}, { 5,  8}, { 6,  9}, { 7, 10}, { 8, 12}, { 9, 13}, {10, 15},
+                    {11, 17}, {12, 19}, {13, 22}, {14, 24}, {15, 27}, {16, 30}, {17, 33}, {18, 36}, {19, 39}, {20, 42}
+                };
+            else
+                deathDureation = new()
+                {
+                    { 1, 15}, { 2, 16}, { 3, 17}, { 4, 18}, { 5, 19}, { 6, 20}, { 7, 21}, { 8, 22}, { 9, 23}, {10, 24},
+                    {11, 26}, {12, 29}, {13, 32}, {14, 36}, {15, 40}, {16, 44}, {17, 50}, {18, 56}, {19, 62}, {20, 65}
+                };
+
+            string[] buggedHeroes = { "Abathur", "DVa", "Gall", "Murky", "Rexxar", "LostVikings" };
+
+            if (hotsReplay == null
+            || hotsReplay.stormReplay == null
+            || hotsPlayer == null
+            || hotsPlayer.PlayerType == PlayerType.Computer
+            || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId)
+            ) return TimeSpan.Zero;
 
             TimeSpan timeSpentAFK = TimeSpan.Zero;
             TimeSpan lastTimestamp = timeGateOpen;

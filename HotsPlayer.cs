@@ -33,10 +33,10 @@ namespace HotsReplayReader
         public IReadOnlyList<HeroTalent> Talents { get; set; } = stormPlayer.Talents;
 
         // Nouvelles propriétés
-        public string? Party { get; set; }
-        public string? TeamColor { get; set; }
-        public int Kills { get; set; } = stormPlayer.ScoreResult?.SoloKills ?? 0;
         public string? ComputerName { get; set; }
+        public string? HeroUnitId { get; set; }
+        public int PlayerID { get; set; } = 0;
+        public int Kills { get; set; } = stormPlayer.ScoreResult?.SoloKills ?? 0;
         public double MvpScore { get; set; } = 0;
         public double? MvpScoreKills { get; set; }
         public double? MvpScoreAssists { get; set; }
@@ -56,9 +56,17 @@ namespace HotsReplayReader
         public double? MvpScoreHealingBonus { get; set; }
         public double? MvpScoreXPContributionBonus { get; set; }
         public double? MvpScoreDamageTakenBonus { get; set; }
-        public TimeSpan TimeSpentAFK { get; set; } = TimeSpan.Zero;
+        public string? Party { get; set; }
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
-        public string? HeroUnitId { get; set; }
+        public List<PlayerDeath> PlayerDeaths { get; set; } = [];
+        public string? TeamColor { get; set; }
+        public TimeSpan TimeSpentAFK { get; set; } = TimeSpan.Zero;
+    }
+    public class PlayerDeath
+    {
+        public TimeSpan Timestamp { get; set; }
+        public int Level { get; set; } = 20;
+        public List<int> KillingPlayers { get; set; } = [];
     }
 }
