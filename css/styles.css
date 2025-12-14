@@ -168,7 +168,7 @@ tr {
   font-family: Calibri;
 }
 .head-container {
-  overflow-y: auto;
+  overflow-y: visible;
   text-align: left;
   margin: 0 auto;
   background-color: #backColor#;

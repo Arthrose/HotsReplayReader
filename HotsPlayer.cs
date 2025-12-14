@@ -1,4 +1,5 @@
-﻿using Heroes.StormReplayParser.Player;
+﻿using Heroes.StormReplayParser.GameEvent;
+using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.Replay;
 
 namespace HotsReplayReader
@@ -61,11 +62,20 @@ namespace HotsReplayReader
         public List<PlayerDeath> PlayerDeaths { get; set; } = [];
         public string? TeamColor { get; set; }
         public TimeSpan TimeSpentAFK { get; set; } = TimeSpan.Zero;
+        public List<TimeInterval> TimeSpentAFKIntervals { get; set; } = [];
+        public List<StormGameEvent> UserGameEvents { get; set; } = [];
     }
     internal class PlayerDeath
     {
         public TimeSpan Timestamp { get; set; }
         public int Level { get; set; } = 20;
+        public TimeSpan TimestampRes { get; set; }
         public List<HotsPlayer> KillingPlayers { get; set; } = [];
+    }
+    public readonly struct TimeInterval
+    {
+        public TimeSpan Start { get; init; }
+        public TimeSpan End { get; init; }
+        public TimeSpan Duration => End - Start;
     }
 }
