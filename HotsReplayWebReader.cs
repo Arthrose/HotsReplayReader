@@ -1894,12 +1894,11 @@ namespace HotsReplayReader
                     i++;
                 }
 
+            GetPlayersDeaths();
+
             int ComputerID = 0;
-            int playerId = 1;
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
-                // Assign PlayerId
-                hotsPlayer.PlayerID = playerId++;
                 // Assign party number
                 if (hotsPlayer.PartyValue != null)
                 {
@@ -1933,59 +1932,6 @@ namespace HotsReplayReader
                     hotsPlayer.ComputerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {ComputerID} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
                 }
             }
-
-            // Add deaths to the hotsPlayer objects
-            foreach (StormTrackerEvent trackerEvent in hotsReplay.stormReplay.TrackerEvents
-                .Where(trackerEvent =>
-                    trackerEvent.TrackerEventType == StormTrackerEventType.StatGameEvent &&
-                    trackerEvent.VersionedDecoder?.Structure is { Count: > 2 } structure &&
-                    structure[0].Value is byte[] nameBytes &&
-                    Encoding.UTF8.GetString(nameBytes) == "PlayerDeath" &&
-                    structure[2].OptionalData?.ArrayData != null))
-            {
-                List<VersionedDecoder>? structure = trackerEvent.VersionedDecoder!.Structure!;
-                VersionedDecoder[]? data = structure[2].OptionalData!.ArrayData!;
-
-                int thisPlayerID = 0;
-                List<int> killers = [];
-
-                foreach (VersionedDecoder? entry in data)
-                {
-                    string key = Encoding.UTF8.GetString((entry.Structure?[0]?.Structure?[0]?.Value as byte[]) ?? []);
-
-                    if (entry.Structure != null && entry.Structure.Count > 1)
-                    {
-                        VersionedDecoder? valDecoder = entry.Structure[1];
-                        int value = int.Parse(valDecoder.ToString() ?? "0");
-
-                        if (key == "PlayerID")
-                            thisPlayerID = value;
-                        else if (key == "KillingPlayer")
-                            killers.Add(value);
-                    }
-                }
-
-                PlayerDeath? death = new()
-                {
-                    Timestamp = trackerEvent.Timestamp,
-                    KillingPlayers = killers
-                };
-
-                HotsPlayer? player = hotsPlayers.FirstOrDefault(p => p.PlayerID == thisPlayerID);
-                if (player != null)
-                {
-                    IReadOnlyList<Heroes.StormReplayParser.Replay.StormTeamLevel>? levels = hotsReplay.stormReplay.GetTeamLevels(player.Team);
-
-                    if (levels != null)
-                        death.Level = levels
-                            .Where(l => l.Time <= trackerEvent.Timestamp)
-                            .OrderByDescending(l => l.Level)
-                            .Select(l => l.Level)
-                            .FirstOrDefault();
-
-                    player.PlayerDeaths.Add(death);
-                }
-            }
         }
         private void InitPlayerData(StormPlayer stormPlayer, int id)
         {
@@ -2006,6 +1952,63 @@ namespace HotsReplayReader
                 {
                     hotsPlayers[id].PlayerTeam = redTeam;
                     hotsPlayers[id].EnemyTeam = blueTeam;
+                }
+            }
+        }
+        private void GetPlayersDeaths()
+        {
+            if (hotsReplay == null || hotsReplay.stormReplay == null || hotsPlayers == null) return;
+
+            // Add deaths to the hotsPlayer objects
+            foreach (StormTrackerEvent trackerEvent in hotsReplay.stormReplay.TrackerEvents
+                .Where(trackerEvent =>
+                    trackerEvent.TrackerEventType == StormTrackerEventType.StatGameEvent &&
+                    trackerEvent.VersionedDecoder?.Structure is { Count: > 2 } structure &&
+                    structure[0].Value is byte[] nameBytes &&
+                    Encoding.UTF8.GetString(nameBytes) == "PlayerDeath" &&
+                    structure[2].OptionalData?.ArrayData != null))
+            {
+                List<VersionedDecoder>? structure = trackerEvent.VersionedDecoder!.Structure!;
+                VersionedDecoder[]? data = structure[2].OptionalData!.ArrayData!;
+
+                int playerID = 0;
+                List<HotsPlayer> killers = [];
+
+                foreach (VersionedDecoder? entry in data)
+                {
+                    string key = Encoding.UTF8.GetString((entry.Structure?[0]?.Structure?[0]?.Value as byte[]) ?? []);
+
+                    if (entry.Structure != null && entry.Structure.Count > 1)
+                    {
+                        VersionedDecoder? valDecoder = entry.Structure[1];
+                        int value = int.Parse(valDecoder.ToString() ?? "0");
+
+                        if (key == "PlayerID")
+                            playerID = value;
+                        else if (key == "KillingPlayer")
+                            killers.Add(hotsPlayers[value - 1]);
+                    }
+                }
+
+                PlayerDeath? death = new()
+                {
+                    Timestamp = trackerEvent.Timestamp,
+                    KillingPlayers = killers
+                };
+
+                HotsPlayer player = hotsPlayers[playerID - 1];
+                if (player != null)
+                {
+                    IReadOnlyList<Heroes.StormReplayParser.Replay.StormTeamLevel>? levels = hotsReplay.stormReplay.GetTeamLevels(player.Team);
+
+                    if (levels != null)
+                        death.Level = levels
+                            .Where(l => l.Time <= trackerEvent.Timestamp)
+                            .OrderByDescending(l => l.Level)
+                            .Select(l => l.Level)
+                            .FirstOrDefault();
+
+                    player.PlayerDeaths.Add(death);
                 }
             }
         }
@@ -2190,8 +2193,11 @@ namespace HotsReplayReader
         }
         private TimeSpan GetTimeSpentAFK(HotsPlayer hotsPlayer)
         {
-            // https://github.com/Blizzard/heroprotocol
+            // [https://github.com/Blizzard/heroprotocol](https://github.com/Blizzard/heroprotocol)
             // There's a known issue where revived units are not tracked, and placeholder units track death but not birth.
+
+            if (hotsPlayer == null || hotsPlayer.PlayerHero == null || hotsPlayer.PlayerHero.HeroName == null)
+                return TimeSpan.Zero;
 
             bool debug = false;
 
@@ -2200,22 +2206,26 @@ namespace HotsReplayReader
                 deathDureation = new()
                 {
                     { 1, 8}, { 2, 8}, { 3, 8}, { 4, 8}, { 5, 8}, { 6, 8}, { 7, 8}, { 8, 8}, { 9, 8}, {10, 8},
-                    {11, 8}, {12, 8}, {13, 8}, {14, 8}, {15, 8}, {16, 8}, {17, 8}, {18, 8}, {19, 8}, {20, 8}
+                    {11, 8}, {12, 8}, {13, 8}, {14, 8}, {15, 8}, {16, 8}, {17, 8}, {18, 8}, {19, 8}, {20, 8},
+                    {21, 8}, {22, 8}, {23, 8}, {24, 8}, {25, 8}, {26, 8}, {27, 8}, {28, 8}, {29, 8}, {30, 8}
                 };
             else if (hotsReplay?.stormReplay?.GameMode == Heroes.StormReplayParser.Replay.StormGameMode.ARAM)
                 deathDureation = new()
                 {
                     { 1,  5}, { 2,  5}, { 3,  6}, { 4,  7}, { 5,  8}, { 6,  9}, { 7, 10}, { 8, 12}, { 9, 13}, {10, 15},
-                    {11, 17}, {12, 19}, {13, 22}, {14, 24}, {15, 27}, {16, 30}, {17, 33}, {18, 36}, {19, 39}, {20, 42}
+                    {11, 17}, {12, 19}, {13, 22}, {14, 24}, {15, 27}, {16, 30}, {17, 33}, {18, 36}, {19, 39}, {20, 42},
+                    {21, 42}, {22, 42}, {23, 42}, {24, 42}, {25, 42}, {26, 42}, {27, 42}, {28, 42}, {29, 42}, {30, 42}
                 };
             else
                 deathDureation = new()
                 {
                     { 1, 15}, { 2, 16}, { 3, 17}, { 4, 18}, { 5, 19}, { 6, 20}, { 7, 21}, { 8, 22}, { 9, 23}, {10, 24},
-                    {11, 26}, {12, 29}, {13, 32}, {14, 36}, {15, 40}, {16, 44}, {17, 50}, {18, 56}, {19, 62}, {20, 65}
+                    {11, 26}, {12, 29}, {13, 32}, {14, 36}, {15, 40}, {16, 44}, {17, 50}, {18, 56}, {19, 62}, {20, 65},
+                    {21, 65}, {22, 65}, {23, 65}, {24, 65}, {25, 65}, {26, 65}, {27, 26}, {28, 26}, {29, 26}, {30, 26}
                 };
 
-            string[] buggedHeroes = { "Abathur", "DVa", "Gall", "Murky", "Rexxar", "LostVikings" };
+            //string[] buggedHeroes = ["Abathur", "DVa", "Gall", "Rexxar", "LostVikings"];
+            string[] buggedHeroes = [];
 
             if (hotsReplay == null
             || hotsReplay.stormReplay == null
@@ -2244,52 +2254,31 @@ namespace HotsReplayReader
                             if (gameEvent.Timestamp >= disconnect.From && gameEvent.Timestamp <= disconnect.To)
                             {
                                 isDuringDisconnect = true;
-                                break;  // Quitte au premier intervalle de déconnexion correspondant
+                                break; // Quitte au premier intervalle de déconnexion correspondant
                             }
                         }
                         if (isDuringDisconnect)
-                        {
                             continue; // Si l'event est pendant une déco, on ne met pas à jour lastTimestamp
-                        }
 
                         userGameEvents.Add(gameEvent);
                         // SCmdEvent -> lance un sort ou auto-attaque ?
                         // SCmdUpdateTargetPointEvent -> Se déplace
                         // SCameraUpdateEvent -> bouge la camera
-                        if
-                        (
+                        if (
                             (gameEvent.GameEventType == StormGameEventType.SCmdEvent || gameEvent.GameEventType == StormGameEventType.SCmdUpdateTargetPointEvent)
                             && gameEvent.Timestamp > timeGateOpen
                         )
                         {
                             //Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} - {gameEvent.Timestamp}");
-                            if ((gameEvent.Timestamp - lastTimestamp) > AFKThreshold)
-                            {
-                                timeSpentAFK += gameEvent.Timestamp - lastTimestamp;
-                                if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} {lastTimestamp} - {gameEvent.Timestamp} > {timeSpentAFK}");
-                            }
+                            ComputeAFKForInterval(lastTimestamp, gameEvent.Timestamp, AFKThreshold, deathDureation, hotsPlayer.PlayerDeaths, ref timeSpentAFK, debug, hotsPlayer.PlayerHero?.HeroName!);
                             lastTimestamp = gameEvent.Timestamp;
                         }
                     }
                 }
             }
 
-            // check le dernier event avant le EndOfGame
-            if ((endOfGame - lastTimestamp) > AFKThreshold)
-            {
-                timeSpentAFK += endOfGame - lastTimestamp;
-                if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: ReplayLength {lastTimestamp} - {endOfGame} > {timeSpentAFK}");
-            }
-
-            // retire le temps passé mort et threshold * nb de mort
-            // bug avec des persos comme TLV, D.Va ou Rexxar
-            if (hotsPlayer != null && hotsPlayer?.ScoreResult?.TimeSpentDead != null)
-            {
-                timeSpentAFK -= hotsPlayer.ScoreResult.TimeSpentDead;
-                if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: TimeSpentDead > {timeSpentAFK}");
-                if (hotsPlayer != null && hotsPlayer.ScoreResult != null)
-                    timeSpentAFK -= hotsPlayer.ScoreResult.Deaths * AFKThreshold;
-            }
+            // End of Game event
+            ComputeAFKForInterval(lastTimestamp, endOfGame, AFKThreshold, deathDureation, hotsPlayer!.PlayerDeaths, ref timeSpentAFK, debug, hotsPlayer.PlayerHero?.HeroName!);
 
             if (timeSpentAFK < TimeSpan.Zero)
                 timeSpentAFK = TimeSpan.Zero;
@@ -2300,6 +2289,62 @@ namespace HotsReplayReader
             if (debug) Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {formattedTimeSpentAFK}\n");
 
             return timeSpentAFK;
+        }
+        private void ComputeAFKForInterval(TimeSpan from, TimeSpan to, TimeSpan AFKThreshold,
+            Dictionary<int, int> deathDureation, IReadOnlyList<PlayerDeath> playerDeaths,
+            ref TimeSpan timeSpentAFK, bool debug, string heroName)
+        {
+            if (to <= from) return;
+
+            TimeSpan inactiveAFK = TimeSpan.Zero;
+
+            bool hasDeath = false;
+            foreach (var death in playerDeaths)
+            {
+                if (!deathDureation.TryGetValue(death.Level, out int deathSeconds))
+                    continue;
+
+                TimeSpan deathStart = death.Timestamp;
+                TimeSpan deathEnd = death.Timestamp + TimeSpan.FromSeconds(deathSeconds);
+
+                // Mort complètement à l'extérieur de [from, to]
+                if (deathEnd <= from || deathStart >= to)
+                    continue;
+
+                hasDeath = true;
+
+                // Coupe l'intervalle en : avant mort, mort, après mort
+                TimeSpan beforeStart = from;
+                TimeSpan beforeEnd = deathStart < from ? from : deathStart;
+                TimeSpan afterStart = deathEnd > to ? to : deathEnd;
+                TimeSpan afterEnd = to;
+
+                TimeSpan before = beforeEnd > beforeStart ? beforeEnd - beforeStart : TimeSpan.Zero;
+                TimeSpan mort = (deathEnd > from && deathStart < to)
+                                ? ((deathEnd < to ? deathEnd : to) - (deathStart > from ? deathStart : from))
+                                : TimeSpan.Zero;
+                TimeSpan after = afterEnd > afterStart ? afterEnd - afterStart : TimeSpan.Zero;
+
+                // Si (avant + après) dépasse le seuil, on compte avant + mort + après
+                if (before + after > AFKThreshold)
+                {
+                    inactiveAFK += before + mort + after;
+                    if (debug) Debug.WriteLine($"{heroName}: before+after {before + after} > threshold, adding {before + mort + after}");
+                }
+
+                // Une seule mort par intervalle
+                break;
+            }
+
+            // Si pas de mort
+            if (!hasDeath)
+                inactiveAFK = to - from;
+
+            if (inactiveAFK > AFKThreshold)
+            {
+                timeSpentAFK += inactiveAFK;
+                if (debug) Debug.WriteLine($"{heroName}: AFK +{inactiveAFK} (from {from} to {to})");
+            }
         }
         public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
         {
