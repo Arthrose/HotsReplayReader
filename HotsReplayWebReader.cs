@@ -9,6 +9,7 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -2193,13 +2194,15 @@ namespace HotsReplayReader
         }
         private TimeSpan GetTimeSpentAFK(HotsPlayer hotsPlayer)
         {
-            // [https://github.com/Blizzard/heroprotocol](https://github.com/Blizzard/heroprotocol)
+            // https://github.com/Blizzard/heroprotocol
             // There's a known issue where revived units are not tracked, and placeholder units track death but not birth.
 
             if (hotsPlayer == null || hotsPlayer.PlayerHero == null || hotsPlayer.PlayerHero.HeroName == null)
                 return TimeSpan.Zero;
 
-            bool debug = false;
+            bool debug = true;
+
+            if (debug) Debug.WriteLine($"End of Game: {endOfGame:mm\\:ss}");
 
             Dictionary<int, int> deathDureation;
             if (hotsPlayer?.PlayerHero?.HeroId == "Murky")
@@ -2221,7 +2224,7 @@ namespace HotsReplayReader
                 {
                     { 1, 15}, { 2, 16}, { 3, 17}, { 4, 18}, { 5, 19}, { 6, 20}, { 7, 21}, { 8, 22}, { 9, 23}, {10, 24},
                     {11, 26}, {12, 29}, {13, 32}, {14, 36}, {15, 40}, {16, 44}, {17, 50}, {18, 56}, {19, 62}, {20, 65},
-                    {21, 65}, {22, 65}, {23, 65}, {24, 65}, {25, 65}, {26, 65}, {27, 26}, {28, 26}, {29, 26}, {30, 26}
+                    {21, 65}, {22, 65}, {23, 65}, {24, 65}, {25, 65}, {26, 65}, {27, 65}, {28, 65}, {29, 65}, {30, 65}
                 };
 
             //string[] buggedHeroes = ["Abathur", "DVa", "Gall", "Rexxar", "LostVikings"];
@@ -2234,9 +2237,9 @@ namespace HotsReplayReader
             || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId)
             ) return TimeSpan.Zero;
 
-            TimeSpan timeSpentAFK = TimeSpan.Zero;
+            TimeSpan timeSpentAFK  = TimeSpan.Zero;
             TimeSpan lastTimestamp = timeGateOpen;
-            TimeSpan AFKThreshold = TimeSpan.FromSeconds(20);
+            TimeSpan AFKThreshold  = TimeSpan.FromSeconds(20);
 
             List<StormGameEvent> userGameEvents = [];
             IReadOnlyList<PlayerDisconnect> playerDisconnects = hotsPlayer.PlayerDisconnects;
@@ -2249,7 +2252,7 @@ namespace HotsReplayReader
                     {
                         // Si l'event est pendant une déco, on n'en tient pas compte
                         bool isDuringDisconnect = false;
-                        foreach (var disconnect in playerDisconnects)
+                        foreach (PlayerDisconnect? disconnect in playerDisconnects)
                         {
                             if (gameEvent.Timestamp >= disconnect.From && gameEvent.Timestamp <= disconnect.To)
                             {
@@ -2270,7 +2273,8 @@ namespace HotsReplayReader
                         )
                         {
                             //Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} - {gameEvent.Timestamp}");
-                            ComputeAFKForInterval(lastTimestamp, gameEvent.Timestamp, AFKThreshold, deathDureation, hotsPlayer.PlayerDeaths, ref timeSpentAFK, debug, hotsPlayer.PlayerHero?.HeroName!);
+                            if (gameEvent.Timestamp - lastTimestamp > AFKThreshold)
+                                timeSpentAFK += ComputeAFKTimeSpan(lastTimestamp, gameEvent.Timestamp, AFKThreshold, deathDureation, hotsPlayer.PlayerDeaths, debug, hotsPlayer.PlayerHero?.HeroName!);
                             lastTimestamp = gameEvent.Timestamp;
                         }
                     }
@@ -2278,7 +2282,8 @@ namespace HotsReplayReader
             }
 
             // End of Game event
-            ComputeAFKForInterval(lastTimestamp, endOfGame, AFKThreshold, deathDureation, hotsPlayer!.PlayerDeaths, ref timeSpentAFK, debug, hotsPlayer.PlayerHero?.HeroName!);
+            if (endOfGame - lastTimestamp > AFKThreshold)
+                timeSpentAFK += ComputeAFKTimeSpan(lastTimestamp, endOfGame, AFKThreshold, deathDureation, hotsPlayer!.PlayerDeaths, debug, hotsPlayer.PlayerHero?.HeroName!);
 
             if (timeSpentAFK < TimeSpan.Zero)
                 timeSpentAFK = TimeSpan.Zero;
@@ -2290,16 +2295,16 @@ namespace HotsReplayReader
 
             return timeSpentAFK;
         }
-        private void ComputeAFKForInterval(TimeSpan from, TimeSpan to, TimeSpan AFKThreshold,
+        private static TimeSpan ComputeAFKTimeSpan(TimeSpan from, TimeSpan to, TimeSpan AFKThreshold,
             Dictionary<int, int> deathDureation, IReadOnlyList<PlayerDeath> playerDeaths,
-            ref TimeSpan timeSpentAFK, bool debug, string heroName)
+            bool debug, string heroName)
         {
-            if (to <= from) return;
+            if (to <= from || to - from <= AFKThreshold) return TimeSpan.Zero;
 
-            TimeSpan inactiveAFK = TimeSpan.Zero;
+            TimeSpan inactiveTimeSpan = TimeSpan.Zero;
 
             bool hasDeath = false;
-            foreach (var death in playerDeaths)
+            foreach (PlayerDeath? death in playerDeaths)
             {
                 if (!deathDureation.TryGetValue(death.Level, out int deathSeconds))
                     continue;
@@ -2307,7 +2312,7 @@ namespace HotsReplayReader
                 TimeSpan deathStart = death.Timestamp;
                 TimeSpan deathEnd = death.Timestamp + TimeSpan.FromSeconds(deathSeconds);
 
-                // Mort complètement à l'extérieur de [from, to]
+                // Mort hors [from, to]
                 if (deathEnd <= from || deathStart >= to)
                     continue;
 
@@ -2315,36 +2320,50 @@ namespace HotsReplayReader
 
                 // Coupe l'intervalle en : avant mort, mort, après mort
                 TimeSpan beforeStart = from;
-                TimeSpan beforeEnd = deathStart < from ? from : deathStart;
-                TimeSpan afterStart = deathEnd > to ? to : deathEnd;
-                TimeSpan afterEnd = to;
+                TimeSpan beforeEnd   = deathStart < from ? from : deathStart;
+                TimeSpan afterStart  = deathEnd > to ? to : deathEnd;
+                TimeSpan afterEnd    = to;
 
                 TimeSpan before = beforeEnd > beforeStart ? beforeEnd - beforeStart : TimeSpan.Zero;
-                TimeSpan mort = (deathEnd > from && deathStart < to)
-                                ? ((deathEnd < to ? deathEnd : to) - (deathStart > from ? deathStart : from))
-                                : TimeSpan.Zero;
+                TimeSpan deathTimeSpan = (deathEnd > from && deathStart < to)
+                                         ? ((deathEnd < to ? deathEnd : to) - (deathStart > from ? deathStart : from))
+                                         : TimeSpan.Zero;
                 TimeSpan after = afterEnd > afterStart ? afterEnd - afterStart : TimeSpan.Zero;
 
                 // Si (avant + après) dépasse le seuil, on compte avant + mort + après
                 if (before + after > AFKThreshold)
                 {
-                    inactiveAFK += before + mort + after;
-                    if (debug) Debug.WriteLine($"{heroName}: before+after {before + after} > threshold, adding {before + mort + after}");
+                    inactiveTimeSpan = before + deathTimeSpan + after;
+                    if (debug)
+                    {
+                        Debug.WriteLine($"{heroName}: [DEATH]  Level:  {death.Level:D2} - deathSeconds:   {deathSeconds}");
+                        Debug.WriteLine($"{heroName}:          From:   {from:mm\\:ss} - To:    {to:mm\\:ss}");
+                        Debug.WriteLine($"{heroName}:          Start:  {deathStart:mm\\:ss} - End:   {deathEnd:mm\\:ss}");
+                        Debug.WriteLine($"{heroName}:          Before: {before:mm\\:ss} - After: {after:mm\\:ss}");
+                        Debug.WriteLine($"{heroName}:          inactiveTimeSpan:      {before + deathTimeSpan + after:mm\\:ss}");
+                    }
                 }
-
                 // Une seule mort par intervalle
                 break;
             }
 
             // Si pas de mort
             if (!hasDeath)
-                inactiveAFK = to - from;
-
-            if (inactiveAFK > AFKThreshold)
             {
-                timeSpentAFK += inactiveAFK;
-                if (debug) Debug.WriteLine($"{heroName}: AFK +{inactiveAFK} (from {from} to {to})");
+                inactiveTimeSpan = to - from;
+                if (debug && inactiveTimeSpan > AFKThreshold)
+                {
+                    Debug.WriteLine($"{heroName}: [AFK]    From:   {from:mm\\:ss} - To:    {to:mm\\:ss}");
+                    Debug.WriteLine($"{heroName}:          inactiveTimeSpan:      {to - from:mm\\:ss}");
+                }
             }
+
+            if (inactiveTimeSpan > AFKThreshold)
+            {
+                if (debug) Debug.WriteLine($"{heroName}: [ADDING] {inactiveTimeSpan:mm\\:ss}");
+                return inactiveTimeSpan;
+            }
+            return TimeSpan.Zero;
         }
         public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
         {
