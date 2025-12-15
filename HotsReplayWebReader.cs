@@ -2083,15 +2083,28 @@ namespace HotsReplayReader
                     if (!deathDuration.TryGetValue(death.Level, out int deathSeconds)) continue;
                     death.TimestampRes = death.Timestamp + TimeSpan.FromSeconds(deathSeconds);
 
-                    // Change le timestampres si une action est faite avant la fin de la mort (en cas de res du perso)
-                    StormGameEvent firstActionAfterDeath = player.UserGameEvents
-                        .Where(e => e.Timestamp > death.Timestamp + TimeSpan.FromSeconds(20))
-                        .OrderBy(e => e.Timestamp)
-                        .FirstOrDefault();
-                    if (firstActionAfterDeath != null && firstActionAfterDeath.Timestamp < death.TimestampRes && firstActionAfterDeath.Timestamp != TimeSpan.Zero)
-                        death.TimestampRes = firstActionAfterDeath.Timestamp;
 
-                    player.PlayerDeaths.Add(death);
+                    // Vérifie la dernière mort du joueur
+                    PlayerDeath? lastDeath = player.PlayerDeaths.LastOrDefault();
+                    // Si la nouvelle mort arrive avant le res de la précédente
+                    if (lastDeath != null && death.Timestamp < lastDeath.TimestampRes)
+                    {
+                        // Le joueur est déjà mort, on étend la durée de la mort précédente
+                        if (death.TimestampRes > lastDeath.TimestampRes)
+                            lastDeath.TimestampRes = death.TimestampRes;
+
+                        // On fusionne les killers si besoin
+                        foreach (var killer in killers)
+                        {
+                            if (!lastDeath.KillingPlayers.Contains(killer))
+                                lastDeath.KillingPlayers.Add(killer);
+                        }
+                    }
+                    // Sinon, on ajoute une nouvelle mort
+                    else
+                    {
+                        player.PlayerDeaths.Add(death);
+                    }
                 }
             }
         }
