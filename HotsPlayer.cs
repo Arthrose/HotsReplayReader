@@ -63,6 +63,7 @@ namespace HotsReplayReader
         public string? TeamColor { get; set; }
         public TimeSpan TimeSpentAFK { get; set; } = TimeSpan.Zero;
         public List<TimeInterval> TimeSpentAFKIntervals { get; set; } = [];
+        public List<StormGameEvent> UserActionGameEvents { get; set; } = [];
         public List<StormGameEvent> UserGameEvents { get; set; } = [];
     }
     internal class PlayerDeath

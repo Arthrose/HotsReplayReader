@@ -1975,6 +1975,7 @@ namespace HotsReplayReader
                     {
                         if (gameEvent.MessageSender.BattleTagName == hotsPlayer?.BattleTagName)
                         {
+                            // hotsPlayer.UserGameEvents.Add(gameEvent); // Ajoute tous les evements d'un joueur pour debug
                             // Si l'event est pendant une déco, on n'en tient pas compte
                             bool isDuringDisconnect = false;
                             foreach (PlayerDisconnect? disconnect in playerDisconnects)
@@ -1996,7 +1997,7 @@ namespace HotsReplayReader
                                 && gameEvent.Timestamp > timeGateOpen
                             )
                             {
-                                hotsPlayer.UserGameEvents.Add(gameEvent);
+                                hotsPlayer.UserActionGameEvents.Add(gameEvent);
                             }
                         }
                     }
@@ -2033,7 +2034,7 @@ namespace HotsReplayReader
 
                         if (key == "PlayerID")
                             playerID = value;
-                        else if (key == "KillingPlayer")
+                        else if (key == "KillingPlayer" && value > 0)
                             killers.Add(hotsPlayers[value - 1]);
                     }
                 }
@@ -2313,7 +2314,7 @@ namespace HotsReplayReader
             TimeSpan lastTimestamp = timeGateOpen;
             TimeSpan AFKThreshold  = TimeSpan.FromSeconds(20);
 
-            foreach (StormGameEvent userGameEvent in hotsPlayer.UserGameEvents)
+            foreach (StormGameEvent userGameEvent in hotsPlayer.UserActionGameEvents)
             {
                 //Debug.WriteLine($"{hotsPlayer?.PlayerHero?.HeroName}: {gameEvent.GameEventType.ToString()} - {gameEvent.Timestamp}");
                 if (userGameEvent.Timestamp - lastTimestamp > AFKThreshold)
