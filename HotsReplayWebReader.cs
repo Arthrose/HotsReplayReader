@@ -76,6 +76,7 @@ namespace HotsReplayReader
         internal MatchAwards? matchAwards;
 
         internal DeepLTranslator? translator;
+        internal List<DeepLSupportedLanguage>? supportedLanguages;
 
         readonly private string welcomeHTML = $@"<html>
 <head>
@@ -244,6 +245,10 @@ namespace HotsReplayReader
                 throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error(), "Impossible d'ajouter le dossier au chemin des DLL");
             }
 
+            if (translator != null)
+                if (await translator.CheckApiKeyValidity())
+                    supportedLanguages = await translator.GetSupportedLanguages();
+
             CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, tempDataFolder);
             await webView.EnsureCoreWebView2Async(env);
 
@@ -299,12 +304,14 @@ namespace HotsReplayReader
                         string? callbackId = callbackIdElement.GetString();
                         // Récupère le texte à traduire
                         string? inputText = textElement.GetString();
-                        string translated = string.Empty;
+                        string translatedText = string.Empty;
+                        string detectedLanguage = string.Empty;
 
                         try
                         {
                             if (translator != null)
-                                translated = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
+                                (translatedText, detectedLanguage) = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
+                            MessageBox.Show(detectedLanguage);
                         }
                         catch (Exception ex)
                         {
@@ -313,7 +320,7 @@ namespace HotsReplayReader
                         }
 
                         // Sérialise le texte traduit en JSON
-                        string returnedText = JsonSerializer.Serialize(translated);
+                        string returnedText = JsonSerializer.Serialize(translatedText);
 
                         // Appelle le callback JavaScript puis nettoie
                         string script = $"window['{callbackId}']({returnedText}); delete window['{callbackId}'];";
@@ -400,6 +407,19 @@ namespace HotsReplayReader
                 string imageName = Path.GetFileNameWithoutExtension(fileName);
                 string extension = Path.GetExtension(fileName);
                 string? actions = null;
+
+                if (extension == ".svg")
+                {
+                    var resourceManager = Resources.Flags.ResourceManager;
+                    object? resource = resourceManager.GetObject(imageName);
+
+                    if (resource is byte[] svgBytes)
+                    {
+                        MemoryStream msSvg = new MemoryStream(svgBytes);
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(msSvg, 200, "OK", "Content-Type: image/svg+xml");
+                    }
+                    return;
+                }
 
                 if (!String.IsNullOrEmpty(uri.Query))
                     actions = HttpUtility.ParseQueryString(uri.Query)["actions"];
@@ -641,6 +661,7 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
+<br><img src=""app://Flags/asean.svg"" style=""width: 40px; height: 30px;"" alt=""France"" title=""France"">
 <br><br><br>
 <div class=""parentDiv"">
 ";

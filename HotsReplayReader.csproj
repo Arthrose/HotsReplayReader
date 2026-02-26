@@ -33,6 +33,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AbilityTalents.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Flags.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Flags.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\HeroesIcon.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -334,6 +339,10 @@
     <EmbeddedResource Update="Resources\AbilityTalents.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Abilitytalents.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Flags.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Flags.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\HeroesIcon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
