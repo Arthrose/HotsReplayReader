@@ -2863,6 +2863,9 @@
   <data name="storm_ui_icon_sylvanas_blackarrows" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_sylvanas_blackarrows.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="storm_ui_icon_sylvanas_blackarrows_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_sylvanas_blackarrows_b.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="storm_ui_icon_sylvanas_hauntingwave" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_sylvanas_hauntingwave.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

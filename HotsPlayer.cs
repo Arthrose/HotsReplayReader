@@ -36,26 +36,8 @@ namespace HotsReplayReader
         // Nouvelles propriétés
         public string? ComputerName { get; set; }
         public string? HeroUnitId { get; set; }
-        public int Kills { get; set; } = stormPlayer.ScoreResult?.SoloKills ?? 0;
-        public double MvpScore { get; set; } = 0;
-        public double? MvpScoreKills { get; set; }
-        public double? MvpScoreAssists { get; set; }
-        public double? MvpScoreTimeSpentDead { get; set; }
-        public double? MvpScoreWinningTeam { get; set; }
-        public double? MvpScoreTopHeroDamageOnTeam { get; set; }
-        public double? MvpScoreTopHeroDamage { get; set; }
-        public double? MvpScoreTopSiegeDamageOnTeam { get; set; }
-        public double? MvpScoreTopSiegeDamage { get; set; }
-        public double? MvpScoreTopXPContributionOnTeam { get; set; }
-        public double? MvpScoreTopXPContribution { get; set; }
-        public double? MvpScoreTopHealing { get; set; }
-        public double? MvpScoreTopDamageTakenOnTeam { get; set; }
-        public double? MvpScoreTopDamageTaken { get; set; }
-        public double? MvpScoreHeroDamageBonus { get; set; }
-        public double? MvpScoreSiegeDamageBonus { get; set; }
-        public double? MvpScoreHealingBonus { get; set; }
-        public double? MvpScoreXPContributionBonus { get; set; }
-        public double? MvpScoreDamageTakenBonus { get; set; }
+        //public int Kills { get; set; } = stormPlayer.ScoreResult?.SoloKills ?? 0;
+        public Mvp Mvp { get; set; } = new();
         public string? Party { get; set; }
         public HotsTeam? PlayerTeam { get; set; }
         public HotsTeam? EnemyTeam { get; set; }
@@ -65,6 +47,28 @@ namespace HotsReplayReader
         public List<TimeInterval> TimeSpentAFKIntervals { get; set; } = [];
         public List<StormGameEvent> UserActionGameEvents { get; set; } = [];
         public List<StormGameEvent> UserGameEvents { get; set; } = [];
+    }
+    internal class Mvp
+    {
+        public double Score { get; set; } = 0;
+        public double? Kills { get; set; }
+        public double? Assists { get; set; }
+        public double? TimeSpentDead { get; set; }
+        public double? WinningTeam { get; set; }
+        public double? TopHeroDamageOnTeam { get; set; }
+        public double? TopHeroDamage { get; set; }
+        public double? TopSiegeDamageOnTeam { get; set; }
+        public double? TopSiegeDamage { get; set; }
+        public double? TopXPContributionOnTeam { get; set; }
+        public double? TopXPContribution { get; set; }
+        public double? TopHealing { get; set; }
+        public double? TopDamageTakenOnTeam { get; set; }
+        public double? TopDamageTaken { get; set; }
+        public double? HeroDamageBonus { get; set; }
+        public double? SiegeDamageBonus { get; set; }
+        public double? HealingBonus { get; set; }
+        public double? XPContributionBonus { get; set; }
+        public double? DamageTakenBonus { get; set; }
     }
     internal class PlayerDeath
     {
