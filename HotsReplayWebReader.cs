@@ -132,7 +132,11 @@ namespace HotsReplayReader
                 sourceToolStripMenuItem.Visible = false;
 
             if (Init.config.DeepLAPIKey != null)
+            {
                 translator = new DeepLTranslator(Init.config.DeepLAPIKey);
+                if (translator != null)
+                    supportedLanguages = translator.GetSupportedLanguages();
+            }
 
             replayList = [];
 
@@ -245,10 +249,6 @@ namespace HotsReplayReader
                 throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error(), "Impossible d'ajouter le dossier au chemin des DLL");
             }
 
-            if (translator != null)
-                if (await translator.CheckApiKeyValidity())
-                    supportedLanguages = await translator.GetSupportedLanguages();
-
             CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, tempDataFolder);
             await webView.EnsureCoreWebView2Async(env);
 
@@ -311,7 +311,6 @@ namespace HotsReplayReader
                         {
                             if (translator != null)
                                 (translatedText, detectedLanguage) = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
-                            MessageBox.Show(detectedLanguage);
                         }
                         catch (Exception ex)
                         {
@@ -319,11 +318,19 @@ namespace HotsReplayReader
                             Console.WriteLine("Erreur : " + ex.Message);
                         }
 
-                        // Sérialise le texte traduit en JSON
-                        string returnedText = JsonSerializer.Serialize(translatedText);
+                        DeepLSupportedLanguage? DeepLSupportedLanguage =  supportedLanguages? .FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
+
+                        var resultObject = new
+                        {
+                            translatedText = translatedText,
+                            detectedLanguage = detectedLanguage,
+                            detectedLanguageName = DeepLSupportedLanguage.LanguageName
+                        };
+                        // Sérialise le texte traduit et le detected language en JSON
+                        string returnedJson = JsonSerializer.Serialize(resultObject);
 
                         // Appelle le callback JavaScript puis nettoie
-                        string script = $"window['{callbackId}']({returnedText}); delete window['{callbackId}'];";
+                        string script = $"window['{callbackId}']({returnedJson}); delete window['{callbackId}'];";
                         await webView.CoreWebView2.ExecuteScriptAsync(script);
                     }
                 }
@@ -949,9 +956,10 @@ namespace HotsReplayReader
       // Appelle la fonction translateWithCSharp pour traduire le texte
       translateWithCSharp(currentText)
         // Attends la réponse de la fonction
-        .then(translated => {
+        .then(result => {
           // Met à jour le texte du span avec le texte traduit
-          span.textContent = translated;
+          span.textContent = result.translatedText;
+          console.log(result.detectedLanguage + "" "" + result.detectedLanguageName);
         })
     });
   });

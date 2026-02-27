@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace HotsReplayReader
@@ -7,26 +8,16 @@ namespace HotsReplayReader
     {
         private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
+        internal List <DeepLSupportedLanguage>? DeepLSupportedLanguages;
 
-        public async Task<List<DeepLSupportedLanguage>?> GetSupportedLanguages()
+        public List<DeepLSupportedLanguage>? GetSupportedLanguages()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://api-free.deepl.com/v2/languages?type=target");
-            request.Headers.Add("Authorization", $"DeepL-Auth-Key {_apiKey}");
+            JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-            var response = await _httpClient.SendAsync(request);
+            string tmp = Encoding.UTF8.GetString(Resources.HotsResources.DeepLSupportedLanguages);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new Exception($"DeepL API error: {response.StatusCode} - {error}");
-            }
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            // Désérialisation de la réponse JSON directement dans une liste d'objets SupportedLanguage
-            var supportedLanguages = JsonSerializer.Deserialize<List<DeepLSupportedLanguage>>(json);
-
-            return supportedLanguages;
+            DeepLSupportedLanguages = JsonSerializer.Deserialize<List<DeepLSupportedLanguage>>(tmp, jsonOptions);
+            return DeepLSupportedLanguages;
         }
 
         public async Task<(string translatedText, string detectedLanguage)> TranslateText(string? text, string targetLang)

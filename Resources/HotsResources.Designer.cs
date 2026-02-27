@@ -102,6 +102,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] DeepLSupportedLanguages {
+            get {
+                object obj = ResourceManager.GetObject("DeepLSupportedLanguages", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] DownloadingBG {
             get {
                 object obj = ResourceManager.GetObject("DownloadingBG", resourceCulture);
