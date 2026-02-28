@@ -257,8 +257,11 @@ namespace HotsReplayReader
             webView.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = false;
 
             // Desactivation de la console
-            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
-            webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+            if (release)
+            {
+                webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+                webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+            }
             webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
@@ -306,6 +309,7 @@ namespace HotsReplayReader
                         string? inputText = textElement.GetString();
                         string translatedText = string.Empty;
                         string detectedLanguage = string.Empty;
+                        string detectedLanguageName = string.Empty;
 
                         try
                         {
@@ -318,13 +322,21 @@ namespace HotsReplayReader
                             Console.WriteLine("Erreur : " + ex.Message);
                         }
 
-                        DeepLSupportedLanguage? DeepLSupportedLanguage =  supportedLanguages? .FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
-
+                        DeepLSupportedLanguage? detectedLangInfo =  supportedLanguages?.FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
+                        if (detectedLangInfo == null)
+                        {
+                            detectedLanguage = "unknown";
+                            detectedLanguageName = "Unknown";
+                        }
+                        else
+                        {
+                            detectedLanguageName = detectedLangInfo.LanguageName;
+                        }
                         var resultObject = new
                         {
                             translatedText = translatedText,
                             detectedLanguage = detectedLanguage,
-                            detectedLanguageName = DeepLSupportedLanguage.LanguageName
+                            detectedLanguageName = detectedLanguageName
                         };
                         // Sérialise le texte traduit et le detected language en JSON
                         string returnedJson = JsonSerializer.Serialize(resultObject);
@@ -668,7 +680,6 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
-<br><img src=""app://Flags/asean.svg"" style=""width: 40px; height: 30px;"" alt=""France"" title=""France"">
 <br><br><br>
 <div class=""parentDiv"">
 ";
@@ -959,6 +970,11 @@ namespace HotsReplayReader
         .then(result => {
           // Met à jour le texte du span avec le texte traduit
           span.textContent = result.translatedText;
+          // Remplace l'icône de traduction par le drapeau de la langue traduite
+          const translateImg = element.querySelector("".chat-translate-img"");
+          if (translateImg) {
+            translateImg.innerHTML = '<img class=""translate-flag"" src=""app://flags/' + result.detectedLanguage.toLowerCase() + '.svg"" width=""24"" height=""18"" title=""' + result.detectedLanguageName + '"">';
+          }
           console.log(result.detectedLanguage + "" "" + result.detectedLanguageName);
         })
     });
@@ -992,7 +1008,7 @@ namespace HotsReplayReader
 
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
             if (hotsMessage.Translate)
-                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><img class=\"translate-icon\" style=\"float: right\" src=\"app://hotsResources/translate.png\" height=\"24\">\n";
+                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><span class=\"chat-translate-img\"><img class=\"translate-icon\" src=\"app://hotsResources/translate.png\" height=\"24\"></span>\n";
             else
                 html += $"    {hotsMessage.Message}\n";
             html += $"  </div>\n";

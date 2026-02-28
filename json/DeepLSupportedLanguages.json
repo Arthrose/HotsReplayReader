@@ -90,6 +90,11 @@
       "supports_formality":false
    },
    {
+      "language":"EN",
+      "name":"English",
+      "supports_formality":false
+   },
+   {
       "language":"EN-GB",
       "name":"English (British)",
       "supports_formality":false

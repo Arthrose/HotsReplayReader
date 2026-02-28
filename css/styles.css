@@ -193,6 +193,7 @@ tr {
   color: #fff;
   text-shadow: 1px 1px 3px black;
   line-height: 1.5;
+  position: relative;    /* Permet un positionnement absolu de l'image translate-icon */
 }
 .chat-time {
   font-family: Courier New, Consolas, Lucida Console;
@@ -214,6 +215,17 @@ tr {
 }
 .translate-icon {
   display: none;
+  position: absolute;    /* Positionner par rapport à .chat-message */
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.translate-flag {
+  display: inline-block;
+  position: absolute;    /* Positionner par rapport à .chat-message */
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .chat-message:hover .translate-icon {
   display: inline-block;

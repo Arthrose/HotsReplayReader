@@ -323,9 +323,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] bg {
+        internal static byte[] bg1 {
             get {
-                object obj = ResourceManager.GetObject("bg", resourceCulture);
+                object obj = ResourceManager.GetObject("bg1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -796,6 +796,16 @@ namespace HotsReplayReader.Resources {
         internal static byte[] eh {
             get {
                 object obj = ResourceManager.GetObject("eh", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] en {
+            get {
+                object obj = ResourceManager.GetObject("en", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -2576,6 +2586,16 @@ namespace HotsReplayReader.Resources {
         internal static byte[] un {
             get {
                 object obj = ResourceManager.GetObject("un", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] unknown {
+            get {
+                object obj = ResourceManager.GetObject("unknown", resourceCulture);
                 return ((byte[])(obj));
             }
         }
