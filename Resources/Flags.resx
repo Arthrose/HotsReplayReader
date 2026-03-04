@@ -187,7 +187,7 @@
   <data name="bf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\bf.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="bg1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="bg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\bg.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="bh" type="System.Resources.ResXFileRef, System.Windows.Forms">

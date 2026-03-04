@@ -975,7 +975,6 @@ namespace HotsReplayReader
           if (translateImg) {
             translateImg.innerHTML = '<img class=""translate-flag"" src=""app://flags/' + result.detectedLanguage.toLowerCase() + '.svg"" width=""24"" height=""18"" title=""' + result.detectedLanguageName + '"">';
           }
-          console.log(result.detectedLanguage + "" "" + result.detectedLanguageName);
         })
     });
   });

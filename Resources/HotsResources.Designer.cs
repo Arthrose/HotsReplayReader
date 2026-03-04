@@ -61,7 +61,7 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Useless.
+        ///   Looks up a localized string similar to Uselesss.
         /// </summary>
         internal static string _Useless {
             get {
