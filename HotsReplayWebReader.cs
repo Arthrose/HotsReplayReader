@@ -2081,7 +2081,7 @@ namespace HotsReplayReader
 
                         if (key == "PlayerID")
                             playerID = value;
-                        else if (key == "KillingPlayer" && value > 0)
+                        else if (key == "KillingPlayer" && value > 0 && value - 1 >= 0 && value - 1 < hotsPlayers.Length)
                             killers.Add(hotsPlayers[value - 1]);
                     }
                 }
