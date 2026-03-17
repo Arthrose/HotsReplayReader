@@ -1,6 +1,17 @@
 ﻿// https://github.com/HeroesToolChest/heroes-data
 // https://github.com/HeroesToolChest/heroes-images
 
+using System.Data;
+using System.Diagnostics;
+using System.Globalization;
+using System.Net.Http.Headers;
+using System.Numerics;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Web;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.Models.AbilityTalents;
@@ -10,16 +21,6 @@ using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Web;
 
 namespace HotsReplayReader
 {
@@ -2092,7 +2093,10 @@ namespace HotsReplayReader
                     KillingPlayers = killers
                 };
 
-                HotsPlayer player = hotsPlayers[playerID - 1];
+                HotsPlayer? player = null;
+                if (playerID > 0 && playerID - 1 >= 0 && playerID - 1 < hotsPlayers.Length)
+                    player = hotsPlayers[playerID - 1];
+
                 if (player != null)
                 {
                     IReadOnlyList<Heroes.StormReplayParser.Replay.StormTeamLevel>? levels = hotsReplay?.stormReplay.GetTeamLevels(player.Team);
