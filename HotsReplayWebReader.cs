@@ -5,7 +5,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
-using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,21 +26,7 @@ namespace HotsReplayReader
     public partial class HotsReplayWebReader : Form
     {
         readonly internal string defaultLangCode = "en-US";
-        public Dictionary<string, string> LangCodeList = new()
-        {
-            ["de-DE"] = "Deutsch",
-            ["en-US"] = "English",
-            ["es-ES"] = "Español (España)",
-            ["es-MX"] = "Español (México)",
-            ["fr-FR"] = "Français",
-            ["it-IT"] = "Italiano",
-            ["ko-KR"] = "한국어",
-            ["pl-PL"] = "Polski",
-            ["pt-BR"] = "Português",
-            ["ru-RU"] = "Русский",
-            ["zh-TW"] = "中文"
-        };
-
+        readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
         readonly bool release = false;
 
         readonly bool fetchHero = false;
@@ -117,7 +102,7 @@ namespace HotsReplayReader
             File.WriteAllBytes(webViewDllPath, webViewDllBytes);
 
             // Charge la dernière langue utilisée
-            if (Init.config!.LangCode != null && LangCodeList.ContainsKey(Init.config.LangCode))
+            if (Init.config!.LangCode != null && LangCodeList.Contains(Init.config.LangCode))
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
             }
@@ -162,18 +147,18 @@ namespace HotsReplayReader
 
             ToolStripMenuItem[] languageToolStripMenu = new ToolStripMenuItem[LangCodeList.Count];
             int j = 0;
-            foreach (KeyValuePair<string, string> lang in LangCodeList)
+            foreach (string lang in LangCodeList)
             {
                 languageToolStripMenu[j] = new ToolStripMenuItem
                 {
-                    Name = lang.Key,
-                    Tag = lang.Key,
-                    Text = lang.Value
+                    Name = lang,
+                    Tag = lang,
+                    Text = Resources.Language.i18n.ResourceManager.GetString("Language", new CultureInfo(lang))
                 };
                 languageToolStripMenu[j].Click += new EventHandler(LanguageMenuItemClickHandler);
                 languageToolStripMenu[j].CheckOnClick = true;
 
-                if (lang.Key == Init.config.LangCode)
+                if (lang == Init.config.LangCode)
                     languageToolStripMenu[j].Checked = true;
 
                 j++;
@@ -331,7 +316,7 @@ namespace HotsReplayReader
                         }
                         else
                         {
-                            detectedLanguageName = detectedLangInfo.LanguageName;
+                            detectedLanguageName = detectedLangInfo.LanguageName ?? "Unknown";
                         }
                         var resultObject = new
                         {
