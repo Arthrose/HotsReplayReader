@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HotsReplayWebReader));
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            propertiesToolStripMenuItem = new ToolStripMenuItem();
             browseToolStripMenuItem = new ToolStripMenuItem();
             sourceToolStripMenuItem = new ToolStripMenuItem();
+            propertiesToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             regionToolStripMenuItem = new ToolStripMenuItem();
             americasRegionToolStripMenuItem = new ToolStripMenuItem();
@@ -64,31 +64,31 @@
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = Resources.Language.i18n.strMenuFile;
             // 
-            // propertiesToolStripMenuItem
-            // 
-            propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            propertiesToolStripMenuItem.Size = new Size(180, 22);
-            propertiesToolStripMenuItem.Text = Resources.Language.i18n.strProperties;
-            propertiesToolStripMenuItem.Click += PropertiesToolStripMenuItem_Click;
-            // 
             // browseToolStripMenuItem
             // 
             browseToolStripMenuItem.Name = "browseToolStripMenuItem";
-            browseToolStripMenuItem.Size = new Size(180, 22);
+            browseToolStripMenuItem.Size = new Size(127, 22);
             browseToolStripMenuItem.Text = Resources.Language.i18n.strMenuBrowse;
             browseToolStripMenuItem.Click += BrowseToolStripMenuItem_Click;
             // 
             // sourceToolStripMenuItem
             // 
             sourceToolStripMenuItem.Name = "sourceToolStripMenuItem";
-            sourceToolStripMenuItem.Size = new Size(180, 22);
+            sourceToolStripMenuItem.Size = new Size(127, 22);
             sourceToolStripMenuItem.Text = Resources.Language.i18n.strMenuSource;
             sourceToolStripMenuItem.Click += SourceToolStripMenuItem_Click;
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            propertiesToolStripMenuItem.Size = new Size(127, 22);
+            propertiesToolStripMenuItem.Text = Resources.Language.i18n.strProperties;
+            propertiesToolStripMenuItem.Click += PropertiesToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(127, 22);
             exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
             exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
             // 
@@ -103,7 +103,7 @@
             // 
             americasRegionToolStripMenuItem.CheckOnClick = true;
             americasRegionToolStripMenuItem.Name = "americasRegionToolStripMenuItem";
-            americasRegionToolStripMenuItem.Size = new Size(180, 22);
+            americasRegionToolStripMenuItem.Size = new Size(123, 22);
             americasRegionToolStripMenuItem.Tag = "1";
             americasRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAmercas;
             americasRegionToolStripMenuItem.Click += RegionToolStripMenuItem_Click;
@@ -112,7 +112,7 @@
             // 
             europeRegionToolStripMenuItem.CheckOnClick = true;
             europeRegionToolStripMenuItem.Name = "europeRegionToolStripMenuItem";
-            europeRegionToolStripMenuItem.Size = new Size(180, 22);
+            europeRegionToolStripMenuItem.Size = new Size(123, 22);
             europeRegionToolStripMenuItem.Tag = "2";
             europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
             europeRegionToolStripMenuItem.Click += RegionToolStripMenuItem_Click;
@@ -121,7 +121,7 @@
             // 
             asiaRegionToolStripMenuItem.CheckOnClick = true;
             asiaRegionToolStripMenuItem.Name = "asiaRegionToolStripMenuItem";
-            asiaRegionToolStripMenuItem.Size = new Size(180, 22);
+            asiaRegionToolStripMenuItem.Size = new Size(123, 22);
             asiaRegionToolStripMenuItem.Tag = "3";
             asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
             asiaRegionToolStripMenuItem.Click += RegionToolStripMenuItem_Click;
@@ -177,7 +177,7 @@
             MainMenuStrip = menuStrip;
             MinimumSize = new Size(1041, 490);
             Name = "HotsReplayWebReader";
-            Text = "Hots Replay Reader";
+            Text = "HotS Replay Reader";
             FormClosed += HotsReplayWebReader_FormClosed;
             Load += HotsReplayWebReader_Load;
             menuStrip.ResumeLayout(false);

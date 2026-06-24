@@ -1047,91 +1047,169 @@ namespace HotsReplayReader
         private string HTMLGetScoreTable()
         {
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
-            string html = @$"<table class=""tableScoreAndTalents"">
-  <tr class=""freeHeight"">
-    <td></td>
-    <td></td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
-        <span class=""tooltipHero tooltipScoreHeaderLeft"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
+
+            string html = @"<script>
+  document.addEventListener(""DOMContentLoaded"", () => {
+    const table = document.getElementById(""statsTable"");
+    const headers = table.querySelectorAll(""thead td"");
+    let activeIndex = null;
+    function parseValue(text, type) {
+      if (!text) return 0;
+      text = text.replace(/\u00a0/g, """").trim();
+      if (type === ""time"") {
+        const parts = text.split("":"").map(Number);
+        // hh:mm:ss
+        if (parts.length === 3) {
+          const [h, m, s] = parts;
+          return h * 3600 + m * 60 + s;
+        }
+        // mm:ss
+        if (parts.length === 2) {
+          const [m, s] = parts;
+          return m * 60 + s;
+        }
+        return 0;
+      }
+      if (type === ""number"") {
+        const num = parseFloat(
+          text.replace(/\s/g, """").replace("","", ""."")
+        );
+        return isNaN(num) ? 0 : num;
+      }
+      return text.toLowerCase();
+    }
+  
+    function clearHighlight() {
+      table.querySelectorAll("".active-col"").forEach(el => {
+        el.classList.remove(""active-col"");
+      });
+    }
+  
+    headers.forEach((header, index) => {
+      header.style.cursor = ""pointer"";
+      header.addEventListener(""click"", () => {
+        const tbody = table.querySelector(""tbody"");
+        const rows = Array.from(tbody.querySelectorAll(""tr""));
+        const type = header.dataset.type || ""string"";
+        let asc;
+        if (activeIndex !== index) {
+          asc = false;
+        } else {
+          asc = header.dataset.order === ""asc"";
+        }
+        header.dataset.order = asc ? ""desc"" : ""asc"";
+        activeIndex = index;
+        rows.sort((a, b) => {
+          const A = parseValue(a.children[index]?.innerText, type);
+          const B = parseValue(b.children[index]?.innerText, type);
+          if (type === ""string"") {
+            return asc
+              ? String(A).localeCompare(String(B))
+              : String(B).localeCompare(String(A));
+          }
+          return asc ? A - B : B - A;
+        });
+        tbody.innerHTML = """";
+        rows.forEach(r => tbody.appendChild(r));
+        clearHighlight();
+        tbody.querySelectorAll(""tr"").forEach(row => {
+          const cell = row.children[index];
+          if (cell) cell.classList.add(""active-col"");
+        });
+      });
+    });
+  });
+</script>
+";
+
+            html += @$"<table class=""tableScoreAndTalents"" id=""statsTable"">
+  <thead>
+    <tr class=""freeHeight"">
+      <td></td>
+      <td></td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
+          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
-        <span class=""tooltipHero tooltipScoreHeaderLeft"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
+          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
-        <span class=""tooltipHero tooltipScoreHeaderLeft"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
+          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
-        <span class=""tooltipHero tooltipScoreHeaderLeft"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""time"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
+          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
-        <span class=""tooltipHero tooltipScoreHeaderRight"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
+          <span class=""tooltipHero tooltipScoreHeaderRight"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
-        <span class=""tooltipHero tooltipScoreHeaderRight"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
+          <span class=""tooltipHero tooltipScoreHeaderRight"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
-        <span class=""tooltipHero tooltipScoreHeaderRight"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
+          <span class=""tooltipHero tooltipScoreHeaderRight"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
-        <span class=""tooltipHero tooltipScoreHeaderRight"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
+          <span class=""tooltipHero tooltipScoreHeaderRight"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
-        <span class=""tooltipHero tooltipScoreHeaderRight"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
+          <span class=""tooltipHero tooltipScoreHeaderRight"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-    <td class=""teamHeader tdBorders"">
-      <span class=""tooltip"">
-        <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
-        <span class=""tooltipHero tooltipScoreHeaderRight"">
-          <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
+      </td>
+      <td class=""teamHeader tdBorders"" data-type=""number"">
+        <span class=""tooltip"">
+          <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
+          <span class=""tooltipHero tooltipScoreHeaderRight"">
+            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
+          </span>
         </span>
-      </span>
-    </td>
-  </tr>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
 ";
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
@@ -1140,7 +1218,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                     html += HTMLGetScoreTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
 
-            html += "</table>\n<br><br>\n";
+            html += "  </tbody>\n</table>\n<br><br>\n";
 
             return html;
         }
@@ -1167,55 +1245,55 @@ namespace HotsReplayReader
             }
 
             string html = @"";
-            html += $"  <tr class=\"team{team.Name}\">\n";
-            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
-            html += $"    <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
+            html += $"    <tr class=\"team{team.Name}\">\n";
+            html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+            html += $"      <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.SoloKills == team.MaxKills)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.SoloKills}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.Assists == team.MaxAssists)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Assists}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.Deaths == team.MaxDeaths)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Deaths}</td>\n";
 
-            html += $"    <td class=\"tdBorders\">{timeSpentDead}</td>\n";
+            html += $"      <td class=\"tdBorders\">{timeSpentDead}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.SiegeDamage == team.MaxSiegeDmg)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.SiegeDamage:n0}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.HeroDamage == team.MaxHeroDmg)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.HeroDamage:n0}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if ((hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing) == team.MaxTotalHealing)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing:n0}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.DamageTaken == team.MaxDmgTaken)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.DamageTaken:n0}</td>\n";
 
-            html += "    <td class=\"tdBorders";
+            html += "      <td class=\"tdBorders";
             if (hotsPlayer.ScoreResult.ExperienceContribution == team.MaxExp)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
             // MVP Score with tooltip
-            html += "    <td class=\"tooltip-cell tdBorders\">\n";
-            html += "      <span class=\"tooltip\">\n        ";
+            html += "      <td class=\"tooltip-cell tdBorders\">\n";
+            html += "        <span class=\"tooltip\">\n          ";
             if (hotsPlayer.MatchAwardsCount > 0 && hotsPlayer.MatchAwards != null)
                 if (hotsPlayer.MatchAwards[0].ToString() == "MVP")
                     html += "<span class=\"teamBestScore\">";
@@ -1310,9 +1388,9 @@ namespace HotsReplayReader
             // if (hotsPlayer.ScoreResult.OnFireTimeonFire != null && hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds > 0) html += $"<br>\n            TimeOnFire:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ffd700\">{hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds} s</font><br>\n";
 
             html += "          </span>\n";
-            html += "      </span>\n";
-            html += "    </td>\n";
-            html += "  </tr>\n";
+            html += "        </span>\n";
+            html += "      </td>\n";
+            html += "    </tr>\n";
             return html;
         }
         private string HTMLGetTalentsTable()

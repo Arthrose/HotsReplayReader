@@ -239,6 +239,9 @@ tr {
   font-family: Calibri;
   width: 100%;
 }
+.active-col {
+  background-color: rgba(255, 255, 255, 0.08);
+}
 .tableScoreAndTalents tr {
   height: 64px;
 }

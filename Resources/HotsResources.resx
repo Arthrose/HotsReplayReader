@@ -164,7 +164,7 @@
     <value>..\images\HotsResources\KillsRed.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="_Useless" xml:space="preserve">
-    <value>Useless</value>
+    <value>Uselesss</value>
     <comment>A modifier pour forcer l'update de sytle.css</comment>
   </data>
   <data name="WebView2Loader" type="System.Resources.ResXFileRef, System.Windows.Forms">
