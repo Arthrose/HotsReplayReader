@@ -1,15 +1,6 @@
 ﻿// https://github.com/HeroesToolChest/heroes-data
 // https://github.com/HeroesToolChest/heroes-images
 
-using Heroes.Icons.DataDocument;
-using Heroes.Models;
-using Heroes.Models.AbilityTalents;
-using Heroes.StormReplayParser.Decoders;
-using Heroes.StormReplayParser.GameEvent;
-using Heroes.StormReplayParser.Player;
-using Heroes.StormReplayParser.TrackerEvent;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Win32;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
@@ -20,27 +11,22 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
+using Heroes.Icons.DataDocument;
+using Heroes.Models;
+using Heroes.Models.AbilityTalents;
+using Heroes.StormReplayParser.Decoders;
+using Heroes.StormReplayParser.GameEvent;
+using Heroes.StormReplayParser.Player;
+using Heroes.StormReplayParser.TrackerEvent;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Win32;
 
 namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
         readonly internal string defaultLangCode = "en-US";
-        public Dictionary<string, string> LangCodeList = new()
-        {
-            ["de-DE"] = "Deutsch",
-            ["en-US"] = "English",
-            ["es-ES"] = "Español (España)",
-            ["es-MX"] = "Español (México)",
-            ["fr-FR"] = "Français",
-            ["it-IT"] = "Italiano",
-            ["ko-KR"] = "한국어",
-            ["pl-PL"] = "Polski",
-            ["pt-BR"] = "Português",
-            ["ru-RU"] = "Русский",
-            ["zh-TW"] = "中文"
-        };
-
+        readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
         readonly bool release = false;
 
         readonly bool fetchHero = false;
@@ -116,7 +102,7 @@ namespace HotsReplayReader
             File.WriteAllBytes(webViewDllPath, webViewDllBytes);
 
             // Charge la dernière langue utilisée
-            if (Init.config!.LangCode != null && LangCodeList.ContainsKey(Init.config.LangCode))
+            if (Init.config!.LangCode != null && LangCodeList.Contains(Init.config.LangCode))
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
             }
@@ -161,18 +147,18 @@ namespace HotsReplayReader
 
             ToolStripMenuItem[] languageToolStripMenu = new ToolStripMenuItem[LangCodeList.Count];
             int j = 0;
-            foreach (KeyValuePair<string, string> lang in LangCodeList)
+            foreach (string lang in LangCodeList)
             {
                 languageToolStripMenu[j] = new ToolStripMenuItem
                 {
-                    Name = lang.Key,
-                    Tag = lang.Key,
-                    Text = lang.Value
+                    Name = lang,
+                    Tag = lang,
+                    Text = Resources.Language.i18n.ResourceManager.GetString("Language", new CultureInfo(lang))
                 };
                 languageToolStripMenu[j].Click += new EventHandler(LanguageMenuItemClickHandler);
                 languageToolStripMenu[j].CheckOnClick = true;
 
-                if (lang.Key == Init.config.LangCode)
+                if (lang == Init.config.LangCode)
                     languageToolStripMenu[j].Checked = true;
 
                 j++;
@@ -330,7 +316,7 @@ namespace HotsReplayReader
                         }
                         else
                         {
-                            detectedLanguageName = detectedLangInfo.LanguageName;
+                            detectedLanguageName = detectedLangInfo.LanguageName ?? "Unknown";
                         }
                         var resultObject = new
                         {
@@ -975,7 +961,6 @@ namespace HotsReplayReader
           if (translateImg) {
             translateImg.innerHTML = '<img class=""translate-flag"" src=""app://flags/' + result.detectedLanguage.toLowerCase() + '.svg"" width=""24"" height=""18"" title=""' + result.detectedLanguageName + '"">';
           }
-          console.log(result.detectedLanguage + "" "" + result.detectedLanguageName);
         })
     });
   });
@@ -2160,7 +2145,7 @@ namespace HotsReplayReader
 
                         if (key == "PlayerID")
                             playerID = value;
-                        else if (key == "KillingPlayer" && value > 0)
+                        else if (key == "KillingPlayer" && value > 0 && value - 1 >= 0 && value - 1 < hotsPlayers.Length)
                             killers.Add(hotsPlayers[value - 1]);
                     }
                 }
@@ -2171,7 +2156,10 @@ namespace HotsReplayReader
                     KillingPlayers = killers
                 };
 
-                HotsPlayer player = hotsPlayers[playerID - 1];
+                HotsPlayer? player = null;
+                if (playerID > 0 && playerID - 1 >= 0 && playerID - 1 < hotsPlayers.Length)
+                    player = hotsPlayers[playerID - 1];
+
                 if (player != null)
                 {
                     IReadOnlyList<Heroes.StormReplayParser.Replay.StormTeamLevel>? levels = hotsReplay?.stormReplay.GetTeamLevels(player.Team);

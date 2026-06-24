@@ -330,4 +330,7 @@
   <data name="strTimeSpentAFK" xml:space="preserve">
     <value>AFK&amp;nbsp;</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Français</value>
+  </data>
 </root>
