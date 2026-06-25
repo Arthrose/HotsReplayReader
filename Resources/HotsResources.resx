@@ -145,6 +145,9 @@
   <data name="noAbility" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\noAbility.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\copy.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="translate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\translate.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -163,8 +166,8 @@
   <data name="KillsRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\KillsRed.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="_Useless" xml:space="preserve">
-    <value>Uselesss</value>
+  <data name="1Useless" xml:space="preserve">
+    <value>Useless</value>
     <comment>A modifier pour forcer l'update de sytle.css</comment>
   </data>
   <data name="WebView2Loader" type="System.Resources.ResXFileRef, System.Windows.Forms">

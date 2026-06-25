@@ -10,11 +10,13 @@
         public string? Seconds { get; set; }
         public string? MilliSeconds { get; set; }
         public bool Translate { get; set; }
-        public HotsMessage(HotsPlayer HotsPlayer, TimeSpan? TimeStamp, string Message, bool translate = true)
+        public string? Verbatim { get; set; } = null;
+        public HotsMessage(HotsPlayer HotsPlayer, TimeSpan? TimeStamp, string Message, string? Verbatim, bool translate = true)
         {
             this.HotsPlayer = HotsPlayer;
             this.Message = Message;
             this.Translate = translate;
+            if (Verbatim != null) this.Verbatim = HotsPlayer.BattleTagName + ": " + Verbatim.Replace("\u000E", "").Replace("\u000F", ""); ;
 
             if (TimeStamp != null)
             {

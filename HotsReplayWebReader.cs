@@ -20,6 +20,7 @@ using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HotsReplayReader
 {
@@ -273,6 +274,13 @@ namespace HotsReplayReader
                 {
                     // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
+
+                    //Vérifie si l'action est "copyTextToClipboard"
+                    if (action == "copyTextToClipboard")
+                    {
+                        Debug.WriteLine("copyTextToClipboard: " + root.GetProperty("text").GetString() ?? "");
+                        Clipboard.SetText(root.GetProperty("text").GetString() ?? "");
+                    }
 
                     // Vérifie si l'action est "closeMenu"
                     if (action == "closeMenu")
@@ -667,9 +675,17 @@ namespace HotsReplayReader
       }};
     }});
   }}
+
+  function copyTextToClipboard(text) {{
+    window.chrome.webview.postMessage({{
+      action: ""copyTextToClipboard"",
+      text: text
+    }});
+  }}
 </script>
 </head>
 <body>
+<div class=""sidebar"">R E P L A Y S</div>
 <br><br><br>
 <div class=""parentDiv"">
 ";
@@ -782,7 +798,8 @@ namespace HotsReplayReader
             html += $"      <td class=\"headTableTd\">\n";
             html += "        <span class=\"tooltip\">\n";
             html += "          <span class=\"heroPortrait\">\n";
-            html += $"            <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\">\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+
+            html += $"            <img src=\"app://heroesIcon/{Init.HeroNameFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
@@ -922,15 +939,15 @@ namespace HotsReplayReader
             {
                 string msg = HTMLGetChatMessageEmoticon(((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text);
                 if (chatMessage.MessageSender != null && GetHotsPlayer(chatMessage.MessageSender.BattleTagName) != null)
-                    hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg));
+                    hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
             }
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.PlayerDisconnects)
                 {
-                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From, $"<span class=\"disconnected\">{Resources.Language.i18n.strDisconnected}</span>", false));
+                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From, $"<span class=\"disconnected\">{Resources.Language.i18n.strDisconnected}</span>", null, false));
                     if (playerDisconnect.To != null)
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", false));
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", null, false));
                 }
             }
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
@@ -947,27 +964,45 @@ namespace HotsReplayReader
                 }
                 html += "</div>\n";
 
-                if (DeepLAPIValid)
-                    html += @"<script>
-  // Selectionne tous les elements avec la classe chat-message et ajoute un evenement de clic
-  document.querySelectorAll("".chat-message"").forEach(function (element) {
-    element.addEventListener(""click"", function () {
-      // Récupère le texte du span avec la classe chat-message-corps
-      const span = element.querySelector("".chat-message-corps"");
-      const currentText = span.textContent;
-      // Appelle la fonction translateWithCSharp pour traduire le texte
-      translateWithCSharp(currentText)
-        // Attends la réponse de la fonction
-        .then(result => {
-          // Met à jour le texte du span avec le texte traduit
-          span.textContent = result.translatedText;
-          // Remplace l'icône de traduction par le drapeau de la langue traduite
-          const translateImg = element.querySelector("".chat-translate-img"");
-          if (translateImg) {
-            translateImg.innerHTML = '<img class=""translate-flag"" src=""app://flags/' + result.detectedLanguage.toLowerCase() + '.svg"" width=""24"" height=""18"" title=""' + result.detectedLanguageName + '"">';
-          }
-        })
-    });
+                html += @"<script>
+  const chatContainer = document.querySelector("".chat-container"");
+
+  chatContainer.addEventListener(""click"", async function (event) {
+    const copyIcon = event.target.closest("".copy-icon"");
+    const translateIcon = event.target.closest("".translate-icon"");
+    if (!copyIcon && !translateIcon) return;
+
+    const message = event.target.closest("".chat-message"");
+    if (!message) return;
+
+    const verbatimEl = message.querySelector("".chat-verbatim"");
+    const bodyEl = message.querySelector("".chat-message-corps"");
+
+    if (copyIcon) {
+      const textToCopy = verbatimEl ? verbatimEl.textContent : (bodyEl ? bodyEl.textContent : """");
+      copyTextToClipboard(textToCopy);
+      event.stopPropagation();
+      return;
+    }
+
+    if (translateIcon) {
+      if (!bodyEl) return;
+
+      const textToTranslate = bodyEl.textContent;
+      const result = await translateWithCSharp(textToTranslate);
+
+      bodyEl.textContent = result.translatedText;
+
+      const flag = document.createElement(""img"");
+      flag.className = ""translate-flag"";
+      flag.src = ""app://flags/"" + result.detectedLanguage.toLowerCase() + "".svg"";
+      flag.width = 24;
+      flag.height = 18;
+      flag.title = result.detectedLanguageName;
+
+      translateIcon.replaceWith(flag);
+      event.stopPropagation();
+    }
   });
 </script>
 <br><br>";
@@ -988,6 +1023,8 @@ namespace HotsReplayReader
             string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[hotsMessage.HotsPlayer.PlayerHero.HeroId];
 
             string html = "  <div class=\"chat-message\">\n";
+            if (hotsMessage.Translate)
+                html += $"    <span class=\"chat-verbatim\" style=\"display: none;\">{hotsMessage.Verbatim}</span>\n";
             if (lastMessageAfterAnHour)
                 html += $"    <span class=\"chat-time\">[{msgHours}:{msgMinutes}:{msgSeconds}]</span>\n";
             else
@@ -999,7 +1036,7 @@ namespace HotsReplayReader
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
             if (hotsMessage.Translate)
             {
-                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><span class=\"chat-translate-img\">";
+                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><span class=\"chat-icons\"><img class=\"copy-icon\" src=\"app://hotsResources/copy.png\" height=\"24\">";
                 if (DeepLAPIValid)
                     html += $"<img class=\"translate-icon\" src=\"app://hotsResources/translate.png\" height=\"24\">";
                 html += $"</span>\n";
@@ -2422,9 +2459,9 @@ namespace HotsReplayReader
             || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId)
             ) return TimeSpan.Zero;
 
-            TimeSpan timeSpentAFK = TimeSpan.Zero;
+            TimeSpan timeSpentAFK  = TimeSpan.Zero;
             TimeSpan lastTimestamp = timeGateOpen;
-            TimeSpan AFKThreshold = TimeSpan.FromSeconds(20);
+            TimeSpan AFKThreshold  = TimeSpan.FromSeconds(20);
 
             foreach (StormGameEvent userGameEvent in hotsPlayer.UserActionGameEvents)
             {
@@ -2471,8 +2508,8 @@ namespace HotsReplayReader
             bool hasDeath = false;
             foreach (PlayerDeath? death in playerDeaths)
             {
-                TimeSpan deathStart = death.Timestamp;
-                TimeSpan deathEnd = death.TimestampRes;
+                TimeSpan deathStart   = death.Timestamp;
+                TimeSpan deathEnd     = death.TimestampRes;
                 TimeSpan deathSeconds = death.TimestampRes - death.Timestamp;
 
                 // Mort hors [from, to]
@@ -2483,9 +2520,9 @@ namespace HotsReplayReader
 
                 // Coupe l'intervalle en : avant mort, mort, après mort
                 TimeSpan beforeStart = from;
-                TimeSpan beforeEnd = deathStart < from ? from : deathStart;
-                TimeSpan afterStart = deathEnd > to ? to : deathEnd;
-                TimeSpan afterEnd = to;
+                TimeSpan beforeEnd   = deathStart < from ? from : deathStart;
+                TimeSpan afterStart  = deathEnd > to ? to : deathEnd;
+                TimeSpan afterEnd    = to;
 
                 TimeSpan before = beforeEnd > beforeStart ? beforeEnd - beforeStart : TimeSpan.Zero;
                 TimeSpan deathTimeSpan = (deathEnd > from && deathStart < to)

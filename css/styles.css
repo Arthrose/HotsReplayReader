@@ -8,6 +8,23 @@ body {
   cursor: default;
   user-select: none;
 }
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 30px;
+    font-family: Calibri, Arial, sans-serif;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 table {
   margin-left: auto;
   margin-right: auto;
@@ -138,6 +155,7 @@ tr {
 .teamHeader {
   background-color: #000000;
   font-family: Consolas, Lucida Console, Courier New;
+  font-weight: normal;
 }
 .teamScoreHeader {
   background-color: black;
@@ -213,6 +231,13 @@ tr {
 .chat-image-emoticon {
   height: 26px;
 }
+.copy-icon {
+    display: none;
+    position: absolute; /* Positionner par rapport à .chat-message */
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 .translate-icon {
   display: none;
   position: absolute;    /* Positionner par rapport à .chat-message */
@@ -226,6 +251,9 @@ tr {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+}
+.chat-message:hover .copy-icon {
+  display: inline-block;
 }
 .chat-message:hover .translate-icon {
   display: inline-block;

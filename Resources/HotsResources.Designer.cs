@@ -61,11 +61,11 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uselesss.
+        ///   Looks up a localized string similar to Useless.
         /// </summary>
-        internal static string _Useless {
+        internal static string _1Useless {
             get {
-                return ResourceManager.GetString("_Useless", resourceCulture);
+                return ResourceManager.GetString("1Useless", resourceCulture);
             }
         }
         
@@ -96,6 +96,16 @@ namespace HotsReplayReader.Resources {
             get {
                 object obj = ResourceManager.GetObject("abilityIconBorderRed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

@@ -175,7 +175,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MainMenuStrip = menuStrip;
-            MinimumSize = new Size(1041, 490);
+            MinimumSize = new Size(1331, 490);
             Name = "HotsReplayWebReader";
             Text = "HotS Replay Reader";
             FormClosed += HotsReplayWebReader_FormClosed;
