@@ -63,6 +63,7 @@ namespace HotsReplayReader
 
         internal DeepLTranslator? translator;
         internal List<DeepLSupportedLanguage>? supportedLanguages;
+        internal bool DeepLAPIValid = false;
 
         readonly private string welcomeHTML = $@"<html>
 <head>
@@ -121,7 +122,10 @@ namespace HotsReplayReader
             {
                 translator = new DeepLTranslator(Init.config.DeepLAPIKey);
                 if (translator != null)
+                {
+                    DeepLAPIValid = true;
                     supportedLanguages = translator.GetSupportedLanguages();
+                }
             }
 
             replayList = [];
@@ -308,7 +312,7 @@ namespace HotsReplayReader
                             Console.WriteLine("Erreur : " + ex.Message);
                         }
 
-                        DeepLSupportedLanguage? detectedLangInfo =  supportedLanguages?.FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
+                        DeepLSupportedLanguage? detectedLangInfo = supportedLanguages?.FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
                         if (detectedLangInfo == null)
                         {
                             detectedLanguage = "unknown";
@@ -943,7 +947,8 @@ namespace HotsReplayReader
                 }
                 html += "</div>\n";
 
-                html += @"<script>
+                if (DeepLAPIValid)
+                    html += @"<script>
   // Selectionne tous les elements avec la classe chat-message et ajoute un evenement de clic
   document.querySelectorAll("".chat-message"").forEach(function (element) {
     element.addEventListener(""click"", function () {
@@ -993,7 +998,12 @@ namespace HotsReplayReader
 
             html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
             if (hotsMessage.Translate)
-                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><span class=\"chat-translate-img\"><img class=\"translate-icon\" src=\"app://hotsResources/translate.png\" height=\"24\"></span>\n";
+            {
+                html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><span class=\"chat-translate-img\">";
+                if (DeepLAPIValid)
+                    html += $"<img class=\"translate-icon\" src=\"app://hotsResources/translate.png\" height=\"24\">";
+                html += $"</span>\n";
+            }
             else
                 html += $"    {hotsMessage.Message}\n";
             html += $"  </div>\n";
@@ -1034,9 +1044,10 @@ namespace HotsReplayReader
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
 
             string html = @"<script>
+  // Trie le tableau des scores
   document.addEventListener(""DOMContentLoaded"", () => {
     const table = document.getElementById(""statsTable"");
-    const headers = table.querySelectorAll(""thead td"");
+    const headers = table.querySelectorAll(""thead th"");
     let activeIndex = null;
     function parseValue(text, type) {
       if (!text) return 0;
@@ -1056,47 +1067,30 @@ namespace HotsReplayReader
         return 0;
       }
       if (type === ""number"") {
-        const num = parseFloat(
-          text.replace(/\s/g, """").replace("","", ""."")
-        );
+        const num = parseFloat(text.replace(/\s/g, """").replace("","", "".""));
         return isNaN(num) ? 0 : num;
       }
       return text.toLowerCase();
     }
-  
-    function clearHighlight() {
-      table.querySelectorAll("".active-col"").forEach(el => {
-        el.classList.remove(""active-col"");
-      });
-    }
-  
     headers.forEach((header, index) => {
       header.style.cursor = ""pointer"";
       header.addEventListener(""click"", () => {
         const tbody = table.querySelector(""tbody"");
         const rows = Array.from(tbody.querySelectorAll(""tr""));
         const type = header.dataset.type || ""string"";
-        let asc;
-        if (activeIndex !== index) {
-          asc = false;
-        } else {
-          asc = header.dataset.order === ""asc"";
-        }
+        const asc = activeIndex === index && header.dataset.order === ""asc"";
         header.dataset.order = asc ? ""desc"" : ""asc"";
         activeIndex = index;
         rows.sort((a, b) => {
           const A = parseValue(a.children[index]?.innerText, type);
           const B = parseValue(b.children[index]?.innerText, type);
-          if (type === ""string"") {
-            return asc
-              ? String(A).localeCompare(String(B))
-              : String(B).localeCompare(String(A));
-          }
+          if (type === ""string"")
+            return asc ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
           return asc ? A - B : B - A;
         });
         tbody.innerHTML = """";
         rows.forEach(r => tbody.appendChild(r));
-        clearHighlight();
+        table.querySelectorAll("".active-col"").forEach(el => { el.classList.remove(""active-col""); });
         tbody.querySelectorAll(""tr"").forEach(row => {
           const cell = row.children[index];
           if (cell) cell.classList.add(""active-col"");
@@ -1110,88 +1104,88 @@ namespace HotsReplayReader
             html += @$"<table class=""tableScoreAndTalents"" id=""statsTable"">
   <thead>
     <tr class=""freeHeight"">
-      <td></td>
-      <td></td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      <th></th>
+      <th></th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
           <span class=""tooltipHero tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
           <span class=""tooltipHero tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
           <span class=""tooltipHero tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""time"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""time"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
           <span class=""tooltipHero tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
           <span class=""tooltipHero tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
           <span class=""tooltipHero tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
           <span class=""tooltipHero tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
           <span class=""tooltipHero tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
           <span class=""tooltipHero tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
           </span>
         </span>
-      </td>
-      <td class=""teamHeader tdBorders"" data-type=""number"">
+      </th>
+      <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
           <span class=""tooltipHero tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
           </span>
         </span>
-      </td>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -2428,9 +2422,9 @@ namespace HotsReplayReader
             || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId)
             ) return TimeSpan.Zero;
 
-            TimeSpan timeSpentAFK  = TimeSpan.Zero;
+            TimeSpan timeSpentAFK = TimeSpan.Zero;
             TimeSpan lastTimestamp = timeGateOpen;
-            TimeSpan AFKThreshold  = TimeSpan.FromSeconds(20);
+            TimeSpan AFKThreshold = TimeSpan.FromSeconds(20);
 
             foreach (StormGameEvent userGameEvent in hotsPlayer.UserActionGameEvents)
             {
@@ -2477,8 +2471,8 @@ namespace HotsReplayReader
             bool hasDeath = false;
             foreach (PlayerDeath? death in playerDeaths)
             {
-                TimeSpan deathStart   = death.Timestamp;
-                TimeSpan deathEnd     = death.TimestampRes;
+                TimeSpan deathStart = death.Timestamp;
+                TimeSpan deathEnd = death.TimestampRes;
                 TimeSpan deathSeconds = death.TimestampRes - death.Timestamp;
 
                 // Mort hors [from, to]
@@ -2489,9 +2483,9 @@ namespace HotsReplayReader
 
                 // Coupe l'intervalle en : avant mort, mort, après mort
                 TimeSpan beforeStart = from;
-                TimeSpan beforeEnd   = deathStart < from ? from : deathStart;
-                TimeSpan afterStart  = deathEnd > to ? to : deathEnd;
-                TimeSpan afterEnd    = to;
+                TimeSpan beforeEnd = deathStart < from ? from : deathStart;
+                TimeSpan afterStart = deathEnd > to ? to : deathEnd;
+                TimeSpan afterEnd = to;
 
                 TimeSpan before = beforeEnd > beforeStart ? beforeEnd - beforeStart : TimeSpan.Zero;
                 TimeSpan deathTimeSpan = (deathEnd > from && deathStart < to)
@@ -2798,7 +2792,7 @@ namespace HotsReplayReader
             }
         }
         // Sélection d'un replay dans la liste
-        private async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
+        internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -2852,15 +2846,13 @@ namespace HotsReplayReader
                     this.Text = $"{formTitle} - {hotsReplay?.stormReplay?.Owner?.BattleTagName}";
                 }
                 else
-                {
                     htmlContent = welcomeHTML;
-                }
             }
             catch (Exception)
             {
                 htmlContent = welcomeHTML;
             }
-            
+
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)

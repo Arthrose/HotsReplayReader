@@ -33,10 +33,14 @@ namespace HotsReplayReader
             };
             Process.Start(processStartInfo);
         }
-        private void OKButton_Click(object sender, EventArgs e)
+        private async void OKButton_Click(object sender, EventArgs e)
         {
             if (this.hotsReplayWebReader.Init.config != null)
                 hotsReplayWebReader.Init.config.DeepLAPIKey = deepLTextBox.Text;
+            DeepLTranslator translator = new(deepLTextBox.Text);
+            if (translator != null)
+                hotsReplayWebReader.DeepLAPIValid = await translator.CheckApiKeyValidity();
+            hotsReplayWebReader.ListBoxHotsReplays_SelectedIndexChanged(hotsReplayWebReader, EventArgs.Empty);
             this.Close();
         }
         private async void TestButton_Click(object sender, EventArgs e)
