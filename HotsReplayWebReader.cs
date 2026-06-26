@@ -20,15 +20,14 @@ using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
+        readonly bool release = true;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
-        readonly bool release = false;
 
         readonly bool fetchHero = false;
         readonly string fetchedHeroName = "The Lost Vikings";
@@ -685,7 +684,7 @@ namespace HotsReplayReader
 </script>
 </head>
 <body>
-<div class=""sidebar"">R E P L A Y S</div>
+<div class=""sidebar"">replays</div>
 <br><br><br>
 <div class=""parentDiv"">
 ";
