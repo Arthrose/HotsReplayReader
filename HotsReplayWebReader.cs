@@ -4,6 +4,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -675,6 +676,7 @@ namespace HotsReplayReader
     }});
   }}
 
+  // Copie le text dans le presse-papier
   function copyTextToClipboard(text) {{
     window.chrome.webview.postMessage({{
       action: ""copyTextToClipboard"",
@@ -1023,7 +1025,7 @@ namespace HotsReplayReader
 
             string html = "  <div class=\"chat-message\">\n";
             if (hotsMessage.Translate)
-                html += $"    <span class=\"chat-verbatim\" style=\"display: none;\">{hotsMessage.Verbatim}</span>\n";
+                html += $"    <span class=\"chat-verbatim\" style=\"display: none;\">{WebUtility.HtmlEncode(hotsMessage.Verbatim)}</span>\n";
             if (lastMessageAfterAnHour)
                 html += $"    <span class=\"chat-time\">[{msgHours}:{msgMinutes}:{msgSeconds}]</span>\n";
             else
@@ -1069,6 +1071,7 @@ namespace HotsReplayReader
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
             string pattern = @"(:\w+:)";
+            chatMessage = WebUtility.HtmlEncode(chatMessage);
             return Regex.Replace(chatMessage, pattern, match =>
             {
                 string emoticonTag = match.Groups[1].Value;
