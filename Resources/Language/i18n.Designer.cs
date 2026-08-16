@@ -70,6 +70,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading game data....
+        /// </summary>
+        internal static string DownloadingGameData {
+            get {
+                return ResourceManager.GetString("DownloadingGameData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en-US.
         /// </summary>
         internal static string HTMLLang {

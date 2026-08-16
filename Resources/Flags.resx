@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\id.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\ad.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -139,6 +142,9 @@
   <data name="am" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\am.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="an" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\es.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ao" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\ao.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -146,7 +152,7 @@
     <value>..\images\Flags\aq.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\Flags\ar.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\images\Flags\arab.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="arab" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\arab.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -168,6 +174,9 @@
   </data>
   <data name="ax" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\ax.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\bo.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="az" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\az.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -192,6 +201,9 @@
   </data>
   <data name="bh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\bh.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bho" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\in.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="bi" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\bi.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -297,6 +309,9 @@
   </data>
   <data name="cz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\cz.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="da" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\da.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="de" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\de.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -445,6 +460,9 @@
   <data name="hk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\hk.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="ha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\td.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="hm" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\hm.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -552,6 +570,9 @@
   </data>
   <data name="lk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\lk.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ln" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\cg.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\lr.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -675,6 +696,9 @@
   </data>
   <data name="nz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\nz.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="oc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\oc.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="om" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\om.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -906,6 +930,9 @@
   </data>
   <data name="wf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\wf.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\sn.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ws" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\ws.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

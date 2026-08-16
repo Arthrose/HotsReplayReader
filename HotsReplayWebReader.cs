@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
+using Heroes.Element;
 using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.Models.AbilityTalents;
@@ -26,7 +27,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = true;
+        readonly bool release = false;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
 
@@ -58,7 +59,9 @@ namespace HotsReplayReader
         internal string? htmlContent;
 
         internal string? dbVersion;
-        internal HeroDataDocument? heroDataDocument;
+        internal Version versionThreshold = new("2.55.16.97039");
+        internal Heroes.Icons.DataDocument.HeroDataDocument? heroDataDocument;
+        internal Heroes.Element.HeroDataDocument? heroData2Document;
         internal GameStringsRoot? gameStringsRoot;
         internal MatchAwards? matchAwards;
 
@@ -2730,7 +2733,7 @@ namespace HotsReplayReader
 <br><br>
 <div class=""body-div"">
 <div class=""parent"">
-<div class=""header"">Downloading game datas</div>
+<div class=""header"">{Resources.Language.i18n.ResourceManager.GetString("DownloadingGameData")!}</div>
 <div class=""gameVersion"">{versionGitHubFolder}<br><br></div>
 <div class=""loader""></div>
 </div>
@@ -2806,7 +2809,7 @@ namespace HotsReplayReader
                 return;
             }
 
-            heroDataDocument = HeroDataDocument.Parse(heroDataJsonPath);
+            heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath);
 
             JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip };
 
@@ -2818,18 +2821,18 @@ namespace HotsReplayReader
             Debug.WriteLine($"GameStrings loaded for version {gameStringsRoot.Meta.Version} - {gameStringsRoot.Meta.Locale}");
 
             string matchAwardsJson = File.ReadAllText(matchAwardsJsonPath);
-            matchAwards = JsonSerializer.Deserialize<MatchAwards>(matchAwardsJson, jsonOptions);
-            if (matchAwards == null) return;
+                    matchAwards = JsonSerializer.Deserialize<MatchAwards>(matchAwardsJson, jsonOptions);
+                    if (matchAwards == null) return;
 
-            foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Description)
-            {
-                matchAwards[Award.Key].Description = Award.Value;
-            }
-            foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Name)
-            {
-                matchAwards[Award.Key].Name = Award.Value;
-            }
-        }
+                    foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Description)
+                    {
+                        matchAwards[Award.Key].Description = Award.Value;
+                    }
+                    foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Name)
+                    {
+                        matchAwards[Award.Key].Name = Award.Value;
+                    }
+                }
         // Sélection d'un replay dans la liste
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {

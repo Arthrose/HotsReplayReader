@@ -333,4 +333,7 @@
   <data name="Language" xml:space="preserve">
     <value>Italiano</value>
   </data>
+  <data name="DownloadingGameData" xml:space="preserve">
+    <value>Download dei dati di gioco...</value>
+  </data>
 </root>

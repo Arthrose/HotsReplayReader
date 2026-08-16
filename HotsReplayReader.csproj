@@ -395,6 +395,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Heroes.Element\Heroes.Element\Heroes.Element.csproj" />
     <ProjectReference Include="..\Heroes.Icons\Heroes.Icons\Heroes.Icons.csproj" />
     <ProjectReference Include="..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj" />
   </ItemGroup>

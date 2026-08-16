@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12023.21 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotsReplayReader", "HotsReplayReader.csproj", "{A79CC56B-6B23-42F3-AE8D-3EF01C9B8738}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.StormReplayParser", "..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj", "{C8F12DD8-2810-9DBE-6E56-7274BECBB006}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Icons", "..\Heroes.Icons\Heroes.Icons\Heroes.Icons.csproj", "{177AA851-0BD7-9F3A-4E50-44FE731B195F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Element", "..\Heroes.Element\Heroes.Element\Heroes.Element.csproj", "{51445144-186B-A291-9123-8DC5CA7E72F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{177AA851-0BD7-9F3A-4E50-44FE731B195F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{177AA851-0BD7-9F3A-4E50-44FE731B195F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{177AA851-0BD7-9F3A-4E50-44FE731B195F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51445144-186B-A291-9123-8DC5CA7E72F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51445144-186B-A291-9123-8DC5CA7E72F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51445144-186B-A291-9123-8DC5CA7E72F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51445144-186B-A291-9123-8DC5CA7E72F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

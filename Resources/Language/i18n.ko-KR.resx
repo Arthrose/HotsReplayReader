@@ -333,4 +333,7 @@
   <data name="Language" xml:space="preserve">
     <value>한국어</value>
   </data>
+  <data name="DownloadingGameData" xml:space="preserve">
+    <value>게임 데이터를 다운로드하는 중...</value>
+  </data>
 </root>
