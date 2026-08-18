@@ -12,8 +12,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
-using Heroes.Element;
-using Heroes.Icons.DataDocument;
 using Heroes.Models;
 using Heroes.Models.AbilityTalents;
 using Heroes.StormReplayParser.Decoders;
@@ -60,6 +58,9 @@ namespace HotsReplayReader
 
         internal string? dbVersion;
         internal Version versionThreshold = new("2.55.16.97039");
+
+        internal HotsData hotsData = new();
+
         internal Heroes.Icons.DataDocument.HeroDataDocument? heroDataDocument;
         internal Heroes.Element.HeroDataDocument? heroData2Document;
         internal GameStringsRoot? gameStringsRoot;
@@ -786,7 +787,7 @@ namespace HotsReplayReader
         }
         internal string HTMLGetHeadTableCell(HotsPlayer hotsPlayer)
         {
-            if (hotsPlayer == null || hotsPlayer.PlayerHero == null || matchAwards == null || hotsPlayer.MatchAwards == null) return "";
+            if (hotsPlayer == null || hotsPlayer.PlayerHero == null || hotsPlayer.MatchAwards == null) return "";
 
             string playerName;
             string playerID;
@@ -821,7 +822,7 @@ namespace HotsReplayReader
 
             if (hotsPlayer.MatchAwardsCount > 0)
             {
-                string? ressourceName = matchAwards[$"{hotsPlayer.MatchAwards[0]}"].MvpScreenIcon;
+                string? ressourceName = hotsData.GetMatchRewardsMvpScreenIcon(hotsPlayer.MatchAwards[0].ToString());
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
                 html += $"            <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
@@ -833,8 +834,8 @@ namespace HotsReplayReader
             if (hotsPlayer.MatchAwardsCount > 0)
             {
                 html += $"            <center>\n";
-                html += $"              <font color=\"#ffd700\">{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Name}</font><br>\n";
-                html += $"              <font color=\"#bfd4fd\" size=\"-1\"><nobr>{matchAwards[$"{hotsPlayer.MatchAwards[0]}"].Description}</nobr></font><br>\n";
+                html += $"              <font color=\"#ffd700\">{hotsData.GetMatchRewardsName(hotsPlayer.MatchAwards[0].ToString())}</font><br>\n";
+                html += $"              <font color=\"#bfd4fd\" size=\"-1\"><nobr>{hotsData.GetMatchRewardsDescription(hotsPlayer.MatchAwards[0].ToString())}</nobr></font><br>\n";
                 html += $"            </center><br>\n";
             }
             if (hotsPlayer.BattleTagName.IndexOf('#') > 0)
@@ -1024,7 +1025,7 @@ namespace HotsReplayReader
             string? msgSeconds = hotsMessage.Seconds;
             string msgSenderName = hotsMessage.HotsPlayer.Name;
 
-            string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[hotsMessage.HotsPlayer.PlayerHero.HeroId];
+            string? heroName = hotsData.GetHeroNameFromHeroId(hotsMessage.HotsPlayer.PlayerHero.HeroId);
 
             string html = "  <div class=\"chat-message\">\n";
             if (hotsMessage.Translate)
@@ -1254,7 +1255,7 @@ namespace HotsReplayReader
             else
                 playerName = hotsPlayer.Name;
 
-            string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]];
+            string? heroName = hotsData.GetHeroNameFromHeroId(Init.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]);
 
             string timeSpentDead = "&nbsp;";
             if (hotsPlayer.ScoreResult.Deaths > 0)
@@ -1486,6 +1487,7 @@ namespace HotsReplayReader
             string? heroName = gameStringsRoot?.Gamestrings?.Unit?.Name?[Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]];
 
             Hero heroData = heroDataDocument.GetHeroById(Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId], true, true, true, true);
+            Debug.WriteLine(Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]);
 
             string playerName;
 
@@ -1535,8 +1537,6 @@ namespace HotsReplayReader
 
             int level = 1;
 
-            Hero heroData = heroDataDocument.GetHeroById(Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId], true, true, true, true);
-
             string playerName;
 
             if (stormPlayer.PlayerType == PlayerType.Computer)
@@ -1544,10 +1544,13 @@ namespace HotsReplayReader
             else
                 playerName = stormPlayer.Name;
 
+            string heroId = Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
             string heroName = Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
             if (heroName == "Lucio") heroName = "Lúcio";
 
             if (Init.PsionicStormUnits == null || Init.PsionicStormUnits[heroName] == null) return "";
+
+            Heroes.Models.Hero heroData = heroDataDocument.GetHeroById(heroId, true, true, true, true);
 
             string html = "";
             html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
@@ -1562,8 +1565,8 @@ namespace HotsReplayReader
             html += "                <td class=\"statsHealth\">\n";
 
             html += "                  <br>\n";
-            html += $"                  Health:&nbsp;<font color=\"White\">{Math.Ceiling(heroData.Life.LifeMax * Math.Pow((1 + heroData.Life.LifeScaling), level))}</font><br>\n";
-            html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{Math.Round(heroData.Life.LifeRegenerationRate * Math.Pow((1 + heroData.Life.LifeRegenerationRateScaling), level), 2)}/s</font>\n";
+            html += $"                  Health:&nbsp;<font color=\"White\">{hotsData.GetHeroHealthFromHeroUnitId(heroId)}</font><br>\n";
+            html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroRegenFromHeroUnitId(heroId)}/s</font>\n";
 
             html += "                </td>\n";
 
@@ -1604,13 +1607,13 @@ namespace HotsReplayReader
             html += "          </td>\n";
             html += "          <td width=\"100%\">&nbsp;</td>\n";
 
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.Q, team);
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.W, team);
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.E, team);
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.Heroic, team);
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.Heroic, team, 2);
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.Trait, team);
-            html += HTMLGetAbilityTd(heroData, AbilityTypes.Z, team);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.Q, team);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.W, team);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.E, team);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.Heroic, team);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.Heroic, team, 2);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.Trait, team);
+            html += HTMLGetAbilityTd(heroData, heroId, AbilityTypes.Z, team);
 
             html += "        </tr>\n";
             html += "      </table>\n";
@@ -1619,7 +1622,7 @@ namespace HotsReplayReader
             html += "  </tr>\n";
             return html;
         }
-        private string HTMLGetAbilityTd(Hero heroData, AbilityTypes abilityType, HotsTeam team, int heroicNumber = 1)
+        private string HTMLGetAbilityTd(Hero heroData, string heroId, AbilityTypes abilityType, HotsTeam team, int heroicNumber = 1)
         {
             string html = string.Empty;
 
@@ -1640,7 +1643,7 @@ namespace HotsReplayReader
 
             Ability? ability = null;
 
-            if (heroData.Id == "LostVikings" && (abilityType == AbilityTypes.Q || abilityType == AbilityTypes.W || abilityType == AbilityTypes.E))
+            if (heroId == "LostVikings" && (abilityType == AbilityTypes.Q || abilityType == AbilityTypes.W || abilityType == AbilityTypes.E))
             {
                 switch (abilityType)
                 {
@@ -1666,7 +1669,7 @@ namespace HotsReplayReader
             html += HTMLGetAbility(heroData, team, ability);
 
             // Displays Abathur, Alexstrasza, D.Va and Ragnaros other abilities
-            if (heroData.Id != "Chen" && heroData.Id != "LostVikings" && heroData.Id != "Rexxar")
+            if (heroId != "Chen" && heroId != "LostVikings" && heroId != "Rexxar")
             {
                 foreach (Hero heroUnit in heroData.HeroUnits)
                 {
@@ -1829,7 +1832,7 @@ namespace HotsReplayReader
 
             //  hotsPlayer.Talents[0].TalentNameId) renvoie une exception
             if (stormPlayer.Talents[i].TalentNameId != null)
-                AbilTalentEntry = GetAbilTalent(heroData, stormPlayer.Talents[i].TalentNameId!); // ! Assure au compilateur que TalentNameId n'est pas null
+                AbilTalentEntry = GetAbilTalent(heroData, stormPlayer.Talents[i].TalentNameId!);
             else
                 return "    <td class=\"tdBorders\">&nbsp;</td>";
 
@@ -2804,12 +2807,11 @@ namespace HotsReplayReader
             Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
             Debug.WriteLine($"gameStringsJsonPath: {gameStringsJsonPath}");
 
-            if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
-            {
-                return;
-            }
+            if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null) return;
 
             heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath);
+
+            hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroId).ToList());
 
             JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true, ReadCommentHandling = JsonCommentHandling.Skip };
 
@@ -2819,20 +2821,7 @@ namespace HotsReplayReader
             if (gameStringsRoot?.Meta == null || gameStringsRoot.Gamestrings?.Award?.Name == null || gameStringsRoot.Gamestrings.Award.Description == null) return;
 
             Debug.WriteLine($"GameStrings loaded for version {gameStringsRoot.Meta.Version} - {gameStringsRoot.Meta.Locale}");
-
-            string matchAwardsJson = File.ReadAllText(matchAwardsJsonPath);
-                    matchAwards = JsonSerializer.Deserialize<MatchAwards>(matchAwardsJson, jsonOptions);
-                    if (matchAwards == null) return;
-
-                    foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Description)
-                    {
-                        matchAwards[Award.Key].Description = Award.Value;
-                    }
-                    foreach (KeyValuePair<string, string> Award in gameStringsRoot.Gamestrings.Award.Name)
-                    {
-                        matchAwards[Award.Key].Name = Award.Value;
-                    }
-                }
+        }
         // Sélection d'un replay dans la liste
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
