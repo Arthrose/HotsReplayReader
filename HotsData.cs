@@ -18,8 +18,13 @@ namespace HotsReplayReader
         internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> HeroIdList)
         {
             if (dbVersion < versionThreshold)
+            {
                 Debug.WriteLine(heroDataJsonPath);
-
+                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList);
+            }
+        }
+        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> HeroIdList)
+        {
             gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
             heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
             matchAwardDataDocument = Heroes.Icons.DataDocument.MatchAwardDataDocument.Parse(matchAwardsJsonPath, gameStringDocument);
@@ -47,155 +52,180 @@ namespace HotsReplayReader
                         Name = heroesData[heroId].Name
                     };
 
-                    int qAbilitiesCount = 0, wAbilitiesCount = 0, eAbilitiesCount = 0, rAbilitiesCount = 0, dAbilitiesCount = 0, zAbilitiesCount = 0, activeAbilitiesCount = 0;
-                    foreach (Heroes.Models.AbilityTalents.Ability ability in heroesData[heroId].Abilities)
+                    ParseHeroesIconsTalents(heroId);
+                    ParseHeroesIconsAbilities(heroId, hero);
+                }
+            }
+            finally { CultureInfo.CurrentCulture = originalCulture; }
+        }
+        internal void ParseHeroesIconsTalents(string heroId)
+        {
+            foreach (Heroes.Models.AbilityTalents.Talent talent in heroesData[heroId].Talents)
+            {
+                hotsHeroes[heroId].Talents.Add
+                (
+                    new HotsTalent
                     {
-                        if (
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Q && qAbilitiesCount == 0 && heroId != "LostVikings") ||
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.W && wAbilitiesCount == 0 && heroId != "LostVikings") ||
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.E && eAbilitiesCount == 0 && heroId != "LostVikings") ||
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Heroic && rAbilitiesCount < 2) ||
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Trait && dAbilitiesCount == 0) ||
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Z && zAbilitiesCount == 0) ||
-                            (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Active && activeAbilitiesCount < 3 && heroId == "LostVikings")
-                        )
-                        {
-                            hero.Abilities[ability.AbilityTalentId.ReferenceId] = new()
-                            {
-                                HeroId = heroId,
-                                AbilityId = ability.AbilityTalentId.ReferenceId,
-                                IconFileName = ability.IconFileName ?? null,
-                                Cooldown = ability.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
-                                Energy = ability.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
-                                Full = ability.Tooltip.FullTooltip?.ColoredText ?? null,
-                                Life = ability.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
-                                Name = ability.Name ?? null,
-                                Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
-                            };
+                        ReferenceId = talent.AbilityTalentId.ReferenceId ?? null,
+                        IconFileName = talent.IconFileName ?? null,
+                        Cooldown = talent.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
+                        Energy = talent.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
+                        Full = talent.Tooltip.FullTooltip?.ColoredText ?? null,
+                        Life = talent.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
+                        Name = talent.Name ?? null,
+                        Short = talent.Tooltip.ShortTooltip?.ColoredText ?? null
+                    }
+                );
+            }
+        }
+        internal void ParseHeroesIconsAbilities(string heroId, HotsHeroUnit hero)
+        {
+            int qAbilitiesCount = 0, wAbilitiesCount = 0, eAbilitiesCount = 0, rAbilitiesCount = 0, dAbilitiesCount = 0, zAbilitiesCount = 0, activeAbilitiesCount = 0;
+            foreach (Heroes.Models.AbilityTalents.Ability ability in heroesData[heroId].Abilities)
+            {
+                if (
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Q && qAbilitiesCount == 0 && heroId != "LostVikings") ||
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.W && wAbilitiesCount == 0 && heroId != "LostVikings") ||
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.E && eAbilitiesCount == 0 && heroId != "LostVikings") ||
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Heroic && rAbilitiesCount < 2) ||
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Trait && dAbilitiesCount == 0) ||
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Z && zAbilitiesCount == 0) ||
+                    (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Active && activeAbilitiesCount < 3 && heroId == "LostVikings")
+                )
+                {
+                    hero.Abilities[ability.AbilityTalentId.ReferenceId] = new()
+                    {
+                        HeroId = heroId,
+                        AbilityId = ability.AbilityTalentId.ReferenceId,
+                        IconFileName = ability.IconFileName ?? null,
+                        Cooldown = ability.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
+                        Energy = ability.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
+                        Full = ability.Tooltip.FullTooltip?.ColoredText ?? null,
+                        Life = ability.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
+                        Name = ability.Name ?? null,
+                        Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
+                    };
 
-                            hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("kel'thuzad", "kelthuzad");
-                            hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
+                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("kel'thuzad", "kelthuzad");
+                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
-                            switch (ability.AbilityTalentId.AbilityType)
+                    switch (ability.AbilityTalentId.AbilityType)
+                    {
+                        case Heroes.Models.AbilityTalents.AbilityTypes.Q:
+                            qAbilitiesCount++;
+                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Q;
+                            break;
+                        case Heroes.Models.AbilityTalents.AbilityTypes.W:
+                            wAbilitiesCount++;
+                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.W;
+                            break;
+                        case Heroes.Models.AbilityTalents.AbilityTypes.E:
+                            eAbilitiesCount++;
+                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.E;
+                            break;
+                        case Heroes.Models.AbilityTalents.AbilityTypes.Heroic:
+                            rAbilitiesCount++;
+                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = rAbilitiesCount == 1 ? HotsAbilityType.R1 : HotsAbilityType.R2;
+                            break;
+                        case Heroes.Models.AbilityTalents.AbilityTypes.Trait:
+                            dAbilitiesCount++;
+                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.D;
+                            break;
+                        case Heroes.Models.AbilityTalents.AbilityTypes.Z:
+                            zAbilitiesCount++;
+                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Z;
+                            break;
+                        case Heroes.Models.AbilityTalents.AbilityTypes.Active:
+                            activeAbilitiesCount++;
+                            switch (activeAbilitiesCount)
                             {
-                                case Heroes.Models.AbilityTalents.AbilityTypes.Q:
-                                    qAbilitiesCount++;
+                                case 1:
                                     hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Q;
                                     break;
-                                case Heroes.Models.AbilityTalents.AbilityTypes.W:
-                                    wAbilitiesCount++;
+                                case 2:
                                     hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.W;
                                     break;
-                                case Heroes.Models.AbilityTalents.AbilityTypes.E:
-                                    eAbilitiesCount++;
+                                case 3:
                                     hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.E;
-                                    break;
-                                case Heroes.Models.AbilityTalents.AbilityTypes.Heroic:
-                                    rAbilitiesCount++;
-                                    hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = rAbilitiesCount == 1 ? HotsAbilityType.R1 : HotsAbilityType.R2;
-                                    break;
-                                case Heroes.Models.AbilityTalents.AbilityTypes.Trait:
-                                    dAbilitiesCount++;
-                                    hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.D;
-                                    break;
-                                case Heroes.Models.AbilityTalents.AbilityTypes.Z:
-                                    zAbilitiesCount++;
-                                    hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Z;
-                                    break;
-                                case Heroes.Models.AbilityTalents.AbilityTypes.Active:
-                                    activeAbilitiesCount++;
-                                    switch (activeAbilitiesCount)
-                                    {
-                                        case 1:
-                                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Q;
-                                            break;
-                                        case 2:
-                                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.W;
-                                            break;
-                                        case 3:
-                                            hero.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.E;
-                                            break;
-                                        default:
-                                            break;
-                                    }
                                     break;
                                 default:
                                     break;
                             }
-                        }
-                    }
-                    hotsHeroes[heroId].HeroUnits.Add(hero);
-
-                    foreach (Heroes.Models.Hero heroUnitData in heroesData[heroId].HeroUnits)
-                    {
-                        if (heroId == "Chen" || heroId == "LostVikings" || heroId == "Rexxar") continue;
-
-                        HotsHeroUnit heroUnit = new()
-                        {
-                            Id = heroUnitData.Id,
-                            Name = heroUnitData.Name
-                        };
-
-                        qAbilitiesCount = wAbilitiesCount = eAbilitiesCount = rAbilitiesCount = dAbilitiesCount = zAbilitiesCount = 0;
-                        foreach (Heroes.Models.AbilityTalents.Ability ability in heroUnitData.Abilities)
-                        {
-                            if (
-                                (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Q && qAbilitiesCount == 0) ||
-                                (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.W && wAbilitiesCount == 0) ||
-                                (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.E && eAbilitiesCount == 0) ||
-                                (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Heroic && rAbilitiesCount < 2) ||
-                                (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Trait && dAbilitiesCount == 0) ||
-                                (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Z && zAbilitiesCount == 0)
-                            )
-                            {
-                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId] = new()
-                                {
-                                    HeroId = heroId,
-                                    AbilityId = ability.AbilityTalentId.ReferenceId,
-                                    IconFileName = ability.IconFileName ?? null,
-                                    Cooldown = ability.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
-                                    Energy = ability.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
-                                    Full = ability.Tooltip.FullTooltip?.ColoredText ?? null,
-                                    Life = ability.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
-                                    Name = ability.Name ?? null,
-                                    Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
-                                };
-                                switch (ability.AbilityTalentId.AbilityType)
-                                {
-                                    case Heroes.Models.AbilityTalents.AbilityTypes.Q:
-                                        qAbilitiesCount++;
-                                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Q;
-                                        break;
-                                    case Heroes.Models.AbilityTalents.AbilityTypes.W:
-                                        wAbilitiesCount++;
-                                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.W;
-                                        break;
-                                    case Heroes.Models.AbilityTalents.AbilityTypes.E:
-                                        eAbilitiesCount++;
-                                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.E;
-                                        break;
-                                    case Heroes.Models.AbilityTalents.AbilityTypes.Heroic:
-                                        rAbilitiesCount++;
-                                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = rAbilitiesCount == 1 ? HotsAbilityType.R1 : HotsAbilityType.R2;
-                                        break;
-                                    case Heroes.Models.AbilityTalents.AbilityTypes.Trait:
-                                        dAbilitiesCount++;
-                                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.D;
-                                        break;
-                                    case Heroes.Models.AbilityTalents.AbilityTypes.Z:
-                                        zAbilitiesCount++;
-                                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Z;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                        hotsHeroes[heroId].HeroUnits.Add(heroUnit);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
-            finally { CultureInfo.CurrentCulture = originalCulture; }
+            hotsHeroes[heroId].HeroUnits.Add(hero);
+
+            foreach (Heroes.Models.Hero heroUnitData in heroesData[heroId].HeroUnits)
+            {
+                if (heroId == "Chen" || heroId == "LostVikings" || heroId == "Rexxar") continue;
+
+                HotsHeroUnit heroUnit = new()
+                {
+                    Id = heroUnitData.Id,
+                    Name = heroUnitData.Name
+                };
+
+                qAbilitiesCount = wAbilitiesCount = eAbilitiesCount = rAbilitiesCount = dAbilitiesCount = zAbilitiesCount = 0;
+                foreach (Heroes.Models.AbilityTalents.Ability ability in heroUnitData.Abilities)
+                {
+                    if (
+                        (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Q && qAbilitiesCount == 0) ||
+                        (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.W && wAbilitiesCount == 0) ||
+                        (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.E && eAbilitiesCount == 0) ||
+                        (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Heroic && rAbilitiesCount < 2) ||
+                        (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Trait && dAbilitiesCount == 0) ||
+                        (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Z && zAbilitiesCount == 0)
+                    )
+                    {
+                        heroUnit.Abilities[ability.AbilityTalentId.ReferenceId] = new()
+                        {
+                            HeroId = heroId,
+                            AbilityId = ability.AbilityTalentId.ReferenceId,
+                            IconFileName = ability.IconFileName ?? null,
+                            Cooldown = ability.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
+                            Energy = ability.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
+                            Full = ability.Tooltip.FullTooltip?.ColoredText ?? null,
+                            Life = ability.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
+                            Name = ability.Name ?? null,
+                            Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
+                        };
+                        switch (ability.AbilityTalentId.AbilityType)
+                        {
+                            case Heroes.Models.AbilityTalents.AbilityTypes.Q:
+                                qAbilitiesCount++;
+                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Q;
+                                break;
+                            case Heroes.Models.AbilityTalents.AbilityTypes.W:
+                                wAbilitiesCount++;
+                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.W;
+                                break;
+                            case Heroes.Models.AbilityTalents.AbilityTypes.E:
+                                eAbilitiesCount++;
+                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.E;
+                                break;
+                            case Heroes.Models.AbilityTalents.AbilityTypes.Heroic:
+                                rAbilitiesCount++;
+                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = rAbilitiesCount == 1 ? HotsAbilityType.R1 : HotsAbilityType.R2;
+                                break;
+                            case Heroes.Models.AbilityTalents.AbilityTypes.Trait:
+                                dAbilitiesCount++;
+                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.D;
+                                break;
+                            case Heroes.Models.AbilityTalents.AbilityTypes.Z:
+                                zAbilitiesCount++;
+                                heroUnit.Abilities[ability.AbilityTalentId.ReferenceId].Type = HotsAbilityType.Z;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                hotsHeroes[heroId].HeroUnits.Add(heroUnit);
+            }
         }
         internal string GetHeroNameFromHeroId(string heroId)
         {
@@ -208,6 +238,37 @@ namespace HotsReplayReader
         internal string GetHeroRegenFromHeroUnitId(string heroId)
         {
             return Math.Round(heroesData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString();
+        }
+        internal HotsTalent? GetTalentsFromHeroIdAndTalentReferenceId(string heroId, string referenceId)
+        {
+            if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return null;
+            foreach(HotsTalent talent in hero.Talents)
+                if(talent.ReferenceId == referenceId) return talent;
+            return null;
+        }
+        internal List<HotsAbility?>? GetAbilitiesFromHeroIdAndAbilityType(string heroId, HotsAbilityType hotsAbilityType)
+        {
+            if (!hotsHeroes.TryGetValue(heroId, out var hero)) return null;
+
+            List<HotsAbility?> abilities = [];
+
+            foreach (HotsHeroUnit heroUnit in hero.HeroUnits)
+            {
+                bool abilityFound = false;
+                foreach (HotsAbility ability in heroUnit.Abilities.Values)
+                {
+                    if (ability.Type == hotsAbilityType)
+                    {
+                        abilities.Add(ability);
+                        abilityFound = true;
+                    }
+                }
+                if (!abilityFound)
+                {
+                    abilities.Add(null);
+                }
+            }
+            return abilities.Count > 0 ? abilities : null;
         }
         internal string GetMatchRewardsName(string matchAwardId)
         {
@@ -231,12 +292,24 @@ namespace HotsReplayReader
         public string? Health { get; set; }
         public string? Regen { get; set; }
         public List<HotsHeroUnit> HeroUnits { get; set; } = [];
+        public List<HotsTalent> Talents { get; set; } = [];
     }
     internal class HotsHeroUnit
     {
         public string? Name { get; set; }
         public string? Id { get; set; }
         public Dictionary<string, HotsAbility> Abilities { get; set; } = [];
+    }
+    internal class HotsTalent()
+    {
+        public string? ReferenceId {  get; set; }
+        public string? IconFileName { get; set; }
+        public string? Cooldown { get; set; }
+        public string? Energy { get; set; }
+        public string? Full { get; set; }
+        public string? Life { get; set; }
+        public string? Name { get; set; }
+        public string? Short { get; set; }
     }
     internal class HotsAbility
     {

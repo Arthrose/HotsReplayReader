@@ -283,19 +283,28 @@ tr {
 .tableScoreAndTalents tr.freeHeight {
   height: auto !important;
 }
-.tableScoreAndTalents td:nth-child(1) {
-  width: 120px;
-}
-.tableScoreAndTalents td:nth-child(2) {
-  width: 100px;
-}
 .tableTalents {
   table-layout: fixed;
 }
-.tableScoreAndTalents td:nth-child(1),
-.tableScoreAndTalents td:nth-child(2)
-{
-  width: unset;
+.tableScoreAndTalents {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+.tableScoreAndTalents th:nth-child(1),
+.tableScoreAndTalents td:nth-child(1) {
+  width: 160px;
+  min-width: 160px;
+}
+.tableScoreAndTalents th:nth-child(2),
+.tableScoreAndTalents td:nth-child(2) {
+  width: 120px;
+  min-width: 120px;
+  white-space: nowrap;
+}
+.tableTalents th:nth-child(n + 3),
+.tableTalents td:nth-child(n + 3) {
+  width: auto;
 }
 .stats {
   font-family: Consolas, Lucida Console, Courier New;
@@ -327,9 +336,6 @@ tr.trTalents, tr.trAblilities {
 }
 .tdBorders {
   border: 1px solid #555;
-}
-.tableTalents td:nth-child(n+3) {
-  width: calc((100% - 220px) / 7);
 }
 .scoreHeaderIcon {
   width: 50px;
