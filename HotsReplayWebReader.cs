@@ -12,8 +12,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
-using Heroes.Models;
-using Heroes.Models.AbilityTalents;
 using Heroes.StormReplayParser.Decoders;
 using Heroes.StormReplayParser.GameEvent;
 using Heroes.StormReplayParser.Player;
@@ -2470,234 +2468,23 @@ namespace HotsReplayReader
             }
             return TimeSpan.Zero;
         }
-        public static async Task<string?> FindVersionGitHubFolder(HttpClient httpClient, string replayVersion)
-        {
-            Debug.WriteLine($"FindVersionGitHubFolder {replayVersion}");
-            string url = "https://api.github.com/repositories/214500273/contents/heroesdata";
-
-            Debug.WriteLine($"GetAsync {url}");
-            using HttpResponseMessage response = await httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            string json = await response.Content.ReadAsStringAsync();
-
-            using JsonDocument doc = JsonDocument.Parse(json);
-            List<string> folders = [];
-
-            foreach (JsonElement item in doc.RootElement.EnumerateArray())
-            {
-                if (item.GetProperty("type").GetString() == "dir")
-                {
-                    folders.Add(item.GetProperty("name").GetString() ?? "");
-                }
-            }
-
-            bool isPtr = replayVersion.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase);
-
-            // --- Étape 1 : Chercher la correspondance exacte ---
-            string replayVersionShort = replayVersion[(replayVersion.LastIndexOf('.') + 1)..];
-            string? exact = folders
-                .FirstOrDefault(f => f.EndsWith(replayVersionShort, StringComparison.OrdinalIgnoreCase)
-                                     && (!isPtr || f.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase)));
-
-            if (exact != null)
-                return exact;
-
-            // --- Étape 2 : Chercher la version précédente ---
-            // On retire _ptr uniquement pour pouvoir parser le numéro
-            string cleanReplay = replayVersion.Replace("_ptr", "", StringComparison.OrdinalIgnoreCase);
-
-            if (!Version.TryParse(cleanReplay, out Version? targetVersion))
-                return null;
-
-            var previousCandidates = folders
-                .Where(f => isPtr || !f.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase)) // si PTR, on garde tout, sinon on exclut les PTR
-                .Select(f => new { Name = f, Version = Version.TryParse(f.Replace("_ptr", ""), out var v) ? v : null })
-                .Where(x => x.Version != null)
-                .OrderBy(x => x.Version)
-                .LastOrDefault(x => x.Version < targetVersion);
-
-            return previousCandidates?.Name;
-        }
-        private async Task<string?> DownloadHeroesJsonFiles(HttpClient httpClient, string version)
-        {
-            Debug.WriteLine($"DownloadHeroesJsonFiles {version}");
-            // Recherche du dossier GitHub correspondant à la version du replay
-            string? versionGitHubFolder = await FindVersionGitHubFolder(httpClient, version);
-
-            Debug.WriteLine($"versionGitHubFolder {versionGitHubFolder}");
-            if (versionGitHubFolder == null)
-            {
-                Debug.WriteLine($"No GitHub folder found for version {versionGitHubFolder}");
-                return null;
-            }
-
-            string rootFolder = $@"{Init.DbDirectory}\{versionGitHubFolder}";
-
-            string gitHubApiUrl = $@"https://api.github.com/repos/HeroesToolChest/heroes-data/contents/heroesdata/{versionGitHubFolder}";
-
-            if (!Directory.Exists(Init.DbDirectory) && Init.DbDirectory != null)
-                Directory.CreateDirectory(Init.DbDirectory);
-
-            if (!Directory.Exists(rootFolder))
-                Directory.CreateDirectory(rootFolder);
-            else
-            {
-                Debug.WriteLine($"Older GitHub folder found for version {versionGitHubFolder}");
-                return versionGitHubFolder;
-            }
-
-            Debug.WriteLine($"Downloading heroes' Json files version {versionGitHubFolder}...");
-            Debug.WriteLine($"{gitHubApiUrl}");
-
-            string html = $@"
-<head>
-<script>
-  // Désactive le menu contextuel
-  document.addEventListener('DOMContentLoaded', () => {{
-    document.addEventListener('contextmenu', (e) => {{
-      e.preventDefault()
-    }})
-  }})
-
-  // Affice la liste des replays
-  document.addEventListener(""mousemove"", function (e) {{
-    // Détection si la souris est dans les 50px à gauche
-    const isHover = e.clientX <= 50;
-    // On envoie à C# uniquement quand le statut change
-    if (window.__lastHover !== isHover) {{
-      console.log(`X: ${{event.clientX}}, Y: ${{event.clientY}}`);
-      window.chrome.webview.postMessage({{
-        action: ""hoverLeft"",
-        isHover: isHover
-      }});
-      window.__lastHover = isHover;
-    }}
-  }});
-</script>
-<style>
-.body-div {{
-  display: flex;
-  justify-content: center; /* centre horizontalement */
-  align-items: center;     /* centre verticalement */
-  height: 100vh;           /* occupe toute la hauteur de la fenêtre */
-}}
-.parent {{
-  width: 900px;
-  overflow-y: auto;
-  text-align: left;
-  margin: 0 auto;
-  background-color: #000000;
-  border-radius: 10px;
-  padding: 20px;
-}}
-.header {{
-  font-family: Calibri;
-  font-size: 250%;
-  text-align: center;
-  color: White;
-}}
-.gameVersion {{
-  font-family: Calibri;
-  font-size: 150%;
-  text-align: center;
-  color: #ef8030;
-}}
-.loader {{
-  width: 800px;
-  height: 30px;
-  border-radius: 40px;
-  color: #ef8030;
-  border: 2px solid;
-  position: relative;
-  margin: 30 auto;
-}}
-.loader::before {{
-  content: """";
-  position: absolute;
-  margin: 2px;
-  width: 25%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: inherit;
-  background: currentColor;
-  animation: l3 3s infinite linear;
-}}
-@keyframes l3 {{
-  50% {{left:100%;transform: translateX(calc(-100% - 4px))}}
-}}
-</style>
-</head>
-<body style=""background: url(app://hotsResources/DownloadingBG.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
-<br><br>
-<div class=""body-div"">
-<div class=""parent"">
-<div class=""header"">{Resources.Language.i18n.ResourceManager.GetString("DownloadingGameData")!}</div>
-<div class=""gameVersion"">{versionGitHubFolder}<br><br></div>
-<div class=""loader""></div>
-</div>
-</div>
-</body>
-</html>
-";
-
-            webView.CoreWebView2.NavigateToString(html);
-
-            await DownloadGitHubFolderRecursive(httpClient, gitHubApiUrl, rootFolder);
-            return versionGitHubFolder;
-        }
-        private static async Task DownloadGitHubFolderRecursive(HttpClient httpClient, string apiUrl, string localPath)
-        {
-            string json = await httpClient.GetStringAsync(apiUrl);
-            GitHubFileInfo[]? items = JsonSerializer.Deserialize<GitHubFileInfo[]>(json);
-
-            if (items == null) return;
-
-            foreach (GitHubFileInfo? item in items)
-            {
-                if (item.Name == null) continue;
-
-                if (item.Type == "file")
-                {
-                    Console.WriteLine($"Téléchargement {item.Path}...");
-                    byte[] data = await httpClient.GetByteArrayAsync(item.DownloadURL);
-                    string filePath = Path.Combine(localPath, item.Name);
-                    await File.WriteAllBytesAsync(filePath, data);
-                }
-                else if (item.Type == "dir" && item.URL != null)
-                {
-                    string newFolder = Path.Combine(localPath, item.Name);
-                    Directory.CreateDirectory(newFolder);
-
-                    // récursif
-                    await DownloadGitHubFolderRecursive(httpClient, item.URL, newFolder);
-                }
-            }
-        }
         private async Task CheckAndDownloadHeroesData(string replayVersion)
         {
             dbVersion = null;
 
-            using HttpClient HttpClient = new();
-            HttpClient.DefaultRequestHeaders.UserAgent.Add(
+            using HttpClient httpClient = new();
+            httpClient.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue(
                     Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader",
                     Assembly.GetExecutingAssembly().GetName().Version?.ToString(2) ?? "1.0"
                 )
             );
 
-            // https://github.com/HeroesToolChest/heroes-data/tree/master/heroesdata
-            // Téléchargement des json des héros si besoin
-            if (!Directory.Exists($@"{Init.DbDirectory}\{replayVersion}"))
-                dbVersion = await DownloadHeroesJsonFiles(HttpClient, replayVersion);
-            else
-                dbVersion = replayVersion;
-
+            dbVersion = await GitHubDownloader.DownloadHeroesDataAsync(httpClient, replayVersion, Init.DbDirectory!, webView.CoreWebView2);
             if (dbVersion == null) return;
 
-            string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*_localized.json").FirstOrDefault();
-            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*_localized.json").FirstOrDefault();
+            string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*.json").FirstOrDefault();
+            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*.json").FirstOrDefault();
             string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{Init.config!.LangCode?.ToLower().Replace("-", "")}.json").FirstOrDefault();
 
             Debug.WriteLine($"heroDataJsonPath: {heroDataJsonPath}");
@@ -2706,7 +2493,12 @@ namespace HotsReplayReader
 
             if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null) return;
 
-            hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroId).ToList());
+            List<string> matchAwardsList = [];
+            foreach (StormPlayer player in hotsReplay!.stormPlayers!)
+                if (player.MatchAwards?.Count > 0)
+                    matchAwardsList.Add(player.MatchAwards[0].ToString());
+
+            hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroId).ToList(), matchAwardsList);
         }
         // Sélection d'un replay dans la liste
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)

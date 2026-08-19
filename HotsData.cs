@@ -1,55 +1,71 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
+using System.Text.Json;
+using Heroes.Element;
+using Heroes.Element.Models.AbilityTalents;
+using Heroes.Element.Models.Types;
 using Heroes.Icons;
+using Heroes.Icons.DataDocument;
+using Heroes.Models.AbilityTalents;
 
 namespace HotsReplayReader
 {
     internal class HotsData
     {
-        private GameStringDocument? gameStringDocument;
-        private Heroes.Icons.DataDocument.HeroDataDocument? heroDataDocument;
-        private Heroes.Icons.DataDocument.MatchAwardDataDocument? matchAwardDataDocument;
-
-        private Dictionary<string, Heroes.Models.Hero> heroesData = [];
+        private Dictionary<string, Heroes.Models.Hero> heroesIconsData = [];
+        private Dictionary<string, Heroes.Element.Models.Hero> heroesElementData = [];
 
         private Dictionary<string, HotsHero> hotsHeroes = [];
+        private Dictionary<string, HotsMatchAward> hotsMatchAwards = [];
 
         internal Version versionThreshold = new("2.55.16.97039");
-        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> HeroIdList)
+        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> HeroIdList, List<string> matchAwardsList)
         {
-            if (dbVersion < versionThreshold)
-            {
-                Debug.WriteLine(heroDataJsonPath);
-                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList);
-            }
-        }
-        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> HeroIdList)
-        {
-            gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
-            heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
-            matchAwardDataDocument = Heroes.Icons.DataDocument.MatchAwardDataDocument.Parse(matchAwardsJsonPath, gameStringDocument);
-
-            heroesData.Clear();
+            heroesIconsData.Clear();
+            heroesElementData.Clear();
             hotsHeroes.Clear();
+
+            if (dbVersion < versionThreshold)
+                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList, matchAwardsList);
+            else
+                ParseHeroesElement(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList, matchAwardsList);
+        }
+        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> HeroIdList, List<string> matchAwardsList)
+        {
+            Heroes.Icons.GameStringDocument gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
+            Heroes.Icons.DataDocument.HeroDataDocument heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
+            Heroes.Icons.DataDocument.MatchAwardDataDocument matchAwardHeroesIconsDataDocument = Heroes.Icons.DataDocument.MatchAwardDataDocument.Parse(matchAwardsJsonPath, gameStringDocument);
+
             CultureInfo originalCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             try
             {
+                foreach (string matchAwardId in matchAwardsList)
+                {
+                    Heroes.Models.MatchAward matchAward = matchAwardHeroesIconsDataDocument!.GetMatchAwardById(matchAwardId);
+                    hotsMatchAwards[matchAwardId] = new()
+                    {
+                        Name = matchAward.Name,
+                        Description = matchAward.Description?.PlainText,
+                        MVPScreenImageFileName = matchAward.MVPScreenImageFileName
+                    };
+                }
+
                 foreach (string heroId in HeroIdList)
                 {
-                    CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-                    heroesData[heroId] = heroDataDocument.GetHeroById(heroId, true, true, true, true);
+                    heroesIconsData[heroId] = heroDataDocument.GetHeroById(heroId, true, true, true, true);
 
                     hotsHeroes[heroId] = new()
                     {
-                        Name = heroesData[heroId].Name,
-                        Health = Math.Ceiling(heroesData[heroId].Life.LifeMax * Math.Pow((1 + heroesData[heroId].Life.LifeScaling), 1)).ToString(),
-                        Regen = Math.Round(heroesData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString()
+                        Name = heroesIconsData[heroId].Name,
+                        Health = Math.Ceiling(heroesIconsData[heroId].Life.LifeMax * Math.Pow((1 + heroesIconsData[heroId].Life.LifeScaling), 1)).ToString(),
+                        Regen = Math.Round(heroesIconsData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesIconsData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString()
                     };
 
                     HotsHeroUnit hero = new()
                     {
-                        Id = heroesData[heroId].Id,
-                        Name = heroesData[heroId].Name
+                        Id = heroesIconsData[heroId].Id,
+                        Name = heroesIconsData[heroId].Name
                     };
 
                     ParseHeroesIconsTalents(heroId);
@@ -60,7 +76,7 @@ namespace HotsReplayReader
         }
         internal void ParseHeroesIconsTalents(string heroId)
         {
-            foreach (Heroes.Models.AbilityTalents.Talent talent in heroesData[heroId].Talents)
+            foreach (Heroes.Models.AbilityTalents.Talent talent in heroesIconsData[heroId].Talents)
             {
                 hotsHeroes[heroId].Talents.Add
                 (
@@ -81,7 +97,7 @@ namespace HotsReplayReader
         internal void ParseHeroesIconsAbilities(string heroId, HotsHeroUnit hero)
         {
             int qAbilitiesCount = 0, wAbilitiesCount = 0, eAbilitiesCount = 0, rAbilitiesCount = 0, dAbilitiesCount = 0, zAbilitiesCount = 0, activeAbilitiesCount = 0;
-            foreach (Heroes.Models.AbilityTalents.Ability ability in heroesData[heroId].Abilities)
+            foreach (Heroes.Models.AbilityTalents.Ability ability in heroesIconsData[heroId].Abilities)
             {
                 if (
                     (ability.AbilityTalentId.AbilityType == Heroes.Models.AbilityTalents.AbilityTypes.Q && qAbilitiesCount == 0 && heroId != "LostVikings") ||
@@ -159,7 +175,7 @@ namespace HotsReplayReader
             }
             hotsHeroes[heroId].HeroUnits.Add(hero);
 
-            foreach (Heroes.Models.Hero heroUnitData in heroesData[heroId].HeroUnits)
+            foreach (Heroes.Models.Hero heroUnitData in heroesIconsData[heroId].HeroUnits)
             {
                 if (heroId == "Chen" || heroId == "LostVikings" || heroId == "Rexxar") continue;
 
@@ -227,23 +243,150 @@ namespace HotsReplayReader
                 hotsHeroes[heroId].HeroUnits.Add(heroUnit);
             }
         }
+        internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> HeroIdList, List<string> matchAwardsList)
+        {
+            Heroes.Element.GameStringsDocument gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(File.OpenRead(gameStringsJsonPath)));
+            Heroes.Element.HeroDataDocument heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(File.OpenRead(heroDataJsonPath)), gameStringsDocument);
+            Heroes.Element.MatchAwardDataDocument matchAwardHeroesElementDataDocument = Heroes.Element.MatchAwardDataDocument.Load(JsonDocument.Parse(File.OpenRead(matchAwardsJsonPath)), gameStringsDocument);
+
+            CultureInfo originalCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            try
+            {
+                foreach (string matchAwardId in matchAwardsList)
+                {
+                    Heroes.Element.Models.MatchAward matchAward = matchAwardHeroesElementDataDocument!.GetElementById(matchAwardId);
+                    hotsMatchAwards[matchAwardId] = new()
+                    {
+                        Name = matchAward.ScoreScreenName?.PlainText.Split(',', 2)[0],
+                        Description = matchAward.ScoreScreenDescription?.PlainText,
+                        MVPScreenImageFileName = matchAward.MVPScreenImage
+                    };
+                }
+
+                foreach (string heroId in HeroIdList)
+                {
+                    heroesElementData[heroId] = heroDataDocument.GetElementById(heroId);
+
+                    hotsHeroes[heroId] = new()
+                    {
+                        Name = heroesElementData[heroId].Name!.PlainText,
+                        Health = Math.Ceiling(heroesElementData[heroId].Life.LifeMax * Math.Pow((1 + heroesElementData[heroId].Life.LifeMaxScaling), 1)).ToString(),
+                        Regen = Math.Round(heroesElementData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesElementData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString()
+                    };
+
+                    HotsHeroUnit hero = new()
+                    {
+                        Id = heroesElementData[heroId].Id,
+                        Name = heroesElementData[heroId].Name!.PlainText
+                    };
+
+                    ParseHeroesElementTalents(heroId);
+                    ParseHeroesElementAbilities(heroId, hero);
+                }
+            }
+            finally { CultureInfo.CurrentCulture = originalCulture; }
+        }
+        internal void ParseHeroesElementTalents(string heroId)
+        {
+            foreach (IList<Heroes.Element.Models.AbilityTalents.Talent> talentLevel in heroesElementData[heroId].Talents.Values)
+            {
+                foreach (var talent in talentLevel)
+                {
+                    hotsHeroes[heroId].Talents.Add
+                    (
+                        new HotsTalent
+                        {
+                            ReferenceId = talent.TalentElementId ?? null,
+                            IconFileName = talent.Icon ?? null,
+                            Cooldown = talent.CooldownText?.PlainText ?? null,
+                            Energy = talent.EnergyText?.PlainText ?? null,
+                            Full = talent.FullText?.ColoredText ?? null,
+                            Life = talent.LifeText?.PlainText ?? null,
+                            Name = talent.Name?.PlainText ?? null,
+                            Short = talent.ShortText?.ColoredText ?? null
+                        }
+                    );
+                }
+            }
+        }
+        internal void ParseHeroesElementAbilities(string heroId, HotsHeroUnit hero)
+        {
+            if (!heroesElementData.TryGetValue(heroId, out Heroes.Element.Models.Hero? heroTmp)) return;
+            Heroes.Element.Models.AbilityTalents.Ability? ability;
+
+            if (heroTmp.Abilities.TryGetValue(AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? basicAbilities))
+            {
+                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Q);
+                if (ability is not null)
+                    hero.Abilities[ability.AbilityElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.Q);
+
+                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.W);
+                if (ability is not null)
+                    hero.Abilities[ability.AbilityElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.W);
+
+                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.E);
+                if (ability is not null)
+                    hero.Abilities[ability.AbilityElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.E);
+            }
+            if (heroTmp.Abilities.TryGetValue(AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? heroicAbilities))
+            {
+                for (int i = 0; i < heroicAbilities.Count && i < 2; i++)
+                {
+                    Heroes.Element.Models.AbilityTalents.Ability heroicAbility = heroicAbilities[i];
+                    hero.Abilities[heroicAbility.AbilityElementId] = HeroesElementCreateHotsAbility(heroId, heroicAbility, i == 0 ? HotsAbilityType.R1 : HotsAbilityType.R2);
+                }
+            }
+            if (heroTmp.Abilities.TryGetValue(AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? traitAbilities)) {
+                ability = traitAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Trait);
+                if (ability is not null)
+                    hero.Abilities[ability.AbilityElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.D);
+            }
+            if (heroTmp.Abilities.TryGetValue(AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? mountAbilities)) {
+                ability = mountAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Z);
+                if (ability is not null)
+                    hero.Abilities[ability.AbilityElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.Z);
+            }
+            hotsHeroes[heroId].HeroUnits.Add(hero);
+        }
+        private HotsAbility HeroesElementCreateHotsAbility(string heroId, Heroes.Element.Models.AbilityTalents.Ability ability, HotsAbilityType type)
+        {
+            HotsAbility hotsAbility = new HotsAbility
+            {
+                HeroId = heroId,
+                AbilityId = ability.AbilityElementId,
+                IconFileName = ability.Icon,
+                Cooldown = ability.CooldownText?.PlainText,
+                Energy = ability.EnergyText?.PlainText,
+                Full = ability.FullText?.ColoredText,
+                Life = ability.LifeText?.ColoredText,
+                Name = ability.Name?.PlainText,
+                Short = ability.ShortText?.ColoredText,
+                Type = type
+            };
+
+            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("kel'thuzad", "kelthuzad");
+            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
+
+            return hotsAbility;
+        }
         internal string GetHeroNameFromHeroId(string heroId)
         {
-            return heroesData[heroId].Name ?? "";
+            return hotsHeroes[heroId].Name ?? "";
         }
         internal string GetHeroHealthFromHeroUnitId(string heroId)
         {
-            return Math.Ceiling(heroesData[heroId].Life.LifeMax * Math.Pow((1 + heroesData[heroId].Life.LifeScaling), 1)).ToString();
+            return hotsHeroes[heroId].Health ?? "";
         }
         internal string GetHeroRegenFromHeroUnitId(string heroId)
         {
-            return Math.Round(heroesData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString();
+            return hotsHeroes[heroId].Regen ?? "";
         }
         internal HotsTalent? GetTalentsFromHeroIdAndTalentReferenceId(string heroId, string referenceId)
         {
             if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return null;
-            foreach(HotsTalent talent in hero.Talents)
-                if(talent.ReferenceId == referenceId) return talent;
+            foreach (HotsTalent talent in hero.Talents)
+                if (talent.ReferenceId == referenceId) return talent;
             return null;
         }
         internal List<HotsAbility?>? GetAbilitiesFromHeroIdAndAbilityType(string heroId, HotsAbilityType hotsAbilityType)
@@ -272,18 +415,15 @@ namespace HotsReplayReader
         }
         internal string GetMatchRewardsName(string matchAwardId)
         {
-            Heroes.Models.MatchAward matchAward = matchAwardDataDocument!.GetMatchAwardById(matchAwardId);
-            return matchAward?.Name ?? matchAwardId;
+            return hotsMatchAwards[matchAwardId].Name ?? "";
         }
         internal string GetMatchRewardsDescription(string matchAwardId)
         {
-            Heroes.Models.MatchAward matchAward = matchAwardDataDocument!.GetMatchAwardById(matchAwardId);
-            return matchAward?.Description?.PlainText ?? matchAwardId;
+            return hotsMatchAwards[matchAwardId].Description ?? "";
         }
         internal string GetMatchRewardsMvpScreenIcon(string matchAwardId)
         {
-            Heroes.Models.MatchAward matchAward = matchAwardDataDocument!.GetMatchAwardById(matchAwardId);
-            return matchAward?.MVPScreenImageFileName ?? matchAwardId;
+            return hotsMatchAwards[matchAwardId].MVPScreenImageFileName ?? "";
         }
     }
     internal class HotsHero
@@ -302,7 +442,7 @@ namespace HotsReplayReader
     }
     internal class HotsTalent()
     {
-        public string? ReferenceId {  get; set; }
+        public string? ReferenceId { get; set; }
         public string? IconFileName { get; set; }
         public string? Cooldown { get; set; }
         public string? Energy { get; set; }
@@ -333,5 +473,11 @@ namespace HotsReplayReader
         R2,
         D,
         Z
+    }
+    internal class HotsMatchAward
+    {
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? MVPScreenImageFileName { get; set; }
     }
 }
