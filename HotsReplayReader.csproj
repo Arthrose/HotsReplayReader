@@ -405,33 +405,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Référence de projet standard pour garantir l'ordre de build global -->
     <ProjectReference Include="..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<!-- Référence de projet standard pour garantir l'ordre de build global -->
-		<ProjectReference Include="..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" />
-	</ItemGroup>
+  <!-- Injection dynamique des fichiers juste avant la compilation des ressources -->
+  <Target Name="EmbedUpdaterBeforeBuild" BeforeTargets="PrepareForBuild;PrepareResources">
+    
+    <!-- On force la compilation de l'Updater dans la configuration active du parent -->
+    <MSBuild Projects="..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" 
+             Targets="Build" 
+             Properties="Configuration=$(Configuration);TargetFramework=net9.0-windows" />
 
-	<!-- Injection dynamique des fichiers juste avant la compilation des ressources -->
-	<Target Name="EmbedUpdaterBeforeBuild" BeforeTargets="PrepareForBuild;PrepareResources">
-
-		<!-- On force la compilation de l'Updater dans la configuration active du parent -->
-		<MSBuild Projects="..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj"
-				 Targets="Build"
-				 Properties="Configuration=$(Configuration);TargetFramework=net9.0-windows" />
-
-		<ItemGroup>
-			<!-- On embarque les fichiers générés en dur pour éviter les conflits de macros de dossier -->
-			<EmbeddedResource Include="..\HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.exe">
-				<LogicalName>HotsReplayReader.Updater.exe</LogicalName>
-			</EmbeddedResource>
-			<EmbeddedResource Include="..\HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.dll">
-				<LogicalName>HotsReplayReader.Updater.dll</LogicalName>
-			</EmbeddedResource>
-			<EmbeddedResource Include="..\HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.runtimeconfig.json">
-				<LogicalName>HotsReplayReader.Updater.runtimeconfig.json</LogicalName>
-			</EmbeddedResource>
-		</ItemGroup>
-	</Target>
+    <ItemGroup>
+      <!-- On embarque les fichiers générés en dur pour éviter les conflits de macros de dossier -->
+      <EmbeddedResource Include="..\HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.exe">
+        <LogicalName>HotsReplayReader.Updater.exe</LogicalName>
+      </EmbeddedResource>
+      <EmbeddedResource Include="..\HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.dll">
+        <LogicalName>HotsReplayReader.Updater.dll</LogicalName>
+      </EmbeddedResource>
+      <EmbeddedResource Include="..\HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.runtimeconfig.json">
+        <LogicalName>HotsReplayReader.Updater.runtimeconfig.json</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>
 </Project>
