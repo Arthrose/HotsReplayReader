@@ -41,6 +41,8 @@
             asiaRegionToolStripMenuItem = new ToolStripMenuItem();
             accountsToolStripMenuItem = new ToolStripMenuItem();
             languageToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
+            aboutHotsReplayReaderToolStripMenuItem = new ToolStripMenuItem();
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
@@ -50,12 +52,11 @@
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, regionToolStripMenuItem, accountsToolStripMenuItem, languageToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, regionToolStripMenuItem, accountsToolStripMenuItem, languageToolStripMenuItem, aboutToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(1359, 24);
             menuStrip.TabIndex = 0;
-            menuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -138,6 +139,20 @@
             languageToolStripMenuItem.Size = new Size(71, 20);
             languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
             // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutHotsReplayReaderToolStripMenuItem });
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(24, 20);
+            aboutToolStripMenuItem.Text = "?";
+            // 
+            // aboutHotsReplayReaderToolStripMenuItem
+            // 
+            aboutHotsReplayReaderToolStripMenuItem.Name = "aboutHotsReplayReaderToolStripMenuItem";
+            aboutHotsReplayReaderToolStripMenuItem.Size = new Size(206, 22);
+            aboutHotsReplayReaderToolStripMenuItem.Text = "About HotsReplayReader";
+            aboutHotsReplayReaderToolStripMenuItem.Click += aboutHotsReplayReaderToolStripMenuItem_Click;
+            // 
             // webView
             // 
             webView.AllowExternalDrop = false;
@@ -204,5 +219,7 @@
         private ToolStripMenuItem europeRegionToolStripMenuItem;
         private ToolStripMenuItem asiaRegionToolStripMenuItem;
         private ToolStripMenuItem propertiesToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem aboutHotsReplayReaderToolStripMenuItem;
     }
 }

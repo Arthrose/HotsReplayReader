@@ -18,6 +18,7 @@ using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 namespace HotsReplayReader
 {
@@ -286,6 +287,7 @@ namespace HotsReplayReader
                         accountsToolStripMenuItem.HideDropDown();
                         regionToolStripMenuItem.HideDropDown();
                         languageToolStripMenuItem.HideDropDown();
+                        aboutToolStripMenuItem.HideDropDown();
                     }
 
                     // Vérifie si l'action est "hoverLeft"
@@ -1659,7 +1661,7 @@ namespace HotsReplayReader
             html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
-            html += "      <table width=\"100%\">\n";
+            html += "      <table width=\"100%\" rowspan=\"0\">\n";
             html += "        <tr>\n";
             html += "          <td valign=\"top\">\n";
 
@@ -1672,28 +1674,6 @@ namespace HotsReplayReader
             html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroRegenFromHeroUnitId(heroId)}/s</font>\n";
 
             html += "                </td>\n";
-
-            /*
-            string mana = "";
-            string manaRegen = "";
-            if (Init.PsionicStormUnits[heroName].ManaBase == 500)
-            {
-                // Start with 500 Mana at level 1, except Probius who starts with 600 Mana, and gain 10 maximum Mana every level onwards
-                mana = Math.Round(heroData.Energy.EnergyMax + ((level - 1) * 10), 0).ToString();
-                // Start with 3 Mana per second at level 1 and gain 0.0975 Mana per second every level
-                manaRegen = Math.Round(3 + (level - 1) * 0.0975, 2).ToString();
-                html += $"      Mana: {mana}<br>\n";
-                html += $"      Regen: {manaRegen}/s<br><br>\n";
-            }
-            else if (Init.PsionicStormUnits[heroName].ManaBase > 0)
-            {
-                html += $"      Mana: {Init.PsionicStormUnits[heroName].ManaBase}<br>";
-                if (Init.PsionicStormUnits[heroName].ManaRegenBase > 0)
-                    html += $"\n      Regen: {Init.PsionicStormUnits[heroName].ManaRegenBase}/s<br>";
-                html += "<br>\n";
-            }
-            */
-
             html += "                <td class=\"statsDamage\">\n";
             html += "                  <br>\n";
 
@@ -1741,7 +1721,7 @@ namespace HotsReplayReader
             bool firstAbility = true;
             foreach (HotsAbility? ability in abilities)
             {
-                if(!firstAbility) html += "            <br>\n";
+                if (!firstAbility) html += "            <br>\n";
                 firstAbility = false;
                 html += HTMLGetAbility(ability, team);
             }
@@ -2362,9 +2342,9 @@ namespace HotsReplayReader
             || buggedHeroes.Contains(hotsPlayer.PlayerHero?.HeroId)
             ) return TimeSpan.Zero;
 
-            TimeSpan timeSpentAFK  = TimeSpan.Zero;
+            TimeSpan timeSpentAFK = TimeSpan.Zero;
             TimeSpan lastTimestamp = timeGateOpen;
-            TimeSpan AFKThreshold  = TimeSpan.FromSeconds(20);
+            TimeSpan AFKThreshold = TimeSpan.FromSeconds(20);
 
             foreach (StormGameEvent userGameEvent in hotsPlayer.UserActionGameEvents)
             {
@@ -2411,8 +2391,8 @@ namespace HotsReplayReader
             bool hasDeath = false;
             foreach (PlayerDeath? death in playerDeaths)
             {
-                TimeSpan deathStart   = death.Timestamp;
-                TimeSpan deathEnd     = death.TimestampRes;
+                TimeSpan deathStart = death.Timestamp;
+                TimeSpan deathEnd = death.TimestampRes;
                 TimeSpan deathSeconds = death.TimestampRes - death.Timestamp;
 
                 // Mort hors [from, to]
@@ -2423,9 +2403,9 @@ namespace HotsReplayReader
 
                 // Coupe l'intervalle en : avant mort, mort, après mort
                 TimeSpan beforeStart = from;
-                TimeSpan beforeEnd   = deathStart < from ? from : deathStart;
-                TimeSpan afterStart  = deathEnd > to ? to : deathEnd;
-                TimeSpan afterEnd    = to;
+                TimeSpan beforeEnd = deathStart < from ? from : deathStart;
+                TimeSpan afterStart = deathEnd > to ? to : deathEnd;
+                TimeSpan afterEnd = to;
 
                 TimeSpan before = beforeEnd > beforeStart ? beforeEnd - beforeStart : TimeSpan.Zero;
                 TimeSpan deathTimeSpan = (deathEnd > from && deathStart < to)
@@ -2498,7 +2478,7 @@ namespace HotsReplayReader
                 if (player.MatchAwards?.Count > 0)
                     matchAwardsList.Add(player.MatchAwards[0].ToString());
 
-            hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroId).ToList(), matchAwardsList);
+            hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroUnitId).ToList(), matchAwardsList);
         }
         // Sélection d'un replay dans la liste
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
@@ -2557,8 +2537,9 @@ namespace HotsReplayReader
                 else
                     htmlContent = welcomeHTML;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Debug.WriteLine(exception);
                 htmlContent = welcomeHTML;
             }
 
@@ -2644,6 +2625,12 @@ namespace HotsReplayReader
                 if (accountsToolStripMenuItem.DropDownItems.Count > 0)
                     accountsToolStripMenuItem.DropDownItems[0].PerformClick();
             }
+        }
+        private void aboutHotsReplayReaderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm aboutForm = new() { Location = new Point(this.Location.X + 150, this.Location.Y + 150) };
+            aboutForm.ShowDialog(this);
+            aboutForm.Dispose();
         }
         private void OnFileCreated(object sender, FileSystemEventArgs e)
         {

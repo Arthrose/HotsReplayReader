@@ -16,7 +16,7 @@ namespace HotsReplayReader
         internal JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
         internal string? DbDirectory { get; set; }
         internal Config? config = new();
-        public Dictionary<string, string> HeroNameFromHeroUnitId { get; } = new()
+        public static Dictionary<string, string> HeroNameFromHeroUnitId { get; } = new()
         {
             ["HeroAbathur"] = "Abathur",
             ["HeroAlarak"] = "Alarak",
@@ -113,7 +113,7 @@ namespace HotsReplayReader
             ["HeroZeratul"] = "Zeratul",
             ["HeroZuljin"] = "Zul'jin"
         };
-        public Dictionary<string, string> HeroNameFromHeroId { get; } = new()
+        public static Dictionary<string, string> HeroNameFromHeroId { get; } = new()
         {
             ["Abathur"] = "Abathur",
             ["Alarak"] = "Alarak",
@@ -207,7 +207,7 @@ namespace HotsReplayReader
             ["Zuljin"] = "Zul'jin",
             ["NONE"] = "NONE"
         };
-        public Dictionary<string, string> HeroRoleFromHeroUnitId { get; } = new()
+        public static Dictionary<string, string> HeroRoleFromHeroUnitId { get; } = new()
         {
             ["HeroAnubarak"] = "Tank",
             ["HeroArthas"] = "Tank",
@@ -308,7 +308,7 @@ namespace HotsReplayReader
             ["HeroLostVikingsController"] = "Support",
             ["HeroZarya"] = "Support"
         };
-        public Dictionary<string, string> HeroIdFromHeroUnitId { get; } = new()
+        public static Dictionary<string, string> HeroIdFromHeroUnitId { get; } = new()
         {
             ["HeroAbathur"] = "Abathur",
             ["HeroAlarak"] = "Alarak",
@@ -406,7 +406,7 @@ namespace HotsReplayReader
             ["HeroZeratul"] = "Zeratul",
             ["HeroZuljin"] = "Zuljin"
         };
-        public Dictionary<string, string> HeroAttributeIdFromHeroUnitId { get; } = new()
+        public static Dictionary<string, string> HeroAttributeIdFromHeroUnitId { get; } = new()
         {
             ["HeroAbathur"] = "Abat",
             ["HeroAlarak"] = "Alar",

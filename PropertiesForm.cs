@@ -90,7 +90,6 @@ namespace HotsReplayReader
                 OKButton.FlatAppearance.BorderColor = buttonBorderColor;
             }
         }
-
         private void PropertiesForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
