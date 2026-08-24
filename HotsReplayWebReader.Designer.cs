@@ -46,6 +46,7 @@
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
+            updateToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView).BeginInit();
             SuspendLayout();
@@ -141,7 +142,7 @@
             // 
             // aboutToolStripMenuItem
             // 
-            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutHotsReplayReaderToolStripMenuItem });
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { updateToolStripMenuItem, aboutHotsReplayReaderToolStripMenuItem });
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             aboutToolStripMenuItem.Size = new Size(24, 20);
             aboutToolStripMenuItem.Text = "?";
@@ -149,8 +150,8 @@
             // aboutHotsReplayReaderToolStripMenuItem
             // 
             aboutHotsReplayReaderToolStripMenuItem.Name = "aboutHotsReplayReaderToolStripMenuItem";
-            aboutHotsReplayReaderToolStripMenuItem.Size = new Size(206, 22);
-            aboutHotsReplayReaderToolStripMenuItem.Text = "About HotsReplayReader";
+            aboutHotsReplayReaderToolStripMenuItem.Size = new Size(180, 22);
+            aboutHotsReplayReaderToolStripMenuItem.Text = "About...";
             aboutHotsReplayReaderToolStripMenuItem.Click += aboutHotsReplayReaderToolStripMenuItem_Click;
             // 
             // webView
@@ -178,6 +179,13 @@
             listBoxHotsReplays.TabIndex = 1;
             listBoxHotsReplays.Visible = false;
             listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
+            // 
+            // updateToolStripMenuItem
+            // 
+            updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            updateToolStripMenuItem.Size = new Size(180, 22);
+            updateToolStripMenuItem.Text = "Update";
+            updateToolStripMenuItem.Click += updateToolStripMenuItem_Click;
             // 
             // HotsReplayWebReader
             // 
@@ -221,5 +229,6 @@
         private ToolStripMenuItem propertiesToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem aboutHotsReplayReaderToolStripMenuItem;
+        private ToolStripMenuItem updateToolStripMenuItem;
     }
 }

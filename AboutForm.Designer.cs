@@ -44,13 +44,13 @@
             gitHubLinkLabel.Size = new Size(200, 15);
             gitHubLinkLabel.TabIndex = 4;
             gitHubLinkLabel.TabStop = true;
-            gitHubLinkLabel.Text = "Visit GitHub Repository";
+            gitHubLinkLabel.Text = "GitHub Repository";
             gitHubLinkLabel.TextAlign = ContentAlignment.TopRight;
             gitHubLinkLabel.LinkClicked += GitHubLinkLabel_LinkClicked;
             // 
             // OKButton
             // 
-            OKButton.Location = new Point(264, 71);
+            OKButton.Location = new Point(264, 76);
             OKButton.Name = "OKButton";
             OKButton.Size = new Size(75, 23);
             OKButton.TabIndex = 1;
@@ -79,7 +79,7 @@
             // authorLinkLabel
             // 
             authorLinkLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            authorLinkLabel.Location = new Point(65, 34);
+            authorLinkLabel.Location = new Point(54, 34);
             authorLinkLabel.Name = "authorLinkLabel";
             authorLinkLabel.Size = new Size(200, 15);
             authorLinkLabel.TabIndex = 7;
@@ -91,7 +91,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(351, 104);
+            ClientSize = new Size(351, 111);
             Controls.Add(authorLinkLabel);
             Controls.Add(authorLabel);
             Controls.Add(programVersionLabel);

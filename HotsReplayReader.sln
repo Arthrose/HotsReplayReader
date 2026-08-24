@@ -1,15 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotsReplayReader", "HotsReplayReader.csproj", "{A79CC56B-6B23-42F3-AE8D-3EF01C9B8738}"
+	ProjectSection(ProjectDependencies) = postProject
+		{297EA9B6-7B0E-4E35-8729-53245E4F3D98} = {297EA9B6-7B0E-4E35-8729-53245E4F3D98}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.StormReplayParser", "..\Heroes.StormReplayParser\Heroes.StormReplayParser\Heroes.StormReplayParser.csproj", "{C8F12DD8-2810-9DBE-6E56-7274BECBB006}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Icons", "..\Heroes.Icons\Heroes.Icons\Heroes.Icons.csproj", "{177AA851-0BD7-9F3A-4E50-44FE731B195F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Element", "..\Heroes.Element\Heroes.Element\Heroes.Element.csproj", "{51445144-186B-A291-9123-8DC5CA7E72F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotsReplayReader.Updater", "..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj", "{297EA9B6-7B0E-4E35-8729-53245E4F3D98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +38,10 @@ Global
 		{51445144-186B-A291-9123-8DC5CA7E72F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51445144-186B-A291-9123-8DC5CA7E72F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51445144-186B-A291-9123-8DC5CA7E72F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{297EA9B6-7B0E-4E35-8729-53245E4F3D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{297EA9B6-7B0E-4E35-8729-53245E4F3D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297EA9B6-7B0E-4E35-8729-53245E4F3D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{297EA9B6-7B0E-4E35-8729-53245E4F3D98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
