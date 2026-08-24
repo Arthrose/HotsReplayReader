@@ -404,6 +404,10 @@
     <Folder Include="obj\Debug\net9.0-windows\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<!-- Référence de projet standard pour garantir l'ordre de build global -->
 		<ProjectReference Include="..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" />
