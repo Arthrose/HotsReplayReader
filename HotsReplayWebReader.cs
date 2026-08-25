@@ -45,10 +45,8 @@ namespace HotsReplayReader
 
         private readonly string formTitle = "Hots Replay Reader";
 
-        // List ofs replays index and path
         readonly private Dictionary<int, string> replayList;
 
-        // Listen to file system modification's notifications
         private FileSystemWatcher? fileSystemWatcher;
         readonly string tempDataFolder = Path.Combine(Path.GetTempPath(), "HotsReplayReader");
         readonly string webViewDllPath;
@@ -101,7 +99,6 @@ namespace HotsReplayReader
             Directory.CreateDirectory(tempDataFolder);
             File.WriteAllBytes(webViewDllPath, webViewDllBytes);
 
-            // Charge la dernière langue utilisée
             if (Init.config!.LangCode != null && LangCodeList.Contains(Init.config.LangCode))
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
@@ -2626,7 +2623,44 @@ namespace HotsReplayReader
                     accountsToolStripMenuItem.DropDownItems[0].PerformClick();
             }
         }
-        private void aboutHotsReplayReaderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Reflection.Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.exe");
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.dll");
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.runtimeconfig.json");
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.deps.json");
+
+                string HotsReplayReaderExePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
+
+                System.Diagnostics.ProcessStartInfo startInfo = new()
+                {
+                    FileName = Path.Combine(Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater"), "HotsReplayReader.Updater.exe"),
+                    Arguments = $"\"{HotsReplayReaderExePath}\"",
+                    UseShellExecute = true
+                };
+
+                System.Diagnostics.Process.Start(startInfo);
+
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error while updating: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private static void ExtractResourceToTempFolder(System.Reflection.Assembly assembly, string resourceName)
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater");
+            Directory.CreateDirectory(tempDir);
+            using Stream stream = assembly.GetManifestResourceStream(resourceName) ?? throw new Exception($"Ressource introuvable : {resourceName}");
+            using FileStream fileStream = new(Path.Combine(tempDir, resourceName), FileMode.Create, FileAccess.Write);
+            stream.CopyTo(fileStream);
+        }
+        private void AboutHotsReplayReaderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm aboutForm = new() { Location = new Point(this.Location.X + 150, this.Location.Y + 150) };
             aboutForm.ShowDialog(this);
@@ -2705,56 +2739,6 @@ namespace HotsReplayReader
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
         private static partial Regex MyRegexRenameReplayInList();
-
-
-
-        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                System.Reflection.Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-
-                // 1. Définir le dossier temporaire d'extraction
-                string tempDir = Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater");
-                Directory.CreateDirectory(tempDir);
-
-                string exeTempPath = Path.Combine(tempDir, "HotsReplayReader.Updater.exe");
-                string dllTempPath = Path.Combine(tempDir, "HotsReplayReader.Updater.dll");
-                string jsonTempPath = Path.Combine(tempDir, "HotsReplayReader.Updater.runtimeconfig.json");
-
-                // 2. Extraire le .exe, la .dll et le json sur le disque
-                ExtractResource(currentAssembly, "HotsReplayReader.Updater.exe", exeTempPath);
-                ExtractResource(currentAssembly, "HotsReplayReader.Updater.dll", dllTempPath);
-                ExtractResource(currentAssembly, "HotsReplayReader.Updater.runtimeconfig.json", jsonTempPath);
-
-                // 3. Récupérer le chemin de l'application principale actuelle pour que l'updater sache quoi remplacer
-                string HotsReplayReaderExePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
-
-                // 4. Configurer et lancer le processus de l'updater
-                System.Diagnostics.ProcessStartInfo startInfo = new()
-                {
-                    FileName = exeTempPath,
-                    // On passe le chemin actuel en argument à l'updater (pensez à gérer cet argument dans le Main de l'updater)
-                    Arguments = $"\"{HotsReplayReaderExePath}\"",
-                    UseShellExecute = true
-                };
-
-                System.Diagnostics.Process.Start(startInfo);
-
-                // 5. Fermer immédiatement l'application actuelle pour libérer le fichier .exe principal
-                Application.Exit();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erreur lors du lancement de la mise à jour : {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private static void ExtractResource(System.Reflection.Assembly assembly, string resourceName, string outputPath)
-        {
-            using Stream stream = assembly.GetManifestResourceStream(resourceName) ?? throw new Exception($"Ressource introuvable : {resourceName}");
-            using FileStream fileStream = new(outputPath, FileMode.Create, FileAccess.Write);
-            stream.CopyTo(fileStream);
-        }
     }
 
     // Override des couleurs pour le mode sombre

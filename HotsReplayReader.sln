@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Icons", "..\Heroes.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Element", "..\Heroes.Element\Heroes.Element\Heroes.Element.csproj", "{51445144-186B-A291-9123-8DC5CA7E72F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotsReplayReader.Updater", "..\HotsReplayReader.Updater\HotsReplayReader.Updater.csproj", "{B38929C9-FFFD-3A98-E0A2-0606D581451F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotsReplayReader.Updater", "HotsReplayReader.Updater\HotsReplayReader.Updater.csproj", "{B38929C9-FFFD-3A98-E0A2-0606D581451F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

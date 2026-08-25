@@ -152,7 +152,7 @@
             aboutHotsReplayReaderToolStripMenuItem.Name = "aboutHotsReplayReaderToolStripMenuItem";
             aboutHotsReplayReaderToolStripMenuItem.Size = new Size(180, 22);
             aboutHotsReplayReaderToolStripMenuItem.Text = "About...";
-            aboutHotsReplayReaderToolStripMenuItem.Click += aboutHotsReplayReaderToolStripMenuItem_Click;
+            aboutHotsReplayReaderToolStripMenuItem.Click += AboutHotsReplayReaderToolStripMenuItem_Click;
             // 
             // webView
             // 
@@ -185,7 +185,7 @@
             updateToolStripMenuItem.Name = "updateToolStripMenuItem";
             updateToolStripMenuItem.Size = new Size(180, 22);
             updateToolStripMenuItem.Text = "Update";
-            updateToolStripMenuItem.Click += updateToolStripMenuItem_Click;
+            updateToolStripMenuItem.Click += UpdateToolStripMenuItem_Click;
             // 
             // HotsReplayWebReader
             // 
