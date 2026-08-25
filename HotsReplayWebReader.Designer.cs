@@ -147,11 +147,18 @@
             aboutToolStripMenuItem.Size = new Size(24, 20);
             aboutToolStripMenuItem.Text = "?";
             // 
+            // updateToolStripMenuItem
+            // 
+            updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            updateToolStripMenuItem.Size = new Size(180, 22);
+            updateToolStripMenuItem.Text = Resources.Language.i18n.strMenuUpdate;
+            updateToolStripMenuItem.Click += UpdateToolStripMenuItem_Click;
+            // 
             // aboutHotsReplayReaderToolStripMenuItem
             // 
             aboutHotsReplayReaderToolStripMenuItem.Name = "aboutHotsReplayReaderToolStripMenuItem";
             aboutHotsReplayReaderToolStripMenuItem.Size = new Size(180, 22);
-            aboutHotsReplayReaderToolStripMenuItem.Text = "About...";
+            aboutHotsReplayReaderToolStripMenuItem.Text = Resources.Language.i18n.strMenuAbout;
             aboutHotsReplayReaderToolStripMenuItem.Click += AboutHotsReplayReaderToolStripMenuItem_Click;
             // 
             // webView
@@ -179,13 +186,6 @@
             listBoxHotsReplays.TabIndex = 1;
             listBoxHotsReplays.Visible = false;
             listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
-            // 
-            // updateToolStripMenuItem
-            // 
-            updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            updateToolStripMenuItem.Size = new Size(180, 22);
-            updateToolStripMenuItem.Text = "Update";
-            updateToolStripMenuItem.Click += UpdateToolStripMenuItem_Click;
             // 
             // HotsReplayWebReader
             // 

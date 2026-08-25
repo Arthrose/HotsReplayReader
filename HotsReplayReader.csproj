@@ -8,9 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>images\HotsReplayReader.ico</ApplicationIcon>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.0.1.0</AssemblyVersion>
-    <FileVersion>0.0.1.0</FileVersion>
-	<Version>$(VersionPrefix)</Version>
+    <Version>0.2.0</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -118,7 +120,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="obj\Debug\net9.0-windows\" />
+    <Folder Include="obj\Debug\$(TargetFramework)\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -127,18 +129,18 @@
     </ProjectReference>
   </ItemGroup>
   <Target Name="EmbedUpdaterBeforeBuild" BeforeTargets="PrepareForBuild;PrepareResources">
-    <MSBuild Projects="HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" Targets="Build" Properties="Configuration=$(Configuration);TargetFramework=net9.0-windows" />
+    <MSBuild Projects="HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" Targets="Build" Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)" />
     <ItemGroup>
-      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.exe">
+      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\$(TargetFramework)\HotsReplayReader.Updater.exe">
         <LogicalName>HotsReplayReader.Updater.exe</LogicalName>
       </EmbeddedResource>
-      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.dll">
+      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\$(TargetFramework)\HotsReplayReader.Updater.dll">
         <LogicalName>HotsReplayReader.Updater.dll</LogicalName>
       </EmbeddedResource>
-      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.runtimeconfig.json">
+      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\$(TargetFramework)\HotsReplayReader.Updater.runtimeconfig.json">
         <LogicalName>HotsReplayReader.Updater.runtimeconfig.json</LogicalName>
       </EmbeddedResource>
-      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\net9.0-windows\HotsReplayReader.Updater.deps.json">
+      <EmbeddedResource Include="HotsReplayReader.Updater\bin\$(Configuration)\$(TargetFramework)\HotsReplayReader.Updater.deps.json">
         <LogicalName>HotsReplayReader.Updater.deps.json</LogicalName>
       </EmbeddedResource>
     </ItemGroup>

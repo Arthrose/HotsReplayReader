@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -43,7 +44,7 @@ namespace HotsReplayReader
         private TimeSpan timeGateOpen = TimeSpan.Zero;
         private TimeSpan endOfGame = TimeSpan.Zero;
 
-        private readonly string formTitle = "Hots Replay Reader";
+        private string formTitle = "HotS Replay Reader";
 
         readonly private Dictionary<int, string> replayList;
 
@@ -228,6 +229,8 @@ namespace HotsReplayReader
         }
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
+            this.Text = "";
+            formTitle = $"{formTitle} (v" + Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion + ')';
             // Ajouter ce dossier au chemin de recherche des DLL natives
             if (!NativeMethods.SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
             {
@@ -326,12 +329,7 @@ namespace HotsReplayReader
                         {
                             detectedLanguageName = detectedLangInfo.LanguageName ?? "Unknown";
                         }
-                        var resultObject = new
-                        {
-                            translatedText = translatedText,
-                            detectedLanguage = detectedLanguage,
-                            detectedLanguageName = detectedLanguageName
-                        };
+                        var resultObject = new { translatedText, detectedLanguage, detectedLanguageName };
                         // Sérialise le texte traduit et le detected language en JSON
                         string returnedJson = JsonSerializer.Serialize(resultObject);
 
@@ -362,10 +360,8 @@ namespace HotsReplayReader
                 {
                     if (item is ToolStripMenuItem submenu)
                     {
-                        if (submenu.Name == currentAccount)
-                            submenu.Checked = true;
-                        else
-                            submenu.Checked = false;
+                        if (submenu.Name == currentAccount) submenu.Checked = true;
+                        else submenu.Checked = false;
                     }
                 }
 
@@ -373,7 +369,7 @@ namespace HotsReplayReader
                 {
                     if (listBoxHotsReplays.Items.Count > 0)
                     {
-                        listBoxHotsReplays.SelectedIndex = 0; // sélection du premier élément
+                        listBoxHotsReplays.SelectedIndex = 0; // select first element
                     }
                 }));
             }
@@ -428,7 +424,7 @@ namespace HotsReplayReader
 
                     if (resource is byte[] svgBytes)
                     {
-                        MemoryStream msSvg = new MemoryStream(svgBytes);
+                        MemoryStream msSvg = new(svgBytes);
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(msSvg, 200, "OK", "Content-Type: image/svg+xml");
                     }
                     return;
@@ -556,6 +552,8 @@ namespace HotsReplayReader
             europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
             asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
             languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
+            updateToolStripMenuItem.Text = Resources.Language.i18n.strMenuUpdate;
+            aboutHotsReplayReaderToolStripMenuItem.Text = Resources.Language.i18n.strMenuAbout;
 
             if (listBoxHotsReplays.Items.Count == 0)
                 return;
@@ -1641,13 +1639,6 @@ namespace HotsReplayReader
 
             int level = 1;
 
-            string playerName;
-
-            if (stormPlayer.PlayerType == PlayerType.Computer)
-                playerName = stormPlayer.ComputerName!;
-            else
-                playerName = stormPlayer.Name;
-
             string heroId = Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
             string heroName = Init.HeroNameFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
             if (heroName == "Lucio") heroName = "Lúcio";
@@ -1727,7 +1718,7 @@ namespace HotsReplayReader
 
             return html;
         }
-        private string HTMLGetAbility(HotsAbility? ability, HotsTeam team)
+        private static string HTMLGetAbility(HotsAbility? ability, HotsTeam team)
         {
             string html = string.Empty;
 
@@ -2445,37 +2436,66 @@ namespace HotsReplayReader
             }
             return TimeSpan.Zero;
         }
-        private async Task CheckAndDownloadHeroesData(string replayVersion)
+        private async Task CheckAndDownloadHeroesData(string replayVersion, bool firstPass)
         {
             dbVersion = null;
+            if (Directory.Exists(Path.Combine(Init.DbDirectory!, replayVersion)))
+                dbVersion = replayVersion;
+            else {
+                using HttpClient httpClient = new();
+                httpClient.DefaultRequestHeaders.UserAgent.Add(
+                    new ProductInfoHeaderValue(
+                        Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader",
+                        Assembly.GetExecutingAssembly().GetName().Version?.ToString(2) ?? "1.0"
+                    )
+                );
+    
+                dbVersion = await GitHubDownloader.DownloadHeroesDataAsync(httpClient, replayVersion, Init.DbDirectory!, webView.CoreWebView2);
+            }
+            // Seek high version in APPDATA
+            dbVersion ??=
+                Directory.GetDirectories(Init.DbDirectory!)
+                    .Select(dirPath => new DirectoryInfo(dirPath))
+                    .Select(dirInfo => new
+                    {
+                        Info = dirInfo,
+                        Success = Version.TryParse(dirInfo.Name, out Version? v),
+                        Version = v
+                    })
+                    .Where(x => x.Success)
+                    .OrderByDescending(x => x.Version)
+                    .Select(x => x.Info.Name)
+                    .FirstOrDefault();
+            if (dbVersion == null)
+                return;
 
-            using HttpClient httpClient = new();
-            httpClient.DefaultRequestHeaders.UserAgent.Add(
-                new ProductInfoHeaderValue(
-                    Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader",
-                    Assembly.GetExecutingAssembly().GetName().Version?.ToString(2) ?? "1.0"
-                )
-            );
+            try
+            {
+                string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*.json").FirstOrDefault();
+                string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*.json").FirstOrDefault();
+                string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{Init.config!.LangCode?.ToLower().Replace("-", "")}.json").FirstOrDefault();
 
-            dbVersion = await GitHubDownloader.DownloadHeroesDataAsync(httpClient, replayVersion, Init.DbDirectory!, webView.CoreWebView2);
-            if (dbVersion == null) return;
+                Debug.WriteLine($"heroDataJsonPath: {heroDataJsonPath}");
+                Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
+                Debug.WriteLine($"gameStringsJsonPath: {gameStringsJsonPath}");
 
-            string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*.json").FirstOrDefault();
-            string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*.json").FirstOrDefault();
-            string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{Init.config!.LangCode?.ToLower().Replace("-", "")}.json").FirstOrDefault();
+                if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null) return;
 
-            Debug.WriteLine($"heroDataJsonPath: {heroDataJsonPath}");
-            Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
-            Debug.WriteLine($"gameStringsJsonPath: {gameStringsJsonPath}");
+                List<string> matchAwardsList = [];
+                foreach (StormPlayer player in hotsReplay!.stormPlayers!)
+                    if (player.MatchAwards?.Count > 0)
+                        matchAwardsList.Add(player.MatchAwards[0].ToString());
 
-            if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null) return;
-
-            List<string> matchAwardsList = [];
-            foreach (StormPlayer player in hotsReplay!.stormPlayers!)
-                if (player.MatchAwards?.Count > 0)
-                    matchAwardsList.Add(player.MatchAwards[0].ToString());
-
-            hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroUnitId).ToList(), matchAwardsList);
+                hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), [.. hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroUnitId)], matchAwardsList);
+            }
+            catch
+            {
+                if (firstPass)
+                {
+                    Directory.Delete(Path.Combine(Init.DbDirectory!, dbVersion), true);
+                    await CheckAndDownloadHeroesData(hotsReplay!.stormReplay!.ReplayVersion.ToString(), false);
+                }
+            }
         }
         // Sélection d'un replay dans la liste
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
@@ -2519,7 +2539,7 @@ namespace HotsReplayReader
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
                     InitPlayersData();
 
-                    await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString());
+                    await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString(), true);
                     //await CheckAndDownloadHeroesData("2.55.13.95170");
 
                     htmlContent = $"{HTMLGetHeader()}";
@@ -2623,34 +2643,108 @@ namespace HotsReplayReader
                     accountsToolStripMenuItem.DropDownItems[0].PerformClick();
             }
         }
-        private void UpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void UpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // 1. Récupération de la version locale (et nettoyage du hash Git si présent)
+            string? versionBrute = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            string versionLocaleClean = versionBrute?.Split('+')[0] ?? "0.1.0";
+
+            using HttpClient httpClient = new();
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader", versionLocaleClean));
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+
             try
             {
-                System.Reflection.Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+                // 2. Requête vers l'API GitHub — endpoint "releases" (liste) pour inclure les pré-releases
+                string url = "https://api.github.com/repos/Arthrose/HotsReplayReader/releases";
+                using JsonDocument? doc = await httpClient.GetFromJsonAsync<JsonDocument>(url);
 
-                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.exe");
-                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.dll");
-                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.runtimeconfig.json");
-                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.deps.json");
-
-                string HotsReplayReaderExePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
-
-                System.Diagnostics.ProcessStartInfo startInfo = new()
+                // 3. Extraction dynamique du premier élément (le plus récent, GitHub trie par created_at desc)
+                if (doc != null && doc.RootElement.ValueKind == JsonValueKind.Array && doc.RootElement.GetArrayLength() > 0)
                 {
-                    FileName = Path.Combine(Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater"), "HotsReplayReader.Updater.exe"),
-                    Arguments = $"\"{HotsReplayReaderExePath}\"",
-                    UseShellExecute = true
-                };
+                    JsonElement latestRelease = doc.RootElement[0];
+                    string? tagElement = latestRelease.GetProperty("tag_name").GetString();
+                    string releaseUrl = latestRelease.TryGetProperty("html_url", out var htmlUrlProp)
+                        ? htmlUrlProp.GetString() ?? "https://github.com/Arthrose/HotsReplayReader/releases"
+                        : "https://github.com/Arthrose/HotsReplayReader/releases";
+                    string? exeDownloadUrl = null;
 
-                System.Diagnostics.Process.Start(startInfo);
+                    if (!string.IsNullOrEmpty(tagElement))
+                    {
+                        string versionGitHubClean = tagElement.TrimStart('v', 'V');
 
-                Application.Exit();
+                        // 4. Comparaison mathématique des versions (avec parsing tolérant aux suffixes -beta, -rc, etc.)
+                        if (TryParseGitHubVersion(versionLocaleClean, out Version? localVersion) &&
+                            TryParseGitHubVersion(versionGitHubClean, out Version? githubVersion))
+                        {
+                            if (githubVersion! != localVersion!)
+                            {
+                                DialogResult result = MessageBox.Show(
+                                    $"{Resources.Language.i18n.strUpdateNewVersionAvailableA}({versionGitHubClean}){Resources.Language.i18n.strUpdateNewVersionAvailableB}\n{Resources.Language.i18n.strUpdateDoYouWantToUpdate}",
+                                    $"{Resources.Language.i18n.strUpdateAvailable}",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Information);
+
+                                if (result == DialogResult.Yes)
+                                {
+                                    // Récupère l'URL du fichier .exe
+                                    if (latestRelease.TryGetProperty("assets", out JsonElement assets) || assets.ValueKind != JsonValueKind.Array)
+                                    {
+                                        foreach (JsonElement asset in assets.EnumerateArray())
+                                        {
+                                            string? name = asset.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
+                                            if (name != null && name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                                                exeDownloadUrl = asset.TryGetProperty("browser_download_url", out var urlProp) ? urlProp.GetString() : null;
+                                        }
+                                    }
+                                    // exeDownloadUrl est prêt à être utilisé pour un futur téléchargement direct
+                                    // (ex: via httpClient.GetByteArrayAsync(exeDownloadUrl) puis File.WriteAllBytes)
+                                    if (!string.IsNullOrEmpty(exeDownloadUrl))
+                                    {
+                                        // Starts HotsReplayReader.Updater.exe
+                                        System.Reflection.Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.exe");
+                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.dll");
+                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.runtimeconfig.json");
+                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.deps.json");
+
+                                        string HotsReplayReaderExePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
+
+                                        System.Diagnostics.ProcessStartInfo startInfo = new()
+                                        {
+                                            FileName = Path.Combine(Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater"), "HotsReplayReader.Updater.exe"),
+                                            Arguments = $"\"{HotsReplayReaderExePath}\" \"{exeDownloadUrl}\"",
+                                            UseShellExecute = true
+                                        };
+
+                                        System.Diagnostics.Process.Start(startInfo);
+
+                                        Application.Exit();
+                                    }
+                                }
+                            }
+                            else
+                                MessageBox.Show($"{Resources.Language.i18n.strUpdateUpToDate}", $"{Resources.Language.i18n.strUpdateNoUpdate}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                            MessageBox.Show($"{Resources.Language.i18n.strUpdateImpossibleToCompareA}({versionLocaleClean} / {versionGitHubClean}){Resources.Language.i18n.strUpdateImpossibleToCompareB}", $"{Resources.Language.i18n.strUpdateError}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"{Resources.Language.i18n.strUpdateNoVersionFound}", $"{Resources.Language.i18n.strUpdateError}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error while updating: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{Resources.Language.i18n.strUpdateNoVersionFound}", $"{Resources.Language.i18n.strUpdateConnectionError}", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private static bool TryParseGitHubVersion(string input, out Version? version)
+        {
+            string cleaned = input.Split('-')[0].Trim();
+            return Version.TryParse(cleaned, out version);
         }
         private static void ExtractResourceToTempFolder(System.Reflection.Assembly assembly, string resourceName)
         {

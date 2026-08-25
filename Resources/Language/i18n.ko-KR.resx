@@ -336,4 +336,46 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>게임 데이터를 다운로드하는 중...</value>
   </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>새 버전</value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value>을 사용할 수 있습니다!</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>업데이트하시겠습니까?</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>업데이트 가능</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>애플리케이션이 이미 최신 상태입니다.</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>업데이트 없음</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>버전을 비교할 수 없습니다 </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>GitHub에서 버전을 찾을 수 없습니다.</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>데이트를 확인할 수 없습니다.</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>연결 오류</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>정보...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
 </root>

@@ -412,6 +412,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About....
+        /// </summary>
+        internal static string strMenuAbout {
+            get {
+                return ResourceManager.GetString("strMenuAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accounts.
         /// </summary>
         internal static string strMenuAccounts {
@@ -462,6 +471,15 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strMenuSource {
             get {
                 return ResourceManager.GetString("strMenuSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string strMenuUpdate {
+            get {
+                return ResourceManager.GetString("strMenuUpdate", resourceCulture);
             }
         }
         
@@ -705,6 +723,114 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strTimeSpentAFK {
             get {
                 return ResourceManager.GetString("strTimeSpentAFK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        internal static string strUpdateAvailable {
+            get {
+                return ResourceManager.GetString("strUpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection error.
+        /// </summary>
+        internal static string strUpdateConnectionError {
+            get {
+                return ResourceManager.GetString("strUpdateConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to update?.
+        /// </summary>
+        internal static string strUpdateDoYouWantToUpdate {
+            get {
+                return ResourceManager.GetString("strUpdateDoYouWantToUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string strUpdateError {
+            get {
+                return ResourceManager.GetString("strUpdateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to compare versions .
+        /// </summary>
+        internal static string strUpdateImpossibleToCompareA {
+            get {
+                return ResourceManager.GetString("strUpdateImpossibleToCompareA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ..
+        /// </summary>
+        internal static string strUpdateImpossibleToCompareB {
+            get {
+                return ResourceManager.GetString("strUpdateImpossibleToCompareB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version .
+        /// </summary>
+        internal static string strUpdateNewVersionAvailableA {
+            get {
+                return ResourceManager.GetString("strUpdateNewVersionAvailableA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  is available!.
+        /// </summary>
+        internal static string strUpdateNewVersionAvailableB {
+            get {
+                return ResourceManager.GetString("strUpdateNewVersionAvailableB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No update.
+        /// </summary>
+        internal static string strUpdateNoUpdate {
+            get {
+                return ResourceManager.GetString("strUpdateNoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No version found on GitHub..
+        /// </summary>
+        internal static string strUpdateNoVersionFound {
+            get {
+                return ResourceManager.GetString("strUpdateNoVersionFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to check for updates..
+        /// </summary>
+        internal static string strUpdateUnableToCheck {
+            get {
+                return ResourceManager.GetString("strUpdateUnableToCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your application is already up to date..
+        /// </summary>
+        internal static string strUpdateUpToDate {
+            get {
+                return ResourceManager.GetString("strUpdateUpToDate", resourceCulture);
             }
         }
         

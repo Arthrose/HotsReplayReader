@@ -1,6 +1,6 @@
 ﻿namespace HotsReplayReader.Updater
 {
-    partial class Form1
+    partial class HotsReplayReaderUpdater
     {
         /// <summary>
         ///  Required designer variable.

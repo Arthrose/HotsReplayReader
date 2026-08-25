@@ -336,4 +336,46 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Downloading game data...</value>
   </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>A new version </value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value> is available!</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>Do you want to update?</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>Your application is already up to date.</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>No update</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>Unable to compare versions </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>No version found on GitHub.</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>Unable to check for updates.</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>Connection error</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>About...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

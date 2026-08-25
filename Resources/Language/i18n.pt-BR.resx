@@ -336,4 +336,46 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Baixando dados do jogo...</value>
   </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>Uma nova versão </value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value>está disponível!</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>Deseja atualizar?</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>Atualização disponível</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>Seu aplicativo já está actualizado.</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>Sem atualizações</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>Não foi possível comparar as versões </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>Nenhuma versão encontrada no GitHub.</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>Não foi possível verificar se há atualizações.</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>Erro de conexão</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>Sobre...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
 </root>

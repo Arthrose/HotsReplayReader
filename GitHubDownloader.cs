@@ -13,12 +13,14 @@ internal static class GitHubDownloader
 
         bool useNewRepository = requestedVersion >= VersionThreshold;
         string downloadUrl = BuildExactDownloadUrl(requestedVersion, useNewRepository);
-        Version versionToUse = requestedVersion;
+        Version? versionToUse = requestedVersion;
 
         // La version exacte n'existe pas
         if (!await UrlExistsAsync(httpClient, downloadUrl))
         {
             versionToUse = await GetLatestVersionAsync(httpClient, useNewRepository);
+            if (versionToUse == null)
+                return null;
             downloadUrl = BuildExactDownloadUrl(versionToUse, useNewRepository);
         }
 
@@ -157,20 +159,27 @@ internal static class GitHubDownloader
         }
     }
 
-    private static async Task<Version> GetLatestVersionAsync(HttpClient httpClient, bool useNewRepository)
+    private static async Task<Version?> GetLatestVersionAsync(HttpClient httpClient, bool useNewRepository)
     {
-        string latestUrl = useNewRepository ? "https://github.com/HeroesToolChest/heroes-data2/releases/latest" : "https://github.com/HeroesToolChest/heroes-data/releases/latest";
-        using HttpResponseMessage response = await httpClient.GetAsync(latestUrl);
+        try
+        {
+            string latestUrl = useNewRepository ? "https://github.com/HeroesToolChest/heroes-data2/releases/latest" : "https://github.com/HeroesToolChest/heroes-data/releases/latest";
+            using HttpResponseMessage response = await httpClient.GetAsync(latestUrl);
 
-        string finalUrl = response.RequestMessage?.RequestUri?.ToString() ?? throw new Exception("Unable to determine latest release.");
+            string finalUrl = response.RequestMessage?.RequestUri?.ToString() ?? throw new Exception("Unable to determine latest release.");
 
-        // Exemple :
-        // https://github.com/HeroesToolChest/heroes-data2/releases/tag/v2.55.17.97605
+            // Exemple :
+            // https://github.com/HeroesToolChest/heroes-data2/releases/tag/v2.55.17.97605
 
-        int index = finalUrl.LastIndexOf("/v", StringComparison.OrdinalIgnoreCase);
-        if (index < 0) throw new Exception($"Unexpected release URL : {finalUrl}");
-        string versionString = finalUrl[(index + 2)..];
-        return Version.Parse(versionString);
+            int index = finalUrl.LastIndexOf("/v", StringComparison.OrdinalIgnoreCase);
+            if (index < 0) throw new Exception($"Unexpected release URL : {finalUrl}");
+            string versionString = finalUrl[(index + 2)..];
+            return Version.Parse(versionString);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private static async Task DownloadFileAsync(HttpClient httpClient, string url, string destinationFile)

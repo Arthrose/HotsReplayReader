@@ -328,12 +328,54 @@
     <value>Clé API invalide.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK&amp;nbsp;</value>
+    <value>AFK</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Français</value>
   </data>
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Téléchargement des données du jeu...</value>
+  </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>Une nouvelle version </value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value> est disponible !</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>Voulez-vous mettre à jour ?</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>Mise à jour disponible</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>Votre application est déjà à jour.</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>Pas de mise à jour</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>Impossible de comparer les versions </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>Aucune version trouvée sur GitHub.</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>Impossible de vérifier les mises à jour.</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>Erreur de connexion</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>À propos...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>Mise à jour</value>
   </data>
 </root>

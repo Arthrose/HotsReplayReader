@@ -336,4 +336,46 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>正在下載遊戲資料...</value>
   </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>新版本 </value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value>已發佈！</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>您要更新嗎？</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>有可用更新</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>您的應用程式已是最新版本。</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>沒有更新</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>無法比較版本 </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>。</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>在 GitHub 上找不到 أي 版本。</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>無法檢查更新。</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>連線錯誤</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>關於...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>更新</value>
+  </data>
 </root>

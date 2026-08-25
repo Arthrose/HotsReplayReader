@@ -336,4 +336,46 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Pobieranie danych gry...</value>
   </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>Nowa wersja </value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value> jest dostępna!</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>Czy chcesz zaktualizować?</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>Aktualizacja dostępna</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>Twoja aplikacja jest już aktualna.</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>Brak aktualizacji</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>Nie można porównać wersji </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>Nie znaleziono wersji na GitHubie.</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>Nie można sprawdzić aktualizacji.</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>Błąd połączenia</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>O programie...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>Aktualizuj</value>
+  </data>
 </root>

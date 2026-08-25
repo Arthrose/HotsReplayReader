@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using Microsoft.Win32;
 
 namespace HotsReplayReader
@@ -11,6 +12,7 @@ namespace HotsReplayReader
         public AboutForm()
         {
             InitializeComponent();
+            programVersionLabel.Text = "HotS Replay Reader v" + Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
         }
         protected override void OnHandleCreated(EventArgs e)
         {

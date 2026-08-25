@@ -336,4 +336,46 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Загрузка данных игры...</value>
   </data>
+  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
+    <value>Доступна новая версия </value>
+  </data>
+  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
+    <value>!</value>
+  </data>
+  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
+    <value>Хотите обновиться?</value>
+  </data>
+  <data name="strUpdateAvailable" xml:space="preserve">
+    <value>Доступно обновление</value>
+  </data>
+  <data name="strUpdateUpToDate" xml:space="preserve">
+    <value>Ваше приложение уже обновлено.</value>
+  </data>
+  <data name="strUpdateNoUpdate" xml:space="preserve">
+    <value>Нет unbeliev</value>
+  </data>
+  <data name="strUpdateImpossibleToCompareA" xml:space="preserve">
+    <value>Невозможно сравнить версии </value>
+  </data>
+  <data name="strUpdateImpossibleToCompareB" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="strUpdateError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="strUpdateNoVersionFound" xml:space="preserve">
+    <value>Версия на GitHub не найдена.</value>
+  </data>
+  <data name="strUpdateUnableToCheck" xml:space="preserve">
+    <value>Не удалось проверить обновления.</value>
+  </data>
+  <data name="strUpdateConnectionError" xml:space="preserve">
+    <value>Ошибка подключения</value>
+  </data>
+  <data name="strMenuAbout" xml:space="preserve">
+    <value>О программе...</value>
+  </data>
+  <data name="strMenuUpdate" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
 </root>

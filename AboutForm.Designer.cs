@@ -104,7 +104,7 @@
             MinimizeBox = false;
             Name = "AboutForm";
             StartPosition = FormStartPosition.Manual;
-            Text = "Properties";
+            Text = "About";
             KeyDown += AboutForm_KeyDown;
             ResumeLayout(false);
             PerformLayout();
