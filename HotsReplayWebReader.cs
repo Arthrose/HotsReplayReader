@@ -19,7 +19,6 @@ using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 namespace HotsReplayReader
 {
@@ -229,7 +228,6 @@ namespace HotsReplayReader
         }
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
-            this.Text = "";
             formTitle = $"{formTitle} (v" + Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion + ')';
             // Ajouter ce dossier au chemin de recherche des DLL natives
             if (!NativeMethods.SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
@@ -403,6 +401,7 @@ namespace HotsReplayReader
                 */
                 webView.NavigateToString(htmlContent);
             }
+            await CheckAndLaunchUpdateAsync();
         }
         private void WebViewWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
@@ -2643,9 +2642,52 @@ namespace HotsReplayReader
                     accountsToolStripMenuItem.DropDownItems[0].PerformClick();
             }
         }
+        private enum UpdateCheckStatus
+        {
+            UpdateLaunched,       // Mise à jour disponible, utilisateur a accepté, updater lancé
+            UpdateDeclined,       // Mise à jour disponible, utilisateur a refusé
+            NoUpdateAvailable,    // Déjà à jour
+            NoReleaseFound,       // Aucune release trouvée sur GitHub
+            NoExeAssetFound,      // Release trouvée mais aucun .exe dedans
+            VersionCompareError,  // Impossible de comparer les versions
+            ConnectionError       // Erreur réseau / exception
+        }
         private async void UpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // 1. Récupération de la version locale (et nettoyage du hash Git si présent)
+            UpdateCheckStatus status = await CheckAndLaunchUpdateAsync();
+
+            switch (status)
+            {
+                case UpdateCheckStatus.NoUpdateAvailable:
+                    MessageBox.Show($"{Resources.Language.i18n.strUpdateUpToDate}", $"{Resources.Language.i18n.strUpdateNoUpdate}",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+
+                case UpdateCheckStatus.NoReleaseFound:
+                case UpdateCheckStatus.NoExeAssetFound:
+                    MessageBox.Show($"{Resources.Language.i18n.strUpdateNoVersionFound}", $"{Resources.Language.i18n.strUpdateError}",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+
+                case UpdateCheckStatus.VersionCompareError:
+                    MessageBox.Show($"{Resources.Language.i18n.strUpdateImpossibleToCompareA}{Resources.Language.i18n.strUpdateImpossibleToCompareB}",
+                        $"{Resources.Language.i18n.strUpdateError}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+
+                case UpdateCheckStatus.ConnectionError:
+                    MessageBox.Show($"{Resources.Language.i18n.strUpdateNoVersionFound}", $"{Resources.Language.i18n.strUpdateConnectionError}",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+
+                case UpdateCheckStatus.UpdateLaunched:
+                case UpdateCheckStatus.UpdateDeclined:
+                    // le dialogue Oui/Non déjà affiché dans CheckAndLaunchUpdateAsync
+                    break;
+            }
+        }
+        private static async Task<UpdateCheckStatus> CheckAndLaunchUpdateAsync()
+        {
+            // Récupération de la version locale (et nettoyage du hash Git si présent)
             string? versionBrute = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
             string versionLocaleClean = versionBrute?.Split('+')[0] ?? "0.1.0";
 
@@ -2655,90 +2697,80 @@ namespace HotsReplayReader
 
             try
             {
-                // 2. Requête vers l'API GitHub — endpoint "releases" (liste) pour inclure les pré-releases
+                // Requête vers l'API GitHub — endpoint "releases" (liste) pour inclure les pré-releases
                 string url = "https://api.github.com/repos/Arthrose/HotsReplayReader/releases";
                 using JsonDocument? doc = await httpClient.GetFromJsonAsync<JsonDocument>(url);
 
-                // 3. Extraction dynamique du premier élément (le plus récent, GitHub trie par created_at desc)
-                if (doc != null && doc.RootElement.ValueKind == JsonValueKind.Array && doc.RootElement.GetArrayLength() > 0)
+                if (doc == null || doc.RootElement.ValueKind != JsonValueKind.Array || doc.RootElement.GetArrayLength() == 0)
+                    return UpdateCheckStatus.NoReleaseFound;
+
+                // Extraction dynamique du premier élément (le plus récent, GitHub trie par created_at desc)
+                JsonElement latestRelease = doc.RootElement[0];
+                string? tagElement = latestRelease.GetProperty("tag_name").GetString();
+
+                if (string.IsNullOrEmpty(tagElement))
+                    return UpdateCheckStatus.NoReleaseFound;
+
+                string versionGitHubClean = tagElement.TrimStart('v', 'V');
+
+                // Comparaison des versions (parsing sans suffixes -beta, -rc, etc.)
+                if (!TryParseGitHubVersion(versionLocaleClean, out Version? localVersion) || !TryParseGitHubVersion(versionGitHubClean, out Version? githubVersion))
+                    return UpdateCheckStatus.VersionCompareError;
+
+                //if (false)
+                if (githubVersion! <= localVersion!)
+                    return UpdateCheckStatus.NoUpdateAvailable;
+
+                DialogResult result = MessageBox.Show(
+                    $"{Resources.Language.i18n.strUpdateNewVersionAvailableA}({versionGitHubClean}){Resources.Language.i18n.strUpdateNewVersionAvailableB}\n{Resources.Language.i18n.strUpdateDoYouWantToUpdate}",
+                    $"{Resources.Language.i18n.strUpdateAvailable}",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information);
+
+                if (result != DialogResult.Yes)
+                    return UpdateCheckStatus.UpdateDeclined;
+
+                // Récupère l'URL du fichier .exe
+                string? exeDownloadUrl = null;
+                if (latestRelease.TryGetProperty("assets", out JsonElement assets) && assets.ValueKind == JsonValueKind.Array)
                 {
-                    JsonElement latestRelease = doc.RootElement[0];
-                    string? tagElement = latestRelease.GetProperty("tag_name").GetString();
-                    string releaseUrl = latestRelease.TryGetProperty("html_url", out var htmlUrlProp)
-                        ? htmlUrlProp.GetString() ?? "https://github.com/Arthrose/HotsReplayReader/releases"
-                        : "https://github.com/Arthrose/HotsReplayReader/releases";
-                    string? exeDownloadUrl = null;
-
-                    if (!string.IsNullOrEmpty(tagElement))
+                    foreach (JsonElement asset in assets.EnumerateArray())
                     {
-                        string versionGitHubClean = tagElement.TrimStart('v', 'V');
-
-                        // 4. Comparaison mathématique des versions (avec parsing tolérant aux suffixes -beta, -rc, etc.)
-                        if (TryParseGitHubVersion(versionLocaleClean, out Version? localVersion) &&
-                            TryParseGitHubVersion(versionGitHubClean, out Version? githubVersion))
-                        {
-                            if (githubVersion! != localVersion!)
-                            {
-                                DialogResult result = MessageBox.Show(
-                                    $"{Resources.Language.i18n.strUpdateNewVersionAvailableA}({versionGitHubClean}){Resources.Language.i18n.strUpdateNewVersionAvailableB}\n{Resources.Language.i18n.strUpdateDoYouWantToUpdate}",
-                                    $"{Resources.Language.i18n.strUpdateAvailable}",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Information);
-
-                                if (result == DialogResult.Yes)
-                                {
-                                    // Récupère l'URL du fichier .exe
-                                    if (latestRelease.TryGetProperty("assets", out JsonElement assets) || assets.ValueKind != JsonValueKind.Array)
-                                    {
-                                        foreach (JsonElement asset in assets.EnumerateArray())
-                                        {
-                                            string? name = asset.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
-                                            if (name != null && name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                                                exeDownloadUrl = asset.TryGetProperty("browser_download_url", out var urlProp) ? urlProp.GetString() : null;
-                                        }
-                                    }
-                                    // exeDownloadUrl est prêt à être utilisé pour un futur téléchargement direct
-                                    // (ex: via httpClient.GetByteArrayAsync(exeDownloadUrl) puis File.WriteAllBytes)
-                                    if (!string.IsNullOrEmpty(exeDownloadUrl))
-                                    {
-                                        // Starts HotsReplayReader.Updater.exe
-                                        System.Reflection.Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-
-                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.exe");
-                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.dll");
-                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.runtimeconfig.json");
-                                        ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.deps.json");
-
-                                        string HotsReplayReaderExePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
-
-                                        System.Diagnostics.ProcessStartInfo startInfo = new()
-                                        {
-                                            FileName = Path.Combine(Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater"), "HotsReplayReader.Updater.exe"),
-                                            Arguments = $"\"{HotsReplayReaderExePath}\" \"{exeDownloadUrl}\"",
-                                            UseShellExecute = true
-                                        };
-
-                                        System.Diagnostics.Process.Start(startInfo);
-
-                                        Application.Exit();
-                                    }
-                                }
-                            }
-                            else
-                                MessageBox.Show($"{Resources.Language.i18n.strUpdateUpToDate}", $"{Resources.Language.i18n.strUpdateNoUpdate}", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                            MessageBox.Show($"{Resources.Language.i18n.strUpdateImpossibleToCompareA}({versionLocaleClean} / {versionGitHubClean}){Resources.Language.i18n.strUpdateImpossibleToCompareB}", $"{Resources.Language.i18n.strUpdateError}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        string? name = asset.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
+                        if (name != null && name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                            exeDownloadUrl = asset.TryGetProperty("browser_download_url", out var urlProp) ? urlProp.GetString() : null;
                     }
                 }
-                else
+
+                if (string.IsNullOrEmpty(exeDownloadUrl))
+                    return UpdateCheckStatus.NoExeAssetFound;
+
+                // Lancement de HotsReplayReader.Updater.exe
+                System.Reflection.Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.exe");
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.dll");
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.runtimeconfig.json");
+                ExtractResourceToTempFolder(currentAssembly, "HotsReplayReader.Updater.deps.json");
+
+                string hotsReplayReaderExePath = Environment.ProcessPath ?? AppDomain.CurrentDomain.BaseDirectory;
+
+                System.Diagnostics.ProcessStartInfo startInfo = new()
                 {
-                    MessageBox.Show($"{Resources.Language.i18n.strUpdateNoVersionFound}", $"{Resources.Language.i18n.strUpdateError}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                    FileName = Path.Combine(Path.Combine(Path.GetTempPath(), "HotsReplayReaderUpdater"), "HotsReplayReader.Updater.exe"),
+                    Arguments = $"\"{hotsReplayReaderExePath}\" \"{exeDownloadUrl}\"",
+                    UseShellExecute = true
+                };
+
+                System.Diagnostics.Process.Start(startInfo);
+
+                Application.Exit();
+
+                return UpdateCheckStatus.UpdateLaunched;
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"{Resources.Language.i18n.strUpdateNoVersionFound}", $"{Resources.Language.i18n.strUpdateConnectionError}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return UpdateCheckStatus.ConnectionError;
             }
         }
         private static bool TryParseGitHubVersion(string input, out Version? version)

@@ -340,7 +340,7 @@
     <value>Nowa wersja </value>
   </data>
   <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
-    <value> jest dostępna!</value>
+    <value> jest dostępna.</value>
   </data>
   <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
     <value>Czy chcesz zaktualizować?</value>

@@ -28,12 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            lblStatus = new Label();
+            progressBar = new ProgressBar();
+            SuspendLayout();
+            // 
+            // lblStatus
+            // 
+            lblStatus.AutoSize = false;
+            lblStatus.Location = new Point(20, 20);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(360, 23);
+            lblStatus.TextAlign = ContentAlignment.MiddleLeft;
+            lblStatus.Text = "Initialisation...";
+            // 
+            // progressBar
+            // 
+            progressBar.Location = new Point(20, 55);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new Size(360, 23);
+            progressBar.Style = ProgressBarStyle.Continuous;
+            progressBar.Minimum = 0;
+            progressBar.Maximum = 100;
+            // 
+            // HotsReplayReaderUpdater
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Text = "Form1";
+            ClientSize = new Size(400, 100);
+            Controls.Add(lblStatus);
+            Controls.Add(progressBar);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Name = "HotsReplayReaderUpdater";
+            Text = "Mise à jour de HotsReplayReader";
+            Load += HotsReplayReaderUpdater_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Label lblStatus;
+        private ProgressBar progressBar;
     }
 }
