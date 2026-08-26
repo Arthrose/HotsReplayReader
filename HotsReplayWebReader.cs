@@ -24,7 +24,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = false;
+        readonly bool release = true;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
 
@@ -228,7 +228,8 @@ namespace HotsReplayReader
         }
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
-            formTitle = $"{formTitle} (v" + Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion + ')';
+            if (!release)
+                formTitle = $"{formTitle} (v" + Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion + ')';
             // Ajouter ce dossier au chemin de recherche des DLL natives
             if (!NativeMethods.SetDllDirectory(Path.GetDirectoryName(webViewDllPath)!))
             {

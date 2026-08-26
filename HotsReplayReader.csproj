@@ -12,7 +12,6 @@
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-	<SupportedOSPlatform>windows</SupportedOSPlatform>
     <NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
 
