@@ -128,6 +128,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
+
   <Target Name="EmbedUpdaterBeforeBuild" BeforeTargets="PrepareForBuild;PrepareResources">
     <MSBuild Projects="HotsReplayReader.Updater\HotsReplayReader.Updater.csproj" Targets="Build" Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)" />
     <ItemGroup>

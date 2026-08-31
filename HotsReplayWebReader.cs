@@ -24,7 +24,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = true;
+        readonly bool release = false;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
 
@@ -367,15 +367,11 @@ namespace HotsReplayReader
                 this.Invoke(new Action(() =>
                 {
                     if (listBoxHotsReplays.Items.Count > 0)
-                    {
                         listBoxHotsReplays.SelectedIndex = 0; // select first element
-                    }
                 }));
             }
             else if (accountsToolStripMenuItem.DropDownItems.Count > 0)
-            {
                 AccountMenuItemClickHandler(accountsToolStripMenuItem.DropDownItems[0], EventArgs.Empty);
-            }
             else
             {
                 htmlContent = welcomeHTML;
@@ -1081,6 +1077,8 @@ namespace HotsReplayReader
   document.addEventListener(""DOMContentLoaded"", () => {
     const table = document.getElementById(""statsTable"");
     const headers = table.querySelectorAll(""thead th"");
+    const tbodyInit = table.querySelector(""tbody"");
+    const originalRows = Array.from(tbodyInit.querySelectorAll(""tr""));
     let activeIndex = null;
     function parseValue(text, type) {
       if (!text) return 0;
@@ -1109,17 +1107,27 @@ namespace HotsReplayReader
       header.style.cursor = ""pointer"";
       header.addEventListener(""click"", () => {
         const tbody = table.querySelector(""tbody"");
-        const rows = Array.from(tbody.querySelectorAll(""tr""));
+        const isSorted = activeIndex === index && header.dataset.order === ""desc"";
+        if (isSorted) {
+          // Deuxieme clic sur la meme colonne : on remet l'ordre d'origine
+          header.dataset.order = """";
+          activeIndex = null;
+          tbody.innerHTML = """";
+          originalRows.forEach(r => tbody.appendChild(r));
+          table.querySelectorAll("".active-col"").forEach(el => { el.classList.remove(""active-col""); });
+          return;
+        }
         const type = header.dataset.type || ""string"";
-        const asc = activeIndex === index && header.dataset.order === ""asc"";
-        header.dataset.order = asc ? ""desc"" : ""asc"";
+        headers.forEach(h => { if (h !== header) h.dataset.order = """"; });
+        header.dataset.order = ""desc"";
         activeIndex = index;
+        const rows = Array.from(tbody.querySelectorAll(""tr""));
         rows.sort((a, b) => {
           const A = parseValue(a.children[index]?.innerText, type);
           const B = parseValue(b.children[index]?.innerText, type);
           if (type === ""string"")
-            return asc ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
-          return asc ? A - B : B - A;
+            return String(B).localeCompare(String(A));
+          return B - A;
         });
         tbody.innerHTML = """";
         rows.forEach(r => tbody.appendChild(r));
