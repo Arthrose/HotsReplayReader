@@ -13,8 +13,10 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
+using Heroes.StormReplayParser;
 using Heroes.StormReplayParser.Decoders;
 using Heroes.StormReplayParser.GameEvent;
+using Heroes.StormReplayParser.MessageEvent;
 using Heroes.StormReplayParser.Player;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
@@ -921,17 +923,61 @@ namespace HotsReplayReader
             html += $"      </td>\n";
             return html;
         }
+
+        static void DumpString(string label, string s)
+        {
+            Debug.WriteLine($"{label} (len={s.Length}): \"{s}\"");
+            Debug.WriteLine(string.Join(" ", s.Select(c => $"U+{(int)c:X4}")));
+        }
+
         internal string HTMLGetChatMessages()
         {
             if (hotsReplay == null || hotsPlayers == null || hotsReplay.stormReplay == null) return "";
 
             List<HotsMessage> hotsMessages = [];
-            foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
+
+//            foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
+//            {
+//                string msg = HTMLGetChatMessageEmoticon(((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text);
+//                if (chatMessage.MessageSender != null && GetHotsPlayer(chatMessage.MessageSender.BattleTagName) != null)
+//                    hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
+//
+//                string oldRaw = ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text;
+//                DumpString("OLD", oldRaw);
+//
+//
+//            }
+
+            List<StormGameEvent>? STriggerChatMessageEvents = hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerChatMessageEvent).ToList();
+            foreach (StormGameEvent STriggerChatMessageEvent in STriggerChatMessageEvents)
             {
-                string msg = HTMLGetChatMessageEmoticon(((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text);
-                if (chatMessage.MessageSender != null && GetHotsPlayer(chatMessage.MessageSender.BattleTagName) != null)
-                    hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
+                string? rawText = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
+                if (rawText is null) continue; // pas de texte exploitable sur cet event, on l'ignore
+
+                // 🔍 DEBUG
+                bool regexMatches = Regex.IsMatch(rawText, @"(:\w+:)");
+                Debug.WriteLine($"[DEBUG] rawText=\"{rawText}\" regexMatches={regexMatches}");
+
+                string msg = HTMLGetChatMessageEmoticon(rawText); // rawText est garanti non-null ici
+                Debug.WriteLine($"[DEBUG] msg apres transformation = \"{msg}\"");
+
+                // 🔍 DEBUG - test direct de la résolution d'alias, indépendamment du regex
+                string directTest = GetEmoticonImgFromTag(":sgg:");
+                Debug.WriteLine($"[DEBUG] GetEmoticonImgFromTag(\":sgg:\") = \"{directTest}\"");
+
+                StormPlayer? MessageSender = STriggerChatMessageEvent.MessageSender;
+                if (MessageSender is null) continue;
+
+                HotsPlayer? hotsPlayer = GetHotsPlayer(MessageSender.BattleTagName);
+                if (hotsPlayer is null) continue;
+
+                string? newRaw = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
+                DumpString("NEW", newRaw ?? "<null>");
+
+
+                hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerChatMessageEvent.Timestamp, msg, rawText));
             }
+
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.PlayerDisconnects)
@@ -941,6 +987,9 @@ namespace HotsReplayReader
                         hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", null, false));
                 }
             }
+
+
+
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
 
             if (hotsMessages.Count > 0)
@@ -2621,7 +2670,7 @@ namespace HotsReplayReader
         }
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PropertiesForm propertiesForm = new(this) { Location = new Point(this.Location.X + 150, this.Location.Y + 150) };
+            PropertiesForm propertiesForm = new(this) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
             propertiesForm.ShowDialog(this);
             propertiesForm.Dispose();
             if (Init.config != null)
@@ -2797,7 +2846,7 @@ namespace HotsReplayReader
         }
         private void AboutHotsReplayReaderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutForm aboutForm = new() { Location = new Point(this.Location.X + 150, this.Location.Y + 150) };
+            AboutForm aboutForm = new() { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
             aboutForm.ShowDialog(this);
             aboutForm.Dispose();
         }
