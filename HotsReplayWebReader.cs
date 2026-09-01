@@ -26,7 +26,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = true;
+        readonly bool release = false;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
 
@@ -923,13 +923,6 @@ namespace HotsReplayReader
             html += $"      </td>\n";
             return html;
         }
-
-        static void DumpString(string label, string s)
-        {
-            Debug.WriteLine($"{label} (len={s.Length}): \"{s}\"");
-            Debug.WriteLine(string.Join(" ", s.Select(c => $"U+{(int)c:X4}")));
-        }
-
         internal string HTMLGetChatMessages()
         {
             if (hotsReplay == null || hotsPlayers == null || hotsReplay.stormReplay == null) return "";
