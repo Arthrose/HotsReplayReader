@@ -25,4 +25,16 @@
         public Dictionary<string, string>? Aliases { get; set; }
         public Dictionary<string, string>? Localizedaliases { get; set; }
     }
+    public class HotsGameStrings
+    {
+        public HotsGameStringsItems? Items { get; set; }
+    }
+    public class HotsGameStringsItems
+    {
+        public HotsGameStringsEmoticon? Emoticon { get; set; }
+    }
+    public class HotsGameStringsEmoticon
+    {
+        public Dictionary<string, List<string>>? LocalizedAliases { get; set; }
+    }
 }
