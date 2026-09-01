@@ -232,6 +232,16 @@ tr {
   height: 36px;
   margin-top: -5px;
   vertical-align: middle;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.chat-image-portrait-blue {
+  outline: 3px solid darkblue;
+  outline-offset: -4px;
+}
+.chat-image-portrait-red {
+  outline: 3px solid crimson;
+  outline-offset: -4px;
 }
 .chat-image-emoticon {
   height: 26px;

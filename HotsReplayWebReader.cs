@@ -26,7 +26,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = false;
+        readonly bool release = true;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
 
@@ -936,34 +936,13 @@ namespace HotsReplayReader
 
             List<HotsMessage> hotsMessages = [];
 
-//            foreach (Heroes.StormReplayParser.MessageEvent.IStormMessage chatMessage in hotsReplay.stormReplay.ChatMessages)
-//            {
-//                string msg = HTMLGetChatMessageEmoticon(((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text);
-//                if (chatMessage.MessageSender != null && GetHotsPlayer(chatMessage.MessageSender.BattleTagName) != null)
-//                    hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender.BattleTagName)!, chatMessage.Timestamp, msg, ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text));
-//
-//                string oldRaw = ((Heroes.StormReplayParser.MessageEvent.ChatMessage)chatMessage).Text;
-//                DumpString("OLD", oldRaw);
-//
-//
-//            }
-
             List<StormGameEvent>? STriggerChatMessageEvents = hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerChatMessageEvent).ToList();
             foreach (StormGameEvent STriggerChatMessageEvent in STriggerChatMessageEvents)
             {
                 string? rawText = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
-                if (rawText is null) continue; // pas de texte exploitable sur cet event, on l'ignore
+                if (rawText is null) continue;
 
-                // 🔍 DEBUG
-                bool regexMatches = Regex.IsMatch(rawText, @"(:\w+:)");
-                Debug.WriteLine($"[DEBUG] rawText=\"{rawText}\" regexMatches={regexMatches}");
-
-                string msg = HTMLGetChatMessageEmoticon(rawText); // rawText est garanti non-null ici
-                Debug.WriteLine($"[DEBUG] msg apres transformation = \"{msg}\"");
-
-                // 🔍 DEBUG - test direct de la résolution d'alias, indépendamment du regex
-                string directTest = GetEmoticonImgFromTag(":sgg:");
-                Debug.WriteLine($"[DEBUG] GetEmoticonImgFromTag(\":sgg:\") = \"{directTest}\"");
+                string msg = HTMLGetChatMessageEmoticon(rawText);
 
                 StormPlayer? MessageSender = STriggerChatMessageEvent.MessageSender;
                 if (MessageSender is null) continue;
@@ -972,12 +951,8 @@ namespace HotsReplayReader
                 if (hotsPlayer is null) continue;
 
                 string? newRaw = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
-                DumpString("NEW", newRaw ?? "<null>");
-
-
                 hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerChatMessageEvent.Timestamp, msg, rawText));
             }
-
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.PlayerDisconnects)
@@ -987,9 +962,6 @@ namespace HotsReplayReader
                         hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", null, false));
                 }
             }
-
-
-
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
 
             if (hotsMessages.Count > 0)
@@ -1069,7 +1041,15 @@ namespace HotsReplayReader
                 html += $"    <span class=\"chat-time\">[{msgHours}:{msgMinutes}:{msgSeconds}]</span>\n";
             else
                 html += $"    <span class=\"chat-time\">[{msgMinutes}:{msgSeconds}]</span>\n";
-            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"></span>\n";
+
+
+            string teamColor = "";
+            if (hotsMessage.HotsPlayer.Team == hotsReplay?.stormReplay?.Owner?.Team)
+                teamColor = "blue";
+            else
+                teamColor = "red";
+
+            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image chat-image-portrait-{teamColor}\" title=\"{heroName}\"></span>\n";
 
             string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
 
@@ -1109,7 +1089,8 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
-            string pattern = @"(:\w+:)";
+            //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
+            string pattern = @"(:\w+:)";
             chatMessage = WebUtility.HtmlEncode(chatMessage);
             return Regex.Replace(chatMessage, pattern, match =>
             {
