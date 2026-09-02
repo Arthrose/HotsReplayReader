@@ -1,7 +1,5 @@
 body {
   color: white;
-  background: #backColor# url("app://hotsResources/#backImg#.png") no-repeat center center fixed;
-  background-size: cover;
   margin: 0;
   height: 100%;
   text-align: center;
@@ -187,14 +185,13 @@ tr {
 }
 .tdPlayerName {
   text-align: left;
-  vertical-align: center;
+  vertical-align: middle;
   font-family: Calibri;
 }
 .head-container {
   overflow-y: visible;
   text-align: left;
   margin: 0 auto;
-  background-color: #backColor#;
   border-radius: 10px;
   padding: 20px;
 }
@@ -209,6 +206,9 @@ tr {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
+.chat-container:focus {
+  outline: none;
+}
 .chat-message {
   font-family: Arial, sans-serif;
   font-size: 26px;
@@ -220,10 +220,18 @@ tr {
 }
 .chat-time {
   font-family: Courier New, Consolas, Lucida Console;
-  font-size: 90%;
   color: lightgray;
-  font-weight: bolder;
-  vertical-align: central;
+  font-weight: bold;
+  vertical-align: 2%;
+}
+.chat-time-bracket {
+  vertical-align: 5%;
+}
+.chat-time-blue {
+  color: #3184ff;
+}
+.chat-time-red {
+  color: #db0040;
 }
 .chat-user {
   font-weight: bold;
@@ -234,14 +242,6 @@ tr {
   vertical-align: middle;
   border-radius: 50%;
   box-sizing: border-box;
-}
-.chat-image-portrait-blue {
-  outline: 3px solid darkblue;
-  outline-offset: -4px;
-}
-.chat-image-portrait-red {
-  outline: 3px solid crimson;
-  outline-offset: -4px;
 }
 .chat-image-emoticon {
   height: 26px;

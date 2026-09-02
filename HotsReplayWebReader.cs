@@ -605,15 +605,9 @@ namespace HotsReplayReader
         {
             string css = System.Text.Encoding.UTF8.GetString(Resources.HotsResources.styles);
 
-            if (hotsReplay != null)
-                if (hotsReplay.stormReplay?.Owner != null)
-                {
-                    if (hotsReplay.stormReplay.Owner.IsWinner)
-                        css = css.Replace(@"#backColor#", @"#001100");
-                    else
-                        css = css.Replace(@"#backColor#", @"#110000");
-                }
-            css = css.Replace(@"#backImg#", $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}");
+            string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#001100" : "#110000";
+            string bgImg = $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}";
+
 
             string html = $@"<html lang=""{Resources.Language.i18n.ResourceManager.GetString("HTMLLang")!}"">
 <head>
@@ -677,7 +671,7 @@ namespace HotsReplayReader
   }}
 </script>
 </head>
-<body>
+<body style=""background: {bgColor} url('app://hotsResources/{bgImg}.png') no-repeat center center / cover fixed"">
 <div class=""sidebar"">replays</div>
 <br><br><br>
 <div class=""parentDiv"">
@@ -696,10 +690,10 @@ namespace HotsReplayReader
             string isRedTeamWinner = redTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
             string winnerTeamClass = blueTeam.IsWinner ? "titleBlue" : "titleRed";
 
-            string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}")
-                           ?? hotsReplay?.stormReplay?.MapInfo.MapName;
+            string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}") ?? hotsReplay?.stormReplay?.MapInfo.MapName;
+            string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#001100" : "#110000";
 
-            string html = "<div class=\"head-container\">\n  <table class=\"headTable\">\n";
+            string html = $"<div class=\"head-container\" style=\"background-color: {bgColor};\">\n  <table class=\"headTable\">\n";
 
             if (hotsReplay?.stormReplay?.ReplayVersion.ToString() != dbVersion)
             {
@@ -962,7 +956,7 @@ namespace HotsReplayReader
                 bool lastMessageAfterAnHour = Convert.ToInt32(hotsMessages.Last().Hours) > 0;
 
                 string html = $@"";
-                html += "<div class=\"chat-container\">\n";
+                html += "<div class=\"chat-container\" autofocus>\n";
                 foreach (HotsMessage hotsMessage in hotsMessages)
                 {
                     html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
@@ -1027,22 +1021,21 @@ namespace HotsReplayReader
 
             string? heroName = hotsData.GetHeroNameFromHeroId(hotsMessage.HotsPlayer.PlayerHero.HeroId);
 
-            string html = "  <div class=\"chat-message\">\n";
-            if (hotsMessage.Translate)
-                html += $"    <span class=\"chat-verbatim\" style=\"display: none;\">{WebUtility.HtmlEncode(hotsMessage.Verbatim)}</span>\n";
-            if (lastMessageAfterAnHour)
-                html += $"    <span class=\"chat-time\">[{msgHours}:{msgMinutes}:{msgSeconds}]</span>\n";
-            else
-                html += $"    <span class=\"chat-time\">[{msgMinutes}:{msgSeconds}]</span>\n";
-
-
             string teamColor = "";
             if (hotsMessage.HotsPlayer.Team == hotsReplay?.stormReplay?.Owner?.Team)
                 teamColor = "blue";
             else
                 teamColor = "red";
 
-            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image chat-image-portrait-{teamColor}\" title=\"{heroName}\"></span>\n";
+            string html = "  <div class=\"chat-message\">\n";
+            if (hotsMessage.Translate)
+                html += $"    <span class=\"chat-verbatim\" style=\"display: none;\">{WebUtility.HtmlEncode(hotsMessage.Verbatim)}</span>\n";
+            if (lastMessageAfterAnHour)
+                html += $"    <span class=\"chat-time chat-time-{teamColor}\"><span class=\"chat-time-bracket\">[</span>{msgHours}:{msgMinutes}:{msgSeconds}<span class=\"chat-time-bracket\">]</span></span>\n";
+            else
+                html += $"    <span class=\"chat-time chat-time-{teamColor}\"><span class=\"chat-time-bracket\">[</span>{msgMinutes}:{msgSeconds}<span class=\"chat-time-bracket\">]</span></span>\n";
+
+            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{Init.HeroNameFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{heroName}\"></span>\n";
 
             string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
 

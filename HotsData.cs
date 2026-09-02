@@ -1,13 +1,7 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 using Heroes.Element;
-using Heroes.Element.Models;
-using Heroes.Element.Models.AbilityTalents;
-using Heroes.Element.Models.Types;
 using Heroes.Icons;
-using Heroes.Icons.DataDocument;
-using Heroes.Models.AbilityTalents;
 
 namespace HotsReplayReader
 {
@@ -317,21 +311,21 @@ namespace HotsReplayReader
             if (!heroesElementData.TryGetValue(heroId, out Heroes.Element.Models.Hero? heroTmp)) return;
             Heroes.Element.Models.AbilityTalents.Ability? ability;
 
-            if (heroTmp.Abilities.TryGetValue(AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? basicAbilities))
+            if (heroTmp.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? basicAbilities))
             {
-                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Q);
+                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Q);
                 if (ability is not null)
                     hero.Abilities[ability.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.Q);
 
-                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.W);
+                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.W);
                 if (ability is not null)
                     hero.Abilities[ability.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.W);
 
-                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.E);
+                ability = basicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.E);
                 if (ability is not null)
                     hero.Abilities[ability.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.E);
             }
-            if (heroTmp.Abilities.TryGetValue(AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? heroicAbilities))
+            if (heroTmp.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? heroicAbilities))
             {
                 for (int i = 0; i < heroicAbilities.Count && i < 2; i++)
                 {
@@ -339,19 +333,19 @@ namespace HotsReplayReader
                     hero.Abilities[heroicAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, heroicAbility, i == 0 ? HotsAbilityType.R1 : HotsAbilityType.R2);
                 }
             }
-            if (heroTmp.Abilities.TryGetValue(AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? traitAbilities)) {
-                ability = traitAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Trait);
+            if (heroTmp.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? traitAbilities)) {
+                ability = traitAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Trait);
                 if (ability is not null)
                     hero.Abilities[ability.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.D);
             }
-            if (heroTmp.Abilities.TryGetValue(AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? mountAbilities)) {
-                ability = mountAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Z);
+            if (heroTmp.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? mountAbilities)) {
+                ability = mountAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Z);
                 if (ability is not null)
                     hero.Abilities[ability.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, ability, HotsAbilityType.Z);
             }
             if (heroId == "LostVikings")
             {
-                if (heroTmp.Abilities.TryGetValue(AbilityTier.Activable, out IList<Heroes.Element.Models.AbilityTalents.Ability>? activableAbilities))
+                if (heroTmp.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Activable, out IList<Heroes.Element.Models.AbilityTalents.Ability>? activableAbilities))
                 {
                     for (int i = 0; i < activableAbilities.Count && i < 3; i++)
                     {
@@ -374,21 +368,21 @@ namespace HotsReplayReader
                     };
                     Heroes.Element.Models.AbilityTalents.Ability? unitAbility;
 
-                    if (heroUnitData.Abilities.TryGetValue(AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitBasicAbilities))
+                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitBasicAbilities))
                     {
-                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Q);
+                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Q);
                         if (unitAbility is not null)
                             heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.Q);
 
-                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.W);
+                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.W);
                         if (unitAbility is not null)
                             heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.W);
 
-                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.E);
+                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.E);
                         if (unitAbility is not null)
                             heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.E);
                     }
-                    if (heroUnitData.Abilities.TryGetValue(AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitHeroicAbilities))
+                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitHeroicAbilities))
                     {
                         for (int i = 0; i < unitHeroicAbilities.Count && i < 2; i++)
                         {
@@ -396,15 +390,15 @@ namespace HotsReplayReader
                             heroUnit.Abilities[heroicAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, heroicAbility, i == 0 ? HotsAbilityType.R1 : HotsAbilityType.R2);
                         }
                     }
-                    if (heroUnitData.Abilities.TryGetValue(AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitTraitAbilities))
+                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitTraitAbilities))
                     {
-                        unitAbility = unitTraitAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Trait);
+                        unitAbility = unitTraitAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Trait);
                         if (unitAbility is not null)
                             heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.D);
                     }
-                    if (heroUnitData.Abilities.TryGetValue(AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitMountAbilities))
+                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitMountAbilities))
                     {
-                        unitAbility = unitMountAbilities.FirstOrDefault(a => a.AbilityType == AbilityType.Z);
+                        unitAbility = unitMountAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Z);
                         if (unitAbility is not null)
                             heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.Z);
                     }
