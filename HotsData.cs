@@ -179,7 +179,7 @@ namespace HotsReplayReader
 
             foreach (Heroes.Models.Hero heroUnitData in heroesIconsData[heroId].HeroUnits)
             {
-                if (heroId == "Chen" || heroId == "LostVikings" || heroId == "Rexxar") continue;
+                if (heroId == "Chen" || heroId == "LostVikings" || heroId == "Rexxar" || heroId == "Medivh") continue;
 
                 HotsHeroUnit heroUnit = new()
                 {
@@ -363,7 +363,7 @@ namespace HotsReplayReader
             }
             hotsHeroes[heroId].HeroUnits.Add(hero);
 
-            if (heroesElementData[heroId].HeroUnits.Count() > 0 &&  heroId != "Chen" && heroId != "LostVikings" && heroId != "Rexxar")
+            if (heroesElementData[heroId].HeroUnits.Count > 0 && heroId != "Chen" && heroId != "LostVikings" && heroId != "Rexxar" && heroId != "Medivh")
             {
                 foreach (Heroes.Element.Models.Unit heroUnitData in heroesElementData[heroId].HeroUnits.Values)
                 {
