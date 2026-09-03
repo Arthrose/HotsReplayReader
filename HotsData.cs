@@ -1,7 +1,10 @@
 ﻿using System.Globalization;
 using System.Text.Json;
+
 using Heroes.Element;
+using Heroes.Element.Models;
 using Heroes.Icons;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HotsReplayReader
 {
@@ -74,11 +77,14 @@ namespace HotsReplayReader
         {
             foreach (Heroes.Models.AbilityTalents.Talent talent in heroesIconsData[heroId].Talents)
             {
+
+                _ = int.TryParse(talent.Tier.ToString().Replace("Level", ""), out int talenLevel);
                 hotsHeroes[heroId].Talents.Add
                 (
                     new HotsTalent
                     {
                         ReferenceId = talent.AbilityTalentId.ReferenceId ?? null,
+                        Level = talenLevel,
                         IconFileName = talent.IconFileName ?? null,
                         Cooldown = talent.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
                         Energy = talent.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
@@ -285,15 +291,17 @@ namespace HotsReplayReader
         }
         internal void ParseHeroesElementTalents(string heroId)
         {
-            foreach (IList<Heroes.Element.Models.AbilityTalents.Talent> talentLevel in heroesElementData[heroId].Talents.Values)
+            foreach (KeyValuePair<Heroes.Element.Models.Types.TalentTier, IList<Heroes.Element.Models.AbilityTalents.Talent>> talentTier in heroesElementData[heroId].Talents)
             {
-                foreach (var talent in talentLevel)
+                _ = int.TryParse(talentTier.Key.ToString().Replace("Level", ""), out int talentLevel);
+                foreach (Heroes.Element.Models.AbilityTalents.Talent talent in talentTier.Value)
                 {
                     hotsHeroes[heroId].Talents.Add
                     (
                         new HotsTalent
                         {
                             ReferenceId = talent.TalentElementId ?? null,
+                            Level = talentLevel,
                             IconFileName = talent.Icon ?? null,
                             Cooldown = talent.CooldownText?.PlainText ?? null,
                             Energy = talent.EnergyText?.PlainText ?? null,
@@ -446,6 +454,25 @@ namespace HotsReplayReader
                 if (talent.ReferenceId == referenceId) return talent;
             return null;
         }
+        internal int GetTalentCountFromHeroIdAndLevel(string heroId, int talentLevel)
+        {
+            if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return 0;
+            return hero.Talents.Count(talent => talent.Level == talentLevel);
+        }
+        internal int GetTalentMaxCountFromHeroId(string heroId)
+        {
+            if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return 0;
+            return hero.Talents
+                .GroupBy(talent => talent.Level)
+                .Select(group => group.Count())
+                .DefaultIfEmpty(0)
+                .Max();
+        }
+        internal List<HotsTalent> GetTalentsFromHeroIdAndLevel(string heroId, int talentLevel)
+        {
+            if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return [];
+            return [.. hero.Talents.Where(talent => talent.Level == talentLevel)];
+        }
         internal List<HotsAbility?>? GetAbilitiesFromHeroIdAndAbilityType(string heroId, HotsAbilityType hotsAbilityType)
         {
             if (!hotsHeroes.TryGetValue(heroId, out var hero)) return null;
@@ -500,6 +527,7 @@ namespace HotsReplayReader
     internal class HotsTalent()
     {
         public string? ReferenceId { get; set; }
+        public int? Level { get; set; }
         public string? IconFileName { get; set; }
         public string? Cooldown { get; set; }
         public string? Energy { get; set; }

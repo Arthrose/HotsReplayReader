@@ -167,7 +167,7 @@
     <value>..\images\HotsResources\KillsRed.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="1Useless" xml:space="preserve">
-    <value>zef</value>
+    <value>csc</value>
     <comment>A modifier pour forcer l'update de sytle.css</comment>
   </data>
   <data name="WebView2Loader" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -269,11 +269,17 @@
   <data name="abilityIconBorder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\abilityIconBorder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="abilityIconBorderBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\abilityIconBorderBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="abilityIconBorderRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\abilityIconBorderRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="abilityIconBorderBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\HotsResources\abilityIconBorderBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="talentIconBorderBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\talentIconBorderBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="talentIconBorderRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\talentIconBorderRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="emoticondata" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\json\EmoticonData.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

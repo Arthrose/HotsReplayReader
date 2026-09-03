@@ -693,7 +693,7 @@ namespace HotsReplayReader
             string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}") ?? hotsReplay?.stormReplay?.MapInfo.MapName;
             string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#001100" : "#110000";
 
-            string html = $"<div class=\"head-container\" style=\"background-color: {bgColor};\">\n  <table class=\"headTable\">\n";
+            string html = $"<div class=\"head-container\" style=\"background-color: {bgColor};\">\n  <table>\n";
 
             if (hotsReplay?.stormReplay?.ReplayVersion.ToString() != dbVersion)
             {
@@ -956,7 +956,11 @@ namespace HotsReplayReader
                 bool lastMessageAfterAnHour = Convert.ToInt32(hotsMessages.Last().Hours) > 0;
 
                 string html = $@"";
-                html += "<div class=\"chat-container\" autofocus>\n";
+
+                html += "<div class=\"chat-container\" tabindex=\"-1\">\n";
+
+                html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
+
                 foreach (HotsMessage hotsMessage in hotsMessages)
                 {
                     html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
@@ -1075,6 +1079,17 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
+            chatMessage = chatMessage.Replace(":@",   ":nexusangry:")
+                                     .Replace(":B)",  ":nexuscool:")
+                                     .Replace(":^^;", ":nexusoops:")
+                                     .Replace(":)",   ":nexushappy:")
+                                     .Replace(":*",   ":nexuslove:")
+                                     .Replace(":D",   ":nexuslol:")
+                                     .Replace(":(",   ":nexussad:")
+                                     .Replace(":P",   ":nexussilly:")
+                                     .Replace(":|",   ":nexusmeh:")
+                                     .Replace(":O",   ":nexuswow:");
+
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
             chatMessage = WebUtility.HtmlEncode(chatMessage);
@@ -1451,6 +1466,7 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Blue")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
+                    html += HTMLGetAllTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
                     html += HTMLGetAbilitiesTr(stormPlayer, blueTeam);
                 }
             }
@@ -1458,36 +1474,62 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Red")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
+                    html += HTMLGetAllTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
                     html += HTMLGetAbilitiesTr(stormPlayer, redTeam);
                 }
 
             html += @"</table>
 <script>
+  // Renvoie toutes les lignes du groupe qui suivent une ligne trTalents jusqu'à la prochaine trTalents ou la fin du tableau
+  function getGroupRows(talentsRow) {
+    const rows = [];
+    let next = talentsRow.nextElementSibling;
+    while (next && !next.classList.contains('trTalents')) {
+      rows.push(next);
+      next = next.nextElementSibling;
+    }
+    return rows;
+  }
+
+  // Remonte jusqu'à la ligne trTalents ""parente"" d'une ligne du groupe
+  function findParentTalents(row) {
+    let prev = row.previousElementSibling;
+    while (prev && !prev.classList.contains('trTalents')) {
+      prev = prev.previousElementSibling;
+    }
+    return prev;
+  }
+
+  // Clic sur trTalents : affiche/cache tout le groupe qui suit
   document.querySelectorAll('.trTalents').forEach(tr => {
     tr.addEventListener('click', function() {
-      const next = this.nextElementSibling;
-      if (next && next.classList.contains('trAblilities')) {
-        next.style.display = (next.style.display === 'none' || next.style.display === '') ? 'table-row' : 'none';
-      }
+      const groupRows = getGroupRows(this);
+      if (groupRows.length === 0) return;
+      const isHidden = groupRows[0].style.display === 'none' || groupRows[0].style.display === '';
+      groupRows.forEach(row => {
+        row.style.display = isHidden ? 'table-row' : 'none';
+      });
     });
   });
-  document.querySelectorAll('.trAblilities').forEach(tr => {
+
+  // Clic sur trAllTalents ou trAblilities : cache tout le groupe
+  document.querySelectorAll('.trAllTalents, .trAblilities').forEach(tr => {
     tr.addEventListener('click', function() {
-      this.style.display = 'none';
-    });
-  });
-  document.querySelectorAll('tr.trAblilities').forEach(tr => {
-    tr.addEventListener('mouseenter', () => {
-      const prev = tr.previousElementSibling;
-      if (prev && prev.classList.contains('trTalents')) {
-        prev.classList.add('highlight');
+      const parentTalents = findParentTalents(this);
+      if (parentTalents) {
+        getGroupRows(parentTalents).forEach(row => row.style.display = 'none');
+      } else {
+        this.style.display = 'none';
       }
     });
-    tr.addEventListener('mouseleave', () => {
-      const prev = tr.previousElementSibling;
-      if (prev && prev.classList.contains('trTalents')) {
-        prev.classList.remove('highlight');
-      }
+
+    tr.addEventListener('mouseenter', function() {
+      const parentTalents = findParentTalents(this);
+      if (parentTalents) parentTalents.classList.add('highlight');
+    });
+    tr.addEventListener('mouseleave', function() {
+      const parentTalents = findParentTalents(this);
+      if (parentTalents) parentTalents.classList.remove('highlight');
     });
   });
 </script>
@@ -1540,6 +1582,153 @@ namespace HotsReplayReader
             return html;
         }
         private string GetTalentImgString(HotsPlayer stormPlayer, int i, string heroId)
+        {
+            if (stormPlayer == null) return "    <td>&nbsp;</td>";
+
+            int tier = 0;
+            switch (i)
+            {
+                case 0:
+                    tier = 1;
+                    break;
+                case 1:
+                    tier = 4;
+                    break;
+                case 2:
+                    tier = 7;
+                    break;
+                case 3:
+                    tier = 10;
+                    break;
+                case 4:
+                    tier = 13;
+                    break;
+                case 5:
+                    tier = 16;
+                    break;
+                case 6:
+                    tier = 20;
+                    break;
+            }
+
+            HotsTalent? hotsTalent;
+
+            //  hotsPlayer.Talents[0].TalentNameId) renvoie une exception
+            if (stormPlayer.Talents[i].TalentNameId != null)
+                hotsTalent = hotsData.GetTalentsFromHeroIdAndTalentReferenceId(heroId, stormPlayer.Talents[i].TalentNameId!);
+            else
+                return "    <td class=\"tdBorders\">&nbsp;</td>";
+
+            if (hotsTalent == null)
+                return "    <td class=\"tdBorders\">&nbsp;</td>";
+
+            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
+            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
+
+            string description = "";
+            // Si la description est vide, on n'affiche pas le talent
+            if (hotsTalent.Full == null || hotsTalent.Full == string.Empty)
+            {
+                if (hotsTalent.Short == null || hotsTalent.Short == string.Empty)
+                    description = "ERROR!";
+                else
+                    description = "<i>" + hotsTalent.Short + "</i>";
+            }
+            else
+                description = hotsTalent.Full;
+
+            // Affiche le coût en mana si il y en a un
+            if (hotsTalent.Energy != null)
+                hotsTalent.Energy = MyRegexConvertEnergy().Replace(hotsTalent.Energy, "<font color=\"#${1}\">${2}</font>");
+            string abilityManaCost = hotsTalent.Energy != null ? $"<br>\n            {hotsTalent.Energy}" : "";
+            // Affiche le cooldown si il y en a un
+            string talentCooldown = hotsTalent.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{hotsTalent.Cooldown}</font>" : "";
+
+            // Suppression des balises <img> dans la description
+            description = MyRegexRemoveImg().Replace(description, string.Empty);
+
+            // Bug FR talent GreymaneLordofHisPack
+            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
+
+            // Remplace <c val="color">text</c> par du texte coloré
+            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
+
+            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
+            {
+                // Conversion du nombre capturé
+                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                // Conversion en pourcentage (4% pour 0.04)
+                int percent = (int)Math.Round(value * 100);
+                // Mise en forme du texte final
+                string replacement = "";
+                if (Resources.Language.i18n.strPerLevelBefore == "false")
+                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
+                else
+                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
+
+                // Si la balise </font> était présente, la déplacer avant le texte remplacé
+                if (match.Groups[2].Success)
+                    return $"{match.Groups[2].Value}{replacement}";
+                else
+                    return replacement;
+            });
+
+            // Remplace <n/> par un saut de ligne <br>
+            description = MyRegexNewLine().Replace(description, "<br>");
+
+            // Place le tooltip a gauche ou a droite de l'icône
+            string toolTipPosition = tier > 10 ? "Left" : "Right";
+            // Met une bordure sur les Talents de niveau 10 et 20
+            string imgTalentBorderClass;
+            if (tier == 10 || tier == 20)
+                imgTalentBorderClass = "imgTalent10Border";
+            else
+                imgTalentBorderClass = "imgTalentBorder";
+            return @$"    <td class=""tdBorders"">
+      <div class=""tooltip"">
+        <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"">
+        <span class=""tooltiptext tooltiptext{toolTipPosition}"">
+          <font color=""White"">
+            <b>{hotsTalent.Name}</b>{abilityManaCost}{talentCooldown}
+          </font>
+          <br><br>
+          {description}
+        </span>
+      </div>
+    </td>";
+        }
+        private string HTMLGetAllTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
+        {
+            if (stormPlayer.PlayerHero == null) return "";
+
+            string heroId = Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
+
+            List<HotsTalent> talentsLevel1  = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 1);
+            List<HotsTalent> talentsLevel4  = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 4);
+            List<HotsTalent> talentsLevel7  = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 7);
+            List<HotsTalent> talentsLevel10 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 10);
+            List<HotsTalent> talentsLevel13 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 13);
+            List<HotsTalent> talentsLevel16 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 16);
+            List<HotsTalent> talentsLevel20 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 20);
+
+            string html = "";
+            html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
+            html += $"    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
+
+            for (int i = 0; i <= hotsData.GetTalentMaxCountFromHeroId(heroId); i++)
+            {
+                for (int level = 0; level <= 6; level++)
+                {
+                    HotsTalent talent;
+                    html += $"{GetAllTalentImgString(stormPlayer, level, i, heroId, partyColor)}\n";
+                    html += "    <td class=\"tdBorders\">&nbsp;</td>\n";
+                }
+            }
+
+            html += "  </tr>\n";
+            return html;
+        }
+        private string GetAllTalentImgString(HotsPlayer stormPlayer, int level, int i, string heroId, string partyColor)
         {
             if (stormPlayer == null) return "    <td>&nbsp;</td>";
 

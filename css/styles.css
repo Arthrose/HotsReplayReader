@@ -7,25 +7,25 @@ body {
   user-select: none;
 }
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 50px;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(6px);
-    color: darkgrey;
-    font-family: Calibri, Arial, sans-serif;
-    font-size: 25px;
-    font-weight: 600;
-    letter-spacing: 16px;
-    text-transform: uppercase;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  color: darkgrey;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 16px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 table {
   margin-left: auto;
@@ -44,6 +44,7 @@ tr {
 .headTableTd {
   padding: 5px;
 }
+/*
 .titleBlueTeam {
   color: deepskyblue;
   font-size: 200%;
@@ -56,6 +57,7 @@ tr {
   font-weight: bold;
   font-family: Calibri;
 }
+*/
 .titleBlue {
   color: deepskyblue;
   font-size: 300%;
@@ -102,6 +104,7 @@ tr {
   font-family: Calibri;
   line-height: 250%;
 }
+/*
 .heroIconTeam0 {
   box-shadow: 0px 0px 4px 4px gainsboro;
 }
@@ -117,6 +120,7 @@ tr {
 .heroIconTeam4 {
   box-shadow: 0px 0px 4px 4px goldenrod;
 }
+*/
 .team1 {
   color: crimson;
 }
@@ -275,15 +279,24 @@ tr {
 .chat-message:hover .translate-icon {
   display: inline-block;
 }
+/*
 .nonBreakingText {
   white-space: nowrap;
 }
+*/
 .tableScoreAndTalents {
   border-collapse: collapse;
   text-align: center;
   font-family: Calibri;
   width: 100%;
+  table-layout: auto;
 }
+/*
+.tableScoreAndTalents {
+  width: 100%;
+  border-collapse: collapse;
+}
+*/
 .active-col {
   background-color: rgba(255, 255, 255, 0.08);
 }
@@ -295,11 +308,6 @@ tr {
 }
 .tableTalents {
   table-layout: fixed;
-}
-.tableScoreAndTalents {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;
 }
 .tableScoreAndTalents th:nth-child(1),
 .tableScoreAndTalents td:nth-child(1) {
@@ -330,8 +338,11 @@ tr {
   color: #fe3338;
   padding-right: 30px;
 }
-.trAblilities {
-    display: none;
+.trAblilities, .trAllTalents {
+  display: none;
+}
+tr.trTalents, tr.trAblilities, tr.trAllTalents {
+  cursor: pointer;
 }
 tr.trTalents:hover {
   filter: brightness(125%);
@@ -340,9 +351,6 @@ tr.trTalents:hover {
 }
 tr.trTalents.highlight {
   filter: brightness(125%);
-}
-tr.trTalents, tr.trAblilities {
-  cursor: pointer;
 }
 .tdBorders {
   border: 1px solid #555;
@@ -359,12 +367,14 @@ tr.trTalents, tr.trAblilities {
 .teamBestScore {
   text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
 }
+/*
 .teamBestScoreBlue {
   text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
 }
 .teamBestScoreRed {
   text-shadow: 2px 2px 15px #e6add8, 2px -2px 15px #e6add8, -2px -2px 15px #e6add8, -2px 2px 15px #e6add8;
 }
+*/
 .heroTalentIcon {
   width: 45px;
   vertical-align: baseline;

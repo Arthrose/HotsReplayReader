@@ -61,7 +61,7 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to zef.
+        ///   Looks up a localized string similar to csc.
         /// </summary>
         internal static string _1Useless {
             get {
@@ -506,6 +506,26 @@ namespace HotsReplayReader.Resources {
             get {
                 object obj = ResourceManager.GetObject("styles", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap talentIconBorderBlue {
+            get {
+                object obj = ResourceManager.GetObject("talentIconBorderBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap talentIconBorderRed {
+            get {
+                object obj = ResourceManager.GetObject("talentIconBorderRed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
