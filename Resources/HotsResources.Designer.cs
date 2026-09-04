@@ -61,7 +61,7 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to csc.
+        ///   Looks up a localized string similar to erty.
         /// </summary>
         internal static string _1Useless {
             get {

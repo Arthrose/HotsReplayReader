@@ -1466,16 +1466,16 @@ namespace HotsReplayReader
                 if (stormPlayer.Team.ToString() == "Blue")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAllTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
                     html += HTMLGetAbilitiesTr(stormPlayer, blueTeam);
+                    html += HTMLGetAllTalentsTr(stormPlayer, blueTeam);
                 }
             }
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAllTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
                     html += HTMLGetAbilitiesTr(stormPlayer, redTeam);
+                    html += HTMLGetAllTalentsTr(stormPlayer, redTeam);
                 }
 
             html += @"</table>
@@ -1512,8 +1512,8 @@ namespace HotsReplayReader
     });
   });
 
-  // Clic sur trAllTalents ou trAblilities : cache tout le groupe
-  document.querySelectorAll('.trAllTalents, .trAblilities').forEach(tr => {
+  // Clic sur trAllTalents ou trAbilities : cache tout le groupe
+  document.querySelectorAll('.trAllTalents, .trAbilities').forEach(tr => {
     tr.addEventListener('click', function() {
       const parentTalents = findParentTalents(this);
       if (parentTalents) {
@@ -1697,77 +1697,57 @@ namespace HotsReplayReader
       </div>
     </td>";
         }
-        private string HTMLGetAllTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetAllTalentsTr(HotsPlayer stormPlayer, HotsTeam team)
         {
             if (stormPlayer.PlayerHero == null) return "";
 
             string heroId = Init.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
 
-            List<HotsTalent> talentsLevel1  = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 1);
-            List<HotsTalent> talentsLevel4  = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 4);
-            List<HotsTalent> talentsLevel7  = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 7);
-            List<HotsTalent> talentsLevel10 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 10);
-            List<HotsTalent> talentsLevel13 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 13);
-            List<HotsTalent> talentsLevel16 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 16);
-            List<HotsTalent> talentsLevel20 = hotsData.GetTalentsFromHeroIdAndLevel(heroId, 20);
+            List<List<HotsTalent>> talentsLevel =
+            [
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 1),
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 4),
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 7),
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 10),
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 13),
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 16),
+                hotsData.GetTalentsFromHeroIdAndLevel(heroId, 20)
+            ];
 
-            string html = "";
-            html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
-            html += $"    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
-
-            for (int i = 0; i <= hotsData.GetTalentMaxCountFromHeroId(heroId); i++)
+            string html = @$"  <tr class=""freeHeight"">
+    <td class=""teamScoreHeader tdBorders"">&nbsp;</td>
+    <td class=""teamScoreHeader tdBorders"">1</td>
+    <td class=""teamScoreHeader tdBorders"">1</td>
+    <td class=""teamScoreHeader tdBorders"">4</td>
+    <td class=""teamScoreHeader tdBorders"">7</td>
+    <td class=""teamScoreHeader tdBorders""><font color=""#ffd700"">10</font></td>
+    <td class=""teamScoreHeader tdBorders"">13</td>
+    <td class=""teamScoreHeader tdBorders"">16</td>
+    <td class=""teamScoreHeader tdBorders"">20</td>
+  </tr>
+";
+            for (int i = 0; i < hotsData.GetTalentMaxCountFromHeroId(heroId); i++)
             {
+                html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
+                html += $"    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
                 for (int level = 0; level <= 6; level++)
                 {
-                    HotsTalent talent;
-                    html += $"{GetAllTalentImgString(stormPlayer, level, i, heroId, partyColor)}\n";
-                    html += "    <td class=\"tdBorders\">&nbsp;</td>\n";
+                    if (i < talentsLevel[level].Count)
+                    {
+                        HotsTalent hotsTalent = talentsLevel[level][i];
+                        html += $"{GetAllTalentImgString(hotsTalent, team.Name)}\n";
+                    }
+                    else
+                        html += "    <td class=\"tdBorders\">&nbsp;</td>\n";
                 }
+                html += "  </tr>\n";
             }
 
-            html += "  </tr>\n";
             return html;
         }
-        private string GetAllTalentImgString(HotsPlayer stormPlayer, int level, int i, string heroId, string partyColor)
+        private static string GetAllTalentImgString(HotsTalent? hotsTalent, string partyColor)
         {
-            if (stormPlayer == null) return "    <td>&nbsp;</td>";
-
-            int tier = 0;
-            switch (i)
-            {
-                case 0:
-                    tier = 1;
-                    break;
-                case 1:
-                    tier = 4;
-                    break;
-                case 2:
-                    tier = 7;
-                    break;
-                case 3:
-                    tier = 10;
-                    break;
-                case 4:
-                    tier = 13;
-                    break;
-                case 5:
-                    tier = 16;
-                    break;
-                case 6:
-                    tier = 20;
-                    break;
-            }
-
-            HotsTalent? hotsTalent;
-
-            //  hotsPlayer.Talents[0].TalentNameId) renvoie une exception
-            if (stormPlayer.Talents[i].TalentNameId != null)
-                hotsTalent = hotsData.GetTalentsFromHeroIdAndTalentReferenceId(heroId, stormPlayer.Talents[i].TalentNameId!);
-            else
-                return "    <td class=\"tdBorders\">&nbsp;</td>";
-
-            if (hotsTalent == null)
-                return "    <td class=\"tdBorders\">&nbsp;</td>";
+            if(hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
 
             string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
@@ -1824,16 +1804,13 @@ namespace HotsReplayReader
             description = MyRegexNewLine().Replace(description, "<br>");
 
             // Place le tooltip a gauche ou a droite de l'icône
-            string toolTipPosition = tier > 10 ? "Left" : "Right";
-            // Met une bordure sur les Talents de niveau 10 et 20
-            string imgTalentBorderClass;
-            if (tier == 10 || tier == 20)
-                imgTalentBorderClass = "imgTalent10Border";
-            else
-                imgTalentBorderClass = "imgTalentBorder";
+            string toolTipPosition = hotsTalent.Level > 10 ? "Left" : "Right";
             return @$"    <td class=""tdBorders"">
       <div class=""tooltip"">
-        <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"">
+        <div class=""imgAllTalentContainer"">
+          <img src=""{iconPath}"" class=""imgAllTalentIcon"">
+          <img src=""app://hotsResources/talentIconBorder{partyColor}.png"" class=""imgAllTalentBorder"">
+        </div>
         <span class=""tooltiptext tooltiptext{toolTipPosition}"">
           <font color=""White"">
             <b>{hotsTalent.Name}</b>{abilityManaCost}{talentCooldown}
@@ -1859,7 +1836,7 @@ namespace HotsReplayReader
             if (Init.PsionicStormUnits == null || Init.PsionicStormUnits[heroName] == null) return "";
 
             string html = "";
-            html += $"  <tr class=\"trAblilities team{team.Name}\">\n";
+            html += $"  <tr class=\"trAbilities team{team.Name}\">\n";
             html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
             html += "      <table width=\"100%\" rowspan=\"0\">\n";

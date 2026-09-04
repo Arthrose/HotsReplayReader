@@ -454,11 +454,6 @@ namespace HotsReplayReader
                 if (talent.ReferenceId == referenceId) return talent;
             return null;
         }
-        internal int GetTalentCountFromHeroIdAndLevel(string heroId, int talentLevel)
-        {
-            if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return 0;
-            return hero.Talents.Count(talent => talent.Level == talentLevel);
-        }
         internal int GetTalentMaxCountFromHeroId(string heroId)
         {
             if (!hotsHeroes.TryGetValue(heroId, out HotsHero? hero)) return 0;

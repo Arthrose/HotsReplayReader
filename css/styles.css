@@ -338,10 +338,10 @@ tr {
   color: #fe3338;
   padding-right: 30px;
 }
-.trAblilities, .trAllTalents {
+.trAbilities, .trAllTalents {
   display: none;
 }
-tr.trTalents, tr.trAblilities, tr.trAllTalents {
+tr.trTalents, tr.trAbilities, tr.trAllTalents {
   cursor: pointer;
 }
 tr.trTalents:hover {
@@ -354,6 +354,10 @@ tr.trTalents.highlight {
 }
 .tdBorders {
   border: 1px solid #555;
+}
+tr.trAllTalents td.tdBorders {
+  border-top: none;
+  border-bottom: none;
 }
 .scoreHeaderIcon {
   width: 50px;
@@ -380,9 +384,39 @@ tr.trTalents.highlight {
   vertical-align: baseline;
   z-index: 10;
 }
+.imgAllTalentContainer
+{
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 43px;
+}
+.imgAllTalentIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.imgAllTalentBorder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
 .tooltip {
   position: relative;
   display: inline-block;
+}
+.tooltip .tooltiptext,
+.tooltip .tooltipHero,
+.tooltip .tooltipHeroMvpScore,
+.tooltip .tooltipAbilityText {
+  white-space: normal;
 }
 .tooltip .tooltiptext {
   visibility: hidden;
