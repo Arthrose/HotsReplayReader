@@ -122,7 +122,7 @@ tr {
 }
 */
 .team1 {
-  color: crimson;
+  color: #ff004b;
 }
 .team2 {
   color: deepskyblue;
@@ -205,7 +205,7 @@ tr {
   overflow-y: auto;
   text-align: left;
   margin: 0 auto;
-  background-color: #909090;
+  background-color: #505050;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -235,7 +235,7 @@ tr {
   color: #3184ff;
 }
 .chat-time-red {
-  color: #db0040;
+  color: #ff004b;
 }
 .chat-user {
   font-weight: bold;

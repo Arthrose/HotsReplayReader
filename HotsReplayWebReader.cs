@@ -1080,8 +1080,8 @@ namespace HotsReplayReader
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
             chatMessage = chatMessage.Replace(":@",   ":nexusangry:")
-                                     .Replace(":B)",  ":nexuscool:")
-                                     .Replace(":^^;", ":nexusoops:")
+                                     .Replace("B)",  ":nexuscool:")
+                                     .Replace("^^;", ":nexusoops:")
                                      .Replace(":)",   ":nexushappy:")
                                      .Replace(":*",   ":nexuslove:")
                                      .Replace(":D",   ":nexuslol:")
