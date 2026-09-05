@@ -338,11 +338,14 @@ tr {
   color: #fe3338;
   padding-right: 30px;
 }
-.trAbilities, .trAllTalents {
+.trAbilities, .trAllTalents, .trAllTalentsNumbers  {
   display: none;
 }
-tr.trTalents, tr.trAbilities, tr.trAllTalents {
+tr.trTalents, tr.trAbilities, tr.trAllTalents, .trAllTalentsNumbers {
   cursor: pointer;
+}
+.trAllTalentsNumbers{
+  font-size: 80%;
 }
 tr.trTalents:hover {
   filter: brightness(125%);
@@ -356,6 +359,19 @@ tr.trTalents.highlight {
   border: 1px solid #555;
 }
 tr.trAllTalents td.tdBorders {
+  border-top: none;
+  border-bottom: none;
+}
+tr.trLastAllTalents td.tdBorders {
+  border-bottom: 1px solid #555;
+}
+
+.tdAllTalentsEmptyBorders {
+  border-top: none;
+  border-bottom: none;
+}
+
+tr.trAbilities td.tdBorders {
   border-top: none;
   border-bottom: none;
 }
@@ -438,11 +454,14 @@ tr.trAllTalents td.tdBorders {
   visibility: visible;
   opacity: 1;
 }
+.tooltip .tooltiptextLeft, .tooltip .tooltiptextAllTalentsLeft {
+  right: 92%;
+}
 .tooltip .tooltiptextRight {
   left: 195%;
 }
-.tooltip .tooltiptextLeft {
-  right: 92%;
+.tooltip .tooltiptextAllTalentsRight {
+  left: 250%;
 }
 .tooltip .tooltipHero {
   visibility: hidden;

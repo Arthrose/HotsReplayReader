@@ -1513,7 +1513,7 @@ namespace HotsReplayReader
   });
 
   // Clic sur trAllTalents ou trAbilities : cache tout le groupe
-  document.querySelectorAll('.trAllTalents, .trAbilities').forEach(tr => {
+  document.querySelectorAll('.trAbilities, .trAllTalentsNumbers, .trAllTalents').forEach(tr => {
     tr.addEventListener('click', function() {
       const parentTalents = findParentTalents(this);
       if (parentTalents) {
@@ -1714,9 +1714,8 @@ namespace HotsReplayReader
                 hotsData.GetTalentsFromHeroIdAndLevel(heroId, 20)
             ];
 
-            string html = @$"  <tr class=""freeHeight"">
-    <td class=""teamScoreHeader tdBorders"">&nbsp;</td>
-    <td class=""teamScoreHeader tdBorders"">1</td>
+            string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{team.Name}"">
+    <td colspan=""2"" class=""tdBorders tdAllTalentsEmptyBorders "">&nbsp;</td>
     <td class=""teamScoreHeader tdBorders"">1</td>
     <td class=""teamScoreHeader tdBorders"">4</td>
     <td class=""teamScoreHeader tdBorders"">7</td>
@@ -1726,9 +1725,13 @@ namespace HotsReplayReader
     <td class=""teamScoreHeader tdBorders"">20</td>
   </tr>
 ";
-            for (int i = 0; i < hotsData.GetTalentMaxCountFromHeroId(heroId); i++)
+            int maxCount = hotsData.GetTalentMaxCountFromHeroId(heroId);
+            for (int i = 0; i < maxCount; i++)
             {
-                html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
+                if (i != maxCount - 1)
+                    html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
+                else
+                    html += $"  <tr class=\"team{team.Name} trAllTalents trLastAllTalents\">\n";
                 html += $"    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
                 for (int level = 0; level <= 6; level++)
                 {
@@ -1811,7 +1814,7 @@ namespace HotsReplayReader
           <img src=""{iconPath}"" class=""imgAllTalentIcon"">
           <img src=""app://hotsResources/talentIconBorder{partyColor}.png"" class=""imgAllTalentBorder"">
         </div>
-        <span class=""tooltiptext tooltiptext{toolTipPosition}"">
+        <span class=""tooltiptext tooltiptextAllTalents{toolTipPosition}"">
           <font color=""White"">
             <b>{hotsTalent.Name}</b>{abilityManaCost}{talentCooldown}
           </font>
