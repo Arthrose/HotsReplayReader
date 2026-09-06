@@ -400,7 +400,8 @@ namespace HotsReplayReader
                 */
                 webView.NavigateToString(htmlContent);
             }
-            await CheckAndLaunchUpdateAsync();
+            if (Init.config.AskUpdate)
+                await CheckAndLaunchUpdateAsync();
         }
         private void WebViewWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
@@ -2886,7 +2887,7 @@ namespace HotsReplayReader
                     break;
             }
         }
-        private static async Task<UpdateCheckStatus> CheckAndLaunchUpdateAsync()
+        private async Task<UpdateCheckStatus> CheckAndLaunchUpdateAsync()
         {
             // Récupération de la version locale (et nettoyage du hash Git si présent)
             string? versionBrute = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
@@ -2922,14 +2923,21 @@ namespace HotsReplayReader
                 if (githubVersion! <= localVersion!)
                     return UpdateCheckStatus.NoUpdateAvailable;
 
-                DialogResult result = MessageBox.Show(
-                    $"{Resources.Language.i18n.strUpdateNewVersionAvailableA}({versionGitHubClean}){Resources.Language.i18n.strUpdateNewVersionAvailableB}\n{Resources.Language.i18n.strUpdateDoYouWantToUpdate}",
-                    $"{Resources.Language.i18n.strUpdateAvailable}",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information);
+                TaskDialogButton btnYes = new(Resources.Language.i18n.btnUpdate);
+                TaskDialogButton btnNo = new(Resources.Language.i18n.btnLater);
+                TaskDialogButton btnNever = new(Resources.Language.i18n.btnDontAsk);
 
-                if (result != DialogResult.Yes)
-                    return UpdateCheckStatus.UpdateDeclined;
+                TaskDialogButton result = TaskDialog.ShowDialog(this, new TaskDialogPage()
+                {
+                    Caption = Resources.Language.i18n.strUpdateAvailable,
+                    Heading = $"{Resources.Language.i18n.strUpdateNewVersionAvailableA}({versionGitHubClean}){Resources.Language.i18n.strUpdateNewVersionAvailableB}\n{Resources.Language.i18n.strUpdateDoYouWantToUpdate}",
+                    Buttons = { btnYes, btnNo, btnNever },
+                    Icon = TaskDialogIcon.Information
+                });
+
+                if (result == btnNo && Init.config != null) Init.config.AskUpdate = true;
+                if (result == btnNever && Init.config != null) Init.config.AskUpdate = false;
+                if (result != btnYes) return UpdateCheckStatus.UpdateDeclined;
 
                 // Récupère l'URL du fichier .exe
                 string? exeDownloadUrl = null;
@@ -3075,9 +3083,7 @@ namespace HotsReplayReader
         public override Color MenuItemPressedGradientEnd => Color.FromArgb(61, 61, 61);      // Mouseover menu bottom
         public override Color MenuItemSelectedGradientBegin => Color.FromArgb(61, 61, 61);   // Mouseover sub-menu top
         public override Color MenuItemSelectedGradientEnd => Color.FromArgb(61, 61, 61);     // Mouseover sub-menu bottom
-
         public override Color MenuItemBorder => Color.FromArgb(112, 112, 112);               // Border mouseover item
-
         private readonly Color borderColor = Color.FromArgb(61, 61, 61);
         public override Color ToolStripDropDownBackground => borderColor;                    // Bordure sub-menu
         public override Color ImageMarginGradientBegin => borderColor;                       // Bordure sub-menu

@@ -61,6 +61,33 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t ask again.
+        /// </summary>
+        internal static string btnDontAsk {
+            get {
+                return ResourceManager.GetString("btnDontAsk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Later.
+        /// </summary>
+        internal static string btnLater {
+            get {
+                return ResourceManager.GetString("btnLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string btnUpdate {
+            get {
+                return ResourceManager.GetString("btnUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EN-US.
         /// </summary>
         internal static string DeepLLang {

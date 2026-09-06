@@ -378,4 +378,13 @@
   <data name="strMenuUpdate" xml:space="preserve">
     <value>更新</value>
   </data>
+  <data name="btnUpdate" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="btnLater" xml:space="preserve">
+    <value>稍後</value>
+  </data>
+  <data name="btnDontAsk" xml:space="preserve">
+    <value>不再詢問</value>
+  </data>
 </root>

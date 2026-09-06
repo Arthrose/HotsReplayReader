@@ -690,8 +690,6 @@ namespace HotsReplayReader
                 }
             }
         }
-
-
         private void MergeLocalizedAliases(HotsEmoticonAliase hotsEmoticonAliases)
         {
             hotsEmoticonAliases.Aliases ??= [];
@@ -731,12 +729,6 @@ namespace HotsReplayReader
                     }
                 }
         }
-
-
-
-
-
-
         internal void LoadPsionicStormUnits()
         {
             PsionicStormUnitsData? psionicStormUnitsData;
@@ -777,7 +769,8 @@ namespace HotsReplayReader
         public string? LastSelectedAccount { get; set; }
         public string? LastSelectedAccountDirectory { get; set; }
         public string? LastBrowseDirectory { get; set; }
-        public string? DeepLAPIKey {  get; set; }
+        public string? DeepLAPIKey { get; set; }
+        public bool AskUpdate { get; set; } = true;
         internal JsonSerializerOptions jsonOptions = new() { WriteIndented = true };
         private static string GetConfigPath()
         {
