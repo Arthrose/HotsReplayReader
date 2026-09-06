@@ -801,7 +801,6 @@ namespace HotsReplayReader
             {
                 html += $"            <img src=\"app://hotsresources/isSilenced.png\" class=\"isSilenced\">\n";
             }
-
             if (hotsPlayer.MatchAwardsCount > 0)
             {
                 string? ressourceName = hotsData.GetMatchRewardsMvpScreenIcon(hotsPlayer.MatchAwards[0].ToString());
@@ -1023,7 +1022,7 @@ namespace HotsReplayReader
             string? msgSeconds = hotsMessage.Seconds;
             string msgSenderName = hotsMessage.HotsPlayer.Name;
 
-            string? heroName = hotsData.GetHeroNameFromHeroId(hotsMessage.HotsPlayer.PlayerHero.HeroId);
+            string? heroName = hotsData.GetHeroNameFromHeroId(Init.HeroIdFromHeroName[hotsMessage.HotsPlayer.PlayerHero.HeroName]);
 
             string teamColor = "";
             if (hotsMessage.HotsPlayer.Team == hotsReplay?.stormReplay?.Owner?.Team)
@@ -2679,7 +2678,15 @@ namespace HotsReplayReader
                     if (player.MatchAwards?.Count > 0)
                         matchAwardsList.Add(player.MatchAwards[0].ToString());
 
-                hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), [.. hotsReplay!.stormPlayers!.Select(p => p.PlayerHero!.HeroUnitId)], matchAwardsList);
+                List<string> HeroIds = new();
+                foreach (StormPlayer stormPlayer in hotsReplay!.stormPlayers)
+                {
+                    Debug.WriteLine("HeroName: " + stormPlayer.PlayerHero!.HeroName);
+                    Debug.WriteLine("HeroIdFromHeroName: " + Init.HeroIdFromHeroName[stormPlayer.PlayerHero!.HeroName]);
+                    HeroIds.Add(Init.HeroIdFromHeroName[stormPlayer.PlayerHero!.HeroName]);
+                }
+
+                hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), HeroIds, matchAwardsList);
             }
             catch
             {

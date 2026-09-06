@@ -15,14 +15,11 @@ namespace HotsReplayReader
         private readonly Dictionary<string, HotsHero> hotsHeroes = [];
         private readonly Dictionary<string, HotsMatchAward> hotsMatchAwards = [];
         internal Version versionThreshold = new("2.55.16.97039");
-        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> HeroUnitIdList, List<string> matchAwardsList)
+        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> HeroIdList, List<string> matchAwardsList)
         {
             heroesIconsData.Clear();
             heroesElementData.Clear();
             hotsHeroes.Clear();
-
-            List<string> HeroIdList = [];
-            foreach (string heroUnitId in HeroUnitIdList) HeroIdList.Add(Init.HeroIdFromHeroUnitId[heroUnitId]);
 
             if (dbVersion < versionThreshold)
                 ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList, matchAwardsList);
