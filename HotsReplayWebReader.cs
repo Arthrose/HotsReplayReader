@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -418,7 +419,7 @@ namespace HotsReplayReader
 
                 if (extension == ".svg")
                 {
-                    var resourceManager = Resources.Flags.ResourceManager;
+                    System.Resources.ResourceManager resourceManager = Resources.Flags.ResourceManager;
                     object? resource = resourceManager.GetObject(imageName);
 
                     if (resource is byte[] svgBytes)
@@ -2285,9 +2286,9 @@ namespace HotsReplayReader
                     else
                         deathDuration = new()
                         {
-                            { 1, 15}, { 2, 16}, { 3, 17}, { 4, 18}, { 5, 19}, { 6, 20}, { 7, 21}, { 8, 22}, { 9, 23}, {10, 24},
-                            {11, 26}, {12, 29}, {13, 32}, {14, 36}, {15, 40}, {16, 44}, {17, 50}, {18, 56}, {19, 62}, {20, 65},
-                            {21, 65}, {22, 65}, {23, 65}, {24, 65}, {25, 65}, {26, 65}, {27, 65}, {28, 65}, {29, 65}, {30, 65}
+                            { 1, 15}, { 2, 16}, { 3, 17}, { 4, 18}, { 5, 19}, { 6, 21}, { 7, 22}, { 8, 24}, { 9, 25}, {10, 24},
+                            {11, 27}, {12, 29}, {13, 31}, {14, 33}, {15, 35}, {16, 37}, {17, 40}, {18, 43}, {19, 46}, {20, 49},
+                            {21, 54}, {22, 58}, {23, 63}, {24, 70}, {25, 70}, {26, 70}, {27, 70}, {28, 70}, {29, 70}, {30, 70}
                         };
 
                     if (!deathDuration.TryGetValue(death.Level, out int deathSeconds)) continue;
@@ -2304,7 +2305,7 @@ namespace HotsReplayReader
                             lastDeath.TimestampRes = death.TimestampRes;
 
                         // On fusionne les killers si besoin
-                        foreach (var killer in killers)
+                        foreach (HotsPlayer? killer in killers)
                         {
                             if (!lastDeath.KillingPlayers.Contains(killer))
                                 lastDeath.KillingPlayers.Add(killer);
@@ -2945,9 +2946,9 @@ namespace HotsReplayReader
                 {
                     foreach (JsonElement asset in assets.EnumerateArray())
                     {
-                        string? name = asset.TryGetProperty("name", out var nameProp) ? nameProp.GetString() : null;
+                        string? name = asset.TryGetProperty("name", out JsonElement nameProp) ? nameProp.GetString() : null;
                         if (name != null && name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                            exeDownloadUrl = asset.TryGetProperty("browser_download_url", out var urlProp) ? urlProp.GetString() : null;
+                            exeDownloadUrl = asset.TryGetProperty("browser_download_url", out JsonElement urlProp) ? urlProp.GetString() : null;
                     }
                 }
 

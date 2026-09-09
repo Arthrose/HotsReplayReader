@@ -167,7 +167,7 @@
     <value>..\images\HotsResources\KillsRed.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="1Useless" xml:space="preserve">
-    <value>zefzefzf</value>
+    <value>azfazef</value>
     <comment>A modifier pour forcer l'update de sytle.css</comment>
   </data>
   <data name="WebView2Loader" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -217,6 +217,18 @@
   </data>
   <data name="MapWarhead Junction" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Maps\MapWarhead Junction.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="PingAlert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\PingAlert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PingAssist" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\PingAssist.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PingDefend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\PingDefend.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PingOmW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\PingOmW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="scoreDeaths" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\HotsResources\scoreDeaths.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
