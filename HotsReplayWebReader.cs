@@ -27,7 +27,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = true;
+        readonly bool release = false;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
 
@@ -1158,7 +1158,9 @@ namespace HotsReplayReader
           const A = parseValue(a.children[index]?.innerText, type);
           const B = parseValue(b.children[index]?.innerText, type);
           if (type === ""string"")
-            return String(B).localeCompare(String(A));
+            return String(A).localeCompare(String(B));
+          if (type === ""time"")
+            return A - B;
           return B - A;
         });
         tbody.innerHTML = """";
@@ -1178,7 +1180,7 @@ namespace HotsReplayReader
   <thead>
     <tr class=""freeHeight"">
       <th></th>
-      <th></th>
+      <th data-type=""string""></th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
