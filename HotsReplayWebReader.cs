@@ -1080,16 +1080,20 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
-            chatMessage = chatMessage.Replace(":@",   ":nexusangry:")
+            chatMessage = chatMessage.Replace(":@",  ":nexusangry:")
                                      .Replace("B)",  ":nexuscool:")
+                                     .Replace("b)",  ":nexuscool:")
                                      .Replace("^^;", ":nexusoops:")
-                                     .Replace(":)",   ":nexushappy:")
-                                     .Replace(":*",   ":nexuslove:")
-                                     .Replace(":D",   ":nexuslol:")
-                                     .Replace(":(",   ":nexussad:")
-                                     .Replace(":P",   ":nexussilly:")
-                                     .Replace(":|",   ":nexusmeh:")
-                                     .Replace(":O",   ":nexuswow:");
+                                     .Replace(":)",  ":nexushappy:")
+                                     .Replace(":*",  ":nexuslove:")
+                                     .Replace(":D",  ":nexuslol:")
+                                     .Replace(":d",  ":nexuslol:")
+                                     .Replace(":(",  ":nexussad:")
+                                     .Replace(":P",  ":nexussilly:")
+                                     .Replace(":p",  ":nexussilly:")
+                                     .Replace(":|",  ":nexusmeh:")
+                                     .Replace(":O",  ":nexuswow:")
+                                     .Replace(":o",  ":nexuswow:");
 
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
