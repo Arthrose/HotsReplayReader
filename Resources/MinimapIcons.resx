@@ -373,6 +373,9 @@
   <data name="Li-Ming" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\MinimapIcons\storm_ui_minimapicon_wizard.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Xal'atath" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\MinimapIcons\storm_ui_minimapicon_xalatath.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Yrel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\MinimapIcons\storm_ui_minimapicon_yrel.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

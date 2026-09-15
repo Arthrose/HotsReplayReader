@@ -370,6 +370,9 @@
   <data name="Whitemane" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Heroes\Whitemane.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Xal'atath" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Heroes\Xal'atath.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Xul" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Heroes\Xul.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

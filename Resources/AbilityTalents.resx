@@ -3469,6 +3469,36 @@
   <data name="storm_ui_icon_wizard_waveofforce" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_wizard_waveofforce.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="storm_ui_icon_xalatath_e_darkheartritual" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_e_darkheartritual.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_e_darkheartritual_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_e_darkheartritual_b.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_q_shadowmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_q_shadowmark.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_r1_voideruption" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_r1_voideruption.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_r1_voideruption_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_r1_voideruption_b.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_r2_voidconvergence" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_r2_voidconvergence.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_trait" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_trait.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_w_voidstep" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_w_voidstep.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_w_voidstep_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_w_voidstep_b.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="storm_ui_icon_xalatath_w_voidstep_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\AbilityTalents\storm_ui_icon_xalatath_w_voidstep_c.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="storm_ui_icon_yrel_ardent_defender" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\AbilityTalents\storm_ui_icon_yrel_ardent_defender.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

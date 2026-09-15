@@ -17,7 +17,7 @@ namespace HotsReplayReader
             StormReplayResult? hotsReplayResult = StormReplay.Parse(hotsReplayFilePath);
             StormReplayParseStatus hotsReplayStatus = hotsReplayResult.Status;
 
-            if (hotsReplayStatus == StormReplayParseStatus.Success)
+            if ((hotsReplayStatus == StormReplayParseStatus.Success) || (hotsReplayStatus == StormReplayParseStatus.PTRRegion))
             {
                 stormReplay = hotsReplayResult.Replay;
                 stormPlayers = stormReplay.StormPlayers;

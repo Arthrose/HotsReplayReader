@@ -61,7 +61,7 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to azfazef.
+        ///   Looks up a localized string similar to fege.
         /// </summary>
         internal static string _1Useless {
             get {
@@ -386,6 +386,46 @@ namespace HotsReplayReader.Resources {
             get {
                 object obj = ResourceManager.GetObject("noTalent", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PingAlert {
+            get {
+                object obj = ResourceManager.GetObject("PingAlert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PingAssist {
+            get {
+                object obj = ResourceManager.GetObject("PingAssist", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PingDefend {
+            get {
+                object obj = ResourceManager.GetObject("PingDefend", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PingOmW {
+            get {
+                object obj = ResourceManager.GetObject("PingOmW", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
