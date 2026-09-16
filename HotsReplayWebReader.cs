@@ -1652,36 +1652,7 @@ namespace HotsReplayReader
             string talentCooldown = hotsTalent.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{hotsTalent.Cooldown}</font>" : "";
 
             // Suppression des balises <img> dans la description
-            description = MyRegexRemoveImg().Replace(description, string.Empty);
-
-            // Bug FR talent GreymaneLordofHisPack
-            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
-
-            // Remplace <c val="color">text</c> par du texte coloré
-            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
-
-            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
-            {
-                // Conversion du nombre capturé
-                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                // Conversion en pourcentage (4% pour 0.04)
-                int percent = (int)Math.Round(value * 100);
-                // Mise en forme du texte final
-                string replacement = "";
-                if (Resources.Language.i18n.strPerLevelBefore == "false")
-                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
-                else
-                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
-
-                // Si la balise </font> était présente, la déplacer avant le texte remplacé
-                if (match.Groups[2].Success)
-                    return $"{match.Groups[2].Value}{replacement}";
-                else
-                    return replacement;
-            });
-
-            // Remplace <n/> par un saut de ligne <br>
-            description = MyRegexNewLine().Replace(description, "<br>");
+            description = FormatDescriptionToolTip(description);
 
             // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = tier > 10 ? "Left" : "Right";
@@ -1755,32 +1726,8 @@ namespace HotsReplayReader
 
             return html;
         }
-        private static string GetAllTalentImgString(HotsTalent? hotsTalent, string partyColor)
+        private static string FormatDescriptionToolTip(string description)
         {
-            if(hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
-
-            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
-            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
-
-            string description = "";
-            // Si la description est vide, on n'affiche pas le talent
-            if (hotsTalent.Full == null || hotsTalent.Full == string.Empty)
-            {
-                if (hotsTalent.Short == null || hotsTalent.Short == string.Empty)
-                    description = "ERROR!";
-                else
-                    description = "<i>" + hotsTalent.Short + "</i>";
-            }
-            else
-                description = hotsTalent.Full;
-
-            // Affiche le coût en mana si il y en a un
-            if (hotsTalent.Energy != null)
-                hotsTalent.Energy = MyRegexConvertEnergy().Replace(hotsTalent.Energy, "<font color=\"#${1}\">${2}</font>");
-            string abilityManaCost = hotsTalent.Energy != null ? $"<br>\n            {hotsTalent.Energy}" : "";
-            // Affiche le cooldown si il y en a un
-            string talentCooldown = hotsTalent.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{hotsTalent.Cooldown}</font>" : "";
-
             // Suppression des balises <img> dans la description
             description = MyRegexRemoveImg().Replace(description, string.Empty);
 
@@ -1809,9 +1756,51 @@ namespace HotsReplayReader
                 else
                     return replacement;
             });
+            description = MyRegexStyledSpan().Replace(description, match =>
+            {
+                string color = match.Groups[1].Value;
+                string styleName = match.Groups[2].Value;
+                string content = match.Groups[3].Value;
 
+                return styleName switch
+                {
+                    "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
+                    "StandardTooltipDetails" => $"<font color=\"#{color}\">{content}</font>",
+                    "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>", // exemple
+                    _ => $"<font color=\"#{color}\">{content}</font>",
+                };
+            });
             // Remplace <n/> par un saut de ligne <br>
             description = MyRegexNewLine().Replace(description, "<br>");
+            return description;
+        }
+        private static string GetAllTalentImgString(HotsTalent? hotsTalent, string partyColor)
+        {
+            if(hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
+
+            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
+            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
+
+            string description = "";
+            // Si la description est vide, on n'affiche pas le talent
+            if (hotsTalent.Full == null || hotsTalent.Full == string.Empty)
+            {
+                if (hotsTalent.Short == null || hotsTalent.Short == string.Empty)
+                    description = "ERROR!";
+                else
+                    description = "<i>" + hotsTalent.Short + "</i>";
+            }
+            else
+                description = hotsTalent.Full;
+
+            description = FormatDescriptionToolTip(description);
+
+            // Affiche le coût en mana si il y en a un
+            if (hotsTalent.Energy != null)
+                hotsTalent.Energy = MyRegexConvertEnergy().Replace(hotsTalent.Energy, "<font color=\"#${1}\">${2}</font>");
+            string abilityManaCost = hotsTalent.Energy != null ? $"<br>\n            {hotsTalent.Energy}" : "";
+            // Affiche le cooldown si il y en a un
+            string talentCooldown = hotsTalent.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{hotsTalent.Cooldown}</font>" : "";
 
             // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = hotsTalent.Level > 10 ? "Left" : "Right";
@@ -1961,39 +1950,7 @@ namespace HotsReplayReader
                         // Affiche le cooldown si il y en a un
                         abilityCooldown = ability.Cooldown != null ? $"<br>\n                  <font color=\"#bfd4fd\">{ability.Cooldown}</font>" : "";
 
-                        // Suppression des balises <img> dans la description
-                        description = MyRegexRemoveImg().Replace(description, string.Empty);
-
-                        // Bug FR talent GreymaneLordofHisPack
-                        description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
-
-                        // Remplace <c val="color">text</c> par du texte coloré
-                        description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
-                        description = MyRegexStandardTooltipDetails().Replace(description, "<font color=\"#${1}\">${2}</font>");
-                        description = MyRegexStandardTooltipHeader().Replace(description, "<font color=\"#${1}\"><b>${2}</b></font>");
-
-                        description = MyRegexConvertPercentPerLevel().Replace(description, match =>
-                        {
-                            // Conversion du nombre capturé
-                            double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                            // Conversion en pourcentage (4% pour 0.04)
-                            int percent = (int)Math.Round(value * 100);
-                            // Mise en forme du texte final
-                            string replacement = "";
-                            if (Resources.Language.i18n.strPerLevelBefore == "false")
-                                replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
-                            else
-                                replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
-
-                            // Si la balise </font> était présente, la déplacer avant le texte remplacé
-                            if (match.Groups[2].Success)
-                                return $"{match.Groups[2].Value}{replacement}";
-                            else
-                                return replacement;
-                        });
-
-                        // Remplace <n/> par un saut de ligne <br>
-                        description = MyRegexNewLine().Replace(description, "<br>");
+                        description = FormatDescriptionToolTip(description);
                     }
                 }
 
@@ -3062,13 +3019,9 @@ namespace HotsReplayReader
         [GeneratedRegex(@"<c\s+val=""(.*?)"">(.*?)</c>")]
         private static partial Regex MyRegexConvertColor();
 
-        // Converti les TooltipDetails (par ex: ToolTip Mout)
-        [GeneratedRegex(@"<s\s+val=""(.*?)""\s+name=""StandardTooltipDetails"">(.*?)<\/s>")]
-        private static partial Regex MyRegexStandardTooltipDetails();
-
-        // Converti les TooltipHeader (par ex: Ana's trait)
-        [GeneratedRegex(@"<s\s+val=""(.*?)""\s+name=""StandardTooltipHeader"">(.*?)<\/s>")]
-        private static partial Regex MyRegexStandardTooltipHeader();
+        // Format les descriptions
+        [GeneratedRegex(@"<s\s+val=""(.*?)""\s+(?:hlt-)?name=""(.*?)"">(.*?)<\/s>")]
+        private static partial Regex MyRegexStyledSpan();
 
         // Affiche (+x% per level)
         [GeneratedRegex(@"\~\~([0-9.]+)\~\~(</font>)?")]
