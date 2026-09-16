@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json;
 
 using Heroes.Element;
@@ -280,8 +281,8 @@ namespace HotsReplayReader
                         Name = heroesElementData[heroId].Name!.PlainText
                     };
 
-                    ParseHeroesElementTalents(heroId);
                     ParseHeroesElementAbilities(heroId, hero);
+                    ParseHeroesElementTalents(heroId);
                 }
             }
             finally { CultureInfo.CurrentCulture = originalCulture; }
@@ -293,6 +294,28 @@ namespace HotsReplayReader
                 _ = int.TryParse(talentTier.Key.ToString().Replace("Level", ""), out int talentLevel);
                 foreach (Heroes.Element.Models.AbilityTalents.Talent talent in talentTier.Value)
                 {
+                    // Si c'est un talent Heroic, cherche l'ability associée pour récupérer energy et cooldown
+                    string? energy = null, cooldown = null, life = null;
+                    if (talent.AbilityType == Heroes.Element.Models.Types.AbilityType.Heroic)
+                    {
+                        HotsAbility? heroicAbility = new[] { HotsAbilityType.R1, HotsAbilityType.R2 }
+                            .Select(type => GetAbilitiesFromHeroIdAndAbilityType(heroId, type)?.FirstOrDefault())
+                            .FirstOrDefault(a => a?.AbilityId == talent.AbilityElementId);
+
+                        if (heroicAbility != null)
+                        {
+                            energy = heroicAbility.Energy;
+                            cooldown = heroicAbility.Cooldown;
+                            life = heroicAbility.Life;
+                        }
+                    }
+                    else
+                    {
+                        energy = talent.EnergyText?.PlainText ?? null;
+                        cooldown = talent.CooldownText?.PlainText ?? null;
+                        life = talent.LifeText?.PlainText ?? null;
+                    }
+
                     hotsHeroes[heroId].Talents.Add
                     (
                         new HotsTalent
@@ -300,10 +323,10 @@ namespace HotsReplayReader
                             ReferenceId = talent.TalentElementId ?? null,
                             Level = talentLevel,
                             IconFileName = talent.Icon ?? null,
-                            Cooldown = talent.CooldownText?.PlainText ?? null,
-                            Energy = talent.EnergyText?.PlainText ?? null,
+                            Energy = energy,
+                            Cooldown = cooldown,
                             Full = talent.FullText?.ColoredText ?? null,
-                            Life = talent.LifeText?.PlainText ?? null,
+                            Life = life,
                             Name = talent.Name?.PlainText ?? null,
                             Short = talent.ShortText?.ColoredText ?? null
                         }

@@ -10,6 +10,7 @@ using System.Net.Http.Json;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -1632,7 +1633,7 @@ namespace HotsReplayReader
             string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
-            string description = "";
+            string description;
             // Si la description est vide, on n'affiche pas le talent
             if (hotsTalent.Full == null || hotsTalent.Full == string.Empty)
             {
@@ -1643,16 +1644,6 @@ namespace HotsReplayReader
             }
             else
                 description = hotsTalent.Full;
-
-            // Affiche le coût en mana si il y en a un
-            if (hotsTalent.Energy != null)
-                hotsTalent.Energy = MyRegexConvertEnergy().Replace(hotsTalent.Energy, "<font color=\"#${1}\">${2}</font>");
-            string abilityManaCost = hotsTalent.Energy != null ? $"<br>\n            {hotsTalent.Energy}" : "";
-            // Affiche le cooldown si il y en a un
-            string talentCooldown = hotsTalent.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{hotsTalent.Cooldown}</font>" : "";
-
-            // Suppression des balises <img> dans la description
-            description = FormatDescriptionToolTip(description);
 
             // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = tier > 10 ? "Left" : "Right";
@@ -1666,11 +1657,7 @@ namespace HotsReplayReader
       <div class=""tooltip"">
         <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"">
         <span class=""tooltiptext tooltiptext{toolTipPosition}"">
-          <font color=""White"">
-            <b>{hotsTalent.Name}</b>{abilityManaCost}{talentCooldown}
-          </font>
-          <br><br>
-          {description}
+          {FormatAbilityAndTalentToolTip(hotsTalent.Name, hotsTalent.Energy, hotsTalent.Life, hotsTalent.Cooldown, description)}
         </span>
       </div>
     </td>";
@@ -1726,62 +1713,14 @@ namespace HotsReplayReader
 
             return html;
         }
-        private static string FormatDescriptionToolTip(string description)
-        {
-            // Suppression des balises <img> dans la description
-            description = MyRegexRemoveImg().Replace(description, string.Empty);
-
-            // Bug FR talent GreymaneLordofHisPack
-            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
-
-            // Remplace <c val="color">text</c> par du texte coloré
-            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
-
-            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
-            {
-                // Conversion du nombre capturé
-                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                // Conversion en pourcentage (4% pour 0.04)
-                int percent = (int)Math.Round(value * 100);
-                // Mise en forme du texte final
-                string replacement = "";
-                if (Resources.Language.i18n.strPerLevelBefore == "false")
-                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
-                else
-                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
-
-                // Si la balise </font> était présente, la déplacer avant le texte remplacé
-                if (match.Groups[2].Success)
-                    return $"{match.Groups[2].Value}{replacement}";
-                else
-                    return replacement;
-            });
-            description = MyRegexStyledSpan().Replace(description, match =>
-            {
-                string color = match.Groups[1].Value;
-                string styleName = match.Groups[2].Value;
-                string content = match.Groups[3].Value;
-
-                return styleName switch
-                {
-                    "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
-                    "StandardTooltipDetails" => $"<font color=\"#{color}\">{content}</font>",
-                    "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>", // exemple
-                    _ => $"<font color=\"#{color}\">{content}</font>",
-                };
-            });
-            // Remplace <n/> par un saut de ligne <br>
-            description = MyRegexNewLine().Replace(description, "<br>");
-            return description;
-        }
         private static string GetAllTalentImgString(HotsTalent? hotsTalent, string partyColor)
         {
-            if(hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
+            if (hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
 
             string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
-            string description = "";
+            string description;
             // Si la description est vide, on n'affiche pas le talent
             if (hotsTalent.Full == null || hotsTalent.Full == string.Empty)
             {
@@ -1793,16 +1732,6 @@ namespace HotsReplayReader
             else
                 description = hotsTalent.Full;
 
-            description = FormatDescriptionToolTip(description);
-
-            // Affiche le coût en mana si il y en a un
-            if (hotsTalent.Energy != null)
-                hotsTalent.Energy = MyRegexConvertEnergy().Replace(hotsTalent.Energy, "<font color=\"#${1}\">${2}</font>");
-            string abilityManaCost = hotsTalent.Energy != null ? $"<br>\n            {hotsTalent.Energy}" : "";
-            // Affiche le cooldown si il y en a un
-            string talentCooldown = hotsTalent.Cooldown != null ? $"<br>\n            <font color=\"#bfd4fd\">{hotsTalent.Cooldown}</font>" : "";
-
-            // Place le tooltip a gauche ou a droite de l'icône
             string toolTipPosition = hotsTalent.Level > 10 ? "Left" : "Right";
             return @$"    <td class=""tdBorders"">
       <div class=""tooltip"">
@@ -1811,11 +1740,7 @@ namespace HotsReplayReader
           <img src=""app://hotsResources/talentIconBorder{partyColor}.png"" class=""imgAllTalentBorder"">
         </div>
         <span class=""tooltiptext tooltiptextAllTalents{toolTipPosition}"">
-          <font color=""White"">
-            <b>{hotsTalent.Name}</b>{abilityManaCost}{talentCooldown}
-          </font>
-          <br><br>
-          {description}
+          {FormatAbilityAndTalentToolTip(hotsTalent.Name, hotsTalent.Energy, hotsTalent.Life, hotsTalent.Cooldown, description)}
         </span>
       </div>
     </td>";
@@ -1920,9 +1845,6 @@ namespace HotsReplayReader
                 html += "            <div class=\"tooltip abilityHeaderDiv\">\n";
                 html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
-                string abilityManaCost = "";
-                string abilityName = "";
-                string abilityCooldown = "";
                 string description = "";
                 if (ability.AbilityId != null)
                 {
@@ -1938,19 +1860,6 @@ namespace HotsReplayReader
                         }
                         else
                             description = ability.Full;
-
-
-                        if (ability.Name != null)
-                            abilityName = ability.Name;
-
-                        // Affiche le coût en mana si il y en a un
-                        if (ability.Energy != null)
-                            ability.Energy = MyRegexConvertEnergy().Replace(ability.Energy, "<font color=\"#${1}\">${2}</font>");
-                        abilityManaCost = ability.Energy != null ? $"<br>\n                  {ability.Energy}" : "";
-                        // Affiche le cooldown si il y en a un
-                        abilityCooldown = ability.Cooldown != null ? $"<br>\n                  <font color=\"#bfd4fd\">{ability.Cooldown}</font>" : "";
-
-                        description = FormatDescriptionToolTip(description);
                     }
                 }
 
@@ -1962,13 +1871,7 @@ namespace HotsReplayReader
                     else
                         html += "tooltipAbilityTextLeft";
                     html += "\">\n";
-
-                    html += @$"                <font color=""White"">
-                  <b>{abilityName}</b>{abilityManaCost}{abilityCooldown}
-                </font>
-                <br><br>
-                {description}";
-
+                    html += @$"                {FormatAbilityAndTalentToolTip(ability.Name, ability.Energy, ability.Life, ability.Cooldown, description)}";
                     html += "\n              </span>\n";
                 }
 
@@ -1978,6 +1881,61 @@ namespace HotsReplayReader
                 html += $"            &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://hotsResources/noAbility.png\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
             return html;
+        }
+        private static string FormatAbilityAndTalentToolTip(string? name, string? manacost, string? life, string? cooldown, string description)
+        {
+            //manacost = manacost != null ? MyRegexConvertEnergy().Replace(manacost, "<br><font color=\"#${1}\">${2}</font>") : "";
+            manacost = manacost != null ? $"<br><font color=\"#bfd4fd\">{manacost}</font>" : "";
+            life = life != null ? MyRegexRemoveHTMLTag().Replace(life, string.Empty) : "";
+            life = life != null ? $"<br><font color=\"#bfd4fd\">{life}</font>" : "";
+            cooldown = cooldown != null ? $"<br><font color=\"#bfd4fd\">{cooldown}</font>" : "";
+
+            // Suppression des balises <img> dans la description
+            description = MyRegexRemoveImg().Replace(description, string.Empty);
+
+            // Bug FR talent GreymaneLordofHisPack
+            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
+
+            // Remplace <c val="color">text</c> par du texte coloré
+            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
+
+            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
+            {
+                // Conversion du nombre capturé
+                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                // Conversion en pourcentage (4% pour 0.04)
+                int percent = (int)Math.Round(value * 100);
+                // Mise en forme du texte final
+                string replacement = "";
+                if (Resources.Language.i18n.strPerLevelBefore == "false")
+                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
+                else
+                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
+
+                // Si la balise </font> était présente, la déplacer avant le texte remplacé
+                if (match.Groups[2].Success)
+                    return $"{match.Groups[2].Value}{replacement}";
+                else
+                    return replacement;
+            });
+            description = MyRegexStyledSpan().Replace(description, match =>
+            {
+                string color = match.Groups[1].Value;
+                string styleName = match.Groups[2].Value;
+                string content = match.Groups[3].Value;
+
+                return styleName switch
+                {
+                    "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
+                    "StandardTooltipDetails" => $"<font color=\"#{color}\">{content}</font>",
+                    "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>", // exemple
+                    _ => $"<font color=\"#{color}\">{content}</font>",
+                };
+            });
+            // Remplace <n/> par un saut de ligne <br>
+            description = MyRegexNewLine().Replace(description, "<br>");
+
+            return $"<font color=\"White\"><b>{name}</b>{manacost}{life}{cooldown}</font><br><br>{description}";
         }
         private string GetParty(string playerBattleTag)
         {
@@ -2636,7 +2594,10 @@ namespace HotsReplayReader
                 Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
                 Debug.WriteLine($"gameStringsJsonPath: {gameStringsJsonPath}");
 
-                if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null) return;
+                if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
+                {
+                    throw new Exception("Missiing a JSON file");
+                }
 
                 List<string> matchAwardsList = [];
                 foreach (StormPlayer player in hotsReplay!.stormPlayers!)
@@ -3026,6 +2987,10 @@ namespace HotsReplayReader
         // Affiche (+x% per level)
         [GeneratedRegex(@"\~\~([0-9.]+)\~\~(</font>)?")]
         private static partial Regex MyRegexConvertPercentPerLevel();
+
+        // Supprime les balises HTML
+        [GeneratedRegex(@"<.*?>")]
+        private static partial Regex MyRegexRemoveHTMLTag();
 
         // Sauts de ligne
         [GeneratedRegex(@"<n/>")]
