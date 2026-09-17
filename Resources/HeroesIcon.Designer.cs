@@ -103,6 +103,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Amazon {
+            get {
+                object obj = ResourceManager.GetObject("Amazon", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Ana {
             get {
                 object obj = ResourceManager.GetObject("Ana", resourceCulture);
@@ -123,9 +133,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Anub_arak {
+        internal static byte[] Anubarak {
             get {
-                object obj = ResourceManager.GetObject("Anub\'arak", resourceCulture);
+                object obj = ResourceManager.GetObject("Anubarak", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -173,9 +183,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Blaze {
+        internal static byte[] Barbarian {
             get {
-                object obj = ResourceManager.GetObject("Blaze", resourceCulture);
+                object obj = ResourceManager.GetObject("Barbarian", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -183,19 +193,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Brightwing {
+        internal static byte[] Butcher {
             get {
-                object obj = ResourceManager.GetObject("Brightwing", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Cassia {
-            get {
-                object obj = ResourceManager.GetObject("Cassia", resourceCulture);
+                object obj = ResourceManager.GetObject("Butcher", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -233,9 +233,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] D_Va {
+        internal static byte[] Crusader {
             get {
-                object obj = ResourceManager.GetObject("D.Va", resourceCulture);
+                object obj = ResourceManager.GetObject("Crusader", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -273,6 +273,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] DemonHunter {
+            get {
+                object obj = ResourceManager.GetObject("DemonHunter", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Diablo {
             get {
                 object obj = ResourceManager.GetObject("Diablo", resourceCulture);
@@ -283,9 +293,29 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] E_T_C_ {
+        internal static byte[] Dryad {
             get {
-                object obj = ResourceManager.GetObject("E.T.C.", resourceCulture);
+                object obj = ResourceManager.GetObject("Dryad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] DVa {
+            get {
+                object obj = ResourceManager.GetObject("DVa", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] FaerieDragon {
+            get {
+                object obj = ResourceManager.GetObject("FaerieDragon", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -313,6 +343,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Firebat {
+            get {
+                object obj = ResourceManager.GetObject("Firebat", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Gall {
             get {
                 object obj = ResourceManager.GetObject("Gall", resourceCulture);
@@ -326,16 +366,6 @@ namespace HotsReplayReader.Resources {
         internal static byte[] Garrosh {
             get {
                 object obj = ResourceManager.GetObject("Garrosh", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Gazlowe {
-            get {
-                object obj = ResourceManager.GetObject("Gazlowe", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -363,9 +393,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Gul_dan {
+        internal static byte[] Guldan {
             get {
-                object obj = ResourceManager.GetObject("Gul\'dan", resourceCulture);
+                object obj = ResourceManager.GetObject("Guldan", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -423,16 +453,6 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Johanna {
-            get {
-                object obj = ResourceManager.GetObject("Johanna", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] Junkrat {
             get {
                 object obj = ResourceManager.GetObject("Junkrat", resourceCulture);
@@ -443,9 +463,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Kael_thas {
+        internal static byte[] Kaelthas {
             get {
-                object obj = ResourceManager.GetObject("Kael\'thas", resourceCulture);
+                object obj = ResourceManager.GetObject("Kaelthas", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -453,9 +473,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Kel_Thuzad {
+        internal static byte[] KelThuzad {
             get {
-                object obj = ResourceManager.GetObject("Kel\'Thuzad", resourceCulture);
+                object obj = ResourceManager.GetObject("KelThuzad", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -473,9 +493,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Kharazim {
+        internal static byte[] L90ETC {
             get {
-                object obj = ResourceManager.GetObject("Kharazim", resourceCulture);
+                object obj = ResourceManager.GetObject("L90ETC", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -493,9 +513,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Li_Li {
+        internal static byte[] LiLi {
             get {
-                object obj = ResourceManager.GetObject("Li Li", resourceCulture);
+                object obj = ResourceManager.GetObject("LiLi", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -503,19 +523,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Li_Ming {
+        internal static byte[] LostVikings {
             get {
-                object obj = ResourceManager.GetObject("Li-Ming", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Lt__Morales {
-            get {
-                object obj = ResourceManager.GetObject("Lt. Morales", resourceCulture);
+                object obj = ResourceManager.GetObject("LostVikings", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -526,16 +536,6 @@ namespace HotsReplayReader.Resources {
         internal static byte[] Lucio {
             get {
                 object obj = ResourceManager.GetObject("Lucio", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Lunara {
-            get {
-                object obj = ResourceManager.GetObject("Lunara", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -583,6 +583,16 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Medic {
+            get {
+                object obj = ResourceManager.GetObject("Medic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Medivh {
             get {
                 object obj = ResourceManager.GetObject("Medivh", resourceCulture);
@@ -593,9 +603,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Mei {
+        internal static byte[] MeiOW {
             get {
-                object obj = ResourceManager.GetObject("Mei", resourceCulture);
+                object obj = ResourceManager.GetObject("MeiOW", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -606,6 +616,16 @@ namespace HotsReplayReader.Resources {
         internal static byte[] Mephisto {
             get {
                 object obj = ResourceManager.GetObject("Mephisto", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Monk {
+            get {
+                object obj = ResourceManager.GetObject("Monk", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -633,9 +653,19 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Nazeebo {
+        internal static byte[] Necromancer {
             get {
-                object obj = ResourceManager.GetObject("Nazeebo", resourceCulture);
+                object obj = ResourceManager.GetObject("Necromancer", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NexusHunter {
+            get {
+                object obj = ResourceManager.GetObject("NexusHunter", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -676,16 +706,6 @@ namespace HotsReplayReader.Resources {
         internal static byte[] Probius {
             get {
                 object obj = ResourceManager.GetObject("Probius", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Qhira {
-            get {
-                object obj = ResourceManager.GetObject("Qhira", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -743,19 +763,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Sgt__Hammer {
+        internal static byte[] SgtHammer {
             get {
-                object obj = ResourceManager.GetObject("Sgt. Hammer", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Sonya {
-            get {
-                object obj = ResourceManager.GetObject("Sonya", resourceCulture);
+                object obj = ResourceManager.GetObject("SgtHammer", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -803,29 +813,19 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] The_Butcher {
-            get {
-                object obj = ResourceManager.GetObject("The Butcher", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] The_Lost_Vikings {
-            get {
-                object obj = ResourceManager.GetObject("The Lost Vikings", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] Thrall {
             get {
                 object obj = ResourceManager.GetObject("Thrall", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Tinker {
+            get {
+                object obj = ResourceManager.GetObject("Tinker", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -893,16 +893,6 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Valla {
-            get {
-                object obj = ResourceManager.GetObject("Valla", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] Varian {
             get {
                 object obj = ResourceManager.GetObject("Varian", resourceCulture);
@@ -923,9 +913,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Xal_atath {
+        internal static byte[] WitchDoctor {
             get {
-                object obj = ResourceManager.GetObject("Xal\'atath", resourceCulture);
+                object obj = ResourceManager.GetObject("WitchDoctor", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -933,9 +923,19 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Xul {
+        internal static byte[] Wizard {
             get {
-                object obj = ResourceManager.GetObject("Xul", resourceCulture);
+                object obj = ResourceManager.GetObject("Wizard", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Xalatath {
+            get {
+                object obj = ResourceManager.GetObject("Xalatath", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -983,9 +983,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Zul_jin {
+        internal static byte[] Zuljin {
             get {
-                object obj = ResourceManager.GetObject("Zul\'jin", resourceCulture);
+                object obj = ResourceManager.GetObject("Zuljin", resourceCulture);
                 return ((byte[])(obj));
             }
         }

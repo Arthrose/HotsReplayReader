@@ -5,6 +5,7 @@ using System.Text.Json;
 using Heroes.Element;
 using Heroes.Element.Models;
 using Heroes.Icons;
+using Heroes.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace HotsReplayReader
@@ -15,19 +16,104 @@ namespace HotsReplayReader
         private readonly Dictionary<string, Heroes.Element.Models.Hero> heroesElementData = [];
         private readonly Dictionary<string, HotsHero> hotsHeroes = [];
         private readonly Dictionary<string, HotsMatchAward> hotsMatchAwards = [];
+        public static Dictionary<string, string> HeroNameFromHeroUnitId { get; private set; } = [];
+        public static Dictionary<string, string> HeroIdFromHeroUnitId { get; private set; } = [];
+        public static Dictionary<string, HotsRole?> HeroRoleFromHeroId { get; private set; } = [];
+        private static readonly Dictionary<string, HotsRole> RoleTranslations = new() {
+            // Tank
+            ["Tank"] = HotsRole.Tank,
+            ["Tanque"] = HotsRole.Tank,
+            ["Guerrier défensif"] = HotsRole.Tank,
+            ["Difensore"] = HotsRole.Tank,
+            ["전사"] = HotsRole.Tank,
+            ["Танк"] = HotsRole.Tank,
+            ["坦克"] = HotsRole.Tank,
+            ["肉盾"] = HotsRole.Tank,
+
+            // Bruiser
+            ["Bruiser"] = HotsRole.Bruiser,
+            ["Frontbrecher"] = HotsRole.Bruiser,
+            ["Agresor"] = HotsRole.Bruiser,
+            ["Guerrero"] = HotsRole.Bruiser,
+            ["Guerrier offensif"] = HotsRole.Bruiser,
+            ["Combattente"] = HotsRole.Bruiser,
+            ["투사"] = HotsRole.Bruiser,
+            ["Brutal"] = HotsRole.Bruiser,
+            ["Guerreiro"] = HotsRole.Bruiser,
+            ["Рубака"] = HotsRole.Bruiser,
+            ["斗士"] = HotsRole.Bruiser,
+            ["鬥士"] = HotsRole.Bruiser,
+
+            // Melee
+            ["Melee Assassin"] = HotsRole.Melee,
+            ["Nahkampfassassine"] = HotsRole.Melee,
+            ["Asesino cuerpo a cuerpo"] = HotsRole.Melee,
+            ["Asesino de melé"] = HotsRole.Melee,
+            ["Assassin en mêlée"] = HotsRole.Melee,
+            ["Assassino (Mischia)"] = HotsRole.Melee,
+            ["근접 암살자"] = HotsRole.Melee,
+            ["Zabójca w Zwarciu"] = HotsRole.Melee,
+            ["Assassino Corpo a Corpo"] = HotsRole.Melee,
+            ["Убийца ближнего боя"] = HotsRole.Melee,
+            ["近战刺客"] = HotsRole.Melee,
+            ["近戰刺客"] = HotsRole.Melee,
+
+            // Ranged
+            ["Ranged Assassin"] = HotsRole.Ranged,
+            ["Fernkampfassassine"] = HotsRole.Ranged,
+            ["Asesino a distancia"] = HotsRole.Ranged,
+            ["Asesino de largo alcance"] = HotsRole.Ranged,
+            ["Assassin à distance"] = HotsRole.Ranged,
+            ["Assassino (Distanza)"] = HotsRole.Ranged,
+            ["원거리 암살자"] = HotsRole.Ranged,
+            ["Dystansowy Zabójca"] = HotsRole.Ranged,
+            ["Assassino de Longo Alcance"] = HotsRole.Ranged,
+            ["Убийца дальнего боя"] = HotsRole.Ranged,
+            ["远程刺客"] = HotsRole.Ranged,
+            ["遠程刺客"] = HotsRole.Ranged,
+
+            // Healer
+            ["Healer"] = HotsRole.Healer,
+            ["Heiler"] = HotsRole.Healer,
+            ["Sanador"] = HotsRole.Healer,
+            ["Soigneur"] = HotsRole.Healer,
+            ["Guaritore"] = HotsRole.Healer,
+            ["치유사"] = HotsRole.Healer,
+            ["Uzdrowiciel"] = HotsRole.Healer,
+            ["Curandeiro"] = HotsRole.Healer,
+            ["Лекарь"] = HotsRole.Healer,
+            ["治疗者"] = HotsRole.Healer,
+            ["治療者"] = HotsRole.Healer,
+
+            // Support
+            ["Support"] = HotsRole.Support,
+            ["Unterstützer"] = HotsRole.Support,
+            ["Apoyo"] = HotsRole.Support,
+            ["Soutien"] = HotsRole.Support,
+            ["Supporto"] = HotsRole.Support,
+            ["지원가"] = HotsRole.Support,
+            ["Pomocnik"] = HotsRole.Support,
+            ["Suporte"] = HotsRole.Support,
+            ["Поддержка"] = HotsRole.Support,
+            ["支援者"] = HotsRole.Support,
+            ["輔助"] = HotsRole.Support,
+        };
         internal Version versionThreshold = new("2.55.16.97039");
-        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> HeroIdList, List<string> matchAwardsList)
+        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> heroList, List<string> matchAwardsList)
         {
             heroesIconsData.Clear();
             heroesElementData.Clear();
             hotsHeroes.Clear();
+            HeroNameFromHeroUnitId = [];
+            HeroIdFromHeroUnitId = [];
+            HeroRoleFromHeroId = [];
 
             if (dbVersion < versionThreshold)
-                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList, matchAwardsList);
+                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, heroList, matchAwardsList);
             else
-                ParseHeroesElement(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, HeroIdList, matchAwardsList);
+                ParseHeroesElement(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, heroList, matchAwardsList);
         }
-        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> HeroIdList, List<string> matchAwardsList)
+        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> heroList, List<string> matchAwardsList)
         {
             Heroes.Icons.GameStringDocument gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
             Heroes.Icons.DataDocument.HeroDataDocument heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
@@ -48,13 +134,13 @@ namespace HotsReplayReader
                     };
                 }
 
-                foreach (string heroId in HeroIdList)
+                foreach (string heroId in heroList)
                 {
                     heroesIconsData[heroId] = heroDataDocument.GetHeroById(heroId, true, true, true, true);
 
                     hotsHeroes[heroId] = new()
                     {
-                        Name = heroesIconsData[heroId].Name,
+                        HeroName = heroesIconsData[heroId].Name,
                         Health = Math.Ceiling(heroesIconsData[heroId].Life.LifeMax * Math.Pow((1 + heroesIconsData[heroId].Life.LifeScaling), 1)).ToString(),
                         Regen = Math.Round(heroesIconsData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesIconsData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString()
                     };
@@ -243,7 +329,7 @@ namespace HotsReplayReader
                 hotsHeroes[heroId].HeroUnits.Add(heroUnit);
             }
         }
-        internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> HeroIdList, List<string> matchAwardsList)
+        internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> heroList, List<string> matchAwardsList)
         {
             Heroes.Element.GameStringsDocument gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(File.OpenRead(gameStringsJsonPath)));
             Heroes.Element.HeroDataDocument heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(File.OpenRead(heroDataJsonPath)), gameStringsDocument);
@@ -264,25 +350,68 @@ namespace HotsReplayReader
                     };
                 }
 
-                foreach (string heroId in HeroIdList)
+                foreach (string heroString in heroList)
                 {
-                    heroesElementData[heroId] = heroDataDocument.GetElementById(heroId);
+                    string heroId;
+                    string heroUnitId = heroString;
+
+                    if (heroUnitId == "HeroAlexstraszaDragon") heroUnitId = "HeroAlexstrasza";
+                    if (heroUnitId == "HeroDVaPilot") heroUnitId = "HeroDVaMech";
+                    if (heroUnitId == "HeroMedivhRaven") heroUnitId = "HeroMedivh";
+                    
+                    Heroes.Element.Models.Hero tmpHero = heroDataDocument.GetHeroByUnitId(heroUnitId);
+
+                    if (heroesElementData.ContainsKey(tmpHero.Id)) continue;
+
+                    heroesElementData[tmpHero.Id] = tmpHero;
+                    heroId = tmpHero.Id;
+
+                    HotsRole? role = heroesElementData[heroId].ExpandedRole?.PlainText is { } label && RoleTranslations.TryGetValue(label, out var found) ? found : null;
+
+                    double aaDmg = 0.0, aaSpeed = 0.0, aaDps = 0.0, aaRange = 0.0;
+                    if (heroesElementData[heroId].Weapons != null && heroesElementData[heroId].Weapons.Count > 0)
+                    {
+                        aaDmg = Math.Round(heroesElementData[heroId].Weapons[0].Damage * Math.Pow((1 + heroesElementData[heroId].Weapons[0].DamageScaling), 1), 1);
+                        aaSpeed = Math.Round(heroesElementData[heroId].Weapons[0].AttacksPerSecond, 2);
+                        aaDps = Math.Round(aaDmg * heroesElementData[heroId].Weapons[0].AttacksPerSecond, 1);
+                        aaRange = heroesElementData[heroId].Weapons[0].Range;
+                    }
 
                     hotsHeroes[heroId] = new()
                     {
-                        Name = heroesElementData[heroId].Name!.PlainText,
                         Health = Math.Ceiling(heroesElementData[heroId].Life.LifeMax * Math.Pow((1 + heroesElementData[heroId].Life.LifeMaxScaling), 1)).ToString(),
-                        Regen = Math.Round(heroesElementData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesElementData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString()
+                        Regen = Math.Round(heroesElementData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesElementData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString(),
+
+                        AaDmg = aaDmg.ToString(),
+                        AaSpeed = aaSpeed.ToString(),
+                        AaDps = aaDps.ToString(),
+                        AaRange = aaRange.ToString(),
+
+                        HeroId = heroesElementData[heroId].Id,
+                        HeroName = heroesElementData[heroId].Name?.PlainText,
+                        HeroRole = role
                     };
 
                     HotsHeroUnit hero = new()
                     {
-                        Id = heroesElementData[heroId].Id,
+                        Id = heroesElementData[heroId].UnitId,
                         Name = heroesElementData[heroId].Name!.PlainText
                     };
 
                     ParseHeroesElementAbilities(heroId, hero);
                     ParseHeroesElementTalents(heroId);
+                }
+                foreach (HotsHero hotsHero in hotsHeroes.Values)
+                {
+                    if (hotsHero.HeroUnits == null) continue;
+                    foreach (HotsHeroUnit unit in hotsHero.HeroUnits)
+                    {
+                        if (string.IsNullOrEmpty(unit.Id)) continue;
+                        HeroNameFromHeroUnitId[unit.Id] = hotsHero.HeroName ?? "";
+                        HeroIdFromHeroUnitId[unit.Id] = hotsHero.HeroId ?? "";
+                    }
+                    if (!string.IsNullOrEmpty(hotsHero.HeroName) && !string.IsNullOrEmpty(hotsHero.HeroId))
+                        HeroRoleFromHeroId[hotsHero.HeroId] = hotsHero.HeroRole;
                 }
             }
             finally { CultureInfo.CurrentCulture = originalCulture; }
@@ -385,7 +514,7 @@ namespace HotsReplayReader
             }
             hotsHeroes[heroId].HeroUnits.Add(hero);
 
-            if (heroesElementData[heroId].HeroUnits.Count > 0 && heroId != "Chen" && heroId != "LostVikings" && heroId != "Rexxar" && heroId != "Medivh")
+            if (heroesElementData[heroId].HeroUnits.Count > 0)
             {
                 foreach (Heroes.Element.Models.Unit heroUnitData in heroesElementData[heroId].HeroUnits.Values)
                 {
@@ -394,41 +523,45 @@ namespace HotsReplayReader
                         Id = heroUnitData.Id,
                         Name = heroUnitData.Name!.PlainText
                     };
-                    Heroes.Element.Models.AbilityTalents.Ability? unitAbility;
 
-                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitBasicAbilities))
+                    if (heroId != "Chen" && heroId != "LostVikings" && heroId != "Rexxar" && heroId != "Medivh")
                     {
-                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Q);
-                        if (unitAbility is not null)
-                            heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.Q);
+                        Heroes.Element.Models.AbilityTalents.Ability? unitAbility;
 
-                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.W);
-                        if (unitAbility is not null)
-                            heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.W);
-
-                        unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.E);
-                        if (unitAbility is not null)
-                            heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.E);
-                    }
-                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitHeroicAbilities))
-                    {
-                        for (int i = 0; i < unitHeroicAbilities.Count && i < 2; i++)
+                        if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Basic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitBasicAbilities))
                         {
-                            Heroes.Element.Models.AbilityTalents.Ability heroicAbility = unitHeroicAbilities[i];
-                            heroUnit.Abilities[heroicAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, heroicAbility, i == 0 ? HotsAbilityType.R1 : HotsAbilityType.R2);
+                            unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Q);
+                            if (unitAbility is not null)
+                                heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.Q);
+
+                            unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.W);
+                            if (unitAbility is not null)
+                                heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.W);
+
+                            unitAbility = unitBasicAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.E);
+                            if (unitAbility is not null)
+                                heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.E);
                         }
-                    }
-                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitTraitAbilities))
-                    {
-                        unitAbility = unitTraitAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Trait);
-                        if (unitAbility is not null)
-                            heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.D);
-                    }
-                    if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitMountAbilities))
-                    {
-                        unitAbility = unitMountAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Z);
-                        if (unitAbility is not null)
-                            heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.Z);
+                        if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Heroic, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitHeroicAbilities))
+                        {
+                            for (int i = 0; i < unitHeroicAbilities.Count && i < 2; i++)
+                            {
+                                Heroes.Element.Models.AbilityTalents.Ability heroicAbility = unitHeroicAbilities[i];
+                                heroUnit.Abilities[heroicAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, heroicAbility, i == 0 ? HotsAbilityType.R1 : HotsAbilityType.R2);
+                            }
+                        }
+                        if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Trait, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitTraitAbilities))
+                        {
+                            unitAbility = unitTraitAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Trait);
+                            if (unitAbility is not null)
+                                heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.D);
+                        }
+                        if (heroUnitData.Abilities.TryGetValue(Heroes.Element.Models.Types.AbilityTier.Mount, out IList<Heroes.Element.Models.AbilityTalents.Ability>? unitMountAbilities))
+                        {
+                            unitAbility = unitMountAbilities.FirstOrDefault(a => a.AbilityType == Heroes.Element.Models.Types.AbilityType.Z);
+                            if (unitAbility is not null)
+                                heroUnit.Abilities[unitAbility.ButtonElementId] = HeroesElementCreateHotsAbility(heroId, unitAbility, HotsAbilityType.Z);
+                        }
                     }
                     hotsHeroes[heroId].HeroUnits.Add(heroUnit);
                 }
@@ -457,15 +590,31 @@ namespace HotsReplayReader
         }
         internal string GetHeroNameFromHeroId(string heroId)
         {
-            return hotsHeroes[heroId].Name ?? "";
+            return hotsHeroes[heroId].HeroName ?? "";
         }
-        internal string GetHeroHealthFromHeroUnitId(string heroId)
+        internal string GetHeroHealthFromHeroId(string heroId)
         {
             return hotsHeroes[heroId].Health ?? "";
         }
-        internal string GetHeroRegenFromHeroUnitId(string heroId)
+        internal string GetHeroRegenFromHeroId(string heroId)
         {
             return hotsHeroes[heroId].Regen ?? "";
+        }
+        internal string GetHeroAaDmgFromHeroId(string heroId)
+        {
+            return hotsHeroes[heroId].AaDmg ?? "";
+        }
+        internal string GetHeroAaSpeedFromHeroId(string heroId)
+        {
+            return hotsHeroes[heroId].AaSpeed ?? "";
+        }
+        internal string GetHeroAaDpsFromHeroId(string heroId)
+        {
+            return hotsHeroes[heroId].AaDps ?? "";
+        }
+        internal string GetHeroAaRangeFromHeroId(string heroId)
+        {
+            return hotsHeroes[heroId].AaRange ?? "";
         }
         internal HotsTalent? GetTalentsFromHeroIdAndTalentReferenceId(string heroId, string referenceId)
         {
@@ -527,9 +676,15 @@ namespace HotsReplayReader
     }
     internal class HotsHero
     {
-        public string? Name { get; set; }
         public string? Health { get; set; }
         public string? Regen { get; set; }
+        public string? AaDmg { get; set; }
+        public string? AaSpeed { get; set; }
+        public string? AaDps { get; set; }
+        public string? AaRange { get; set; }
+        public string? HeroId { get; set; }
+        public string? HeroName { get; set; }
+        public HotsRole? HeroRole { get; set; }
         public List<HotsHeroUnit> HeroUnits { get; set; } = [];
         public List<HotsTalent> Talents { get; set; } = [];
     }
@@ -566,13 +721,11 @@ namespace HotsReplayReader
     }
     internal enum HotsAbilityType
     {
-        Q,
-        W,
-        E,
-        R1,
-        R2,
-        D,
-        Z
+        Q, W, E, R1, R2, D, Z
+    }
+    internal enum HotsRole
+    {
+        Tank, Bruiser, Melee, Ranged, Healer, Support
     }
     internal class HotsMatchAward
     {
