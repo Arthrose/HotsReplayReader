@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 
 using Heroes.Element;
 using Heroes.Element.Models;
 using Heroes.Icons;
 using Heroes.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace HotsReplayReader
 {
@@ -331,6 +329,8 @@ namespace HotsReplayReader
         }
         internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> heroList, List<string> matchAwardsList)
         {
+            GetHeroesElementHeroUnitIdsFromHeroUnits(heroDataJsonPath);
+
             Heroes.Element.GameStringsDocument gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(File.OpenRead(gameStringsJsonPath)));
             Heroes.Element.HeroDataDocument heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(File.OpenRead(heroDataJsonPath)), gameStringsDocument);
             Heroes.Element.MatchAwardDataDocument matchAwardHeroesElementDataDocument = Heroes.Element.MatchAwardDataDocument.Load(JsonDocument.Parse(File.OpenRead(matchAwardsJsonPath)), gameStringsDocument);
@@ -350,21 +350,15 @@ namespace HotsReplayReader
                     };
                 }
 
-                foreach (string heroString in heroList)
+                foreach (string heroUnitId in heroList)
                 {
-                    string heroId;
-                    string heroUnitId = heroString;
+                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
 
-                    if (heroUnitId == "HeroAlexstraszaDragon") heroUnitId = "HeroAlexstrasza";
-                    if (heroUnitId == "HeroDVaPilot") heroUnitId = "HeroDVaMech";
-                    if (heroUnitId == "HeroMedivhRaven") heroUnitId = "HeroMedivh";
-                    
-                    Heroes.Element.Models.Hero tmpHero = heroDataDocument.GetHeroByUnitId(heroUnitId);
+                    Heroes.Element.Models.Hero tmpHero = heroDataDocument.GetElementById(heroId);
 
                     if (heroesElementData.ContainsKey(tmpHero.Id)) continue;
 
                     heroesElementData[tmpHero.Id] = tmpHero;
-                    heroId = tmpHero.Id;
 
                     HotsRole? role = heroesElementData[heroId].ExpandedRole?.PlainText is { } label && RoleTranslations.TryGetValue(label, out var found) ? found : null;
 
@@ -408,7 +402,6 @@ namespace HotsReplayReader
                     {
                         if (string.IsNullOrEmpty(unit.Id)) continue;
                         HeroNameFromHeroUnitId[unit.Id] = hotsHero.HeroName ?? "";
-                        HeroIdFromHeroUnitId[unit.Id] = hotsHero.HeroId ?? "";
                     }
                     if (!string.IsNullOrEmpty(hotsHero.HeroName) && !string.IsNullOrEmpty(hotsHero.HeroId))
                         HeroRoleFromHeroId[hotsHero.HeroId] = hotsHero.HeroRole;
@@ -587,6 +580,28 @@ namespace HotsReplayReader
             hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
             return hotsAbility;
+        }
+        private static void GetHeroesElementHeroUnitIdsFromHeroUnits(string jsonPath)
+        {
+            using FileStream? fileStream = File.OpenRead(jsonPath);
+            using JsonDocument? json = JsonDocument.Parse(fileStream);
+
+            JsonElement items = json.RootElement.GetProperty("items");
+
+            foreach (JsonProperty hero in items.EnumerateObject())
+            {
+                string? heroName = hero.Name;
+                JsonElement heroObj = hero.Value;
+
+                // Adds unitId
+                if (heroObj.TryGetProperty("unitId", out JsonElement unitIdProp) && unitIdProp.GetString() is string unitId)
+                    HeroIdFromHeroUnitId[unitId] = heroName;
+
+                // Adds heroUnits
+                if (heroObj.TryGetProperty("heroUnits", out JsonElement heroUnits))
+                    foreach (JsonProperty heroUnit in heroUnits.EnumerateObject())
+                        HeroIdFromHeroUnitId[heroUnit.Name] = heroName;
+            }
         }
         internal string GetHeroNameFromHeroId(string heroId)
         {
