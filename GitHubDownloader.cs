@@ -1,4 +1,6 @@
-﻿using System.IO.Compression;
+﻿using System.Collections.Concurrent;
+using System.IO.Compression;
+using System.Text.Json;
 using Microsoft.Web.WebView2.Core;
 
 namespace HotsReplayReader;
@@ -7,27 +9,72 @@ internal static class GitHubDownloader
 {
     private static readonly Version VersionThreshold = new("2.55.16.97039");
 
+    private readonly record struct ResolvedVersion(Version Version, bool IsPtr);
+
+    // GitHub versions cache
+    private static readonly ConcurrentDictionary<Version, ResolvedVersion> ResolvedVersionCache = new();
+
     public static async Task<string?> DownloadHeroesDataAsync(HttpClient httpClient, string replayVersion, string dbDirectory, CoreWebView2 coreWebView)
     {
         if (!Version.TryParse(replayVersion, out Version? requestedVersion)) return null;
 
         bool useNewRepository = requestedVersion >= VersionThreshold;
-        string downloadUrl = BuildExactDownloadUrl(requestedVersion, useNewRepository);
-        Version? versionToUse = requestedVersion;
 
-        // La version exacte n'existe pas
-        if (!await UrlExistsAsync(httpClient, downloadUrl))
+        // Downloaded version
+        string exactFolder = Path.Combine(dbDirectory, requestedVersion.ToString());
+        if (Directory.Exists(exactFolder))
         {
-            versionToUse = await GetLatestVersionAsync(httpClient, useNewRepository);
-            if (versionToUse == null)
-                return null;
-            downloadUrl = BuildExactDownloadUrl(versionToUse, useNewRepository);
+            ResolvedVersionCache[requestedVersion] = new ResolvedVersion(requestedVersion, false);
+            return requestedVersion.ToString();
         }
 
-        string destinationFolder = Path.Combine(dbDirectory, versionToUse.ToString());
+        // Cached version
+        if (ResolvedVersionCache.TryGetValue(requestedVersion, out ResolvedVersion cached))
+        {
+            string cachedFolder = Path.Combine(dbDirectory, cached.Version.ToString());
+            if (Directory.Exists(cachedFolder)) return cached.Version.ToString();
 
-        // Déjà présente localement
-        if (Directory.Exists(destinationFolder)) return versionToUse.ToString();
+            return await DownloadAndExtractAsync(httpClient, cached, useNewRepository, dbDirectory, coreWebView);
+        }
+
+        ResolvedVersion versionToUse;
+
+        // Exact GiHub release version
+        string exactNormalUrl = BuildExactDownloadUrl(requestedVersion, useNewRepository, isPtr: false);
+        if (await UrlExistsAsync(httpClient, exactNormalUrl))
+        {
+            versionToUse = new ResolvedVersion(requestedVersion, false);
+        }
+        else
+        {
+            // Exact GiHub ptr version
+            string exactPtrUrl = BuildExactDownloadUrl(requestedVersion, useNewRepository, isPtr: true);
+            if (await UrlExistsAsync(httpClient, exactPtrUrl))
+            {
+                versionToUse = new ResolvedVersion(requestedVersion, true);
+            }
+            else
+            {
+                // None: get closest version
+                ResolvedVersion? closest = await GetClosestAvailableVersionAsync(httpClient, requestedVersion, useNewRepository);
+                if (closest == null)
+                    return null;
+                versionToUse = closest.Value;
+            }
+        }
+
+        ResolvedVersionCache[requestedVersion] = versionToUse;
+
+        string destinationFolder = Path.Combine(dbDirectory, versionToUse.Version.ToString());
+        if (Directory.Exists(destinationFolder)) return versionToUse.Version.ToString();
+
+        return await DownloadAndExtractAsync(httpClient, versionToUse, useNewRepository, dbDirectory, coreWebView, destinationFolder);
+    }
+
+    private static async Task<string?> DownloadAndExtractAsync(HttpClient httpClient, ResolvedVersion versionToUse, bool useNewRepository, string dbDirectory, CoreWebView2 coreWebView, string? destinationFolder = null)
+    {
+        destinationFolder ??= Path.Combine(dbDirectory, versionToUse.Version.ToString());
+        string downloadUrl = BuildExactDownloadUrl(versionToUse.Version, useNewRepository, versionToUse.IsPtr);
 
         string html = $@"
 <head>
@@ -113,7 +160,7 @@ internal static class GitHubDownloader
 <div class=""body-div"">
 <div class=""parent"">
 <div class=""header"">{Resources.Language.i18n.ResourceManager.GetString("DownloadingGameData")!}</div>
-<div class=""gameVersion"">{versionToUse}<br><br></div>
+<div class=""gameVersion"">{versionToUse.Version}{(versionToUse.IsPtr ? " [PTR]" : "")}<br><br></div>
 <div class=""loader""></div>
 </div>
 </div>
@@ -130,7 +177,7 @@ internal static class GitHubDownloader
             await DownloadFileAsync(httpClient, downloadUrl, tempZipFile);
             if (!useNewRepository) ZipFile.ExtractToDirectory(tempZipFile, dbDirectory, true);
             else ZipFile.ExtractToDirectory(tempZipFile, destinationFolder, true);
-            return versionToUse.ToString();
+            return versionToUse.Version.ToString();
         }
         finally
         {
@@ -138,11 +185,20 @@ internal static class GitHubDownloader
         }
     }
 
-    private static string BuildExactDownloadUrl(Version version, bool useNewRepository)
+    private static string BuildExactDownloadUrl(Version version, bool useNewRepository, bool isPtr)
     {
         string v = version.ToString();
-        if (useNewRepository) return $"https://github.com/HeroesToolChest/heroes-data2/releases/download/v{v}/heroes-data-no-maps-{v}.zip";
-        return $"https://github.com/HeroesToolChest/heroes-data/releases/download/v{v}/heroes-data-{v}_last.zip";
+
+        if (useNewRepository)
+        {
+            return isPtr
+                ? $"https://github.com/HeroesToolChest/heroes-data2/releases/download/v{v}_ptr/heroes-data-{v}_ptr.zip"
+                : $"https://github.com/HeroesToolChest/heroes-data2/releases/download/v{v}/heroes-data-no-maps-{v}.zip";
+        }
+
+        return isPtr
+            ? $"https://github.com/HeroesToolChest/heroes-data/releases/download/v{v}_ptr/heroes-data-{v}_ptr_last.zip"
+            : $"https://github.com/HeroesToolChest/heroes-data/releases/download/v{v}/heroes-data-{v}_last.zip";
     }
 
     private static async Task<bool> UrlExistsAsync(HttpClient httpClient, string url)
@@ -159,22 +215,59 @@ internal static class GitHubDownloader
         }
     }
 
-    private static async Task<Version?> GetLatestVersionAsync(HttpClient httpClient, bool useNewRepository)
+    private static async Task<ResolvedVersion?> GetClosestAvailableVersionAsync(HttpClient httpClient, Version requestedVersion, bool useNewRepository)
     {
+        string repo = useNewRepository ? "heroes-data2" : "heroes-data";
+
+        int page = 1;
+        const int perPage = 30;
+
         try
         {
-            string latestUrl = useNewRepository ? "https://github.com/HeroesToolChest/heroes-data2/releases/latest" : "https://github.com/HeroesToolChest/heroes-data/releases/latest";
-            using HttpResponseMessage response = await httpClient.GetAsync(latestUrl);
+            while (true)
+            {
+                string apiUrl = $"https://api.github.com/repos/HeroesToolChest/{repo}/releases?per_page={perPage}&page={page}";
 
-            string finalUrl = response.RequestMessage?.RequestUri?.ToString() ?? throw new Exception("Unable to determine latest release.");
+                using HttpRequestMessage request = new(HttpMethod.Get, apiUrl);
+                request.Headers.UserAgent.ParseAdd("HotsReplayReader");
 
-            // Exemple :
-            // https://github.com/HeroesToolChest/heroes-data2/releases/tag/v2.55.17.97605
+                using HttpResponseMessage response = await httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    return null;
 
-            int index = finalUrl.LastIndexOf("/v", StringComparison.OrdinalIgnoreCase);
-            if (index < 0) throw new Exception($"Unexpected release URL : {finalUrl}");
-            string versionString = finalUrl[(index + 2)..];
-            return Version.Parse(versionString);
+                await using Stream stream = await response.Content.ReadAsStreamAsync();
+                using JsonDocument doc = await JsonDocument.ParseAsync(stream);
+
+                JsonElement releases = doc.RootElement;
+                if (releases.ValueKind != JsonValueKind.Array || releases.GetArrayLength() == 0)
+                    return null;
+
+                foreach (JsonElement release in releases.EnumerateArray())
+                {
+                    if (!release.TryGetProperty("tag_name", out JsonElement tagNameProp))
+                        continue;
+
+                    string? tagName = tagNameProp.GetString();
+                    if (string.IsNullOrEmpty(tagName))
+                        continue;
+
+                    string raw = tagName.StartsWith('v') ? tagName[1..] : tagName;
+
+                    bool isPtr = raw.EndsWith("_ptr", StringComparison.OrdinalIgnoreCase);
+                    string versionString = isPtr ? raw[..^"_ptr".Length] : raw;
+
+                    if (!Version.TryParse(versionString, out Version? releaseVersion))
+                        continue;
+
+                    if (releaseVersion <= requestedVersion)
+                        return new ResolvedVersion(releaseVersion, isPtr);
+                }
+
+                if (releases.GetArrayLength() < perPage)
+                    return null;
+
+                page++;
+            }
         }
         catch
         {

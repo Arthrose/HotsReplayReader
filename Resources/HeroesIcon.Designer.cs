@@ -553,9 +553,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Mal_Ganis {
+        internal static byte[] Malfurion {
             get {
-                object obj = ResourceManager.GetObject("Mal\'Ganis", resourceCulture);
+                object obj = ResourceManager.GetObject("Malfurion", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -563,9 +563,9 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Malfurion {
+        internal static byte[] MalGanis {
             get {
-                object obj = ResourceManager.GetObject("Malfurion", resourceCulture);
+                object obj = ResourceManager.GetObject("MalGanis", resourceCulture);
                 return ((byte[])(obj));
             }
         }

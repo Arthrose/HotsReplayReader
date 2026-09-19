@@ -113,6 +113,8 @@ namespace HotsReplayReader
         }
         internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> heroList, List<string> matchAwardsList)
         {
+            GetHeroesIconsHeroUnitIdsFromHeroUnits(heroDataJsonPath);
+
             Heroes.Icons.GameStringDocument gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
             Heroes.Icons.DataDocument.HeroDataDocument heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
             Heroes.Icons.DataDocument.MatchAwardDataDocument matchAwardHeroesIconsDataDocument = Heroes.Icons.DataDocument.MatchAwardDataDocument.Parse(matchAwardsJsonPath, gameStringDocument);
@@ -132,15 +134,41 @@ namespace HotsReplayReader
                     };
                 }
 
-                foreach (string heroId in heroList)
+                foreach (string heroUnitId in heroList)
                 {
-                    heroesIconsData[heroId] = heroDataDocument.GetHeroById(heroId, true, true, true, true);
+                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
+
+                    Heroes.Models.Hero tmpHero = heroDataDocument.GetHeroById(heroId, true, true, true, true);
+
+                    if (heroesElementData.ContainsKey(tmpHero.Id)) continue;
+
+                    heroesIconsData[heroId] = tmpHero;
+
+                    HotsRole? role = heroesIconsData[heroId].ExpandedRole is { } label && RoleTranslations.TryGetValue(label, out var found) ? found : null;
+
+                    double aaDmg = 0.0, aaSpeed = 0.0, aaDps = 0.0, aaRange = 0.0;
+                    if (heroesIconsData[heroId].Weapons != null && heroesIconsData[heroId].Weapons.Count > 0)
+                    {
+                        Heroes.Models.UnitWeapon? firstWeapon = heroesIconsData[heroId].Weapons.First();
+                        aaDmg = Math.Round(firstWeapon.Damage * Math.Pow((1 + firstWeapon.DamageScaling), 1), 1);
+                        aaSpeed = Math.Round(firstWeapon.AttacksPerSecond, 2);
+                        aaDps = Math.Round(aaDmg * firstWeapon.AttacksPerSecond, 1);
+                        aaRange = firstWeapon.Range;
+                    }
 
                     hotsHeroes[heroId] = new()
                     {
-                        HeroName = heroesIconsData[heroId].Name,
                         Health = Math.Ceiling(heroesIconsData[heroId].Life.LifeMax * Math.Pow((1 + heroesIconsData[heroId].Life.LifeScaling), 1)).ToString(),
-                        Regen = Math.Round(heroesIconsData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesIconsData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString()
+                        Regen = Math.Round(heroesIconsData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesIconsData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString(),
+
+                        AaDmg = aaDmg.ToString(),
+                        AaSpeed = aaSpeed.ToString(),
+                        AaDps = aaDps.ToString(),
+                        AaRange = aaRange.ToString(),
+
+                        HeroId = heroesIconsData[heroId].Id,
+                        HeroName = heroesIconsData[heroId].Name,
+                        HeroRole = role
                     };
 
                     HotsHeroUnit hero = new()
@@ -151,6 +179,17 @@ namespace HotsReplayReader
 
                     ParseHeroesIconsTalents(heroId);
                     ParseHeroesIconsAbilities(heroId, hero);
+                }
+                foreach (HotsHero hotsHero in hotsHeroes.Values)
+                {
+                    if (hotsHero.HeroUnits == null) continue;
+                    foreach (HotsHeroUnit unit in hotsHero.HeroUnits)
+                    {
+                        if (string.IsNullOrEmpty(unit.Id)) continue;
+                        HeroNameFromHeroUnitId[unit.Id] = hotsHero.HeroName ?? "";
+                    }
+                    if (!string.IsNullOrEmpty(hotsHero.HeroName) && !string.IsNullOrEmpty(hotsHero.HeroId))
+                        HeroRoleFromHeroId[hotsHero.HeroId] = hotsHero.HeroRole;
                 }
             }
             finally { CultureInfo.CurrentCulture = originalCulture; }
@@ -580,6 +619,29 @@ namespace HotsReplayReader
             hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
             return hotsAbility;
+        }
+        private static void GetHeroesIconsHeroUnitIdsFromHeroUnits(string jsonPath)
+        {
+            using FileStream? fileStream = File.OpenRead(jsonPath);
+            using JsonDocument? json = JsonDocument.Parse(fileStream);
+
+            JsonElement items = json.RootElement;
+
+            foreach (JsonProperty hero in items.EnumerateObject())
+            {
+                string? heroName = hero.Name;
+                JsonElement heroObj = hero.Value;
+
+                // Adds unitId
+                if (heroObj.TryGetProperty("unitId", out JsonElement unitIdProp) && unitIdProp.GetString() is string unitId)
+                    HeroIdFromHeroUnitId[unitId] = heroName;
+
+                // Adds heroUnits (tableau d'objets à une seule clé)
+                if (heroObj.TryGetProperty("heroUnits", out JsonElement heroUnits))
+                    foreach (JsonElement heroUnitWrapper in heroUnits.EnumerateArray())
+                        foreach (JsonProperty heroUnit in heroUnitWrapper.EnumerateObject())
+                            HeroIdFromHeroUnitId[heroUnit.Name] = heroName;
+            }
         }
         private static void GetHeroesElementHeroUnitIdsFromHeroUnits(string jsonPath)
         {

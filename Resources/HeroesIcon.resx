@@ -262,7 +262,7 @@
   <data name="Maiev" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Heroes\Maiev.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Mal'Ganis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="MalGanis" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Heroes\Mal'Ganis.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Malfurion" type="System.Resources.ResXFileRef, System.Windows.Forms">
