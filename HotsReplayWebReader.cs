@@ -62,6 +62,8 @@ namespace HotsReplayReader
 
         internal HotsData hotsData = new();
 
+        private static readonly HttpClient httpClient = new ();
+
         internal DeepLTranslator? translator;
         internal List<DeepLSupportedLanguage>? supportedLanguages;
         internal bool DeepLAPIValid = false;
@@ -232,6 +234,12 @@ namespace HotsReplayReader
         }
         private async void HotsReplayWebReader_Load(object sender, EventArgs e)
         {
+            string? versionBrute = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            string versionLocaleClean = versionBrute?.Split('+')[0] ?? "0.1.0";
+
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader", versionLocaleClean));
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+
             if (!release)
                 formTitle = $"{formTitle} (v" + Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion + ')';
             // Ajouter ce dossier au chemin de recherche des DLL natives
@@ -314,7 +322,7 @@ namespace HotsReplayReader
                         try
                         {
                             if (translator != null)
-                                (translatedText, detectedLanguage) = await translator.TranslateText(inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
+                                (translatedText, detectedLanguage) = await translator.TranslateText(httpClient, inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
                         }
                         catch (Exception ex)
                         {
@@ -405,68 +413,121 @@ namespace HotsReplayReader
             if (Init.config.AskUpdate)
                 await CheckAndLaunchUpdateAsync();
         }
-        private void WebViewWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+        private async void WebViewWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
             Uri uri = new(e.Request.Uri);
 
-            // Vérifier si le schéma correspond à celui défini
-            if (uri.Scheme == "app")
+
+
+
+
+
+
+            if (uri.Scheme == "app" && uri.Host == "heroes-images")
             {
-                // Récupérer le nom du fichier
-                string fileName = Path.GetFileName(uri.LocalPath);
-                string imageName = Path.GetFileNameWithoutExtension(fileName);
-                string extension = Path.GetExtension(fileName);
-                string? actions = null;
+                CoreWebView2Deferral deferral = e.GetDeferral();
 
-                if (extension == ".svg")
+                string relativePath = uri.AbsolutePath.TrimStart('/'); // ex: "heroportraits/hero.png"
+                string? localPath = await HotsImage.GetOrDownloadAsync(httpClient, relativePath);
+
+                if (localPath == null)
                 {
-                    System.Resources.ResourceManager resourceManager = Resources.Flags.ResourceManager;
-                    object? resource = resourceManager.GetObject(imageName);
-
-                    if (resource is byte[] svgBytes)
-                    {
-                        MemoryStream msSvg = new(svgBytes);
-                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(msSvg, 200, "OK", "Content-Type: image/svg+xml");
-                    }
+                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 404, "Not Found", "");
+                    deferral.Complete();
                     return;
                 }
 
-                if (!String.IsNullOrEmpty(uri.Query))
-                    actions = HttpUtility.ParseQueryString(uri.Query)["actions"];
+                string contentType = Path.GetExtension(localPath).ToLowerInvariant() switch
+                {
+                    ".png" or ".apng" => "image/png",
+                    ".jpg" or ".jpeg" => "image/jpeg",
+                    ".webp" => "image/webp",
+                    _ => "application/octet-stream"
+                };
 
-                // Récupérer l'Image depuis les ressources
-                Bitmap? image = new HotsImage(uri.Host, imageName, extension, actions).Bitmap;
-                if (image == null) return;
-
-                MemoryStream ms = new();
-                // Convertir l'Image en MemoryStream
-                if (extension == ".png")
-                {
-                    image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    ms.Position = 0;
-                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
-                }
-                else if (extension == ".jpg")
-                {
-                    // Suppression du canal Alpha pour ne pas gérer la transparence
-                    Bitmap newImage = new(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                    using (Graphics g = Graphics.FromImage(newImage))
-                    {
-                        g.Clear(Color.White);
-                        g.DrawImage(image, 0, 0, image.Width, image.Height);
-                    }
-                    newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    ms.Position = 0;
-                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/jpeg");
-                }
-                else if (extension == ".gif")
-                {
-                    // Handle GIF images
-                    image.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
-                    ms.Position = 0;
-                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
-                }
+                Stream fileStream = File.OpenRead(localPath);
+                e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(fileStream, 200, "OK", $"Content-Type: {contentType}");
+                deferral.Complete();
+                return;
             }
+
+
+
+
+
+
+
+
+
+
+
+
+            else
+            {
+
+
+                // Vérifier si le schéma correspond à celui défini
+                if (uri.Scheme == "app")
+                {
+                    // Récupérer le nom du fichier
+                    string fileName = Path.GetFileName(uri.LocalPath);
+                    string imageName = Path.GetFileNameWithoutExtension(fileName);
+                    string extension = Path.GetExtension(fileName);
+                    string? actions = null;
+
+                    if (extension == ".svg")
+                    {
+                        System.Resources.ResourceManager resourceManager = Resources.Flags.ResourceManager;
+                        object? resource = resourceManager.GetObject(imageName);
+
+                        if (resource is byte[] svgBytes)
+                        {
+                            MemoryStream msSvg = new(svgBytes);
+                            e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(msSvg, 200, "OK", "Content-Type: image/svg+xml");
+                        }
+                        return;
+                    }
+
+                    if (!String.IsNullOrEmpty(uri.Query))
+                        actions = HttpUtility.ParseQueryString(uri.Query)["actions"];
+
+                    // Récupérer l'Image depuis les ressources
+                    Bitmap? image = new HotsImage(uri.Host, imageName, extension, actions).Bitmap;
+                    if (image == null) return;
+
+                    MemoryStream ms = new();
+                    // Convertir l'Image en MemoryStream
+                    if (extension == ".png")
+                    {
+                        image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        ms.Position = 0;
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
+                    }
+                    else if (extension == ".jpg")
+                    {
+                        // Suppression du canal Alpha pour ne pas gérer la transparence
+                        Bitmap newImage = new(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                        using (Graphics g = Graphics.FromImage(newImage))
+                        {
+                            g.Clear(Color.White);
+                            g.DrawImage(image, 0, 0, image.Width, image.Height);
+                        }
+                        newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        ms.Position = 0;
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/jpeg");
+                    }
+                    else if (extension == ".gif")
+                    {
+                        // Handle GIF images
+                        image.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+                        ms.Position = 0;
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
+                    }
+                }
+
+            }
+
+
         }
         private void LoadAccountsToolStipMenu()
         {
@@ -789,7 +850,12 @@ namespace HotsReplayReader
             html += "        <span class=\"tooltip\">\n";
             html += "          <span class=\"heroPortrait\">\n";
 
-            html += $"            <img src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+
+            Debug.WriteLine($@"{hotsData}");
+
+//            html += $"            <img src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+//            html += $"            <img src=\"https://cdn.jsdelivr.net/gh/HeroesToolChest/heroes-images@main/heroesimages/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+            html += $"            <img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
@@ -809,7 +875,8 @@ namespace HotsReplayReader
                 string? ressourceName = hotsData.GetMatchRewardsMvpScreenIcon(hotsPlayer.MatchAwards[0].ToString());
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
-                html += $"            <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
+//                html += $"            <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
+                html += $"            <img src=\"app://heroes-images/matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
             }
 
             html += "          </span>\n";
@@ -1033,7 +1100,8 @@ namespace HotsReplayReader
             else
                 html += $"    <span class=\"chat-time chat-time-{teamColor}\"><span class=\"chat-time-bracket\">[</span>{msgMinutes}:{msgSeconds}<span class=\"chat-time-bracket\">]</span></span>\n";
 
-            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
+//            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
+            html += $"    <span class=\"chat-user\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap}\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
 
             string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
 
@@ -1297,7 +1365,8 @@ namespace HotsReplayReader
 
             string html = @"";
             html += $"    <tr class=\"team{team.Name}\">\n";
-            html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+//            html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+            html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
             html += $"      <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             html += "      <td class=\"tdBorders";
@@ -1550,7 +1619,8 @@ namespace HotsReplayReader
 
             string html = "";
             html += $"  <tr class=\"team{team.Name} trTalents\">\n";
-            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+//            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
+            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
             html += $"    <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             for (int i = 0; i <= 6; i++)
@@ -1622,7 +1692,8 @@ namespace HotsReplayReader
             if (hotsTalent == null)
                 return "    <td class=\"tdBorders\">&nbsp;</td>";
 
-            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
+//            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
+            string iconPath = $@"app://heroes-images/abilitytalents/{hotsTalent.IconFileName}";
             iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             string description;
@@ -1709,7 +1780,8 @@ namespace HotsReplayReader
         {
             if (hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
 
-            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
+//            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
+            string iconPath = $@"app://heroes-images/abilitytalents/{hotsTalent.IconFileName}";
             iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             string description;
@@ -1826,7 +1898,8 @@ namespace HotsReplayReader
                     actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
 
                 html += "            <div class=\"tooltip abilityHeaderDiv\">\n";
-                html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                //html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://heroes-images/abilitytalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
                 string description = "";
                 if (ability.AbilityId != null)
@@ -2540,17 +2613,9 @@ namespace HotsReplayReader
             dbVersion = null;
             if (Directory.Exists(Path.Combine(Init.DbDirectory!, replayVersion)))
                 dbVersion = replayVersion;
-            else {
-                using HttpClient httpClient = new();
-                httpClient.DefaultRequestHeaders.UserAgent.Add(
-                    new ProductInfoHeaderValue(
-                        Assembly.GetExecutingAssembly().GetName().Name ?? "HotsReplayReader",
-                        Assembly.GetExecutingAssembly().GetName().Version?.ToString(2) ?? "1.0"
-                    )
-                );
-    
+            else
                 dbVersion = await GitHubDownloader.DownloadHeroesDataAsync(httpClient, replayVersion, Init.DbDirectory!, webView.CoreWebView2);
-            }
+
             // Seek high version in APPDATA
             dbVersion ??=
                 Directory.GetDirectories(Init.DbDirectory!)

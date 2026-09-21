@@ -20,7 +20,7 @@ namespace HotsReplayReader
             return DeepLSupportedLanguages;
         }
 
-        public async Task<(string translatedText, string detectedLanguage)> TranslateText(string? text, string targetLang)
+        public async Task<(string translatedText, string detectedLanguage)> TranslateText(HttpClient httpClient, string? text, string targetLang)
         {
             if (text != null)
             {
@@ -36,7 +36,7 @@ namespace HotsReplayReader
 
                 request.Content = content;
 
-                var response = await _httpClient.SendAsync(request);
+                var response = await httpClient.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {

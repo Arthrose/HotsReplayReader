@@ -20,14 +20,6 @@ internal static class GitHubDownloader
 
         bool useNewRepository = requestedVersion >= VersionThreshold;
 
-        // Downloaded version
-        string exactFolder = Path.Combine(dbDirectory, requestedVersion.ToString());
-        if (Directory.Exists(exactFolder))
-        {
-            ResolvedVersionCache[requestedVersion] = new ResolvedVersion(requestedVersion, false);
-            return requestedVersion.ToString();
-        }
-
         // Cached version
         if (ResolvedVersionCache.TryGetValue(requestedVersion, out ResolvedVersion cached))
         {
@@ -35,6 +27,14 @@ internal static class GitHubDownloader
             if (Directory.Exists(cachedFolder)) return cached.Version.ToString();
 
             return await DownloadAndExtractAsync(httpClient, cached, useNewRepository, dbDirectory, coreWebView);
+        }
+
+        // Downloaded version
+        string exactFolder = Path.Combine(dbDirectory, requestedVersion.ToString());
+        if (Directory.Exists(exactFolder))
+        {
+            ResolvedVersionCache[requestedVersion] = new ResolvedVersion(requestedVersion, false);
+            return requestedVersion.ToString();
         }
 
         ResolvedVersion versionToUse;

@@ -1,9 +1,90 @@
-﻿using System.Resources;
+﻿using System.Collections.Concurrent;
+using System.Resources;
 
 namespace HotsReplayReader
 {
     internal class HotsImage
     {
+        private static readonly string CacheRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader", "cache");
+        private const string BaseCdnUrl = "https://cdn.jsdelivr.net/gh/HeroesToolChest/heroes-images@main/heroesimages/";
+
+        // Évite les téléchargements concurrents multiples pour la même image.
+        private static readonly ConcurrentDictionary<string, SemaphoreSlim> DownloadLocks = new();
+        public static async Task<string?> GetOrDownloadAsync(HttpClient httpClient, string relativePath)
+        {
+            relativePath = relativePath.Replace('\\', '/').TrimStart('/');
+            string localPath = Path.Combine(CacheRoot, relativePath.Replace('/', Path.DirectorySeparatorChar));
+
+            if (File.Exists(localPath))
+                return localPath;
+
+            // Un seul téléchargement à la fois par chemin, même si plusieurs requêtes arrivent en parallèle.
+            SemaphoreSlim gate = DownloadLocks.GetOrAdd(relativePath, _ => new SemaphoreSlim(1, 1));
+            await gate.WaitAsync();
+            try
+            {
+                // Revérifier après avoir acquis le verrou (un autre thread a peut-être déjà téléchargé entre-temps).
+                if (File.Exists(localPath))
+                    return localPath;
+
+                string url = BaseCdnUrl + relativePath;
+
+                using HttpResponseMessage response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
+
+                // Téléchargement vers un fichier temporaire puis rename atomique,
+                // pour éviter qu'un lecteur concurrent lise un fichier partiellement écrit.
+                string tempPath = localPath + ".tmp";
+                await using (Stream input = await response.Content.ReadAsStreamAsync())
+                await using (FileStream output = File.Create(tempPath))
+                {
+                    await input.CopyToAsync(output);
+                }
+                File.Move(tempPath, localPath, overwrite: true);
+
+                return localPath;
+            }
+            catch
+            {
+                return null; // échec réseau : pas de cache, pas d'image (le handler gérera le fallback)
+            }
+            finally
+            {
+                gate.Release();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public Bitmap? Bitmap { get; set; }
         public string Name { get; set; }
         public string? Extension { get; set; }

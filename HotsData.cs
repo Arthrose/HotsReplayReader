@@ -12,7 +12,7 @@ namespace HotsReplayReader
     {
         private readonly Dictionary<string, Heroes.Models.Hero> heroesIconsData = [];
         private readonly Dictionary<string, Heroes.Element.Models.Hero> heroesElementData = [];
-        private readonly Dictionary<string, HotsHero> hotsHeroes = [];
+        internal readonly Dictionary<string, HotsHero> hotsHeroes = [];
         private readonly Dictionary<string, HotsMatchAward> hotsMatchAwards = [];
         public static Dictionary<string, string> HeroNameFromHeroUnitId { get; private set; } = [];
         public static Dictionary<string, string> HeroIdFromHeroUnitId { get; private set; } = [];
@@ -156,6 +156,19 @@ namespace HotsReplayReader
                         aaRange = firstWeapon.Range;
                     }
 
+                    HotsPortraits? portraits = new()
+                    {
+                        HeroSelect  = heroesIconsData[heroId].HeroPortrait.HeroSelectPortraitFileName,
+                        Leaderboard = heroesIconsData[heroId].HeroPortrait.LeaderboardPortraitFileName,
+                        Loading     = heroesIconsData[heroId].HeroPortrait.LoadingScreenPortraitFileName,
+                        PartyPanel  = heroesIconsData[heroId].HeroPortrait.PartyPanelPortraitFileName,
+                        Target      = heroesIconsData[heroId].HeroPortrait.TargetPortraitFileName,
+                        DraftScreen = heroesIconsData[heroId].HeroPortrait.DraftScreenFileName,
+                        PartyFrames = heroesIconsData[heroId].HeroPortrait.PartyFrameFileName,
+                        Minimap     = heroesIconsData[heroId].UnitPortrait.MiniMapIconFileName,
+                        TargetInfo  = heroesIconsData[heroId].UnitPortrait.TargetInfoPanelFileName
+                    };
+
                     hotsHeroes[heroId] = new()
                     {
                         Health = Math.Ceiling(heroesIconsData[heroId].Life.LifeMax * Math.Pow((1 + heroesIconsData[heroId].Life.LifeScaling), 1)).ToString(),
@@ -168,7 +181,9 @@ namespace HotsReplayReader
 
                         HeroId = heroesIconsData[heroId].Id,
                         HeroName = heroesIconsData[heroId].Name,
-                        HeroRole = role
+                        HeroRole = role,
+
+                        Portraits = portraits
                     };
 
                     HotsHeroUnit hero = new()
@@ -410,6 +425,19 @@ namespace HotsReplayReader
                         aaRange = heroesElementData[heroId].Weapons[0].Range;
                     }
 
+                    HotsPortraits? portraits = new()
+                    {
+                        HeroSelect = heroesElementData[heroId].HeroPortraits.HeroSelectPortrait,
+                        Leaderboard = heroesElementData[heroId].HeroPortraits.LeaderboardPortrait,
+                        Loading = heroesElementData[heroId].HeroPortraits.LoadingScreenPortrait,
+                        PartyPanel = heroesElementData[heroId].HeroPortraits.PartyPanelPortrait,
+                        Target = heroesElementData[heroId].HeroPortraits.TargetPortrait,
+                        DraftScreen = heroesElementData[heroId].HeroPortraits.DraftScreen,
+                        PartyFrames = heroesElementData[heroId].HeroPortraits.PartyFrames,
+                        Minimap = heroesElementData[heroId].HeroPortraits.MiniMapIcon,
+                        TargetInfo = heroesElementData[heroId].HeroPortraits.TargetInfoPanel
+                    };
+
                     hotsHeroes[heroId] = new()
                     {
                         Health = Math.Ceiling(heroesElementData[heroId].Life.LifeMax * Math.Pow((1 + heroesElementData[heroId].Life.LifeMaxScaling), 1)).ToString(),
@@ -422,7 +450,9 @@ namespace HotsReplayReader
 
                         HeroId = heroesElementData[heroId].Id,
                         HeroName = heroesElementData[heroId].Name?.PlainText,
-                        HeroRole = role
+                        HeroRole = role,
+
+                        Portraits = portraits
                     };
 
                     HotsHeroUnit hero = new()
@@ -762,6 +792,7 @@ namespace HotsReplayReader
         public string? HeroId { get; set; }
         public string? HeroName { get; set; }
         public HotsRole? HeroRole { get; set; }
+        public HotsPortraits? Portraits { get; set; }
         public List<HotsHeroUnit> HeroUnits { get; set; } = [];
         public List<HotsTalent> Talents { get; set; } = [];
     }
@@ -770,6 +801,19 @@ namespace HotsReplayReader
         public string? Name { get; set; }
         public string? Id { get; set; }
         public Dictionary<string, HotsAbility> Abilities { get; set; } = [];
+    }
+    internal class HotsPortraits
+    {
+        public string? HeroSelect { get; set; }
+        public string? Leaderboard { get; set; }
+        public string? Loading { get; set; }
+        public string? PartyPanel { get; set; }
+        public string? Target { get; set; }
+        public string? DraftScreen { get; set; }
+        public ICollection<string>? PartyFrames { get; set; }
+        public string? Minimap { get; set; }
+        public string? TargetInfo { get; set; }
+
     }
     internal class HotsTalent()
     {
