@@ -272,6 +272,9 @@
   <data name="MapSilverCity" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Maps\MapSilverCity.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="NONE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\HotsResources\NONE.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="styles" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\css\styles.css;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

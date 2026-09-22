@@ -57,7 +57,7 @@ namespace HotsReplayReader
 
         internal string? htmlContent;
 
-        internal string? dbVersion;
+        internal string dbVersion = "";
         internal Version versionThreshold = new("2.55.16.97039");
 
         internal HotsData hotsData = new();
@@ -67,6 +67,8 @@ namespace HotsReplayReader
         internal DeepLTranslator? translator;
         internal List<DeepLSupportedLanguage>? supportedLanguages;
         internal bool DeepLAPIValid = false;
+
+        Dictionary<string, Dictionary<string, string>> emoticonsDb = [];
 
         readonly private string welcomeHTML = $@"<html>
 <head>
@@ -417,12 +419,6 @@ namespace HotsReplayReader
         {
             Uri uri = new(e.Request.Uri);
 
-
-
-
-
-
-
             if (uri.Scheme == "app" && uri.Host == "heroes-images")
             {
                 CoreWebView2Deferral deferral = e.GetDeferral();
@@ -450,18 +446,6 @@ namespace HotsReplayReader
                 deferral.Complete();
                 return;
             }
-
-
-
-
-
-
-
-
-
-
-
-
             else
             {
 
@@ -804,11 +788,17 @@ namespace HotsReplayReader
                 html += "    <tr>\n      <td>&nbsp;</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
-                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{draftPick.HeroSelected}.png\" class=\"bannedHeroIcon\"></td>\n";
+                        if (draftPick.HeroSelected == "NONE")
+                            html += $"      <td class=\"headTableTd\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></td>\n";
+                        else
+                            html += $"      <td class=\"headTableTd\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></td>\n";
                 html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
-                        html += $"      <td class=\"headTableTd\"><img src=\"app://heroesIcon/{draftPick.HeroSelected}.png\" class=\"bannedHeroIcon\"></td>\n";
+                        if (draftPick.HeroSelected == "NONE")
+                            html += $"      <td class=\"headTableTd\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></td>\n";
+                        else
+                            html += $"      <td class=\"headTableTd\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></td>\n";
                 html += "      <td>&nbsp;</td>\n    </tr>\n";
             }
 
@@ -849,9 +839,6 @@ namespace HotsReplayReader
             html += $"      <td class=\"headTableTd\">\n";
             html += "        <span class=\"tooltip\">\n";
             html += "          <span class=\"heroPortrait\">\n";
-
-
-            Debug.WriteLine($@"{hotsData}");
 
 //            html += $"            <img src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 //            html += $"            <img src=\"https://cdn.jsdelivr.net/gh/HeroesToolChest/heroes-images@main/heroesimages/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
@@ -1118,43 +1105,19 @@ namespace HotsReplayReader
             html += $"  </div>\n";
             return html;
         }
-        internal string GetEmoticonImgFromTag(string tag)
-        {
-            if (Init.hotsEmoticons != null)
-            {
-                foreach (KeyValuePair<string, HotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
-                {
-                    foreach (string alias in hotsEmoticonData.Value.Aliases)
-                    {
-                        if (tag == alias && hotsEmoticonData.Value.Image != null)
-                        {
-                            if (hotsEmoticonData.Value.Image.Contains("storm_emoji_nexus"))
-                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
-                            else
-                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
-                        }
-                    }
-                }
-                return tag;
-            }
-            return "";
-        }
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
-            chatMessage = chatMessage.Replace(":@",  ":nexusangry:")
-                                     .Replace("B)",  ":nexuscool:")
-                                     .Replace("b)",  ":nexuscool:")
+            chatMessage = chatMessage.Replace(":@", ":nexusangry:")
+                                     .Replace("B)", ":nexuscool:")
+                                     .Replace("b)", ":nexuscool:")
                                      .Replace("^^;", ":nexusoops:")
-                                     .Replace(":)",  ":nexushappy:")
-                                     .Replace(":*",  ":nexuslove:")
-                                     .Replace(":D",  ":nexuslol:")
-                                     .Replace(":d",  ":nexuslol:")
-                                     .Replace(":(",  ":nexussad:")
-                                     .Replace(":P",  ":nexussilly:")
-                                     .Replace(":p",  ":nexussilly:")
-                                     .Replace(":|",  ":nexusmeh:")
-                                     .Replace(":O",  ":nexuswow:")
-                                     .Replace(":o",  ":nexuswow:");
+                                     .Replace(":)", ":nexushappy:")
+                                     .Replace(":*", ":nexuslove:")
+                                     .Replace(":(", ":nexussad:")
+                                     .Replace(":|", ":nexusmeh:");
+            chatMessage = Regex.Replace(chatMessage, @":[dD](?!\w*:)", ":nexuslol:");
+            chatMessage = Regex.Replace(chatMessage, @":[pP](?!\w*:)", ":nexussilly:");
+            chatMessage = Regex.Replace(chatMessage, @":[oO](?!\w*:)", ":nexuswow:");
 
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
@@ -1164,6 +1127,43 @@ namespace HotsReplayReader
                 string emoticonTag = match.Groups[1].Value;
                 return GetEmoticonImgFromTag(emoticonTag);
             });
+        }
+        internal string GetEmoticonImgFromTag(string tag)
+        {
+
+            if (emoticonsDb.TryGetValue(dbVersion, out var innerDb) && innerDb.TryGetValue(tag, out string? emoticonImage))
+            {
+                Debug.WriteLine($"Emoticon found: {emoticonImage}");
+                if (emoticonImage.Contains("storm_emoji_nexus"))
+                    return $@"<img src=""app://heroes-images/emoticons/{emoticonImage}"" class=""chat-image"" title=""{tag}"">";
+                else
+                    return $@"<img src=""app://heroes-images/emoticons/{emoticonImage}"" class=""chat-image chat-image-emoticon"" title=""{tag}"">";
+            }
+            else
+            {
+                Debug.WriteLine($"Version: \"{dbVersion}\" or Tag: \"{tag}\" not found.");
+                return $"{tag}";
+            }
+
+
+//            if (Init.hotsEmoticons != null)
+//            {
+//                foreach (KeyValuePair<string, HotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
+//                {
+//                    foreach (string alias in hotsEmoticonData.Value.Aliases)
+//                    {
+//                        if (tag == alias && hotsEmoticonData.Value.Image != null)
+//                        {
+//                            if (hotsEmoticonData.Value.Image.Contains("storm_emoji_nexus"))
+//                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
+//                            else
+//                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
+//                        }
+//                    }
+//                }
+//                return tag;
+//            }
+//            return "";
         }
         private string HTMLGetScoreTable()
         {
@@ -1694,7 +1694,7 @@ namespace HotsReplayReader
 
 //            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             string iconPath = $@"app://heroes-images/abilitytalents/{hotsTalent.IconFileName}";
-            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
+//            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             string description;
             // Si la description est vide, on n'affiche pas le talent
@@ -1782,7 +1782,7 @@ namespace HotsReplayReader
 
 //            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             string iconPath = $@"app://heroes-images/abilitytalents/{hotsTalent.IconFileName}";
-            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
+//            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             string description;
             // Si la description est vide, on n'affiche pas le talent
@@ -2488,7 +2488,7 @@ namespace HotsReplayReader
             if (hotsPlayer == null || hotsPlayer.PlayerHero == null || hotsPlayer.PlayerHero.HeroName == null)
                 return TimeSpan.Zero;
 
-            bool debug = true;
+            bool debug = false;
 
             if (debug) Debug.WriteLine($"End of Game: {endOfGame:mm\\:ss}");
 
@@ -2655,7 +2655,12 @@ namespace HotsReplayReader
                 foreach (StormPlayer stormPlayer in hotsReplay!.stormPlayers)
                     HeroIds.Add(stormPlayer.PlayerHero!.HeroUnitId);
 
-                hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), HeroIds, matchAwardsList);
+                List<string> bannedHeroIds = [];
+                foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay!.DraftPicks)
+                    if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.HeroSelected != "NONE")
+                        bannedHeroIds.Add(draftPick.HeroSelected);
+                        
+                hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), matchAwardsList, HeroIds, bannedHeroIds);
             }
             catch
             {
@@ -2710,6 +2715,10 @@ namespace HotsReplayReader
                     InitTeamDatas(redTeam = new HotsTeam("Red"));
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
                     InitPlayersData();
+
+                    // Loading emoticons
+                    if (!emoticonsDb.TryGetValue(dbVersion, out Dictionary<string, string>? emoticons) || emoticons.Count == 0)
+                        emoticonsDb[dbVersion] = EmoticonLoader.LoadAll(Init.DbDirectory!, dbVersion);
 
                     htmlContent = $"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}";

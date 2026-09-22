@@ -97,7 +97,7 @@ namespace HotsReplayReader
             ["輔助"] = HotsRole.Support,
         };
         internal Version versionThreshold = new("2.55.16.97039");
-        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> heroList, List<string> matchAwardsList)
+        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> matchAwardsList, List<string> heroList, List<string> bannedHeroIds)
         {
             heroesIconsData.Clear();
             heroesElementData.Clear();
@@ -107,13 +107,18 @@ namespace HotsReplayReader
             HeroRoleFromHeroId = [];
 
             if (dbVersion < versionThreshold)
-                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, heroList, matchAwardsList);
+                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, matchAwardsList, heroList, bannedHeroIds);
             else
-                ParseHeroesElement(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, heroList, matchAwardsList);
+                ParseHeroesElement(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, matchAwardsList, heroList, bannedHeroIds);
         }
-        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> heroList, List<string> matchAwardsList)
+        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> matchAwardsList, List<string> heroList, List<string> bannedHeroIds)
         {
             GetHeroesIconsHeroUnitIdsFromHeroUnits(heroDataJsonPath);
+
+            List<string> heroIds = [];
+            foreach (string heroUnitId in heroList)
+                heroIds.Add(HeroIdFromHeroUnitId[heroUnitId]);
+            heroIds.AddRange(bannedHeroIds);
 
             Heroes.Icons.GameStringDocument gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
             Heroes.Icons.DataDocument.HeroDataDocument heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
@@ -134,9 +139,10 @@ namespace HotsReplayReader
                     };
                 }
 
-                foreach (string heroUnitId in heroList)
+//                foreach (string heroUnitId in heroList)
+                foreach (string heroId in heroIds)
                 {
-                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
+//                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
 
                     Heroes.Models.Hero tmpHero = heroDataDocument.GetHeroById(heroId, true, true, true, true);
 
@@ -260,8 +266,8 @@ namespace HotsReplayReader
                         Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
                     };
 
-                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("kel'thuzad", "kelthuzad");
-                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
+//                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("kel'thuzad", "kelthuzad");
+//                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
                     switch (ability.AbilityTalentId.AbilityType)
                     {
@@ -381,9 +387,14 @@ namespace HotsReplayReader
                 hotsHeroes[heroId].HeroUnits.Add(heroUnit);
             }
         }
-        internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> heroList, List<string> matchAwardsList)
+        internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> matchAwardsList, List<string> heroList, List<string> bannedHeroIds)
         {
             GetHeroesElementHeroUnitIdsFromHeroUnits(heroDataJsonPath);
+
+            List<string> heroIds = [];
+            foreach (string heroUnitId in heroList)
+                heroIds.Add(HeroIdFromHeroUnitId[heroUnitId]);
+            heroIds.AddRange(bannedHeroIds);
 
             Heroes.Element.GameStringsDocument gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(File.OpenRead(gameStringsJsonPath)));
             Heroes.Element.HeroDataDocument heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(File.OpenRead(heroDataJsonPath)), gameStringsDocument);
@@ -404,9 +415,10 @@ namespace HotsReplayReader
                     };
                 }
 
-                foreach (string heroUnitId in heroList)
+//                foreach (string heroUnitId in heroIds)
+                foreach (string heroId in heroIds)
                 {
-                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
+//                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
 
                     Heroes.Element.Models.Hero tmpHero = heroDataDocument.GetElementById(heroId);
 
@@ -645,8 +657,8 @@ namespace HotsReplayReader
                 Type = type
             };
 
-            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("kel'thuzad", "kelthuzad");
-            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
+//            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("kel'thuzad", "kelthuzad");
+//            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
             return hotsAbility;
         }
