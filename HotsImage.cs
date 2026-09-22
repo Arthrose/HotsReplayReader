@@ -47,44 +47,9 @@ namespace HotsReplayReader
 
                 return localPath;
             }
-            catch
-            {
-                return null; // échec réseau : pas de cache, pas d'image (le handler gérera le fallback)
-            }
-            finally
-            {
-                gate.Release();
-            }
+            catch { return null; }// échec réseau : pas de cache, pas d'image (le handler gérera le fallback) }
+            finally { gate.Release(); }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public Bitmap? Bitmap { get; set; }
         public string Name { get; set; }
         public string? Extension { get; set; }

@@ -139,11 +139,8 @@ namespace HotsReplayReader
                     };
                 }
 
-//                foreach (string heroUnitId in heroList)
                 foreach (string heroId in heroIds)
                 {
-//                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
-
                     Heroes.Models.Hero tmpHero = heroDataDocument.GetHeroById(heroId, true, true, true, true);
 
                     if (heroesElementData.ContainsKey(tmpHero.Id)) continue;
@@ -265,9 +262,6 @@ namespace HotsReplayReader
                         Name = ability.Name ?? null,
                         Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
                     };
-
-//                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("kel'thuzad", "kelthuzad");
-//                    hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName = hero.Abilities[ability.AbilityTalentId.ReferenceId].IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
                     switch (ability.AbilityTalentId.AbilityType)
                     {
@@ -415,11 +409,8 @@ namespace HotsReplayReader
                     };
                 }
 
-//                foreach (string heroUnitId in heroIds)
                 foreach (string heroId in heroIds)
                 {
-//                    string heroId = HeroIdFromHeroUnitId[heroUnitId];
-
                     Heroes.Element.Models.Hero tmpHero = heroDataDocument.GetElementById(heroId);
 
                     if (heroesElementData.ContainsKey(tmpHero.Id)) continue;
@@ -656,9 +647,6 @@ namespace HotsReplayReader
                 Short = ability.ShortText?.ColoredText,
                 Type = type
             };
-
-//            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("kel'thuzad", "kelthuzad");
-//            hotsAbility.IconFileName = hotsAbility.IconFileName?.Replace("storm_ui_icon_tracer_blink_empty.png", "storm_ui_icon_tracer_blink.png");
 
             return hotsAbility;
         }

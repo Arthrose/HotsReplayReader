@@ -9,7 +9,6 @@ namespace HotsReplayReader
     internal partial class Init
     {
         internal List<HotsLocalAccount>? hotsLocalAccounts;
-        internal HotsEmoticon? hotsEmoticons;
         public StormReplay? hotsReplay;
         IEnumerable<Heroes.StormReplayParser.Player.StormPlayer>? hotsPlayers;
         internal string? DbDirectory { get; set; }
@@ -21,7 +20,6 @@ namespace HotsReplayReader
             DbDirectory = $@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\db";
 
             ListHotsAccounts();
-            LoadHotsEmoticons();
         }
         internal void ListHotsAccounts()
         {
@@ -83,65 +81,6 @@ namespace HotsReplayReader
                     }
                 }
             }
-        }
-        internal void LoadHotsEmoticons()
-        {
-            JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
-
-            hotsEmoticons = JsonSerializer.Deserialize<HotsEmoticon>(Encoding.UTF8.GetString(Resources.HotsResources.emoticondata), jsonOptions);
-            HotsEmoticonAliase? hotsEmoticonAliases = JsonSerializer.Deserialize<HotsEmoticonAliase>(Encoding.UTF8.GetString(Resources.HotsResources.emoticonsaliases), jsonOptions);
-
-            if (hotsEmoticonAliases?.Aliases == null) return;
-
-            //MergeLocalizedAliases(hotsEmoticonAliases);
-
-            foreach (KeyValuePair<string, string> aliases in hotsEmoticonAliases.Aliases)
-            {
-                if (hotsEmoticons != null && hotsEmoticons.TryGetValue(aliases.Key, out HotsEmoticonData? value))
-                {
-                    foreach (string alias in aliases.Value.Split(' '))
-                        value.Aliases.Add(alias);
-                }
-            }
-        }
-        private void MergeLocalizedAliases(HotsEmoticonAliase hotsEmoticonAliases)
-        {
-            hotsEmoticonAliases.Aliases ??= [];
-
-            JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
-
-            if (DbDirectory is not null)
-                foreach (string file in Directory.GetFiles(DbDirectory, "gamestrings_*.json"))
-                {
-                    string json = File.ReadAllText(file, Encoding.UTF8);
-                    HotsGameStrings? gameStrings = JsonSerializer.Deserialize<HotsGameStrings>(json, jsonOptions);
-    
-                    Dictionary<string, List<string>>? localizedAliases = gameStrings?.Items?.Emoticon?.LocalizedAliases;
-                    if (localizedAliases == null) continue;
-    
-                    foreach (KeyValuePair<string, List<string>> kvp in localizedAliases)
-                    {
-                        hotsEmoticonAliases.Aliases.TryGetValue(kvp.Key, out string? existingValue);
-    
-                        // Set des alias déjà présents (Aliases est une string séparée par des espaces)
-                        HashSet<string> existingSet = new(
-                            (existingValue ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries));
-    
-                        string merged = existingValue ?? string.Empty;
-    
-                        foreach (string alias in kvp.Value)
-                        {
-                            if (string.IsNullOrWhiteSpace(alias)) continue;
-    
-                            if (existingSet.Add(alias))
-                            {
-                                merged = merged.Length == 0 ? alias : merged + " " + alias;
-                            }
-                        }
-    
-                        hotsEmoticonAliases.Aliases[kvp.Key] = merged;
-                    }
-                }
         }
         private bool StormReplayParse(string hotsReplayFilePath)
         {

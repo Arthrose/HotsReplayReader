@@ -57,7 +57,7 @@ namespace HotsReplayReader
 
         internal string? htmlContent;
 
-        internal string dbVersion = "";
+        internal string? dbVersion = "";
         internal Version versionThreshold = new("2.55.16.97039");
 
         internal HotsData hotsData = new();
@@ -68,7 +68,7 @@ namespace HotsReplayReader
         internal List<DeepLSupportedLanguage>? supportedLanguages;
         internal bool DeepLAPIValid = false;
 
-        Dictionary<string, Dictionary<string, string>> emoticonsDb = [];
+        private Dictionary<string, Dictionary<string, string>> emoticonsDb = [];
 
         readonly private string welcomeHTML = $@"<html>
 <head>
@@ -419,6 +419,7 @@ namespace HotsReplayReader
         {
             Uri uri = new(e.Request.Uri);
 
+            // jsDelivr
             if (uri.Scheme == "app" && uri.Host == "heroes-images")
             {
                 CoreWebView2Deferral deferral = e.GetDeferral();
@@ -448,8 +449,6 @@ namespace HotsReplayReader
             }
             else
             {
-
-
                 // Vérifier si le schéma correspond à celui défini
                 if (uri.Scheme == "app")
                 {
@@ -510,8 +509,6 @@ namespace HotsReplayReader
                 }
 
             }
-
-
         }
         private void LoadAccountsToolStipMenu()
         {
@@ -840,8 +837,6 @@ namespace HotsReplayReader
             html += "        <span class=\"tooltip\">\n";
             html += "          <span class=\"heroPortrait\">\n";
 
-//            html += $"            <img src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
-//            html += $"            <img src=\"https://cdn.jsdelivr.net/gh/HeroesToolChest/heroes-images@main/heroesimages/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
             html += $"            <img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
@@ -862,7 +857,6 @@ namespace HotsReplayReader
                 string? ressourceName = hotsData.GetMatchRewardsMvpScreenIcon(hotsPlayer.MatchAwards[0].ToString());
                 if (ressourceName != null)
                     ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
-//                html += $"            <img src=\"app://matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
                 html += $"            <img src=\"app://heroes-images/matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
             }
 
@@ -1087,7 +1081,6 @@ namespace HotsReplayReader
             else
                 html += $"    <span class=\"chat-time chat-time-{teamColor}\"><span class=\"chat-time-bracket\">[</span>{msgMinutes}:{msgSeconds}<span class=\"chat-time-bracket\">]</span></span>\n";
 
-//            html += $"    <span class=\"chat-user\"><img src=\"app://minimapicons/{HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]}.png\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
             html += $"    <span class=\"chat-user\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap}\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
 
             string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
@@ -1115,9 +1108,9 @@ namespace HotsReplayReader
                                      .Replace(":*", ":nexuslove:")
                                      .Replace(":(", ":nexussad:")
                                      .Replace(":|", ":nexusmeh:");
-            chatMessage = Regex.Replace(chatMessage, @":[dD](?!\w*:)", ":nexuslol:");
-            chatMessage = Regex.Replace(chatMessage, @":[pP](?!\w*:)", ":nexussilly:");
-            chatMessage = Regex.Replace(chatMessage, @":[oO](?!\w*:)", ":nexuswow:");
+            chatMessage = MyRegexEmoticonLol().Replace(chatMessage, ":nexuslol:");
+            chatMessage = MyRegexEmoticonSilly().Replace(chatMessage, ":nexussilly:");
+            chatMessage = MyRegexEmoticonLolWow().Replace(chatMessage, ":nexuswow:");
 
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
@@ -1144,26 +1137,6 @@ namespace HotsReplayReader
                 Debug.WriteLine($"Version: \"{dbVersion}\" or Tag: \"{tag}\" not found.");
                 return $"{tag}";
             }
-
-
-//            if (Init.hotsEmoticons != null)
-//            {
-//                foreach (KeyValuePair<string, HotsEmoticonData> hotsEmoticonData in Init.hotsEmoticons)
-//                {
-//                    foreach (string alias in hotsEmoticonData.Value.Aliases)
-//                    {
-//                        if (tag == alias && hotsEmoticonData.Value.Image != null)
-//                        {
-//                            if (hotsEmoticonData.Value.Image.Contains("storm_emoji_nexus"))
-//                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
-//                            else
-//                                return $@"<img src=""app://emoticons/{hotsEmoticonData.Value.Image}"" class=""chat-image chat-image-emoticon"" title=""{hotsEmoticonData.Value.Aliases[0]}"">";
-//                        }
-//                    }
-//                }
-//                return tag;
-//            }
-//            return "";
         }
         private string HTMLGetScoreTable()
         {
@@ -1365,7 +1338,6 @@ namespace HotsReplayReader
 
             string html = @"";
             html += $"    <tr class=\"team{team.Name}\">\n";
-//            html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
             html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
             html += $"      <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
@@ -1619,7 +1591,6 @@ namespace HotsReplayReader
 
             string html = "";
             html += $"  <tr class=\"team{team.Name} trTalents\">\n";
-//            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroesIcon/{HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]}.png\"></td>\n";
             html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
             html += $"    <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
@@ -1692,9 +1663,7 @@ namespace HotsReplayReader
             if (hotsTalent == null)
                 return "    <td class=\"tdBorders\">&nbsp;</td>";
 
-//            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             string iconPath = $@"app://heroes-images/abilitytalents/{hotsTalent.IconFileName}";
-//            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             string description;
             // Si la description est vide, on n'affiche pas le talent
@@ -1780,9 +1749,7 @@ namespace HotsReplayReader
         {
             if (hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
 
-//            string iconPath = $@"app://abilityTalents/{hotsTalent.IconFileName}";
             string iconPath = $@"app://heroes-images/abilitytalents/{hotsTalent.IconFileName}";
-//            iconPath = iconPath.Replace("kel'thuzad", "kelthuzad");
 
             string description;
             // Si la description est vide, on n'affiche pas le talent
@@ -1898,7 +1865,6 @@ namespace HotsReplayReader
                     actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
 
                 html += "            <div class=\"tooltip abilityHeaderDiv\">\n";
-                //html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://abilityTalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
                 html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://heroes-images/abilitytalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
 
                 string description = "";
@@ -2616,7 +2582,7 @@ namespace HotsReplayReader
             else
                 dbVersion = await GitHubDownloader.DownloadHeroesDataAsync(httpClient, replayVersion, Init.DbDirectory!, webView.CoreWebView2);
 
-            // Seek high version in APPDATA
+            // "??=" if dbVersion still null, seeks highes version in DbDirectory
             dbVersion ??=
                 Directory.GetDirectories(Init.DbDirectory!)
                     .Select(dirPath => new DirectoryInfo(dirPath))
@@ -2710,7 +2676,6 @@ namespace HotsReplayReader
                     }
 
                     await CheckAndDownloadHeroesData(hotsReplay.stormReplay.ReplayVersion.ToString(), true);
-                    //await CheckAndDownloadHeroesData("2.55.13.95170");
 
                     InitTeamDatas(redTeam = new HotsTeam("Red"));
                     InitTeamDatas(blueTeam = new HotsTeam("Blue"));
@@ -3046,7 +3011,19 @@ namespace HotsReplayReader
 
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
+
+        // :D
         private static partial Regex MyRegexRenameReplayInList();
+        [GeneratedRegex(@":[dD](?!\w*:)")]
+
+        // :p
+        private static partial Regex MyRegexEmoticonLol();
+        [GeneratedRegex(@":[pP](?!\w*:)")]
+
+        // :o
+        private static partial Regex MyRegexEmoticonSilly();
+        [GeneratedRegex(@":[oO](?!\w*:)")]
+        private static partial Regex MyRegexEmoticonLolWow();
     }
 
     // Override des couleurs pour le mode sombre
