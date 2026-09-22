@@ -1845,9 +1845,12 @@ namespace HotsReplayReader
             bool firstAbility = true;
             foreach (HotsAbility? ability in abilities)
             {
-                if (!firstAbility) html += "            <br>\n";
-                firstAbility = false;
-                html += HTMLGetAbility(ability, team);
+                if (heroId != "LostVikings" || ability != null)
+                {
+                    if (!firstAbility) html += "            <br>\n";
+                    firstAbility = false;
+                    html += HTMLGetAbility(ability, team);
+                }
             }
 
             html += "          </td>\n";

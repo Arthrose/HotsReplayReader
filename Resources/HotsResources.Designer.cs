@@ -132,26 +132,6 @@ namespace HotsReplayReader.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] emoticondata {
-            get {
-                object obj = ResourceManager.GetObject("emoticondata", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] emoticonsaliases {
-            get {
-                object obj = ResourceManager.GetObject("emoticonsaliases", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] isSilenced {
             get {
                 object obj = ResourceManager.GetObject("isSilenced", resourceCulture);

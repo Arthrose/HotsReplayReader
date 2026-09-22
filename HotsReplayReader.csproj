@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>images\HotsReplayReader.ico</ApplicationIcon>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>0.3.1</Version>
+    <Version>0.4.0</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
@@ -36,25 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Abilitytalents.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AbilityTalents.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\Flags.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Flags.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\HeroesIcon.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HeroesIcon.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\HotsEmoticons.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HotsEmoticons.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\HotsResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -66,34 +51,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>i18n.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\MatchAwardsImg.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MatchAwardsImg.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\MinimapIcons.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MinimapIcons.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AbilityTalents.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Abilitytalents.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Flags.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Flags.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\HeroesIcon.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HeroesIcon.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\HotsEmoticons.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HotsEmoticons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\HotsResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -102,14 +65,6 @@
     <EmbeddedResource Update="Resources\Language\i18n.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>i18n.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\MatchAwardsImg.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MatchAwardsImg.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\MinimapIcons.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MinimapIcons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

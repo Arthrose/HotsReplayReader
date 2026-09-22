@@ -161,25 +161,8 @@ namespace HotsReplayReader
             string ResxObjectName = Name;
             switch (ResourceName)
             {
-                case "heroesicon":
-                    resourceManager = Resources.HeroesIcon.ResourceManager;
-                    break;
                 case "hotsresources":
                     resourceManager = Resources.HotsResources.ResourceManager;
-                    break;
-                case "abilitytalents":
-                    resourceManager = Resources.AbilityTalents.ResourceManager;
-                    break;
-                case "emoticons":
-                    resourceManager = Resources.HotsEmoticons.ResourceManager;
-                    ResxObjectName = $@"{ResxObjectName}{Extension}";
-                    ResxObjectName = ResxObjectName.Replace("_0.gif", ".gif");
-                    break;
-                case "minimapicons":
-                    resourceManager = Resources.MinimapIcons.ResourceManager;
-                    break;
-                case "matchawards":
-                    resourceManager = Resources.MatchAwardsImg.ResourceManager;
                     break;
             }
             if (resourceManager != null)
