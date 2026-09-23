@@ -62,7 +62,7 @@ namespace HotsReplayReader
 
         internal HotsData hotsData = new();
 
-        private static readonly HttpClient httpClient = new ();
+        private static readonly HttpClient httpClient = new();
 
         internal DeepLTranslator? translator;
         internal List<DeepLSupportedLanguage>? supportedLanguages;
@@ -639,6 +639,7 @@ namespace HotsReplayReader
             europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
             asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
             languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
+            clearCacheToolStripMenuItem.Text = Resources.Language.i18n.strMenuClearCache;
             updateToolStripMenuItem.Text = Resources.Language.i18n.strMenuUpdate;
             aboutHotsReplayReaderToolStripMenuItem.Text = Resources.Language.i18n.strMenuAbout;
 
@@ -1167,6 +1168,7 @@ namespace HotsReplayReader
         }
         internal string GetEmoticonImgFromTag(string tag)
         {
+            if (dbVersion is null) return tag;
 
             if (emoticonsDb.TryGetValue(dbVersion, out var innerDb) && innerDb.TryGetValue(tag, out string? emoticonImage))
             {
@@ -2671,7 +2673,7 @@ namespace HotsReplayReader
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay!.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.HeroSelected != "NONE")
                         bannedHeroIds.Add(draftPick.HeroSelected);
-                        
+
                 hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), matchAwardsList, HeroIds, bannedHeroIds);
             }
             catch
@@ -2728,7 +2730,7 @@ namespace HotsReplayReader
                     InitPlayersData();
 
                     // Loading emoticons
-                    if (!emoticonsDb.TryGetValue(dbVersion, out Dictionary<string, string>? emoticons) || emoticons.Count == 0)
+                    if (dbVersion is not null && (!emoticonsDb.TryGetValue(dbVersion, out Dictionary<string, string>? emoticons) || emoticons.Count == 0))
                         emoticonsDb[dbVersion] = EmoticonLoader.LoadAll(Init.DbDirectory!, dbVersion);
 
                     htmlContent = $"{HTMLGetHeader()}";
@@ -2982,6 +2984,38 @@ namespace HotsReplayReader
             using Stream stream = assembly.GetManifestResourceStream(resourceName) ?? throw new Exception($"Ressource introuvable : {resourceName}");
             using FileStream fileStream = new(Path.Combine(tempDir, resourceName), FileMode.Create, FileAccess.Write);
             stream.CopyTo(fileStream);
+        }
+        private async void ClearCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show($"{Resources.Language.i18n.strCacheAskClear}", "HotS Replay Reader", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                webView.CoreWebView2.NavigateToString("<body bgcolor=\"black\">");
+
+                await Task.Delay(1000);
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                SafeDeleteDirectory($@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\db");
+                SafeDeleteDirectory($@"{Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "HotsReplayReader")}\cache");
+
+                MessageBox.Show($"{Resources.Language.i18n.strCacheCleared}", "HotS Replay Reader", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (listBoxHotsReplays.Items.Count == 0) return;
+                if (listBoxHotsReplays.SelectedIndex == -1) listBoxHotsReplays.SelectedIndex = 0;
+                else ListBoxHotsReplays_SelectedIndexChanged(listBoxHotsReplays, EventArgs.Empty);
+            }
+        }
+        private static void SafeDeleteDirectory(string path)
+        {
+            if (!Directory.Exists(path)) return;
+            foreach (string file in Directory.GetFiles(path, "*", SearchOption.AllDirectories))
+            {
+                try { File.Delete(file); }
+                catch (IOException) { }
+            }
+            try { Directory.Delete(path, true); }
+            catch (IOException) { }
         }
         private void AboutHotsReplayReaderToolStripMenuItem_Click(object sender, EventArgs e)
         {

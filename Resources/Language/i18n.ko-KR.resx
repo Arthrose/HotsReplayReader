@@ -387,4 +387,13 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>다시 묻지 않음</value>
   </data>
+  <data name="strCacheCleared" xml:space="preserve">
+    <value>캐시가 삭제되었습니다</value>
+  </data>
+  <data name="strCacheAskClear" xml:space="preserve">
+    <value>캐시를 삭제하시겠습니까?</value>
+  </data>
+  <data name="strMenuClearCache" xml:space="preserve">
+    <value>캐시 삭제</value>
+  </data>
 </root>

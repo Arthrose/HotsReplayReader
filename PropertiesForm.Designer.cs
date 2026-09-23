@@ -70,14 +70,14 @@
             // deepLTextBox
             // 
             deepLTextBox.BorderStyle = BorderStyle.FixedSingle;
-            deepLTextBox.Location = new Point(12, 42);
+            deepLTextBox.Location = new Point(12, 27);
             deepLTextBox.Name = "deepLTextBox";
             deepLTextBox.Size = new Size(246, 23);
             deepLTextBox.TabIndex = 2;
             // 
             // testButton
             // 
-            testButton.Location = new Point(264, 42);
+            testButton.Location = new Point(264, 27);
             testButton.Name = "testButton";
             testButton.Size = new Size(75, 23);
             testButton.TabIndex = 3;

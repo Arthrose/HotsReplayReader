@@ -387,4 +387,13 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>Больше не спрашивать</value>
   </data>
+  <data name="strCacheCleared" xml:space="preserve">
+    <value>Кэш очищен.</value>
+  </data>
+  <data name="strCacheAskClear" xml:space="preserve">
+    <value>Очистить кэш?</value>
+  </data>
+  <data name="strMenuClearCache" xml:space="preserve">
+    <value>Очистить кэш</value>
+  </data>
 </root>

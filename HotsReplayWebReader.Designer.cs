@@ -42,11 +42,12 @@
             accountsToolStripMenuItem = new ToolStripMenuItem();
             languageToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
+            updateToolStripMenuItem = new ToolStripMenuItem();
             aboutHotsReplayReaderToolStripMenuItem = new ToolStripMenuItem();
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
-            updateToolStripMenuItem = new ToolStripMenuItem();
+            clearCacheToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView).BeginInit();
             SuspendLayout();
@@ -142,7 +143,7 @@
             // 
             // aboutToolStripMenuItem
             // 
-            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { updateToolStripMenuItem, aboutHotsReplayReaderToolStripMenuItem });
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { updateToolStripMenuItem, clearCacheToolStripMenuItem, aboutHotsReplayReaderToolStripMenuItem });
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             aboutToolStripMenuItem.Size = new Size(24, 20);
             aboutToolStripMenuItem.Text = "?";
@@ -187,6 +188,13 @@
             listBoxHotsReplays.Visible = false;
             listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
             // 
+            // clearCacheToolStripMenuItem
+            // 
+            clearCacheToolStripMenuItem.Name = "clearCacheToolStripMenuItem";
+            clearCacheToolStripMenuItem.Size = new Size(180, 22);
+            clearCacheToolStripMenuItem.Text = Resources.Language.i18n.strMenuClearCache;
+            clearCacheToolStripMenuItem.Click += ClearCacheToolStripMenuItem_Click;
+            // 
             // HotsReplayWebReader
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -230,5 +238,6 @@
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem aboutHotsReplayReaderToolStripMenuItem;
         private ToolStripMenuItem updateToolStripMenuItem;
+        private ToolStripMenuItem clearCacheToolStripMenuItem;
     }
 }

@@ -394,6 +394,24 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to clear the cache?.
+        /// </summary>
+        internal static string strCacheAskClear {
+            get {
+                return ResourceManager.GetString("strCacheAskClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cache cleared..
+        /// </summary>
+        internal static string strCacheCleared {
+            get {
+                return ResourceManager.GetString("strCacheCleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnected.
         /// </summary>
         internal static string strDisconnected {
@@ -462,6 +480,15 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strMenuBrowse {
             get {
                 return ResourceManager.GetString("strMenuBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear cache.
+        /// </summary>
+        internal static string strMenuClearCache {
+            get {
+                return ResourceManager.GetString("strMenuClearCache", resourceCulture);
             }
         }
         

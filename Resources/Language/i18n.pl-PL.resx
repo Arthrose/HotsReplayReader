@@ -387,4 +387,13 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>Nie pytaj ponownie</value>
   </data>
+  <data name="strCacheCleared" xml:space="preserve">
+    <value>Pamięć podręczna została wyczyszczona.</value>
+  </data>
+  <data name="strCacheAskClear" xml:space="preserve">
+    <value>Czy chcesz wyczyścić pamięć podręczną?</value>
+  </data>
+  <data name="strMenuClearCache" xml:space="preserve">
+    <value>Wyczyść pamięć podręczną</value>
+  </data>
 </root>

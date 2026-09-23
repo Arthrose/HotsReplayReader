@@ -387,4 +387,13 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>No volver a preguntar</value>
   </data>
+  <data name="strCacheCleared" xml:space="preserve">
+    <value>Se ha limpiado la caché.</value>
+  </data>
+  <data name="strCacheAskClear" xml:space="preserve">
+    <value>¿Desea limpiar la caché?</value>
+  </data>
+  <data name="strMenuClearCache" xml:space="preserve">
+    <value>Limpiar caché</value>
+  </data>
 </root>
