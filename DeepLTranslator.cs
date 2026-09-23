@@ -9,7 +9,6 @@ namespace HotsReplayReader
         private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
         internal List <DeepLSupportedLanguage>? DeepLSupportedLanguages;
-
         public List<DeepLSupportedLanguage>? GetSupportedLanguages()
         {
             JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
@@ -82,8 +81,5 @@ namespace HotsReplayReader
 
         [JsonPropertyName("name")]
         public string? LanguageName { get; set; }
-
-        [JsonPropertyName("supports_formality")]
-        public bool SupportsFormality { get; set; }
     }
 }

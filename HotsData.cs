@@ -752,6 +752,10 @@ namespace HotsReplayReader
 
             foreach (HotsHeroUnit heroUnit in hero.HeroUnits)
             {
+                // On ignore complètement les HeroUnits sans aucune ability
+                if (heroUnit.Abilities == null || heroUnit.Abilities.Count == 0)
+                    continue;
+
                 bool abilityFound = false;
                 foreach (HotsAbility ability in heroUnit.Abilities.Values)
                 {

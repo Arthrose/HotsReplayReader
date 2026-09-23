@@ -1814,6 +1814,8 @@ namespace HotsReplayReader
             html += "          </td>\n";
             html += "          <td width=\"100%\">&nbsp;</td>\n";
 
+            Debug.WriteLine(hotsData.hotsHeroes[heroId]);
+
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.Q, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.W, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.E, team);
@@ -1845,12 +1847,9 @@ namespace HotsReplayReader
             bool firstAbility = true;
             foreach (HotsAbility? ability in abilities)
             {
-                if (heroId != "LostVikings" || ability != null)
-                {
-                    if (!firstAbility) html += "            <br>\n";
-                    firstAbility = false;
-                    html += HTMLGetAbility(ability, team);
-                }
+                if (!firstAbility) html += "            <br>\n";
+                firstAbility = false;
+                html += HTMLGetAbility(ability, team);
             }
 
             html += "          </td>\n";
