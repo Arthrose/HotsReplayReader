@@ -434,18 +434,63 @@ namespace HotsReplayReader
                     return;
                 }
 
-                string contentType = Path.GetExtension(localPath).ToLowerInvariant() switch
-                {
-                    ".png" or ".apng" => "image/png",
-                    ".jpg" or ".jpeg" => "image/jpeg",
-                    ".webp" => "image/webp",
-                    _ => "application/octet-stream"
-                };
+                string extension = Path.GetExtension(localPath).ToLowerInvariant();
+                string? actions = null;
+                if (!String.IsNullOrEmpty(uri.Query))
+                    actions = HttpUtility.ParseQueryString(uri.Query)["actions"];
 
-                Stream fileStream = File.OpenRead(localPath);
-                e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(fileStream, 200, "OK", $"Content-Type: {contentType}");
-                deferral.Complete();
-                return;
+                if (String.IsNullOrEmpty(actions))
+                {
+                    // Pas de transformation demandée : on stream le fichier tel quel)
+                    string contentType = extension switch
+                    {
+                        ".png" or ".apng" => "image/png",
+                        ".jpg" or ".jpeg" => "image/jpeg",
+                        ".webp" => "image/webp",
+                        _ => "application/octet-stream"
+                    };
+
+                    Stream fileStream = File.OpenRead(localPath);
+                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(fileStream, 200, "OK", $"Content-Type: {contentType}");
+                    deferral.Complete();
+                    return;
+                }
+                else
+                {
+                    // Transformation demandée : on décode, on applique crop/border, on ré-encode
+                    Bitmap? transformed;
+                    using (Bitmap source = new(localPath))
+                    {
+                        transformed = HotsImage.ApplyActions(source, actions);
+                    }
+
+                    if (transformed == null)
+                    {
+                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 500, "Internal Server Error", "");
+                        deferral.Complete();
+                        return;
+                    }
+
+                    System.Drawing.Imaging.ImageFormat format = extension switch
+                    {
+                        ".jpg" or ".jpeg" => System.Drawing.Imaging.ImageFormat.Jpeg,
+                        ".gif" => System.Drawing.Imaging.ImageFormat.Gif,
+                        _ => System.Drawing.Imaging.ImageFormat.Png // .png, .apng, .webp (fallback) -> encodé en PNG
+                    };
+
+                    string contentType = format == System.Drawing.Imaging.ImageFormat.Jpeg ? "image/jpeg"
+                        : format == System.Drawing.Imaging.ImageFormat.Gif ? "image/gif"
+                        : "image/png";
+
+                    MemoryStream ms = new();
+                    transformed.Save(ms, format);
+                    transformed.Dispose();
+                    ms.Position = 0;
+
+                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", $"Content-Type: {contentType}");
+                    deferral.Complete();
+                    return;
+                }
             }
             else
             {
@@ -507,7 +552,6 @@ namespace HotsReplayReader
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
                     }
                 }
-
             }
         }
         private void LoadAccountsToolStipMenu()

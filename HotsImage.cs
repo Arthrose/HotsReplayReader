@@ -62,38 +62,44 @@ namespace HotsReplayReader
             Extension = extension ?? ".png";
             SetBitmap();
 
-            if (queryActions != null && Bitmap != null)
+            Bitmap = ApplyActions(Bitmap, queryActions);
+        }
+        public static Bitmap? ApplyActions(Bitmap? source, string? queryActions)
+        {
+            if (source == null || String.IsNullOrEmpty(queryActions))
+                return source;
+
+            Bitmap result = source;
+            var actions = queryActions.Split(';');
+            foreach (var action in actions)
             {
-                var actions = queryActions.Split(';');
-                foreach (var action in actions)
+                var parts = action.Split(':');
+                if (parts.Length < 2) continue;
+
+                var actionName = parts[0].ToLower();
+                var parameters = parts[1].Split(',');
+
+                switch (actionName)
                 {
-                    var parts = action.Split(':');
-                    if (parts.Length < 2) continue;
-
-                    var actionName = parts[0].ToLower();
-                    var parameters = parts[1].Split(',');
-
-                    switch (actionName)
-                    {
-                        case "crop":
-                            if (parameters.Length == 2 &&
-                                Enum.TryParse<CropDirection>(Capitalize(parameters[0]), out var dir) &&
-                                int.TryParse(parameters[1], out int px)
-                            )
-                            {
-                                Bitmap = CropImage(Bitmap, dir, px);
-                            }
-                            break;
-                        case "border":
-                            if (parameters.Length == 2 &&
-                                int.TryParse(parameters[1], out int borderSize))
-                            {
-                                Bitmap = AddBorder(Bitmap, parameters[0], borderSize);
-                            }
-                            break;
-                    }
+                    case "crop":
+                        if (parameters.Length == 2 &&
+                            Enum.TryParse<CropDirection>(Capitalize(parameters[0]), out var dir) &&
+                            int.TryParse(parameters[1], out int px)
+                        )
+                        {
+                            result = CropImage(result, dir, px);
+                        }
+                        break;
+                    case "border":
+                        if (parameters.Length == 2 &&
+                            int.TryParse(parameters[1], out int borderSize))
+                        {
+                            result = AddBorder(result, parameters[0], borderSize);
+                        }
+                        break;
                 }
             }
+            return result;
         }
         private static string Capitalize(string s) => char.ToUpperInvariant(s[0]) + s[1..].ToLower();
         private static Bitmap CropImage(Bitmap source, CropDirection direction, int pixels)
