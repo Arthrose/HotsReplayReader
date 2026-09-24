@@ -390,4 +390,10 @@
   <data name="strUpdateNewVersionAvailable" xml:space="preserve">
     <value>está disponível.</value>
   </data>
+  <data name="strPingsShow" xml:space="preserve">
+    <value>Mostrar pings</value>
+  </data>
+  <data name="strPingsHide" xml:space="preserve">
+    <value>Ocultar pings</value>
+  </data>
 </root>

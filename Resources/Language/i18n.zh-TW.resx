@@ -390,4 +390,10 @@
   <data name="strUpdateNewVersionAvailable" xml:space="preserve">
     <value>已發佈</value>
   </data>
+  <data name="strPingsShow" xml:space="preserve">
+    <value>顯示 ping</value>
+  </data>
+  <data name="strPingsHide" xml:space="preserve">
+    <value>隱藏 ping</value>
+  </data>
 </root>

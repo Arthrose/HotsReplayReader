@@ -216,11 +216,57 @@ tr {
 .chat-message {
   font-family: Arial, sans-serif;
   font-size: 26px;
-  font-weight:bold;
+  font-weight: bold;
   color: #fff;
   text-shadow: 1px 1px 3px black;
   line-height: 1.5;
   position: relative;    /* Permet un positionnement absolu de l'image translate-icon */
+}
+.chat-ping {
+  font-family: Courier New, Consolas, Lucida Console;
+  font-size: 26px;
+  font-weight: normal;
+  vertical-align: 2%;
+}
+.chat-ping-blue {
+  color: #3184ff;
+  font-weight: bold;
+}
+.chat-message.chat-ping {
+  display: none;
+}
+.chat-container.show-pings .chat-message.chat-ping {
+  display: block;
+}
+.toggle-pings-wrapper {
+  text-align: center;
+  margin: -15px 0 -10px 0;
+}
+.toggle-pings-btn {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 16px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+.toggle-pings-btn:hover {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.chat-ping-red {
+  color: #ff004b;
+  font-weight: bold;
 }
 .chat-time {
   font-family: Courier New, Consolas, Lucida Console;

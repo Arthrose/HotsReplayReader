@@ -390,4 +390,10 @@
   <data name="strUpdateNewVersionAvailable" xml:space="preserve">
     <value>을 사용할 수 있습니다</value>
   </data>
+  <data name="strPingsShow" xml:space="preserve">
+    <value>핑 표시</value>
+  </data>
+  <data name="strPingsHide" xml:space="preserve">
+    <value>핑 숨기기</value>
+  </data>
 </root>

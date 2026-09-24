@@ -1018,7 +1018,7 @@ namespace HotsReplayReader
 
             List<HotsMessage> hotsMessages = [];
 
-            List<StormGameEvent>? STriggerChatMessageEvents = hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerChatMessageEvent).ToList();
+            List<StormGameEvent>? STriggerChatMessageEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerChatMessageEvent)];
             foreach (StormGameEvent STriggerChatMessageEvent in STriggerChatMessageEvents)
             {
                 string? rawText = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
@@ -1034,6 +1034,42 @@ namespace HotsReplayReader
 
                 string? newRaw = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
                 hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerChatMessageEvent.Timestamp, msg, rawText));
+            }
+            List<StormGameEvent>? STriggerPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent)];
+            foreach (StormGameEvent STriggerPingEvent in STriggerPingEvents)
+            {
+                int? pingIntegerType = STriggerPingEvent.Data?.Structure?[3].Integer32;
+                if (pingIntegerType is null) continue;
+
+                StormPlayer? MessageSender = STriggerPingEvent.MessageSender;
+                if (MessageSender is null) continue;
+
+                HotsPlayer? hotsPlayer = GetHotsPlayer(MessageSender.BattleTagName);
+                if (hotsPlayer is null || hotsPlayer.PlayerHero is null) continue;
+
+                switch (pingIntegerType)
+                {
+                    case -1:
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to help!", null, false, true));
+                        break;
+                    case 0:
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
+                        break;
+                    case 1:
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"is on the way!", null, false, true));
+                        break;
+                    case 2:
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
+                        break;
+                    case 3:
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to defend!", null, false, true));
+                        break;
+                    case 5:
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"calls for retreat!", null, false, true));
+                        break;
+                    default:
+                        break;
+                }
             }
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
@@ -1053,15 +1089,22 @@ namespace HotsReplayReader
                 string html = $@"";
 
                 html += "<div class=\"chat-container\" tabindex=\"-1\">\n";
-
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
+                html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
                     html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
                 html += "</div>\n";
 
-                html += @"<script>
-  const chatContainer = document.querySelector("".chat-container"");
+                html += $@"<script>
+  function togglePings(btn) {{
+    const container = document.querySelector("".chat-container"");
+    const isShown = container.classList.toggle(""show-pings"");
+    btn.textContent = isShown ? ""{Resources.Language.i18n.strPingsHide}"" : ""{Resources.Language.i18n.strPingsShow}"";
+  }}
+
+";
+                html += @"  const chatContainer = document.querySelector("".chat-container"");
 
   chatContainer.addEventListener(""click"", async function (event) {
     const copyIcon = event.target.closest("".copy-icon"");
@@ -1118,7 +1161,7 @@ namespace HotsReplayReader
 
             string teamColor = hotsMessage.HotsPlayer.Team == hotsReplay?.stormReplay?.Owner?.Team ? "blue" : "red";
 
-            string html = "  <div class=\"chat-message\">\n";
+            string html = $"  <div class=\"chat-message{(hotsMessage.Ping ? " chat-ping": "")}\">\n";
             if (hotsMessage.Translate)
                 html += $"    <span class=\"chat-verbatim\" style=\"display: none;\">{WebUtility.HtmlEncode(hotsMessage.Verbatim)}</span>\n";
             if (lastMessageAfterAnHour)
@@ -1126,11 +1169,16 @@ namespace HotsReplayReader
             else
                 html += $"    <span class=\"chat-time chat-time-{teamColor}\"><span class=\"chat-time-bracket\">[</span>{msgMinutes}:{msgSeconds}<span class=\"chat-time-bracket\">]</span></span>\n";
 
-            html += $"    <span class=\"chat-user\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap}\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
-
-            string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
-
-            html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
+            if (hotsMessage.Ping)
+            {
+                hotsMessage.Message = $"<span class=\"chat-ping-{teamColor}\">{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].HeroName}</span> {hotsMessage.Message}";
+            }
+            else
+            {
+                html += $"    <span class=\"chat-user\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap}\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
+                string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
+                html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
+            }
             if (hotsMessage.Translate)
             {
                 html += $"    <span class=\"chat-message-corps\">{hotsMessage.Message}</span><span class=\"chat-icons\"><img class=\"copy-icon\" src=\"app://hotsResources/copy.png\" height=\"24\">";

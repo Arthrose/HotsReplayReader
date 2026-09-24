@@ -556,6 +556,24 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide pings.
+        /// </summary>
+        internal static string strPingsHide {
+            get {
+                return ResourceManager.GetString("strPingsHide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show pings.
+        /// </summary>
+        internal static string strPingsShow {
+            get {
+                return ResourceManager.GetString("strPingsShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player.
         /// </summary>
         internal static string strPlayer {
