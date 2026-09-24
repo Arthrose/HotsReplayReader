@@ -336,15 +336,6 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Downloading game data...</value>
   </data>
-  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
-    <value>A new version </value>
-  </data>
-  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
-    <value> is available!</value>
-  </data>
-  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
-    <value>Do you want to update?</value>
-  </data>
   <data name="strUpdateAvailable" xml:space="preserve">
     <value>Update available</value>
   </data>
@@ -395,5 +386,8 @@
   </data>
   <data name="strMenuClearCache" xml:space="preserve">
     <value>Clear cache</value>
+  </data>
+  <data name="strUpdateNewVersionAvailable" xml:space="preserve">
+    <value> is available.</value>
   </data>
 </root>

@@ -1860,8 +1860,6 @@ namespace HotsReplayReader
             html += "          </td>\n";
             html += "          <td width=\"100%\">&nbsp;</td>\n";
 
-            Debug.WriteLine(hotsData.hotsHeroes[heroId]);
-
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.Q, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.W, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.E, team);
@@ -2900,6 +2898,13 @@ namespace HotsReplayReader
                 JsonElement latestRelease = doc.RootElement[0];
                 string? tagElement = latestRelease.GetProperty("tag_name").GetString();
 
+                string? descriptionElement = latestRelease.GetProperty("body").GetString();
+                if (descriptionElement is not null && descriptionElement != "")
+                {
+                    descriptionElement = $"Patch notes:\r\n{descriptionElement}";
+                    descriptionElement = MyRegexPatchNotes().Replace(descriptionElement ?? string.Empty, "• $1");
+                }
+
                 if (string.IsNullOrEmpty(tagElement))
                     return UpdateCheckStatus.NoReleaseFound;
 
@@ -2920,9 +2925,11 @@ namespace HotsReplayReader
                 TaskDialogButton result = TaskDialog.ShowDialog(this, new TaskDialogPage()
                 {
                     Caption = Resources.Language.i18n.strUpdateAvailable,
-                    Heading = $"{Resources.Language.i18n.strUpdateNewVersionAvailableA}({versionGitHubClean}){Resources.Language.i18n.strUpdateNewVersionAvailableB}\n{Resources.Language.i18n.strUpdateDoYouWantToUpdate}",
+                    Heading = $"HotS Replay Reader v{versionGitHubClean}{Resources.Language.i18n.strUpdateNewVersionAvailable}",
+                    Text = descriptionElement,
                     Buttons = { btnYes, btnNo, btnNever },
-                    Icon = TaskDialogIcon.Information
+                    Icon = TaskDialogIcon.Information,
+                    SizeToContent = true
                 });
 
                 if (result == btnNo && Init.config != null) Init.config.AskUpdate = true;
@@ -3091,19 +3098,23 @@ namespace HotsReplayReader
 
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
+        private static partial Regex MyRegexRenameReplayInList();
 
         // :D
-        private static partial Regex MyRegexRenameReplayInList();
         [GeneratedRegex(@":[dD](?!\w*:)")]
+        private static partial Regex MyRegexEmoticonLol();
 
         // :p
-        private static partial Regex MyRegexEmoticonLol();
         [GeneratedRegex(@":[pP](?!\w*:)")]
+        private static partial Regex MyRegexEmoticonSilly();
 
         // :o
-        private static partial Regex MyRegexEmoticonSilly();
         [GeneratedRegex(@":[oO](?!\w*:)")]
         private static partial Regex MyRegexEmoticonLolWow();
+
+        // Patch notes: **<TEXT>** =>
+        [GeneratedRegex(@"\*\*(.*?)\*\*")]
+        private static partial Regex MyRegexPatchNotes();
     }
 
     // Override des couleurs pour le mode sombre

@@ -336,15 +336,6 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>正在下載遊戲資料...</value>
   </data>
-  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
-    <value>新版本 </value>
-  </data>
-  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
-    <value>已發佈</value>
-  </data>
-  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
-    <value>您要更新嗎</value>
-  </data>
   <data name="strUpdateAvailable" xml:space="preserve">
     <value>有可用更新</value>
   </data>
@@ -395,5 +386,8 @@
   </data>
   <data name="strMenuClearCache" xml:space="preserve">
     <value>清除快取</value>
+  </data>
+  <data name="strUpdateNewVersionAvailable" xml:space="preserve">
+    <value>已發佈</value>
   </data>
 </root>

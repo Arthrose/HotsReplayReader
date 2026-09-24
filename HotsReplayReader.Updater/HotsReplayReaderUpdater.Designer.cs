@@ -34,12 +34,12 @@
             // 
             // lblStatus
             // 
-            lblStatus.AutoSize = false;
             lblStatus.Location = new Point(20, 20);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(360, 23);
+            lblStatus.TabIndex = 0;
+            lblStatus.Text = "Initializing...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
-            lblStatus.Text = "Initialisation...";
             // 
             // progressBar
             // 
@@ -47,8 +47,7 @@
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(360, 23);
             progressBar.Style = ProgressBarStyle.Continuous;
-            progressBar.Minimum = 0;
-            progressBar.Maximum = 100;
+            progressBar.TabIndex = 1;
             // 
             // HotsReplayReaderUpdater
             // 
@@ -60,12 +59,11 @@
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
-            StartPosition = FormStartPosition.CenterScreen;
             Name = "HotsReplayReaderUpdater";
-            Text = "Mise à jour de HotsReplayReader";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Updating HotSReplayReader";
             Load += HotsReplayReaderUpdater_Load;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

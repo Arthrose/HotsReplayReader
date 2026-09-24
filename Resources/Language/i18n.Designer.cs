@@ -799,15 +799,6 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to update?.
-        /// </summary>
-        internal static string strUpdateDoYouWantToUpdate {
-            get {
-                return ResourceManager.GetString("strUpdateDoYouWantToUpdate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string strUpdateError {
@@ -835,20 +826,11 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new version .
+        ///   Looks up a localized string similar to  is available..
         /// </summary>
-        internal static string strUpdateNewVersionAvailableA {
+        internal static string strUpdateNewVersionAvailable {
             get {
-                return ResourceManager.GetString("strUpdateNewVersionAvailableA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  is available!.
-        /// </summary>
-        internal static string strUpdateNewVersionAvailableB {
-            get {
-                return ResourceManager.GetString("strUpdateNewVersionAvailableB", resourceCulture);
+                return ResourceManager.GetString("strUpdateNewVersionAvailable", resourceCulture);
             }
         }
         

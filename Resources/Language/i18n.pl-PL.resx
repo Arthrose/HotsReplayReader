@@ -336,15 +336,6 @@
   <data name="DownloadingGameData" xml:space="preserve">
     <value>Pobieranie danych gry...</value>
   </data>
-  <data name="strUpdateNewVersionAvailableA" xml:space="preserve">
-    <value>Nowa wersja </value>
-  </data>
-  <data name="strUpdateNewVersionAvailableB" xml:space="preserve">
-    <value> jest dostępna.</value>
-  </data>
-  <data name="strUpdateDoYouWantToUpdate" xml:space="preserve">
-    <value>Czy chcesz zaktualizować?</value>
-  </data>
   <data name="strUpdateAvailable" xml:space="preserve">
     <value>Aktualizacja dostępna</value>
   </data>
@@ -395,5 +386,8 @@
   </data>
   <data name="strMenuClearCache" xml:space="preserve">
     <value>Wyczyść pamięć podręczną</value>
+  </data>
+  <data name="strUpdateNewVersionAvailable" xml:space="preserve">
+    <value> jest dostępna.</value>
   </data>
 </root>
