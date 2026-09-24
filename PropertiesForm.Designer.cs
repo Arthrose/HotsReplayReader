@@ -34,6 +34,10 @@
             OKButton = new Button();
             deepLTextBox = new TextBox();
             testButton = new Button();
+            groupBoxDisplay = new GroupBox();
+            checkedListBoxDisplayReplaySideBar = new CheckedListBox();
+            checkedListBoxDisplayPingButton = new CheckedListBox();
+            groupBoxDisplay.SuspendLayout();
             SuspendLayout();
             // 
             // deepLLabel
@@ -59,7 +63,7 @@
             // 
             // OKButton
             // 
-            OKButton.Location = new Point(264, 71);
+            OKButton.Location = new Point(264, 142);
             OKButton.Name = "OKButton";
             OKButton.Size = new Size(75, 23);
             OKButton.TabIndex = 1;
@@ -85,11 +89,39 @@
             testButton.UseVisualStyleBackColor = true;
             testButton.Click += TestButton_Click;
             // 
+            // groupBoxDisplay
+            // 
+            groupBoxDisplay.Controls.Add(checkedListBoxDisplayPingButton);
+            groupBoxDisplay.Controls.Add(checkedListBoxDisplayReplaySideBar);
+            groupBoxDisplay.Location = new Point(12, 56);
+            groupBoxDisplay.Name = "groupBoxDisplay";
+            groupBoxDisplay.Size = new Size(327, 80);
+            groupBoxDisplay.TabIndex = 5;
+            groupBoxDisplay.TabStop = false;
+            groupBoxDisplay.Text = "Display";
+            // 
+            // checkedListBoxDisplayReplaySideBar
+            // 
+            checkedListBoxDisplayReplaySideBar.FormattingEnabled = true;
+            checkedListBoxDisplayReplaySideBar.Location = new Point(6, 22);
+            checkedListBoxDisplayReplaySideBar.Name = "checkedListBoxDisplayReplaySideBar";
+            checkedListBoxDisplayReplaySideBar.Size = new Size(315, 22);
+            checkedListBoxDisplayReplaySideBar.TabIndex = 0;
+            // 
+            // checkedListBoxDisplayPingButton
+            // 
+            checkedListBoxDisplayPingButton.FormattingEnabled = true;
+            checkedListBoxDisplayPingButton.Location = new Point(6, 50);
+            checkedListBoxDisplayPingButton.Name = "checkedListBoxDisplayPingButton";
+            checkedListBoxDisplayPingButton.Size = new Size(315, 22);
+            checkedListBoxDisplayPingButton.TabIndex = 1;
+            // 
             // PropertiesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(351, 104);
+            ClientSize = new Size(351, 175);
+            Controls.Add(groupBoxDisplay);
             Controls.Add(testButton);
             Controls.Add(deepLTextBox);
             Controls.Add(OKButton);
@@ -104,6 +136,7 @@
             StartPosition = FormStartPosition.Manual;
             Text = "Properties";
             KeyDown += PropertiesForm_KeyDown;
+            groupBoxDisplay.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -115,5 +148,8 @@
         private Button OKButton;
         private TextBox deepLTextBox;
         private Button testButton;
+        private GroupBox groupBoxDisplay;
+        private CheckedListBox checkedListBoxDisplayPingButton;
+        private CheckedListBox checkedListBoxDisplayReplaySideBar;
     }
 }

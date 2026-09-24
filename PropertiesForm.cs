@@ -77,6 +77,12 @@ namespace HotsReplayReader
                 deepLTextBox.BackColor = Color.FromArgb(56, 56, 56);
                 deepLTextBox.ForeColor = Color.White;
 
+                groupBoxDisplay.ForeColor = Color.White;
+                checkedListBoxDisplayReplaySideBar.ForeColor = Color.White;
+                checkedListBoxDisplayReplaySideBar.BackColor = Color.FromArgb(56, 56, 56);
+                checkedListBoxDisplayPingButton.ForeColor = Color.White;
+                checkedListBoxDisplayPingButton.BackColor = Color.FromArgb(56, 56, 56);
+
                 Color buttonBackColor = Color.FromArgb(51, 51, 51);
                 Color buttonBorderColor = Color.FromArgb(139, 139, 139);
                 Color buttonMouseOverColor = Color.FromArgb(69, 69, 69);
