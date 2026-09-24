@@ -1090,10 +1090,10 @@ namespace HotsReplayReader
 
                 html += "<div class=\"chat-container\" tabindex=\"-1\">\n";
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
-                html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
                     html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
+                html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
                 html += "</div>\n";
 
                 html += $@"<script>

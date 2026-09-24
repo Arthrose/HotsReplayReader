@@ -201,14 +201,14 @@ tr {
 }
 .chat-container {
   zoom: 0.9;
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: auto;
   text-align: left;
   margin: 0 auto;
   background-color: #505050;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 20px 20px 0 20px;
 }
 .chat-container:focus {
   outline: none;
@@ -239,12 +239,16 @@ tr {
   display: block;
 }
 .toggle-pings-wrapper {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   text-align: center;
-  margin: -15px 0 -10px 0;
+  margin: 10px -20px 0px -20px;
+  padding: 6px 20px 10px 20px;
+  background-color: #505050;
 }
 .toggle-pings-btn {
   display: inline-block;
-  margin-bottom: 10px;
   padding: 6px 16px;
   font-family: Calibri, Arial, sans-serif;
   font-size: 14px;
