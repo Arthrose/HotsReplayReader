@@ -15,14 +15,18 @@ namespace HotsReplayReader
             InitializeComponent();
             this.hotsReplayWebReader = hotsReplayWebReader;
 
-            this.Text = Resources.Language.i18n.ResourceManager.GetString("strProperties");
-            deepLLabel.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesDeepLAPIKey");
-            deepLLinkLabel.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesVisitDeepLWebsite");
-            testButton.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesTest");
-            OKButton.Text = Resources.Language.i18n.ResourceManager.GetString("strPropertiesOK");
+            this.Text = Resources.Language.i18n.strProperties;
+            deepLLabel.Text = Resources.Language.i18n.strPropertiesDeepLAPIKey;
+            deepLLinkLabel.Text = Resources.Language.i18n.strPropertiesVisitDeepLWebsite;
+            testButton.Text = Resources.Language.i18n.strPropertiesTest;
+            OKButton.Text = Resources.Language.i18n.strPropertiesOK;
 
             if (this.hotsReplayWebReader.Init.config != null)
+            {
                 deepLTextBox.Text = this.hotsReplayWebReader.Init.config.DeepLAPIKey;
+                checkBoxDisplayReplaySideBar.Checked = this.hotsReplayWebReader.Init.config.DisplayReplaySideBar;
+                checkBoxDisplayPingButton.Checked = this.hotsReplayWebReader.Init.config.DisplayPingButton;
+            }
         }
         private void DeepLLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -36,10 +40,17 @@ namespace HotsReplayReader
         private async void OKButton_Click(object sender, EventArgs e)
         {
             if (this.hotsReplayWebReader.Init.config != null)
+            {
                 hotsReplayWebReader.Init.config.DeepLAPIKey = deepLTextBox.Text;
+                this.hotsReplayWebReader.Init.config.DisplayReplaySideBar = checkBoxDisplayReplaySideBar.Checked;
+                this.hotsReplayWebReader.Init.config.DisplayPingButton = checkBoxDisplayPingButton.Checked;
+            }
+
             DeepLTranslator translator = new(deepLTextBox.Text);
             if (translator != null)
                 hotsReplayWebReader.DeepLAPIValid = await translator.CheckApiKeyValidity();
+
+            // Recharge le dernier replay
             hotsReplayWebReader.ListBoxHotsReplays_SelectedIndexChanged(hotsReplayWebReader, EventArgs.Empty);
             this.Close();
         }
@@ -78,10 +89,6 @@ namespace HotsReplayReader
                 deepLTextBox.ForeColor = Color.White;
 
                 groupBoxDisplay.ForeColor = Color.White;
-                checkedListBoxDisplayReplaySideBar.ForeColor = Color.White;
-                checkedListBoxDisplayReplaySideBar.BackColor = Color.FromArgb(56, 56, 56);
-                checkedListBoxDisplayPingButton.ForeColor = Color.White;
-                checkedListBoxDisplayPingButton.BackColor = Color.FromArgb(56, 56, 56);
 
                 Color buttonBackColor = Color.FromArgb(51, 51, 51);
                 Color buttonBorderColor = Color.FromArgb(139, 139, 139);

@@ -47,6 +47,7 @@ namespace HotsReplayReader
         public List<TimeInterval> TimeSpentAFKIntervals { get; set; } = [];
         public List<StormGameEvent> UserActionGameEvents { get; set; } = [];
         public List<StormGameEvent> UserGameEvents { get; set; } = [];
+        public int? DraftOrder { get; set; }
     }
     internal class Mvp
     {

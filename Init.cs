@@ -112,6 +112,8 @@ namespace HotsReplayReader
         public string? LastBrowseDirectory { get; set; }
         public string? DeepLAPIKey { get; set; }
         public bool AskUpdate { get; set; } = true;
+        public bool DisplayReplaySideBar { get; set; } = true;
+        public bool DisplayPingButton { get; set; } = true;
         internal JsonSerializerOptions jsonOptions = new() { WriteIndented = true };
         private static string GetConfigPath()
         {

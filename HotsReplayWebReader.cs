@@ -20,6 +20,7 @@ using Heroes.StormReplayParser.Decoders;
 using Heroes.StormReplayParser.GameEvent;
 using Heroes.StormReplayParser.MessageEvent;
 using Heroes.StormReplayParser.Player;
+using Heroes.StormReplayParser.Replay;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
@@ -762,10 +763,11 @@ namespace HotsReplayReader
 </script>
 </head>
 <body style=""background: {bgColor} url('app://hotsResources/{bgImg}.png') no-repeat center center / cover fixed"">
-<div class=""sidebar"">replays</div>
-<br><br><br>
-<div class=""parentDiv"">
 ";
+            if (Init.config is not null && Init.config.DisplayReplaySideBar)
+                html += "<div class=\"sidebar\">replays</div>\r\n";
+
+            html += "<br><br><br>\r\n<div class=\"parentDiv\">\r\n";
             return html;
         }
         internal static string HTMLGetFooter()
@@ -781,6 +783,43 @@ namespace HotsReplayReader
             string winnerTeamClass = blueTeam.IsWinner ? "titleBlue" : "titleRed";
 
             string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}") ?? hotsReplay?.stormReplay?.MapInfo.MapName;
+
+            string gameMode;
+            switch (hotsReplay!.stormReplay!.GameMode)
+            {
+                case StormGameMode.Cooperative: // AI
+                    gameMode = "Versus AI";
+                    break;
+                case StormGameMode.QuickMatch:
+                    gameMode = "Quick Match";
+                    break;
+                case StormGameMode.UnrankedDraft:
+                    gameMode = "Unranked";
+                    break;
+                case StormGameMode.HeroLeague:
+                    gameMode = "Hero League";
+                    break;
+                case StormGameMode.TeamLeague:
+                    gameMode = "Team League";
+                    break;
+                case StormGameMode.StormLeague:
+                    gameMode = "Storm League";
+                    break;
+                case StormGameMode.Brawl:
+                    gameMode = "Brawl";
+                    break;
+                case StormGameMode.ARAM:
+                    gameMode = "ARAM";
+                    break;
+                case StormGameMode.Custom:
+                    gameMode = "Custom";
+                    break;
+                default:
+                    gameMode = "";
+                    break;
+            }
+            //MessageBox.Show(stormGameMode.ToString());
+
             string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#001100" : "#110000";
 
             string html = $"<div class=\"head-container\" style=\"background-color: {bgColor};\">\n  <table>\n";
@@ -796,7 +835,11 @@ namespace HotsReplayReader
 ";
             }
 
-            html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}</td></tr>
+            html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}";
+
+            if (gameMode != "") html += $"<br><span style=\"font-size: 66%\">{gameMode}</span>";
+
+            html += $@"</td></tr>
     <tr>
       <td colspan=""5"" class=""titleBlue"">{isBlueTeamWinner}</td>
       <td></td>
@@ -828,19 +871,30 @@ namespace HotsReplayReader
             if (hotsReplay?.stormReplay?.DraftPicks.Count > 0)
             {
                 html += "    <tr>\n      <td>&nbsp;</td>\n";
-                foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
-                    if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Blue)
-                        if (draftPick.HeroSelected == "NONE")
-                            html += $"      <td class=\"headTableTd\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></td>\n";
-                        else
-                            html += $"      <td class=\"headTableTd\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></td>\n";
+
+                int bannedOrder = 0;
+                foreach (StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
+                    if (draftPick.PickType == StormDraftPickType.Banned)
+                    {
+                        bannedOrder++;
+                        if (draftPick.Team == StormTeam.Blue)
+                            if (draftPick.HeroSelected == "NONE")
+                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></span></td>\n";
+                            else
+                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></span></td>\n";
+                    }
                 html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
-                foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
-                    if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.Team == Heroes.StormReplayParser.Replay.StormTeam.Red)
-                        if (draftPick.HeroSelected == "NONE")
-                            html += $"      <td class=\"headTableTd\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></td>\n";
-                        else
-                            html += $"      <td class=\"headTableTd\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></td>\n";
+                bannedOrder = 0;
+                foreach (StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
+                    if (draftPick.PickType == StormDraftPickType.Banned)
+                    {
+                        bannedOrder++;
+                        if (draftPick.Team == StormTeam.Red)
+                            if (draftPick.HeroSelected == "NONE")
+                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></span></td>\n";
+                            else
+                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></span></td>\n";
+                    }
                 html += "      <td>&nbsp;</td>\n    </tr>\n";
             }
 
@@ -880,7 +934,10 @@ namespace HotsReplayReader
 
             html += $"      <td class=\"headTableTd\">\n";
             html += "        <span class=\"tooltip\">\n";
-            html += "          <span class=\"heroPortrait\">\n";
+
+            string dataOrder = (hotsPlayer.DraftOrder is not null) ? $" data-order=\"{hotsPlayer.DraftOrder}\"" : "";
+
+            html += $"          <span class=\"heroPortrait\"{dataOrder}>\n";
 
             html += $"            <img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
@@ -1035,40 +1092,44 @@ namespace HotsReplayReader
                 string? newRaw = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
                 hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerChatMessageEvent.Timestamp, msg, rawText));
             }
-            List<StormGameEvent>? STriggerPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent)];
-            foreach (StormGameEvent STriggerPingEvent in STriggerPingEvents)
+
+            if (Init.config is not null && Init.config.DisplayPingButton)
             {
-                int? pingIntegerType = STriggerPingEvent.Data?.Structure?[3].Integer32;
-                if (pingIntegerType is null) continue;
-
-                StormPlayer? MessageSender = STriggerPingEvent.MessageSender;
-                if (MessageSender is null) continue;
-
-                HotsPlayer? hotsPlayer = GetHotsPlayer(MessageSender.BattleTagName);
-                if (hotsPlayer is null || hotsPlayer.PlayerHero is null) continue;
-
-                switch (pingIntegerType)
+                List<StormGameEvent>? STriggerPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent)];
+                foreach (StormGameEvent STriggerPingEvent in STriggerPingEvents)
                 {
-                    case -1:
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to help!", null, false, true));
-                        break;
-                    case 0:
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
-                        break;
-                    case 1:
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"is on the way!", null, false, true));
-                        break;
-                    case 2:
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
-                        break;
-                    case 3:
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to defend!", null, false, true));
-                        break;
-                    case 5:
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"calls for retreat!", null, false, true));
-                        break;
-                    default:
-                        break;
+                    int? pingIntegerType = STriggerPingEvent.Data?.Structure?[3].Integer32;
+                    if (pingIntegerType is null) continue;
+
+                    StormPlayer? MessageSender = STriggerPingEvent.MessageSender;
+                    if (MessageSender is null) continue;
+
+                    HotsPlayer? hotsPlayer = GetHotsPlayer(MessageSender.BattleTagName);
+                    if (hotsPlayer is null || hotsPlayer.PlayerHero is null) continue;
+
+                    switch (pingIntegerType)
+                    {
+                        case -1:
+                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to help!", null, false, true));
+                            break;
+                        case 0:
+                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
+                            break;
+                        case 1:
+                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"is on the way!", null, false, true));
+                            break;
+                        case 2:
+                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
+                            break;
+                        case 3:
+                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to defend!", null, false, true));
+                            break;
+                        case 5:
+                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"calls for retreat!", null, false, true));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
@@ -1086,18 +1147,22 @@ namespace HotsReplayReader
             {
                 bool lastMessageAfterAnHour = Convert.ToInt32(hotsMessages.Last().Hours) > 0;
 
-                string html = $@"";
+                string chatcontainermaxheight = (Init.config is not null && Init.config.DisplayPingButton) ? "420" : "400";
 
-                html += "<div class=\"chat-container\" tabindex=\"-1\">\n";
+                string html = $@"";
+                html += $"<div class=\"chat-container\" style=\"max-height: {chatcontainermaxheight}px;\" tabindex=\"-1\">\n";
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
                     html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
-                html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
-                html += "</div>\n";
 
-                html += $@"<script>
-  function togglePings(btn) {{
+                if(Init.config is not null && Init.config.DisplayPingButton)
+                    html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
+
+                html += "</div>\n<script>\n";
+
+                if (Init.config is not null && Init.config.DisplayPingButton)
+                    html += $@"  function togglePings(btn) {{
     const container = document.querySelector("".chat-container"");
     const isShown = container.classList.toggle(""show-pings"");
     btn.textContent = isShown ? ""{Resources.Language.i18n.strPingsHide}"" : ""{Resources.Language.i18n.strPingsShow}"";
@@ -2000,7 +2065,6 @@ namespace HotsReplayReader
         }
         private static string FormatAbilityAndTalentToolTip(string? name, string? manacost, string? life, string? cooldown, string description)
         {
-            //manacost = manacost != null ? MyRegexConvertEnergy().Replace(manacost, "<br><font color=\"#${1}\">${2}</font>") : "";
             manacost = manacost != null ? $"<br><font color=\"#bfd4fd\">{manacost}</font>" : "";
             life = life != null ? MyRegexRemoveHTMLTag().Replace(life, string.Empty) : null;
             life = life != null ? $"<br><font color=\"#bfd4fd\">{life}</font>" : "";
@@ -2069,12 +2133,8 @@ namespace HotsReplayReader
         {
             if (hotsPlayers != null)
                 foreach (HotsPlayer hotsPlayer in hotsPlayers)
-                {
                     if (hotsPlayer.BattleTagName == playerBattleTag)
-                    {
                         return hotsPlayer;
-                    }
-                }
             return null;
         }
         private void InitTeamDatas(HotsTeam team)
@@ -2181,6 +2241,19 @@ namespace HotsReplayReader
                 {
                     ComputerID++;
                     hotsPlayer.ComputerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {ComputerID} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
+                }
+
+            }
+
+            int draftOrder = 0;
+            foreach (StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
+            {
+                if (draftPick.PickType == StormDraftPickType.Picked && draftPick.Player != null && draftPick.Player != null)
+                {
+                    draftOrder++;
+                    HotsPlayer? hotsPlayer = GetHotsPlayer(draftPick.Player.BattleTagName);
+                    if (hotsPlayer != null)
+                        hotsPlayer.DraftOrder = draftOrder;
                 }
             }
         }

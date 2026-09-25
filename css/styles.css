@@ -93,8 +93,8 @@ tr {
 }
 .bannedHeroIcon {
   border-radius: 100%;
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
 }
 .heroIcon:hover, .bannedHeroIcon:hover {
   filter: brightness(125%);
@@ -159,6 +159,40 @@ tr {
   height: auto;
   pointer-events: none;
 }
+.heroPortrait[data-order]::before,
+.bannedPortrait[data-order]::before {
+  content: attr(data-order);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.heroPortrait[data-order]::before {
+  top: 65px;
+  left: 29px;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+}
+.bannedPortrait[data-order]::before {
+  top: 43px;
+  left: 17px;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+}.bannedPortrait {
+  position: relative;
+  display: inline-block;
+}
 .teamHeader {
   background-color: #000000;
   font-family: Consolas, Lucida Console, Courier New;
@@ -201,7 +235,6 @@ tr {
 }
 .chat-container {
   zoom: 0.9;
-  max-height: 420px;
   overflow-y: auto;
   text-align: left;
   margin: 0 auto;
