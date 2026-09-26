@@ -1324,7 +1324,6 @@ namespace HotsReplayReader
             chatMessage = chatMessage.Replace(":@"     ,       ":nexusangry:")
                                      .Replace(":angry:",       ":nexusangry:")
                                      .Replace("B)",            ":nexuscool:")
-                                     .Replace("b)",            ":nexuscool:")
                                      .Replace(":cool:",        ":nexuscool:")
                                      .Replace("^^;",           ":nexusoops:")
                                      .Replace(":oops:",        ":nexusoops:")
@@ -3305,7 +3304,7 @@ namespace HotsReplayReader
         private static partial Regex MyRegexRenameReplayInList();
 
         // :D
-        [GeneratedRegex(@":[dD](?!\w*:)")]
+        [GeneratedRegex(@":[D](?!\w*:)")]
         private static partial Regex MyRegexEmoticonLol();
 
         // :p
