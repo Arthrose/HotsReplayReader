@@ -134,7 +134,7 @@
             toolStripMenuItemOptions.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemLanguage, toolStripMenuItemClearCache, toolStripMenuItemProperties });
             toolStripMenuItemOptions.Name = "toolStripMenuItemOptions";
             toolStripMenuItemOptions.Size = new Size(61, 20);
-            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuOptions;
+            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuSettings;
             // 
             // languageToolStripMenuItem
             // 
@@ -153,7 +153,7 @@
             // 
             toolStripMenuItemProperties.Name = "propertiesToolStripMenuItem";
             toolStripMenuItemProperties.Size = new Size(127, 22);
-            toolStripMenuItemProperties.Text = Resources.Language.i18n.strProperties;
+            toolStripMenuItemProperties.Text = Resources.Language.i18n.strPreferences;
             toolStripMenuItemProperties.Click += PropertiesToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem

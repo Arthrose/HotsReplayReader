@@ -306,25 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>區域</value>
   </data>
-  <data name="strProperties" xml:space="preserve">
-    <value>屬性</value>
+  <data name="strPreferences" xml:space="preserve">
+    <value>偏好設定</value>
   </data>
-  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+  <data name="strPreferencesDeepLAPIKey" xml:space="preserve">
     <value>DeepL API 金鑰</value>
   </data>
-  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+  <data name="strPreferencesVisitDeepLWebsite" xml:space="preserve">
     <value>造訪 DeepL 網站</value>
   </data>
-  <data name="strPropertiesTest" xml:space="preserve">
+  <data name="strPreferencesTest" xml:space="preserve">
     <value>測試</value>
   </data>
-  <data name="strPropertiesOK" xml:space="preserve">
+  <data name="strPreferencesOK" xml:space="preserve">
     <value>確定</value>
   </data>
-  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+  <data name="strPreferencesValidAPIKey" xml:space="preserve">
     <value>有效的 API 金鑰。</value>
   </data>
-  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+  <data name="strPreferencesInvalidAPIKey" xml:space="preserve">
     <value>無效的 API 金鑰。</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
@@ -378,8 +378,8 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>不再詢問</value>
   </data>
-  <data name="strMenuOptions" xml:space="preserve">
-    <value>選項</value>
+  <data name="strMenuSettings" xml:space="preserve">
+    <value>設定</value>
   </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>快取已清除</value>
@@ -399,22 +399,34 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>隱藏 ping</value>
   </data>
-  <data name="strPropertiesDisplay" xml:space="preserve">
+  <data name="strPreferencesDisplay" xml:space="preserve">
     <value>顯示</value>
   </data>
-  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+  <data name="strPreferencesDarkMode" xml:space="preserve">
+    <value>深色模式</value>
+  </data>
+  <data name="strPreferencesDarkModeAutomatic" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="strPreferencesDarkModeLightMode" xml:space="preserve">
+    <value>淺色模式</value>
+  </data>
+  <data name="strPreferencesDarkModeDarkMode" xml:space="preserve">
+    <value>深色模式</value>
+  </data>
+  <data name="strPreferencesDisplayReplaySidebar" xml:space="preserve">
     <value>重播側邊欄</value>
   </data>
-  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+  <data name="strPreferencesDisplayPingButton" xml:space="preserve">
     <value>Ping 按鈕</value>
   </data>
-  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+  <data name="strPreferencesDisplayDraftOrder" xml:space="preserve">
     <value>選秀順序</value>
   </data>
-  <data name="strPropertiesDisplayDate" xml:space="preserve">
+  <data name="strPreferencesDisplayDate" xml:space="preserve">
     <value>日期</value>
   </data>
-  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+  <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>遊戲模式</value>
   </data>
 </root>

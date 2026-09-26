@@ -306,25 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>Región</value>
   </data>
-  <data name="strProperties" xml:space="preserve">
-    <value>Propiedades</value>
+  <data name="strPreferences" xml:space="preserve">
+    <value>Preferencias</value>
   </data>
-  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+  <data name="strPreferencesDeepLAPIKey" xml:space="preserve">
     <value>Clave API de DeepL</value>
   </data>
-  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+  <data name="strPreferencesVisitDeepLWebsite" xml:space="preserve">
     <value>Visitar el sitio web de DeepL</value>
   </data>
-  <data name="strPropertiesTest" xml:space="preserve">
+  <data name="strPreferencesTest" xml:space="preserve">
     <value>Probar</value>
   </data>
-  <data name="strPropertiesOK" xml:space="preserve">
+  <data name="strPreferencesOK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+  <data name="strPreferencesValidAPIKey" xml:space="preserve">
     <value>Clave API válida.</value>
   </data>
-  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+  <data name="strPreferencesInvalidAPIKey" xml:space="preserve">
     <value>Clave API no válida.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
@@ -378,8 +378,8 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>No volver a preguntar</value>
   </data>
-  <data name="strMenuOptions" xml:space="preserve">
-    <value>Opciones</value>
+  <data name="strMenuSettings" xml:space="preserve">
+    <value>Configuración</value>
   </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>Se borró la caché.</value>
@@ -399,22 +399,34 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>Ocultar pings</value>
   </data>
-  <data name="strPropertiesDisplay" xml:space="preserve">
+  <data name="strPreferencesDisplay" xml:space="preserve">
     <value>Visualización</value>
   </data>
-  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+  <data name="strPreferencesDarkMode" xml:space="preserve">
+    <value>Modo Oscuro</value>
+  </data>
+  <data name="strPreferencesDarkModeAutomatic" xml:space="preserve">
+    <value>Automático</value>
+  </data>
+  <data name="strPreferencesDarkModeLightMode" xml:space="preserve">
+    <value>Modo claro</value>
+  </data>
+  <data name="strPreferencesDarkModeDarkMode" xml:space="preserve">
+    <value>Modo oscuro</value>
+  </data>
+  <data name="strPreferencesDisplayReplaySidebar" xml:space="preserve">
     <value>Barra lateral de repetición</value>
   </data>
-  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+  <data name="strPreferencesDisplayPingButton" xml:space="preserve">
     <value>Botón de ping</value>
   </data>
-  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+  <data name="strPreferencesDisplayDraftOrder" xml:space="preserve">
     <value>Orden de draft</value>
   </data>
-  <data name="strPropertiesDisplayDate" xml:space="preserve">
+  <data name="strPreferencesDisplayDate" xml:space="preserve">
     <value>Fecha</value>
   </data>
-  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+  <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>Modo de juego</value>
   </data>
 </root>

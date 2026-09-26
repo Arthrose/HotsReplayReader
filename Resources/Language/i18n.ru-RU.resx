@@ -306,25 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>Регион</value>
   </data>
-  <data name="strProperties" xml:space="preserve">
-    <value>Свойства</value>
+  <data name="strPreferences" xml:space="preserve">
+    <value>Настройки</value>
   </data>
-  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+  <data name="strPreferencesDeepLAPIKey" xml:space="preserve">
     <value>Ключ API DeepL</value>
   </data>
-  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+  <data name="strPreferencesVisitDeepLWebsite" xml:space="preserve">
     <value>Посетить сайт DeepL</value>
   </data>
-  <data name="strPropertiesTest" xml:space="preserve">
+  <data name="strPreferencesTest" xml:space="preserve">
     <value>Тест</value>
   </data>
-  <data name="strPropertiesOK" xml:space="preserve">
+  <data name="strPreferencesOK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+  <data name="strPreferencesValidAPIKey" xml:space="preserve">
     <value>Действительный ключ API.</value>
   </data>
-  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+  <data name="strPreferencesInvalidAPIKey" xml:space="preserve">
     <value>Недействительный ключ API.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
@@ -378,8 +378,8 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>Больше не спрашивать</value>
   </data>
-  <data name="strMenuOptions" xml:space="preserve">
-    <value>Настройки</value>
+  <data name="strMenuSettings" xml:space="preserve">
+    <value>Параметры</value>
   </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>Кэш очищен.</value>
@@ -399,22 +399,34 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>Скрыть пинги</value>
   </data>
-  <data name="strPropertiesDisplay" xml:space="preserve">
+  <data name="strPreferencesDisplay" xml:space="preserve">
     <value>Отображение</value>
   </data>
-  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+  <data name="strPreferencesDarkMode" xml:space="preserve">
+    <value>Тёмный Режим</value>
+  </data>
+  <data name="strPreferencesDarkModeAutomatic" xml:space="preserve">
+    <value>Автоматически</value>
+  </data>
+  <data name="strPreferencesDarkModeLightMode" xml:space="preserve">
+    <value>Светлый режим</value>
+  </data>
+  <data name="strPreferencesDarkModeDarkMode" xml:space="preserve">
+    <value>Тёмный режим</value>
+  </data>
+  <data name="strPreferencesDisplayReplaySidebar" xml:space="preserve">
     <value>Боковая панель повтора</value>
   </data>
-  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+  <data name="strPreferencesDisplayPingButton" xml:space="preserve">
     <value>Кнопка пинга</value>
   </data>
-  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+  <data name="strPreferencesDisplayDraftOrder" xml:space="preserve">
     <value>Порядок драфта</value>
   </data>
-  <data name="strPropertiesDisplayDate" xml:space="preserve">
+  <data name="strPreferencesDisplayDate" xml:space="preserve">
     <value>Дата</value>
   </data>
-  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+  <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>Режим игры</value>
   </data>
 </root>

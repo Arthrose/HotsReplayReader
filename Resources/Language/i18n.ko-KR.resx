@@ -306,25 +306,25 @@
   <data name="strRegion" xml:space="preserve">
     <value>지역</value>
   </data>
-  <data name="strProperties" xml:space="preserve">
-    <value>속성</value>
+  <data name="strPreferences" xml:space="preserve">
+    <value>환경설정</value>
   </data>
-  <data name="strPropertiesDeepLAPIKey" xml:space="preserve">
+  <data name="strPreferencesDeepLAPIKey" xml:space="preserve">
     <value>DeepL API 키</value>
   </data>
-  <data name="strPropertiesVisitDeepLWebsite" xml:space="preserve">
+  <data name="strPreferencesVisitDeepLWebsite" xml:space="preserve">
     <value>DeepL 웹사이트 방문</value>
   </data>
-  <data name="strPropertiesTest" xml:space="preserve">
+  <data name="strPreferencesTest" xml:space="preserve">
     <value>테스트</value>
   </data>
-  <data name="strPropertiesOK" xml:space="preserve">
+  <data name="strPreferencesOK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="strPropertiesValidAPIKey" xml:space="preserve">
+  <data name="strPreferencesValidAPIKey" xml:space="preserve">
     <value>유효한 API 키입니다.</value>
   </data>
-  <data name="strPropertiesInvalidAPIKey" xml:space="preserve">
+  <data name="strPreferencesInvalidAPIKey" xml:space="preserve">
     <value>잘못된 API 키입니다.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
@@ -378,8 +378,8 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>다시 묻지 않음</value>
   </data>
-  <data name="strMenuOptions" xml:space="preserve">
-    <value>옵션</value>
+  <data name="strMenuSettings" xml:space="preserve">
+    <value>설정</value>
   </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>캐시가 삭제되었습니다</value>
@@ -399,22 +399,34 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>핑 숨기기</value>
   </data>
-  <data name="strPropertiesDisplay" xml:space="preserve">
+  <data name="strPreferencesDisplay" xml:space="preserve">
     <value>표시</value>
   </data>
-  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+  <data name="strPreferencesDarkMode" xml:space="preserve">
+    <value>다크 모드</value>
+  </data>
+  <data name="strPreferencesDarkModeAutomatic" xml:space="preserve">
+    <value>자동</value>
+  </data>
+  <data name="strPreferencesDarkModeLightMode" xml:space="preserve">
+    <value>라이트 모드</value>
+  </data>
+  <data name="strPreferencesDarkModeDarkMode" xml:space="preserve">
+    <value>다크 모드</value>
+  </data>
+  <data name="strPreferencesDisplayReplaySidebar" xml:space="preserve">
     <value>리플레이 사이드바</value>
   </data>
-  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+  <data name="strPreferencesDisplayPingButton" xml:space="preserve">
     <value>핑 버튼</value>
   </data>
-  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+  <data name="strPreferencesDisplayDraftOrder" xml:space="preserve">
     <value>드래프트 순서</value>
   </data>
-  <data name="strPropertiesDisplayDate" xml:space="preserve">
+  <data name="strPreferencesDisplayDate" xml:space="preserve">
     <value>날짜</value>
   </data>
-  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+  <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>게임 모드</value>
   </data>
 </root>

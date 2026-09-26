@@ -1,6 +1,6 @@
 ﻿namespace HotsReplayReader
 {
-    partial class PropertiesForm
+    partial class PreferencesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PropertiesForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesForm));
             deepLLabel = new Label();
             deepLLinkLabel = new LinkLabel();
             OKButton = new Button();
@@ -226,7 +226,7 @@
             Name = "PropertiesForm";
             StartPosition = FormStartPosition.Manual;
             Text = "Properties";
-            KeyDown += PropertiesForm_KeyDown;
+            KeyDown += PreferencesForm_KeyDown;
             groupBoxDisplay.ResumeLayout(false);
             groupBoxDisplay.PerformLayout();
             groupBoxDarkMode.ResumeLayout(false);

@@ -4,29 +4,33 @@ using Microsoft.Win32;
 
 namespace HotsReplayReader
 {
-    public partial class PropertiesForm : Form
+    public partial class PreferencesForm : Form
     {
         readonly HotsReplayWebReader hotsReplayWebReader;
         // Dark mode
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
-        public PropertiesForm(HotsReplayWebReader hotsReplayWebReader)
+        public PreferencesForm(HotsReplayWebReader hotsReplayWebReader)
         {
             InitializeComponent();
             this.hotsReplayWebReader = hotsReplayWebReader;
 
-            this.Text = Resources.Language.i18n.strProperties;
-            deepLLabel.Text = Resources.Language.i18n.strPropertiesDeepLAPIKey;
-            deepLLinkLabel.Text = Resources.Language.i18n.strPropertiesVisitDeepLWebsite;
-            testButton.Text = Resources.Language.i18n.strPropertiesTest;
-            groupBoxDisplay.Text = Resources.Language.i18n.strPropertiesDisplay;
-            checkBoxDisplayGameMode.Text = Resources.Language.i18n.strPropertiesDisplayGameMode;
-            checkBoxDisplayDate.Text = Resources.Language.i18n.strPropertiesDisplayDate;
-            checkBoxDisplayReplaySideBar.Text = Resources.Language.i18n.strPropertiesDisplayReplaySidebar;
-            checkBoxDisplayPingButton.Text = Resources.Language.i18n.strPropertiesDisplayPingButton;
-            checkBoxDisplayDraftOrder.Text = Resources.Language.i18n.strPropertiesDisplayDraftOrder;
+            this.Text = Resources.Language.i18n.strPreferences;
+            deepLLabel.Text = Resources.Language.i18n.strPreferencesDeepLAPIKey;
+            deepLLinkLabel.Text = Resources.Language.i18n.strPreferencesVisitDeepLWebsite;
+            testButton.Text = Resources.Language.i18n.strPreferencesTest;
+            groupBoxDisplay.Text = Resources.Language.i18n.strPreferencesDisplay;
+            checkBoxDisplayGameMode.Text = Resources.Language.i18n.strPreferencesDisplayGameMode;
+            checkBoxDisplayDate.Text = Resources.Language.i18n.strPreferencesDisplayDate;
+            checkBoxDisplayReplaySideBar.Text = Resources.Language.i18n.strPreferencesDisplayReplaySidebar;
+            checkBoxDisplayPingButton.Text = Resources.Language.i18n.strPreferencesDisplayPingButton;
+            checkBoxDisplayDraftOrder.Text = Resources.Language.i18n.strPreferencesDisplayDraftOrder;
+            groupBoxDarkMode.Text = Resources.Language.i18n.strPreferencesDarkMode;
+            radioButtonDarkModeLight.Text = Resources.Language.i18n.strPreferencesDarkModeLightMode;
+            radioButtonDarkModeDark.Text = Resources.Language.i18n.strPreferencesDarkModeDarkMode;
+            radioButtonDarkModeAutomatic.Text = Resources.Language.i18n.strPreferencesDarkModeAutomatic;
 
-            OKButton.Text = Resources.Language.i18n.strPropertiesOK;
+            OKButton.Text = Resources.Language.i18n.strPreferencesOK;
 
             if (this.hotsReplayWebReader.Init.config != null)
             {
@@ -137,7 +141,7 @@ namespace HotsReplayReader
                 OKButton.FlatAppearance.BorderColor = buttonBorderColor;
             }
         }
-        private void PropertiesForm_KeyDown(object sender, KeyEventArgs e)
+        private void PreferencesForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
                 Close();

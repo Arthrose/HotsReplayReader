@@ -673,7 +673,7 @@ namespace HotsReplayReader
             toolStripMenuItemFile.Text = Resources.Language.i18n.strMenuFile;
             toolStripMenuItemBrowse.Text = Resources.Language.i18n.strMenuBrowse;
             toolStripMenuItemSource.Text = Resources.Language.i18n.strMenuSource;
-            toolStripMenuItemProperties.Text = Resources.Language.i18n.strProperties;
+            toolStripMenuItemProperties.Text = Resources.Language.i18n.strPreferences;
             toolStripMenuItemExit.Text = Resources.Language.i18n.strMenuExit;
             toolStripMenuItemAccounts.Text = Resources.Language.i18n.strMenuAccounts;
             toolStripMenuItemRegion.Text = Resources.Language.i18n.strRegion;
@@ -681,7 +681,7 @@ namespace HotsReplayReader
             toolStripMenuItemRegionEurope.Text = Resources.Language.i18n.strRegionEurope;
             toolStripMenuItemRegionAsia.Text = Resources.Language.i18n.strRegionAsia;
             toolStripMenuItemLanguage.Text = Resources.Language.i18n.strMenuLanguage;
-            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuOptions;
+            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuSettings;
             toolStripMenuItemClearCache.Text = Resources.Language.i18n.strMenuClearCache;
             toolStripMenuItemUpdate.Text = Resources.Language.i18n.strMenuUpdate;
             toolStripMenuItemAboutHotsReplayReader.Text = Resources.Language.i18n.strMenuAbout;
@@ -3006,7 +3006,7 @@ namespace HotsReplayReader
         }
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PropertiesForm propertiesForm = new(this) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
+            PreferencesForm propertiesForm = new(this) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
             propertiesForm.ShowDialog(this);
             propertiesForm.Dispose();
             if (Init.config != null)

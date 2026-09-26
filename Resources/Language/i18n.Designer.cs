@@ -520,11 +520,11 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Options.
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
-        internal static string strMenuOptions {
+        internal static string strMenuSettings {
             get {
-                return ResourceManager.GetString("strMenuOptions", resourceCulture);
+                return ResourceManager.GetString("strMenuSettings", resourceCulture);
             }
         }
         
@@ -592,119 +592,155 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Properties.
+        ///   Looks up a localized string similar to Preferences.
         /// </summary>
-        internal static string strProperties {
+        internal static string strPreferences {
             get {
-                return ResourceManager.GetString("strProperties", resourceCulture);
+                return ResourceManager.GetString("strPreferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark Mode.
+        /// </summary>
+        internal static string strPreferencesDarkMode {
+            get {
+                return ResourceManager.GetString("strPreferencesDarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        internal static string strPreferencesDarkModeAutomatic {
+            get {
+                return ResourceManager.GetString("strPreferencesDarkModeAutomatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark mode.
+        /// </summary>
+        internal static string strPreferencesDarkModeDarkMode {
+            get {
+                return ResourceManager.GetString("strPreferencesDarkModeDarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light mode.
+        /// </summary>
+        internal static string strPreferencesDarkModeLightMode {
+            get {
+                return ResourceManager.GetString("strPreferencesDarkModeLightMode", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DeepL API key.
         /// </summary>
-        internal static string strPropertiesDeepLAPIKey {
+        internal static string strPreferencesDeepLAPIKey {
             get {
-                return ResourceManager.GetString("strPropertiesDeepLAPIKey", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDeepLAPIKey", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Display.
         /// </summary>
-        internal static string strPropertiesDisplay {
+        internal static string strPreferencesDisplay {
             get {
-                return ResourceManager.GetString("strPropertiesDisplay", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDisplay", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
-        internal static string strPropertiesDisplayDate {
+        internal static string strPreferencesDisplayDate {
             get {
-                return ResourceManager.GetString("strPropertiesDisplayDate", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDisplayDate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Draft order.
         /// </summary>
-        internal static string strPropertiesDisplayDraftOrder {
+        internal static string strPreferencesDisplayDraftOrder {
             get {
-                return ResourceManager.GetString("strPropertiesDisplayDraftOrder", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDisplayDraftOrder", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Game mode.
         /// </summary>
-        internal static string strPropertiesDisplayGameMode {
+        internal static string strPreferencesDisplayGameMode {
             get {
-                return ResourceManager.GetString("strPropertiesDisplayGameMode", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDisplayGameMode", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ping button.
         /// </summary>
-        internal static string strPropertiesDisplayPingButton {
+        internal static string strPreferencesDisplayPingButton {
             get {
-                return ResourceManager.GetString("strPropertiesDisplayPingButton", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDisplayPingButton", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Replay sidebar.
         /// </summary>
-        internal static string strPropertiesDisplayReplaySidebar {
+        internal static string strPreferencesDisplayReplaySidebar {
             get {
-                return ResourceManager.GetString("strPropertiesDisplayReplaySidebar", resourceCulture);
+                return ResourceManager.GetString("strPreferencesDisplayReplaySidebar", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Invalid API key..
         /// </summary>
-        internal static string strPropertiesInvalidAPIKey {
+        internal static string strPreferencesInvalidAPIKey {
             get {
-                return ResourceManager.GetString("strPropertiesInvalidAPIKey", resourceCulture);
+                return ResourceManager.GetString("strPreferencesInvalidAPIKey", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
-        internal static string strPropertiesOK {
+        internal static string strPreferencesOK {
             get {
-                return ResourceManager.GetString("strPropertiesOK", resourceCulture);
+                return ResourceManager.GetString("strPreferencesOK", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Test.
         /// </summary>
-        internal static string strPropertiesTest {
+        internal static string strPreferencesTest {
             get {
-                return ResourceManager.GetString("strPropertiesTest", resourceCulture);
+                return ResourceManager.GetString("strPreferencesTest", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Valid API key..
         /// </summary>
-        internal static string strPropertiesValidAPIKey {
+        internal static string strPreferencesValidAPIKey {
             get {
-                return ResourceManager.GetString("strPropertiesValidAPIKey", resourceCulture);
+                return ResourceManager.GetString("strPreferencesValidAPIKey", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Visit DeepL website.
         /// </summary>
-        internal static string strPropertiesVisitDeepLWebsite {
+        internal static string strPreferencesVisitDeepLWebsite {
             get {
-                return ResourceManager.GetString("strPropertiesVisitDeepLWebsite", resourceCulture);
+                return ResourceManager.GetString("strPreferencesVisitDeepLWebsite", resourceCulture);
             }
         }
         
