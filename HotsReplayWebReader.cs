@@ -32,6 +32,7 @@ namespace HotsReplayReader
         readonly bool release = false;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
+        internal int useDarkMode = 0;
 
         readonly bool fetchHero = false;
         readonly string fetchedHeroName = "The Lost Vikings";
@@ -115,7 +116,7 @@ namespace HotsReplayReader
             InitializeComponent();
 
             if (release)
-                sourceToolStripMenuItem.Visible = false;
+                toolStripMenuItemSource.Visible = false;
 
             if (Init.config.DeepLAPIKey != null)
             {
@@ -133,16 +134,16 @@ namespace HotsReplayReader
             switch (Init.config!.Region)
             {
                 case "1":
-                    americasRegionToolStripMenuItem.Checked = true;
+                    toolStripMenuItemRegionAmericas.Checked = true;
                     break;
                 case "2":
-                    europeRegionToolStripMenuItem.Checked = true;
+                    toolStripMenuItemRegionEurope.Checked = true;
                     break;
                 case "3":
-                    asiaRegionToolStripMenuItem.Checked = true;
+                    toolStripMenuItemRegionAsia.Checked = true;
                     break;
                 default:
-                    europeRegionToolStripMenuItem.Checked = true;
+                    toolStripMenuItemRegionEurope.Checked = true;
                     break;
             }
 
@@ -166,21 +167,24 @@ namespace HotsReplayReader
 
                 j++;
             }
-            languageToolStripMenuItem.DropDownItems.AddRange(languageToolStripMenu);
+            toolStripMenuItemLanguage.DropDownItems.AddRange(languageToolStripMenu);
         }
         // Dark Mode
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
 
-            int useDarkMode = ((int?)Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", -1) == 0) ? 1 : 0;
+            ApplyTheme();
+        }
+        internal void ApplyTheme()
+        {
+            SetUseDarkMode();
 
-            // Dark mode
+            // Barre de titre (fonctionne même si le Form est déjà affiché)
             const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
             const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
             if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int)) != 0)
             {
-                // Fallback for older Windows 10 builds
                 NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref useDarkMode, sizeof(int));
             }
 
@@ -189,24 +193,67 @@ namespace HotsReplayReader
                 listBoxHotsReplays.BackColor = Color.FromArgb(30, 30, 30);
                 listBoxHotsReplays.ForeColor = Color.FromArgb(200, 200, 200);
 
-                // Mode en sombre de la barre menuStrip
                 menuStrip.BackColor = Color.FromArgb(30, 30, 30);
                 menuStrip.ForeColor = Color.White;
                 menuStrip.Renderer = new DarkModeRenderer();
 
-                // Mode en sombre des menus (File, Edit...)
-                foreach (ToolStripMenuItem menuItem in menuStrip.Items)
-                {
-                    menuItem.BackColor = Color.FromArgb(30, 30, 30);
-                    menuItem.ForeColor = Color.White;
+                ApplyDarkModeToMenu(menuStrip.Items);
+            }
+            else
+            {
+                listBoxHotsReplays.BackColor = SystemColors.Window;
+                listBoxHotsReplays.ForeColor = SystemColors.WindowText;
 
-                    // Mode en sombre des sous-menu
-                    foreach (ToolStripItem subItem in menuItem.DropDownItems)
-                    {
-                        subItem.BackColor = Color.FromArgb(30, 30, 30);
-                        subItem.ForeColor = Color.White;
-                    }
+                menuStrip.BackColor = SystemColors.Control;
+                menuStrip.ForeColor = SystemColors.ControlText;
+                menuStrip.Renderer = new ToolStripProfessionalRenderer(); // renderer par défaut
+
+                ApplyLightModeToMenu(menuStrip.Items);
+            }
+
+            // Force le redessin immédiat de la fenêtre et de ses enfants
+            this.Invalidate(true);
+            this.Refresh();
+        }
+        private static void ApplyDarkModeToMenu(ToolStripItemCollection items)
+        {
+            foreach (ToolStripItem item in items)
+            {
+                item.BackColor = Color.FromArgb(30, 30, 30);
+                item.ForeColor = Color.White;
+
+                if (item is ToolStripMenuItem menuItem && menuItem.HasDropDownItems)
+                {
+                    ApplyDarkModeToMenu(menuItem.DropDownItems);
                 }
+            }
+        }
+        private static void ApplyLightModeToMenu(ToolStripItemCollection items)
+        {
+            foreach (ToolStripItem item in items)
+            {
+                item.BackColor = SystemColors.Control;
+                item.ForeColor = SystemColors.ControlText;
+
+                if (item is ToolStripMenuItem menuItem && menuItem.HasDropDownItems)
+                {
+                    ApplyLightModeToMenu(menuItem.DropDownItems);
+                }
+            }
+        }
+        private void SetUseDarkMode()
+        {
+            switch (Init.config!.DarkMode)
+            {
+                case Config.DarkModeType.Light:
+                    useDarkMode = 0;
+                    break;
+                case Config.DarkModeType.Dark:
+                    useDarkMode = 1;
+                    break;
+                case Config.DarkModeType.Automatic:
+                    useDarkMode = ((int?)Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", -1) == 0) ? 1 : 0;
+                    break;
             }
         }
         private void InitFileWatcher(string path)
@@ -291,11 +338,11 @@ namespace HotsReplayReader
                     // Vérifie si l'action est "closeMenu"
                     if (action == "closeMenu")
                     {
-                        fileToolStripMenuItem.HideDropDown();
-                        accountsToolStripMenuItem.HideDropDown();
-                        regionToolStripMenuItem.HideDropDown();
-                        languageToolStripMenuItem.HideDropDown();
-                        aboutToolStripMenuItem.HideDropDown();
+                        toolStripMenuItemFile.HideDropDown();
+                        toolStripMenuItemAccounts.HideDropDown();
+                        toolStripMenuItemRegion.HideDropDown();
+                        toolStripMenuItemOptions.HideDropDown();
+                        toolStripMenuItemAbout.HideDropDown();
                     }
 
                     // Vérifie si l'action est "hoverLeft"
@@ -364,7 +411,7 @@ namespace HotsReplayReader
 
                 this.Update();
 
-                foreach (ToolStripItem item in accountsToolStripMenuItem.DropDownItems)
+                foreach (ToolStripItem item in toolStripMenuItemAccounts.DropDownItems)
                 {
                     if (item is ToolStripMenuItem submenu)
                     {
@@ -379,8 +426,8 @@ namespace HotsReplayReader
                         listBoxHotsReplays.SelectedIndex = 0; // select first element
                 }));
             }
-            else if (accountsToolStripMenuItem.DropDownItems.Count > 0)
-                AccountMenuItemClickHandler(accountsToolStripMenuItem.DropDownItems[0], EventArgs.Empty);
+            else if (toolStripMenuItemAccounts.DropDownItems.Count > 0)
+                AccountMenuItemClickHandler(toolStripMenuItemAccounts.DropDownItems[0], EventArgs.Empty);
             else
             {
                 htmlContent = welcomeHTML;
@@ -551,7 +598,7 @@ namespace HotsReplayReader
         }
         private void LoadAccountsToolStipMenu()
         {
-            accountsToolStripMenuItem.DropDownItems.Clear();
+            toolStripMenuItemAccounts.DropDownItems.Clear();
 
             if (Init.hotsLocalAccounts == null) return;
 
@@ -570,7 +617,7 @@ namespace HotsReplayReader
                 accountsToolStripMenu[i].Click += new EventHandler(AccountMenuItemClickHandler);
                 accountsToolStripMenu[i].CheckOnClick = true;
             }
-            accountsToolStripMenuItem.DropDownItems.AddRange(accountsToolStripMenu);
+            toolStripMenuItemAccounts.DropDownItems.AddRange(accountsToolStripMenu);
         }
         private void AccountMenuItemClickHandler(object? sender, EventArgs e)
         {
@@ -589,7 +636,7 @@ namespace HotsReplayReader
                     }
                 }
 
-                foreach (ToolStripItem item in accountsToolStripMenuItem.DropDownItems)
+                foreach (ToolStripItem item in toolStripMenuItemAccounts.DropDownItems)
                 {
                     if (item is ToolStripMenuItem submenu)
                     {
@@ -612,7 +659,7 @@ namespace HotsReplayReader
                 SetApplicationLanguage(Init.config.LangCode);
             }
 
-            foreach (ToolStripItem item in languageToolStripMenuItem.DropDownItems)
+            foreach (ToolStripItem item in toolStripMenuItemLanguage.DropDownItems)
             {
                 if (item is ToolStripMenuItem submenu)
                 {
@@ -623,20 +670,21 @@ namespace HotsReplayReader
                 }
             }
             // Met à jour les textes de l'interface
-            fileToolStripMenuItem.Text = Resources.Language.i18n.strMenuFile;
-            browseToolStripMenuItem.Text = Resources.Language.i18n.strMenuBrowse;
-            sourceToolStripMenuItem.Text = Resources.Language.i18n.strMenuSource;
-            propertiesToolStripMenuItem.Text = Resources.Language.i18n.strProperties;
-            exitToolStripMenuItem.Text = Resources.Language.i18n.strMenuExit;
-            accountsToolStripMenuItem.Text = Resources.Language.i18n.strMenuAccounts;
-            regionToolStripMenuItem.Text = Resources.Language.i18n.strRegion;
-            americasRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAmercas;
-            europeRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionEurope;
-            asiaRegionToolStripMenuItem.Text = Resources.Language.i18n.strRegionAsia;
-            languageToolStripMenuItem.Text = Resources.Language.i18n.strMenuLanguage;
-            clearCacheToolStripMenuItem.Text = Resources.Language.i18n.strMenuClearCache;
-            updateToolStripMenuItem.Text = Resources.Language.i18n.strMenuUpdate;
-            aboutHotsReplayReaderToolStripMenuItem.Text = Resources.Language.i18n.strMenuAbout;
+            toolStripMenuItemFile.Text = Resources.Language.i18n.strMenuFile;
+            toolStripMenuItemBrowse.Text = Resources.Language.i18n.strMenuBrowse;
+            toolStripMenuItemSource.Text = Resources.Language.i18n.strMenuSource;
+            toolStripMenuItemProperties.Text = Resources.Language.i18n.strProperties;
+            toolStripMenuItemExit.Text = Resources.Language.i18n.strMenuExit;
+            toolStripMenuItemAccounts.Text = Resources.Language.i18n.strMenuAccounts;
+            toolStripMenuItemRegion.Text = Resources.Language.i18n.strRegion;
+            toolStripMenuItemRegionAmericas.Text = Resources.Language.i18n.strRegionAmercas;
+            toolStripMenuItemRegionEurope.Text = Resources.Language.i18n.strRegionEurope;
+            toolStripMenuItemRegionAsia.Text = Resources.Language.i18n.strRegionAsia;
+            toolStripMenuItemLanguage.Text = Resources.Language.i18n.strMenuLanguage;
+            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuOptions;
+            toolStripMenuItemClearCache.Text = Resources.Language.i18n.strMenuClearCache;
+            toolStripMenuItemUpdate.Text = Resources.Language.i18n.strMenuUpdate;
+            toolStripMenuItemAboutHotsReplayReader.Text = Resources.Language.i18n.strMenuAbout;
 
             if (listBoxHotsReplays.Items.Count == 0)
                 return;
@@ -841,7 +889,7 @@ namespace HotsReplayReader
             html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}";
 
             if (gameMode != "" && (Init.config is null || Init.config.DisplayGameMode))
-                html += $"<br><span style=\"font-size: 66%; color: white;\">{gameMode}</span>";
+                html += $"<br><span style=\"font-size: 50%; color: white;\">{gameMode}</span>";
             if (Init.config is null || Init.config.DisplayDate)
                 html += $"<br><span style=\"font-size: 40%; color: darkgrey;\">{hotsReplay!.stormReplay!.Timestamp.ToString("f", Thread.CurrentThread.CurrentCulture)}</span>";
 
@@ -2973,9 +3021,9 @@ namespace HotsReplayReader
         }
         private void RegionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            americasRegionToolStripMenuItem.Checked = false;
-            europeRegionToolStripMenuItem.Checked = false;
-            asiaRegionToolStripMenuItem.Checked = false;
+            toolStripMenuItemRegionAmericas.Checked = false;
+            toolStripMenuItemRegionEurope.Checked = false;
+            toolStripMenuItemRegionAsia.Checked = false;
             ((ToolStripMenuItem)sender).Checked = true;
             if (((ToolStripMenuItem)sender)?.Tag != null)
             {
@@ -2984,8 +3032,8 @@ namespace HotsReplayReader
                 Init.ListHotsAccounts();
                 LoadAccountsToolStipMenu();
 
-                if (accountsToolStripMenuItem.DropDownItems.Count > 0)
-                    accountsToolStripMenuItem.DropDownItems[0].PerformClick();
+                if (toolStripMenuItemAccounts.DropDownItems.Count > 0)
+                    toolStripMenuItemAccounts.DropDownItems[0].PerformClick();
             }
         }
         private enum UpdateCheckStatus
@@ -3289,6 +3337,11 @@ namespace HotsReplayReader
     public class DarkModeRenderer : ToolStripProfessionalRenderer
     {
         public DarkModeRenderer() : base(new DarkModeColorTable()) { }
+        protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
+        {
+            e.ArrowColor = Color.FromArgb(200, 200, 200);
+            base.OnRenderArrow(e);
+        }
     }
 
     // Used to load WebView2Loader.dll from the specified folder

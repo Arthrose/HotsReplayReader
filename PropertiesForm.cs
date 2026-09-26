@@ -36,6 +36,18 @@ namespace HotsReplayReader
                 checkBoxDisplayReplaySideBar.Checked = this.hotsReplayWebReader.Init.config.DisplayReplaySideBar;
                 checkBoxDisplayPingButton.Checked = this.hotsReplayWebReader.Init.config.DisplayPingButton;
                 checkBoxDisplayDraftOrder.Checked = this.hotsReplayWebReader.Init.config.DisplayDraftOrder;
+                switch (this.hotsReplayWebReader.Init.config.DarkMode)
+                {
+                    case Config.DarkModeType.Automatic:
+                        radioButtonDarkModeAutomatic.Checked = true;
+                        break;
+                    case Config.DarkModeType.Light:
+                        radioButtonDarkModeLight.Checked = true;
+                        break;
+                    case Config.DarkModeType.Dark:
+                        radioButtonDarkModeDark.Checked = true;
+                        break;
+                }
             }
         }
         private void DeepLLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -57,11 +69,20 @@ namespace HotsReplayReader
                 this.hotsReplayWebReader.Init.config.DisplayReplaySideBar = checkBoxDisplayReplaySideBar.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayPingButton = checkBoxDisplayPingButton.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayDraftOrder = checkBoxDisplayDraftOrder.Checked;
+
+                if (radioButtonDarkModeLight.Checked)
+                    this.hotsReplayWebReader.Init.config.DarkMode = Config.DarkModeType.Light;
+                else if (radioButtonDarkModeDark.Checked)
+                    this.hotsReplayWebReader.Init.config.DarkMode = Config.DarkModeType.Dark;
+                else if (radioButtonDarkModeAutomatic.Checked)
+                    this.hotsReplayWebReader.Init.config.DarkMode = Config.DarkModeType.Automatic;
             }
 
             DeepLTranslator translator = new(deepLTextBox.Text);
             if (translator != null)
                 hotsReplayWebReader.DeepLAPIValid = await translator.CheckApiKeyValidity();
+
+            this.hotsReplayWebReader.ApplyTheme();
 
             // Recharge le dernier replay
             hotsReplayWebReader.ListBoxHotsReplays_SelectedIndexChanged(hotsReplayWebReader, EventArgs.Empty);
@@ -83,16 +104,15 @@ namespace HotsReplayReader
         {
             base.OnHandleCreated(e);
 
-            int useDarkMode = ((int?)Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", -1) == 0) ? 1 : 0;
-
-            // Try latest first
-            if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int)) != 0)
+            const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+            const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
+            if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref this.hotsReplayWebReader.useDarkMode, sizeof(int)) != 0)
             {
                 // Fallback for older Windows 10 builds
-                NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref useDarkMode, sizeof(int));
+                NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref this.hotsReplayWebReader.useDarkMode, sizeof(int));
             }
 
-            if (useDarkMode == 1)
+            if (this.hotsReplayWebReader.useDarkMode == 1)
             {
                 this.BackColor = Color.FromArgb(32, 32, 32);
                 this.ForeColor = Color.White;
@@ -102,6 +122,7 @@ namespace HotsReplayReader
                 deepLTextBox.ForeColor = Color.White;
 
                 groupBoxDisplay.ForeColor = Color.White;
+                groupBoxDarkMode.ForeColor = Color.White;
 
                 Color buttonBackColor = Color.FromArgb(51, 51, 51);
                 Color buttonBorderColor = Color.FromArgb(139, 139, 139);

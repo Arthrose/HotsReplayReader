@@ -378,6 +378,9 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>不再詢問</value>
   </data>
+  <data name="strMenuOptions" xml:space="preserve">
+    <value>選項</value>
+  </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>快取已清除</value>
   </data>

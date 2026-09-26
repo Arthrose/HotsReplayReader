@@ -206,7 +206,7 @@ tr {
   overflow-y: auto;
   text-align: left;
   margin: 0 auto;
-  background-color: #505050;
+  background-color: #39393b;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px 20px 20px 20px;
@@ -249,7 +249,7 @@ tr {
   text-align: center;
   margin: 10px -20px 0px -20px;
   padding: 6px 20px 10px 20px;
-  background-color: #505050;
+  background-color: #39393b;
 }
 .toggle-pings-btn {
   display: inline-block;

@@ -378,6 +378,9 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>Ne plus demander</value>
   </data>
+  <data name="strMenuOptions" xml:space="preserve">
+    <value>Options</value>
+  </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>Le cache a été vidé.</value>
   </data>

@@ -378,6 +378,9 @@
   <data name="btnDontAsk" xml:space="preserve">
     <value>Больше не спрашивать</value>
   </data>
+  <data name="strMenuOptions" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
   <data name="strCacheCleared" xml:space="preserve">
     <value>Кэш очищен.</value>
   </data>

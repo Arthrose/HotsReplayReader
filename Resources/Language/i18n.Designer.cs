@@ -520,6 +520,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        internal static string strMenuOptions {
+            get {
+                return ResourceManager.GetString("strMenuOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source.
         /// </summary>
         internal static string strMenuSource {

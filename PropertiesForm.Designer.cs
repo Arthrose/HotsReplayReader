@@ -35,12 +35,17 @@
             deepLTextBox = new TextBox();
             testButton = new Button();
             groupBoxDisplay = new GroupBox();
+            checkBoxDisplayGameMode = new CheckBox();
+            checkBoxDisplayDate = new CheckBox();
             checkBoxDisplayDraftOrder = new CheckBox();
             checkBoxDisplayPingButton = new CheckBox();
             checkBoxDisplayReplaySideBar = new CheckBox();
-            checkBoxDisplayDate = new CheckBox();
-            checkBoxDisplayGameMode = new CheckBox();
+            groupBoxDarkMode = new GroupBox();
+            radioButtonDarkModeAutomatic = new RadioButton();
+            radioButtonDarkModeDark = new RadioButton();
+            radioButtonDarkModeLight = new RadioButton();
             groupBoxDisplay.SuspendLayout();
+            groupBoxDarkMode.SuspendLayout();
             SuspendLayout();
             // 
             // deepLLabel
@@ -55,7 +60,7 @@
             // deepLLinkLabel
             // 
             deepLLinkLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            deepLLinkLabel.Location = new Point(139, 9);
+            deepLLinkLabel.Location = new Point(189, 9);
             deepLLinkLabel.Name = "deepLLinkLabel";
             deepLLinkLabel.Size = new Size(200, 15);
             deepLLinkLabel.TabIndex = 4;
@@ -66,7 +71,7 @@
             // 
             // OKButton
             // 
-            OKButton.Location = new Point(264, 209);
+            OKButton.Location = new Point(314, 184);
             OKButton.Name = "OKButton";
             OKButton.Size = new Size(75, 23);
             OKButton.TabIndex = 1;
@@ -79,12 +84,12 @@
             deepLTextBox.BorderStyle = BorderStyle.FixedSingle;
             deepLTextBox.Location = new Point(12, 27);
             deepLTextBox.Name = "deepLTextBox";
-            deepLTextBox.Size = new Size(246, 23);
+            deepLTextBox.Size = new Size(297, 23);
             deepLTextBox.TabIndex = 2;
             // 
             // testButton
             // 
-            testButton.Location = new Point(264, 27);
+            testButton.Location = new Point(314, 27);
             testButton.Name = "testButton";
             testButton.Size = new Size(75, 23);
             testButton.TabIndex = 3;
@@ -99,12 +104,32 @@
             groupBoxDisplay.Controls.Add(checkBoxDisplayDraftOrder);
             groupBoxDisplay.Controls.Add(checkBoxDisplayPingButton);
             groupBoxDisplay.Controls.Add(checkBoxDisplayReplaySideBar);
-            groupBoxDisplay.Location = new Point(12, 56);
+            groupBoxDisplay.Location = new Point(18, 60);
             groupBoxDisplay.Name = "groupBoxDisplay";
-            groupBoxDisplay.Size = new Size(327, 147);
+            groupBoxDisplay.Size = new Size(194, 147);
             groupBoxDisplay.TabIndex = 5;
             groupBoxDisplay.TabStop = false;
             groupBoxDisplay.Text = "Display";
+            // 
+            // checkBoxDisplayGameMode
+            // 
+            checkBoxDisplayGameMode.AutoSize = true;
+            checkBoxDisplayGameMode.Location = new Point(15, 22);
+            checkBoxDisplayGameMode.Name = "checkBoxDisplayGameMode";
+            checkBoxDisplayGameMode.Size = new Size(91, 19);
+            checkBoxDisplayGameMode.TabIndex = 4;
+            checkBoxDisplayGameMode.Text = "Game mode";
+            checkBoxDisplayGameMode.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDisplayDate
+            // 
+            checkBoxDisplayDate.AutoSize = true;
+            checkBoxDisplayDate.Location = new Point(15, 47);
+            checkBoxDisplayDate.Name = "checkBoxDisplayDate";
+            checkBoxDisplayDate.Size = new Size(50, 19);
+            checkBoxDisplayDate.TabIndex = 3;
+            checkBoxDisplayDate.Text = "Date";
+            checkBoxDisplayDate.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisplayDraftOrder
             // 
@@ -136,31 +161,57 @@
             checkBoxDisplayReplaySideBar.Text = "Replay sidebar";
             checkBoxDisplayReplaySideBar.UseVisualStyleBackColor = true;
             // 
-            // checkBoxDisplayDate
+            // groupBoxDarkMode
             // 
-            checkBoxDisplayDate.AutoSize = true;
-            checkBoxDisplayDate.Location = new Point(15, 47);
-            checkBoxDisplayDate.Name = "checkBoxDisplayDate";
-            checkBoxDisplayDate.Size = new Size(50, 19);
-            checkBoxDisplayDate.TabIndex = 3;
-            checkBoxDisplayDate.Text = "Date";
-            checkBoxDisplayDate.UseVisualStyleBackColor = true;
+            groupBoxDarkMode.Controls.Add(radioButtonDarkModeAutomatic);
+            groupBoxDarkMode.Controls.Add(radioButtonDarkModeDark);
+            groupBoxDarkMode.Controls.Add(radioButtonDarkModeLight);
+            groupBoxDarkMode.Location = new Point(218, 60);
+            groupBoxDarkMode.Name = "groupBoxDarkMode";
+            groupBoxDarkMode.Size = new Size(172, 116);
+            groupBoxDarkMode.TabIndex = 6;
+            groupBoxDarkMode.TabStop = false;
+            groupBoxDarkMode.Text = "Dark Mode";
             // 
-            // checkBoxDisplayGameMode
+            // radioButtonDarkModeAutomatic
             // 
-            checkBoxDisplayGameMode.AutoSize = true;
-            checkBoxDisplayGameMode.Location = new Point(15, 22);
-            checkBoxDisplayGameMode.Name = "checkBoxDisplayGameMode";
-            checkBoxDisplayGameMode.Size = new Size(91, 19);
-            checkBoxDisplayGameMode.TabIndex = 4;
-            checkBoxDisplayGameMode.Text = "Game mode";
-            checkBoxDisplayGameMode.UseVisualStyleBackColor = true;
+            radioButtonDarkModeAutomatic.AutoSize = true;
+            radioButtonDarkModeAutomatic.Location = new Point(16, 71);
+            radioButtonDarkModeAutomatic.Name = "radioButtonDarkModeAutomatic";
+            radioButtonDarkModeAutomatic.Size = new Size(81, 19);
+            radioButtonDarkModeAutomatic.TabIndex = 2;
+            radioButtonDarkModeAutomatic.TabStop = true;
+            radioButtonDarkModeAutomatic.Text = "Automatic";
+            radioButtonDarkModeAutomatic.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonDarkModeDark
+            // 
+            radioButtonDarkModeDark.AutoSize = true;
+            radioButtonDarkModeDark.Location = new Point(16, 47);
+            radioButtonDarkModeDark.Name = "radioButtonDarkModeDark";
+            radioButtonDarkModeDark.Size = new Size(83, 19);
+            radioButtonDarkModeDark.TabIndex = 1;
+            radioButtonDarkModeDark.TabStop = true;
+            radioButtonDarkModeDark.Text = "Dark mode";
+            radioButtonDarkModeDark.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonDarkModeLight
+            // 
+            radioButtonDarkModeLight.AutoSize = true;
+            radioButtonDarkModeLight.Location = new Point(16, 22);
+            radioButtonDarkModeLight.Name = "radioButtonDarkModeLight";
+            radioButtonDarkModeLight.Size = new Size(86, 19);
+            radioButtonDarkModeLight.TabIndex = 0;
+            radioButtonDarkModeLight.TabStop = true;
+            radioButtonDarkModeLight.Text = "Light mode";
+            radioButtonDarkModeLight.UseVisualStyleBackColor = true;
             // 
             // PropertiesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(351, 241);
+            ClientSize = new Size(401, 218);
+            Controls.Add(groupBoxDarkMode);
             Controls.Add(groupBoxDisplay);
             Controls.Add(testButton);
             Controls.Add(deepLTextBox);
@@ -178,6 +229,8 @@
             KeyDown += PropertiesForm_KeyDown;
             groupBoxDisplay.ResumeLayout(false);
             groupBoxDisplay.PerformLayout();
+            groupBoxDarkMode.ResumeLayout(false);
+            groupBoxDarkMode.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -195,5 +248,9 @@
         private CheckBox checkBoxDisplayDraftOrder;
         private CheckBox checkBoxDisplayGameMode;
         private CheckBox checkBoxDisplayDate;
+        private GroupBox groupBoxDarkMode;
+        private RadioButton radioButtonDarkModeAutomatic;
+        private RadioButton radioButtonDarkModeDark;
+        private RadioButton radioButtonDarkModeLight;
     }
 }
