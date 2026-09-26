@@ -19,13 +19,23 @@ namespace HotsReplayReader
             deepLLabel.Text = Resources.Language.i18n.strPropertiesDeepLAPIKey;
             deepLLinkLabel.Text = Resources.Language.i18n.strPropertiesVisitDeepLWebsite;
             testButton.Text = Resources.Language.i18n.strPropertiesTest;
+            groupBoxDisplay.Text = Resources.Language.i18n.strPropertiesDisplay;
+            checkBoxDisplayGameMode.Text = Resources.Language.i18n.strPropertiesDisplayGameMode;
+            checkBoxDisplayDate.Text = Resources.Language.i18n.strPropertiesDisplayDate;
+            checkBoxDisplayReplaySideBar.Text = Resources.Language.i18n.strPropertiesDisplayReplaySidebar;
+            checkBoxDisplayPingButton.Text = Resources.Language.i18n.strPropertiesDisplayPingButton;
+            checkBoxDisplayDraftOrder.Text = Resources.Language.i18n.strPropertiesDisplayDraftOrder;
+
             OKButton.Text = Resources.Language.i18n.strPropertiesOK;
 
             if (this.hotsReplayWebReader.Init.config != null)
             {
                 deepLTextBox.Text = this.hotsReplayWebReader.Init.config.DeepLAPIKey;
+                checkBoxDisplayGameMode.Checked = this.hotsReplayWebReader.Init.config.DisplayGameMode;
+                checkBoxDisplayDate.Checked = this.hotsReplayWebReader.Init.config.DisplayDate;
                 checkBoxDisplayReplaySideBar.Checked = this.hotsReplayWebReader.Init.config.DisplayReplaySideBar;
                 checkBoxDisplayPingButton.Checked = this.hotsReplayWebReader.Init.config.DisplayPingButton;
+                checkBoxDisplayDraftOrder.Checked = this.hotsReplayWebReader.Init.config.DisplayDraftOrder;
             }
         }
         private void DeepLLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -42,8 +52,11 @@ namespace HotsReplayReader
             if (this.hotsReplayWebReader.Init.config != null)
             {
                 hotsReplayWebReader.Init.config.DeepLAPIKey = deepLTextBox.Text;
+                this.hotsReplayWebReader.Init.config.DisplayGameMode = checkBoxDisplayGameMode.Checked;
+                this.hotsReplayWebReader.Init.config.DisplayDate = checkBoxDisplayDate.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayReplaySideBar = checkBoxDisplayReplaySideBar.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayPingButton = checkBoxDisplayPingButton.Checked;
+                this.hotsReplayWebReader.Init.config.DisplayDraftOrder = checkBoxDisplayDraftOrder.Checked;
             }
 
             DeepLTranslator translator = new(deepLTextBox.Text);

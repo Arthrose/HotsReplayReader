@@ -17,5 +17,6 @@
         public int TotalKills { get; set; } = 0;
         public int TotalDeath { get; set; } = 0;
         public bool IsWinner { get; set; } = false;
+        public bool IsOwner { get; set; } = false;
     }
 }

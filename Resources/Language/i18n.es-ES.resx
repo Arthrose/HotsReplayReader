@@ -396,4 +396,22 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>Ocultar pings</value>
   </data>
+  <data name="strPropertiesDisplay" xml:space="preserve">
+    <value>Visualización</value>
+  </data>
+  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+    <value>Barra lateral de repetición</value>
+  </data>
+  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+    <value>Botón de ping</value>
+  </data>
+  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+    <value>Orden de draft</value>
+  </data>
+  <data name="strPropertiesDisplayDate" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+    <value>Modo de juego</value>
+  </data>
 </root>

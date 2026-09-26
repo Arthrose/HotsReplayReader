@@ -396,4 +396,22 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>Скрыть пинги</value>
   </data>
+  <data name="strPropertiesDisplay" xml:space="preserve">
+    <value>Отображение</value>
+  </data>
+  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+    <value>Боковая панель повтора</value>
+  </data>
+  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+    <value>Кнопка пинга</value>
+  </data>
+  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+    <value>Порядок драфта</value>
+  </data>
+  <data name="strPropertiesDisplayDate" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+    <value>Режим игры</value>
+  </data>
 </root>

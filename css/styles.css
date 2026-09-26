@@ -37,27 +37,12 @@ tr {
 .parentDiv {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto; /* centers the div horizontally */
+  margin: 0 auto;
   box-sizing: border-box;
-  border:10px; /* solid white; */
 }
 .headTableTd {
   padding: 5px;
 }
-/*
-.titleBlueTeam {
-  color: deepskyblue;
-  font-size: 200%;
-  font-weight: bold;
-  font-family: Calibri;
-}
-.titleRedTeam {
-  color: crimson;
-  font-size: 200%;
-  font-weight: bold;
-  font-family: Calibri;
-}
-*/
 .titleBlue {
   color: deepskyblue;
   font-size: 300%;
@@ -104,23 +89,6 @@ tr {
   font-family: Calibri;
   line-height: 250%;
 }
-/*
-.heroIconTeam0 {
-  box-shadow: 0px 0px 4px 4px gainsboro;
-}
-.heroIconTeam1 {
-  box-shadow: 0px 0px 4px 4px crimson;
-}
-.heroIconTeam2 {
-  box-shadow: 0px 0px 4px 4px deepskyblue;
-}
-.heroIconTeam3 {
-  box-shadow: 0px 0px 4px 3px green;
-}
-.heroIconTeam4 {
-  box-shadow: 0px 0px 4px 4px goldenrod;
-}
-*/
 .team1 {
   color: #ff004b;
 }
@@ -241,7 +209,10 @@ tr {
   background-color: #505050;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 20px 20px;
+}
+.chat-container.has-pings-btn {
+  padding-bottom: 0;
 }
 .chat-container:focus {
   outline: none;

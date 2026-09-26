@@ -396,4 +396,22 @@
   <data name="strPingsHide" xml:space="preserve">
     <value>Nascondi ping</value>
   </data>
+  <data name="strPropertiesDisplay" xml:space="preserve">
+    <value>Visualizzazione</value>
+  </data>
+  <data name="strPropertiesDisplayReplaySidebar" xml:space="preserve">
+    <value>Barra laterale del replay</value>
+  </data>
+  <data name="strPropertiesDisplayPingButton" xml:space="preserve">
+    <value>Pulsante ping</value>
+  </data>
+  <data name="strPropertiesDisplayDraftOrder" xml:space="preserve">
+    <value>Ordine del draft</value>
+  </data>
+  <data name="strPropertiesDisplayDate" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="strPropertiesDisplayGameMode" xml:space="preserve">
+    <value>Modalità di gioco</value>
+  </data>
 </root>

@@ -35,8 +35,11 @@
             deepLTextBox = new TextBox();
             testButton = new Button();
             groupBoxDisplay = new GroupBox();
-            checkBoxDisplayReplaySideBar = new CheckBox();
+            checkBoxDisplayDraftOrder = new CheckBox();
             checkBoxDisplayPingButton = new CheckBox();
+            checkBoxDisplayReplaySideBar = new CheckBox();
+            checkBoxDisplayDate = new CheckBox();
+            checkBoxDisplayGameMode = new CheckBox();
             groupBoxDisplay.SuspendLayout();
             SuspendLayout();
             // 
@@ -63,7 +66,7 @@
             // 
             // OKButton
             // 
-            OKButton.Location = new Point(264, 142);
+            OKButton.Location = new Point(264, 209);
             OKButton.Name = "OKButton";
             OKButton.Size = new Size(75, 23);
             OKButton.TabIndex = 1;
@@ -91,40 +94,73 @@
             // 
             // groupBoxDisplay
             // 
+            groupBoxDisplay.Controls.Add(checkBoxDisplayGameMode);
+            groupBoxDisplay.Controls.Add(checkBoxDisplayDate);
+            groupBoxDisplay.Controls.Add(checkBoxDisplayDraftOrder);
             groupBoxDisplay.Controls.Add(checkBoxDisplayPingButton);
             groupBoxDisplay.Controls.Add(checkBoxDisplayReplaySideBar);
             groupBoxDisplay.Location = new Point(12, 56);
             groupBoxDisplay.Name = "groupBoxDisplay";
-            groupBoxDisplay.Size = new Size(327, 80);
+            groupBoxDisplay.Size = new Size(327, 147);
             groupBoxDisplay.TabIndex = 5;
             groupBoxDisplay.TabStop = false;
             groupBoxDisplay.Text = "Display";
             // 
-            // checkBoxDisplayReplaySideBar
+            // checkBoxDisplayDraftOrder
             // 
-            checkBoxDisplayReplaySideBar.AutoSize = true;
-            checkBoxDisplayReplaySideBar.Location = new Point(15, 22);
-            checkBoxDisplayReplaySideBar.Name = "checkBoxDisplayReplaySideBar";
-            checkBoxDisplayReplaySideBar.Size = new Size(103, 19);
-            checkBoxDisplayReplaySideBar.TabIndex = 0;
-            checkBoxDisplayReplaySideBar.Text = "Replay Sidebar";
-            checkBoxDisplayReplaySideBar.UseVisualStyleBackColor = true;
+            checkBoxDisplayDraftOrder.AutoSize = true;
+            checkBoxDisplayDraftOrder.Location = new Point(15, 122);
+            checkBoxDisplayDraftOrder.Name = "checkBoxDisplayDraftOrder";
+            checkBoxDisplayDraftOrder.Size = new Size(83, 19);
+            checkBoxDisplayDraftOrder.TabIndex = 2;
+            checkBoxDisplayDraftOrder.Text = "Draft order";
+            checkBoxDisplayDraftOrder.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisplayPingButton
             // 
             checkBoxDisplayPingButton.AutoSize = true;
-            checkBoxDisplayPingButton.Location = new Point(15, 47);
+            checkBoxDisplayPingButton.Location = new Point(15, 97);
             checkBoxDisplayPingButton.Name = "checkBoxDisplayPingButton";
             checkBoxDisplayPingButton.Size = new Size(89, 19);
             checkBoxDisplayPingButton.TabIndex = 1;
-            checkBoxDisplayPingButton.Text = "Ping Button";
+            checkBoxDisplayPingButton.Text = "Ping button";
             checkBoxDisplayPingButton.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDisplayReplaySideBar
+            // 
+            checkBoxDisplayReplaySideBar.AutoSize = true;
+            checkBoxDisplayReplaySideBar.Location = new Point(15, 72);
+            checkBoxDisplayReplaySideBar.Name = "checkBoxDisplayReplaySideBar";
+            checkBoxDisplayReplaySideBar.Size = new Size(102, 19);
+            checkBoxDisplayReplaySideBar.TabIndex = 0;
+            checkBoxDisplayReplaySideBar.Text = "Replay sidebar";
+            checkBoxDisplayReplaySideBar.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDisplayDate
+            // 
+            checkBoxDisplayDate.AutoSize = true;
+            checkBoxDisplayDate.Location = new Point(15, 47);
+            checkBoxDisplayDate.Name = "checkBoxDisplayDate";
+            checkBoxDisplayDate.Size = new Size(50, 19);
+            checkBoxDisplayDate.TabIndex = 3;
+            checkBoxDisplayDate.Text = "Date";
+            checkBoxDisplayDate.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDisplayGameMode
+            // 
+            checkBoxDisplayGameMode.AutoSize = true;
+            checkBoxDisplayGameMode.Location = new Point(15, 22);
+            checkBoxDisplayGameMode.Name = "checkBoxDisplayGameMode";
+            checkBoxDisplayGameMode.Size = new Size(91, 19);
+            checkBoxDisplayGameMode.TabIndex = 4;
+            checkBoxDisplayGameMode.Text = "Game mode";
+            checkBoxDisplayGameMode.UseVisualStyleBackColor = true;
             // 
             // PropertiesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(351, 175);
+            ClientSize = new Size(351, 241);
             Controls.Add(groupBoxDisplay);
             Controls.Add(testButton);
             Controls.Add(deepLTextBox);
@@ -156,5 +192,8 @@
         private GroupBox groupBoxDisplay;
         private CheckBox checkBoxDisplayReplaySideBar;
         private CheckBox checkBoxDisplayPingButton;
+        private CheckBox checkBoxDisplayDraftOrder;
+        private CheckBox checkBoxDisplayGameMode;
+        private CheckBox checkBoxDisplayDate;
     }
 }

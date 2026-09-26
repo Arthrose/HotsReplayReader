@@ -108,15 +108,9 @@ namespace HotsReplayReader
             Directory.CreateDirectory(tempDataFolder);
             File.WriteAllBytes(webViewDllPath, webViewDllBytes);
 
-            if (Init.config!.LangCode != null && LangCodeList.Contains(Init.config.LangCode))
-            {
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
-            }
-            else
-            {
+            if (Init.config!.LangCode is null || !LangCodeList.Contains(Init.config.LangCode))
                 Init.config.LangCode = defaultLangCode;
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config.LangCode);
-            }
+            SetApplicationLanguage(Init.config.LangCode);
 
             InitializeComponent();
 
@@ -615,7 +609,7 @@ namespace HotsReplayReader
             if (sender is ToolStripMenuItem clickedItem)
             {
                 Init.config!.LangCode = clickedItem.Tag?.ToString()!;
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Init.config!.LangCode);
+                SetApplicationLanguage(Init.config.LangCode);
             }
 
             foreach (ToolStripItem item in languageToolStripMenuItem.DropDownItems)
@@ -657,6 +651,15 @@ namespace HotsReplayReader
                 ListBoxHotsReplays_SelectedIndexChanged(listBoxHotsReplays, EventArgs.Empty);
             }
         }
+        public static void SetApplicationLanguage(string langCode)
+        {
+            CultureInfo? culture = new(langCode);
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+        }
         private void ListHotsReplays(string? path)
         {
             hotsReplayFolder = path;
@@ -696,7 +699,7 @@ namespace HotsReplayReader
         {
             string css = System.Text.Encoding.UTF8.GetString(Resources.HotsResources.styles);
 
-            string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#001100" : "#110000";
+            string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#000011" : "#110000";
             string bgImg = $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}";
 
 
@@ -778,9 +781,10 @@ namespace HotsReplayReader
         internal string HTMLGetHeadTable()
         {
             if (blueTeam == null || redTeam == null || hotsReplay == null) return "";
-            string isBlueTeamWinner = blueTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
-            string isRedTeamWinner = redTeam.IsWinner ? Resources.Language.i18n.ResourceManager.GetString("strWinners")! : "&nbsp;";
-            string winnerTeamClass = blueTeam.IsWinner ? "titleBlue" : "titleRed";
+
+            string isBlueTeamWinner = blueTeam.IsWinner ? Resources.Language.i18n.strWinners : "&nbsp;";
+            string isRedTeamWinner = redTeam.IsWinner ? Resources.Language.i18n.strWinners : "&nbsp;";
+            string winnerTeamClass = (blueTeam.IsWinner && blueTeam.IsOwner) || (redTeam.IsWinner && redTeam.IsOwner) ? "titleBlue" : "titleRed";
 
             string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}") ?? hotsReplay?.stormReplay?.MapInfo.MapName;
 
@@ -788,7 +792,7 @@ namespace HotsReplayReader
             switch (hotsReplay!.stormReplay!.GameMode)
             {
                 case StormGameMode.Cooperative: // AI
-                    gameMode = "Versus AI";
+                    gameMode = "Versus A.I.";
                     break;
                 case StormGameMode.QuickMatch:
                     gameMode = "Quick Match";
@@ -812,15 +816,14 @@ namespace HotsReplayReader
                     gameMode = "ARAM";
                     break;
                 case StormGameMode.Custom:
-                    gameMode = "Custom";
+                    gameMode = "Custom Games";
                     break;
                 default:
                     gameMode = "";
                     break;
             }
-            //MessageBox.Show(stormGameMode.ToString());
 
-            string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#001100" : "#110000";
+            string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#000011" : "#110000";
 
             string html = $"<div class=\"head-container\" style=\"background-color: {bgColor};\">\n  <table>\n";
 
@@ -837,28 +840,30 @@ namespace HotsReplayReader
 
             html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}";
 
-            if (gameMode != "") html += $"<br><span style=\"font-size: 66%\">{gameMode}</span>";
+            if (gameMode != "" && (Init.config is null || Init.config.DisplayGameMode))
+                html += $"<br><span style=\"font-size: 66%; color: white;\">{gameMode}</span>";
+            if (Init.config is null || Init.config.DisplayDate)
+                html += $"<br><span style=\"font-size: 40%; color: darkgrey;\">{hotsReplay!.stormReplay!.Timestamp.ToString("f", Thread.CurrentThread.CurrentCulture)}</span>";
+
 
             html += $@"</td></tr>
     <tr>
-      <td colspan=""5"" class=""titleBlue"">{isBlueTeamWinner}</td>
+      <td colspan=""5"" class=""{winnerTeamClass}"">{isBlueTeamWinner}</td>
       <td></td>
-      <td colspan=""5"" class=""titleRed"">{isRedTeamWinner}</td>
+      <td colspan=""5"" class=""{winnerTeamClass}"">{isRedTeamWinner}</td>
     </tr>
     <tr>
 ";
 
             if (hotsPlayers != null)
-                foreach (HotsPlayer hotsPlayer in hotsPlayers)
-                    if (hotsPlayer.Team.ToString() == "Blue")
-                        html += HTMLGetHeadTableCell(hotsPlayer);
+                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
+                    html += HTMLGetHeadTableCell(hotsPlayer);
 
             html += "      <td width=\"100\"></td>\n";
 
             if (hotsPlayers != null)
-                foreach (HotsPlayer hotsPlayer in hotsPlayers)
-                    if (hotsPlayer.Team.ToString() == "Red")
-                        html += HTMLGetHeadTableCell(hotsPlayer);
+                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
+                    html += HTMLGetHeadTableCell(hotsPlayer);
 
             string replayLength;
             if (hotsReplay?.stormReplay?.ReplayLength.Hours == 0)
@@ -878,10 +883,7 @@ namespace HotsReplayReader
                     {
                         bannedOrder++;
                         if (draftPick.Team == StormTeam.Blue)
-                            if (draftPick.HeroSelected == "NONE")
-                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></span></td>\n";
-                            else
-                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></span></td>\n";
+                            html += HTMLGetBannedPortaitImg(draftPick.HeroSelected, bannedOrder);
                     }
                 html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 bannedOrder = 0;
@@ -890,10 +892,7 @@ namespace HotsReplayReader
                     {
                         bannedOrder++;
                         if (draftPick.Team == StormTeam.Red)
-                            if (draftPick.HeroSelected == "NONE")
-                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://hotsResources/NONE.png\" class=\"bannedHeroIcon\"></span></td>\n";
-                            else
-                                html += $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\" data-order=\"{bannedOrder}\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[draftPick.HeroSelected].Portraits!.HeroSelect}\" class=\"bannedHeroIcon\"></span></td>\n";
+                            html += HTMLGetBannedPortaitImg(draftPick.HeroSelected, bannedOrder);
                     }
                 html += "      <td>&nbsp;</td>\n    </tr>\n";
             }
@@ -917,6 +916,21 @@ namespace HotsReplayReader
 ";
             return html;
         }
+        internal string HTMLGetBannedPortaitImg(string bannedHero, int bannedOrder)
+        {
+            string imgSrc;
+            string dataOrder = string.Empty;
+
+            if (bannedHero == "NONE")
+                imgSrc = "app://hotsResources/NONE.png";
+            else
+                imgSrc = $"app://heroes-images/heroportraits/{hotsData.hotsHeroes[bannedHero].Portraits!.HeroSelect}";
+
+            if (Init.config is null || Init.config.DisplayDraftOrder == true)
+                dataOrder = $" data-order=\"{bannedOrder}\"";
+
+            return $"      <td class=\"headTableTd\"><span class=\"bannedPortrait\"{dataOrder}><img src=\"{imgSrc}\" class=\"bannedHeroIcon\"></span></td>\n";
+        }
         internal string HTMLGetHeadTableCell(HotsPlayer hotsPlayer)
         {
             if (hotsPlayer == null || hotsPlayer.PlayerHero == null || hotsPlayer.MatchAwards == null) return "";
@@ -935,7 +949,7 @@ namespace HotsReplayReader
             html += $"      <td class=\"headTableTd\">\n";
             html += "        <span class=\"tooltip\">\n";
 
-            string dataOrder = (hotsPlayer.DraftOrder is not null) ? $" data-order=\"{hotsPlayer.DraftOrder}\"" : "";
+            string dataOrder = (hotsPlayer.DraftOrder is not null && (Init.config is null || Init.config.DisplayDraftOrder)) ? $" data-order=\"{hotsPlayer.DraftOrder}\"" : "";
 
             html += $"          <span class=\"heroPortrait\"{dataOrder}>\n";
 
@@ -1147,10 +1161,11 @@ namespace HotsReplayReader
             {
                 bool lastMessageAfterAnHour = Convert.ToInt32(hotsMessages.Last().Hours) > 0;
 
+                string hasPingButton = (Init.config is not null && Init.config.DisplayPingButton) ? " has-pings-btn" : "";
                 string chatcontainermaxheight = (Init.config is not null && Init.config.DisplayPingButton) ? "420" : "400";
 
                 string html = $@"";
-                html += $"<div class=\"chat-container\" style=\"max-height: {chatcontainermaxheight}px;\" tabindex=\"-1\">\n";
+                html += $"<div class=\"chat-container{hasPingButton}\" style=\"max-height: {chatcontainermaxheight}px;\" tabindex=\"-1\">\n";
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
@@ -1258,14 +1273,30 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
-            chatMessage = chatMessage.Replace(":@", ":nexusangry:")
-                                     .Replace("B)", ":nexuscool:")
-                                     .Replace("b)", ":nexuscool:")
-                                     .Replace("^^;", ":nexusoops:")
-                                     .Replace(":)", ":nexushappy:")
-                                     .Replace(":*", ":nexuslove:")
-                                     .Replace(":(", ":nexussad:")
-                                     .Replace(":|", ":nexusmeh:");
+            chatMessage = chatMessage.Replace(":@"     ,       ":nexusangry:")
+                                     .Replace(":angry:",       ":nexusangry:")
+                                     .Replace("B)",            ":nexuscool:")
+                                     .Replace("b)",            ":nexuscool:")
+                                     .Replace(":cool:",        ":nexuscool:")
+                                     .Replace("^^;",           ":nexusoops:")
+                                     .Replace(":oops:",        ":nexusoops:")
+                                     .Replace(":embarrassed:", ":nexusoops:")
+                                     .Replace(":)",            ":nexushappy:")
+                                     .Replace(":happy:",       ":nexushappy:")
+                                     .Replace(":*",            ":nexuslove:")
+                                     .Replace(":love:",        ":nexuslove:")
+                                     .Replace(":inlove:",      ":nexuslove:")
+                                     .Replace(":(",            ":nexussad:")
+                                     .Replace(":sad:",         ":nexussad:")
+                                     .Replace(":|",            ":nexusmeh:")
+                                     .Replace(":meh:",         ":nexusmeh:")
+                                     .Replace(":speechless:",  ":nexusmeh:")
+                                     .Replace(":lol:",         ":nexuslol:")
+                                     .Replace(":rofl:",        ":nexuslol:")
+                                     .Replace(":silly:",       ":nexussilly:")
+                                     .Replace(":wow:",         ":nexuswow:")
+                                     .Replace(":surprised:",   ":nexuswow:");
+
             chatMessage = MyRegexEmoticonLol().Replace(chatMessage, ":nexuslol:");
             chatMessage = MyRegexEmoticonSilly().Replace(chatMessage, ":nexussilly:");
             chatMessage = MyRegexEmoticonLolWow().Replace(chatMessage, ":nexuswow:");
@@ -2143,6 +2174,10 @@ namespace HotsReplayReader
 
             foreach (StormPlayer stormPlayer in hotsReplay.stormPlayers)
             {
+                if (hotsReplay.stormReplay.Owner == stormPlayer)
+                    if (stormPlayer.Team.ToString() == team.Name)
+                        team.IsOwner = true;
+
                 if (stormPlayer.Team.ToString() == team.Name && stormPlayer.ScoreResult != null && stormPlayer.PlayerHero != null)
                 {
                     if (stormPlayer.ScoreResult.SoloKills >= team.MaxKills)

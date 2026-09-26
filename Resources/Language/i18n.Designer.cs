@@ -601,6 +601,60 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display.
+        /// </summary>
+        internal static string strPropertiesDisplay {
+            get {
+                return ResourceManager.GetString("strPropertiesDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string strPropertiesDisplayDate {
+            get {
+                return ResourceManager.GetString("strPropertiesDisplayDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draft order.
+        /// </summary>
+        internal static string strPropertiesDisplayDraftOrder {
+            get {
+                return ResourceManager.GetString("strPropertiesDisplayDraftOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game mode.
+        /// </summary>
+        internal static string strPropertiesDisplayGameMode {
+            get {
+                return ResourceManager.GetString("strPropertiesDisplayGameMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ping button.
+        /// </summary>
+        internal static string strPropertiesDisplayPingButton {
+            get {
+                return ResourceManager.GetString("strPropertiesDisplayPingButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replay sidebar.
+        /// </summary>
+        internal static string strPropertiesDisplayReplaySidebar {
+            get {
+                return ResourceManager.GetString("strPropertiesDisplayReplaySidebar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid API key..
         /// </summary>
         internal static string strPropertiesInvalidAPIKey {
