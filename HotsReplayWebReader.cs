@@ -1321,32 +1321,13 @@ namespace HotsReplayReader
         }
         internal string HTMLGetChatMessageEmoticon(string chatMessage)
         {
-            chatMessage = chatMessage.Replace(":@"     ,       ":nexusangry:")
-                                     .Replace(":angry:",       ":nexusangry:")
-                                     .Replace("B)",            ":nexuscool:")
-                                     .Replace(":cool:",        ":nexuscool:")
-                                     .Replace("^^;",           ":nexusoops:")
-                                     .Replace(":oops:",        ":nexusoops:")
-                                     .Replace(":embarrassed:", ":nexusoops:")
-                                     .Replace(":)",            ":nexushappy:")
-                                     .Replace(":happy:",       ":nexushappy:")
-                                     .Replace(":*",            ":nexuslove:")
-                                     .Replace(":love:",        ":nexuslove:")
-                                     .Replace(":inlove:",      ":nexuslove:")
-                                     .Replace(":(",            ":nexussad:")
-                                     .Replace(":sad:",         ":nexussad:")
-                                     .Replace(":|",            ":nexusmeh:")
-                                     .Replace(":meh:",         ":nexusmeh:")
-                                     .Replace(":speechless:",  ":nexusmeh:")
-                                     .Replace(":lol:",         ":nexuslol:")
-                                     .Replace(":rofl:",        ":nexuslol:")
-                                     .Replace(":silly:",       ":nexussilly:")
-                                     .Replace(":wow:",         ":nexuswow:")
-                                     .Replace(":surprised:",   ":nexuswow:");
-
             chatMessage = MyRegexEmoticonLol().Replace(chatMessage, ":nexuslol:");
             chatMessage = MyRegexEmoticonSilly().Replace(chatMessage, ":nexussilly:");
             chatMessage = MyRegexEmoticonLolWow().Replace(chatMessage, ":nexuswow:");
+            foreach (var (search, replacement) in CaseSensitiveEmoticonsReplacements)
+                chatMessage = chatMessage.Replace(search, replacement);
+            foreach (var (search, replacement) in CaseInsensitiveEmoticonsReplacements)
+                chatMessage = Regex.Replace(chatMessage, Regex.Escape(search), m => replacement, RegexOptions.IgnoreCase);
 
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
@@ -3302,7 +3283,34 @@ namespace HotsReplayReader
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]
         private static partial Regex MyRegexRenameReplayInList();
-
+        private static readonly Dictionary<string, string> CaseSensitiveEmoticonsReplacements = new()
+        {
+            ["B)"] = ":nexuscool:",
+        };
+        private static readonly Dictionary<string, string> CaseInsensitiveEmoticonsReplacements = new()
+        {
+            [":@"] = ":nexusangry:",
+            [":angry:"] = ":nexusangry:",
+            [":cool:"] = ":nexuscool:",
+            ["^^;"] = ":nexusoops:",
+            [":oops:"] = ":nexusoops:",
+            [":embarrassed:"] = ":nexusoops:",
+            [":)"] = ":nexushappy:",
+            [":happy:"] = ":nexushappy:",
+            [":*"] = ":nexuslove:",
+            [":love:"] = ":nexuslove:",
+            [":inlove:"] = ":nexuslove:",
+            [":("] = ":nexussad:",
+            [":sad:"] = ":nexussad:",
+            [":|"] = ":nexusmeh:",
+            [":meh:"] = ":nexusmeh:",
+            [":speechless:"] = ":nexusmeh:",
+            [":lol:"] = ":nexuslol:",
+            [":rofl:"] = ":nexuslol:",
+            [":silly:"] = ":nexussilly:",
+            [":wow:"] = ":nexuswow:",
+            [":surprised:"] = ":nexuswow:",
+        };
         // :D
         [GeneratedRegex(@":[D](?!\w*:)")]
         private static partial Regex MyRegexEmoticonLol();
