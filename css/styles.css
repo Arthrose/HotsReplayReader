@@ -1,657 +1,735 @@
+/* Base */
 body {
-  color: white;
-  margin: 0;
-  height: 100%;
-  text-align: center;
-  cursor: default;
-  user-select: none;
+    color: white;
+    margin: 0;
+    height: 100%;
+    text-align: center;
+    cursor: default;
+    user-select: none;
 }
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 50px;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  color: darkgrey;
-  font-family: Calibri, Arial, sans-serif;
-  font-size: 25px;
-  font-weight: 600;
-  letter-spacing: 16px;
-  text-transform: uppercase;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
+
 table {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
+
 tr {
-  text-align: center;
+    text-align: center;
 }
+
 .parentDiv {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  box-sizing: border-box;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
-.headTableTd {
-  padding: 5px;
+
+.nobr {
+    white-space: nowrap;
 }
-.titleBlue {
-  color: deepskyblue;
-  font-size: 300%;
-  font-weight: bold;
-  font-family: Calibri;
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    color: darkgrey;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
-.titleRed {
-  color: crimson;
-  font-size: 300%;
-  font-weight: bold;
-  font-family: Calibri;
-}
+
+/* Titles */
+.titleBlue,
+.titleRed,
 .titleWhite {
-  color: gainsboro;
-  font-size: 300%;
-  font-weight: bold;
-  font-family: Calibri;
+    font-size: 300%;
+    font-weight: bold;
+    font-family: Calibri;
 }
+
+.titleBlue {
+    color: deepskyblue;
+}
+
+.titleRed {
+    color: crimson;
+}
+
+.titleWhite {
+    color: gainsboro;
+}
+
 .teamLevel {
-  color: white;
-  font-size: 150%;
-  font-weight: bold;
-  font-family: Calibri;
+    color: white;
+    font-size: 150%;
+    font-weight: bold;
+    font-family: Calibri;
 }
+
 .owner {
-  text-decoration: underline;
+    text-decoration: underline;
 }
-.heroIcon {
-  border-radius: 100%;
-  width: 80px;
-  height: 80px;
-  cursor: pointer;
+
+/* Headers and Teams */
+.head-container {
+    overflow-y: visible;
+    text-align: left;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
 }
-.bannedHeroIcon {
-  border-radius: 100%;
-  width: 55px;
-  height: 55px;
+
+.headTableTd {
+    padding: 5px;
 }
-.heroIcon:hover, .bannedHeroIcon:hover {
-  filter: brightness(125%);
+
+.teamHeader {
+    background-color: #000000;
+    font-family: Consolas, Lucida Console, Courier New;
+    font-weight: normal;
 }
-.battleTag {
-  font-size: 100%;
-  font-family: Calibri;
-  line-height: 250%;
+
+.teamScoreHeader {
+    background-color: black;
+    font-family: Arial, sans-serif;
+    font-size: 120%;
+    font-weight: bold;
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
+
+.abilityHeaderDiv {
+    padding-bottom: 7px;
+}
+
+.abilityHeader {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.teamBlue {
+    background-color: #17203D;
+}
+
+.teamRed {
+    background-color: #300F22;
+}
+
 .team1 {
-  color: #ff004b;
+    color: #ff004b;
 }
+
 .team2 {
-  color: deepskyblue;
+    color: deepskyblue;
 }
+
 .team3 {
-  color: green;
+    color: green;
 }
+
 .team4 {
-  color: goldenrod;
+    color: goldenrod;
 }
-.heroPortrait {
-  position: relative;
-  display: inline-block;
+
+/* Players */
+.tdPlayerName {
+    text-align: left;
+    vertical-align: middle;
+    font-family: Calibri;
 }
+
+.battleTag {
+    font-size: 100%;
+    font-family: Calibri;
+    line-height: 250%;
+}
+
+.disconnected {
+    color: Red;
+    font-size: 0.75em;
+}
+
+.reconnected {
+    color: Green;
+    font-size: 0.75em;
+}
+
+/* Heroes */
+.heroIcon {
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+
+.bannedHeroIcon {
+    border-radius: 100%;
+    width: 55px;
+    height: 55px;
+}
+
+.heroIcon:hover,
+.bannedHeroIcon:hover {
+    filter: brightness(125%);
+}
+
+.heroPortrait,
+.bannedPortrait {
+    position: relative;
+    display: inline-block;
+}
+
 .heroPortrait .heroPartyIcon {
-  position: absolute;
-  bottom: 50px;
-  right: -5px;
-  width: 36px;
-  height: auto;
-  pointer-events: none;
+    position: absolute;
+    bottom: 50px;
+    right: -5px;
+    width: 36px;
+    height: auto;
+    pointer-events: none;
 }
+
 .heroPortrait .isSilenced {
-  position: absolute;
-  bottom: 70px;
-  right: 28px;
-  pointer-events: none;
+    position: absolute;
+    bottom: 70px;
+    right: 28px;
+    pointer-events: none;
 }
+
 .heroPortrait .heroAwardIcon {
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 36px;
-  height: auto;
-  pointer-events: none;
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 36px;
+    height: auto;
+    pointer-events: none;
 }
+
+/* Pick Order */
 .heroPortrait[data-order]::before,
 .bannedPortrait[data-order]::before {
-  content: attr(data-order);
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
-  font-family: Calibri, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: bold;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 15;
-  border: 1px solid rgba(255,255,255,0.4);
+    content: attr(data-order);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    font-family: Calibri, Arial, sans-serif;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .heroPortrait[data-order]::before {
-  top: 65px;
-  left: 29px;
-  width: 22px;
-  height: 22px;
-  font-size: 13px;
+    top: 65px;
+    left: 29px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
 }
+
 .bannedPortrait[data-order]::before {
-  top: 43px;
-  left: 17px;
-  width: 18px;
-  height: 18px;
-  font-size: 11px;
-}.bannedPortrait {
-  position: relative;
-  display: inline-block;
+    top: 43px;
+    left: 17px;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
 }
-.teamHeader {
-  background-color: #000000;
-  font-family: Consolas, Lucida Console, Courier New;
-  font-weight: normal;
-}
-.teamScoreHeader {
-  background-color: black;
-  font-family: Arial, sans-serif;
-  font-size: 120%;
-  font-weight: bold;
-  padding-top: 7px;
-  padding-bottom: 7px;
-}
-.abilityHeaderDiv {
-  padding-bottom: 7px;
-}
-.abilityHeader {
-  font-family: Arial, sans-serif;
-  font-weight: bold;
-  padding-top: 7px;
-  padding-bottom: 7px;
-}
-.teamBlue {
-  background-color: #17203D;
-}
-.teamRed {
-  background-color: #300F22;
-}
-.tdPlayerName {
-  text-align: left;
-  vertical-align: middle;
-  font-family: Calibri;
-}
-.head-container {
-  overflow-y: visible;
-  text-align: left;
-  margin: 0 auto;
-  border-radius: 10px;
-  padding: 20px;
-}
-.chat-container {
-  zoom: 0.9;
-  overflow-y: auto;
-  text-align: left;
-  margin: 0 auto;
-  background-color: #39393b;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px 20px 20px 20px;
-}
-.chat-container.has-pings-btn {
-  padding-bottom: 0;
-}
-.chat-container:focus {
-  outline: none;
-}
-.chat-message {
-  font-family: Arial, sans-serif;
-  font-size: 26px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 1px 1px 3px black;
-  line-height: 1.5;
-  position: relative;    /* Permet un positionnement absolu de l'image translate-icon */
-}
-.chat-ping {
-  font-family: Courier New, Consolas, Lucida Console;
-  font-size: 26px;
-  font-weight: normal;
-  vertical-align: 2%;
-}
-.chat-ping-blue {
-  color: #3184ff;
-  font-weight: bold;
-}
-.chat-message.chat-ping {
-  display: none;
-}
-.chat-container.show-pings .chat-message.chat-ping {
-  display: block;
-}
-.toggle-pings-wrapper {
-  position: sticky;
-  bottom: 0;
-  z-index: 5;
-  text-align: center;
-  margin: 10px -20px 0px -20px;
-  padding: 6px 20px 10px 20px;
-  background-color: #39393b;
-}
-.toggle-pings-btn {
-  display: inline-block;
-  padding: 6px 16px;
-  font-family: Calibri, Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.2s;
-}
-.toggle-pings-btn:hover {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.chat-ping-red {
-  color: #ff004b;
-  font-weight: bold;
-}
-.chat-time {
-  font-family: Courier New, Consolas, Lucida Console;
-  color: lightgray;
-  font-weight: bold;
-  vertical-align: 2%;
-}
-.chat-time-bracket {
-  vertical-align: 5%;
-}
-.chat-time-blue {
-  color: #3184ff;
-}
-.chat-time-red {
-  color: #ff004b;
-}
-.chat-user {
-  font-weight: bold;
-}
-.chat-image {
-  height: 36px;
-  margin-top: -5px;
-  vertical-align: middle;
-  border-radius: 50%;
-  box-sizing: border-box;
-}
-.chat-image-emoticon {
-  height: 26px;
-}
-.copy-icon {
-  display: none;
-  position: absolute; /* Positionner par rapport à .chat-message */
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-.translate-icon {
-  display: none;
-  position: absolute;    /* Positionner par rapport à .chat-message */
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-.translate-flag {
-  display: inline-block;
-  position: absolute;    /* Positionner par rapport à .chat-message */
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.chat-message:hover .copy-icon {
-  display: inline-block;
-}
-.chat-message:hover .translate-icon {
-  display: inline-block;
-}
-/*
-.nonBreakingText {
-  white-space: nowrap;
-}
-*/
+
+/* Score And Talents Tables */
 .tableScoreAndTalents {
-  border-collapse: collapse;
-  text-align: center;
-  font-family: Calibri;
-  width: 100%;
-  table-layout: auto;
+    border-collapse: collapse;
+    text-align: center;
+    font-family: Calibri;
+    width: 100%;
+    table-layout: auto;
 }
-/*
-.tableScoreAndTalents {
-  width: 100%;
-  border-collapse: collapse;
-}
-*/
-.active-col {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-.tableScoreAndTalents tr {
-  height: 64px;
-}
-.tableScoreAndTalents tr.freeHeight {
-  height: auto !important;
-}
+
 .tableTalents {
-  table-layout: fixed;
+    table-layout: fixed;
 }
+
+.tableScoreAndTalents tr {
+    height: 64px;
+}
+
+.tableScoreAndTalents tr.freeHeight {
+    height: auto !important;
+}
+
 .tableScoreAndTalents th:nth-child(1),
 .tableScoreAndTalents td:nth-child(1) {
-  width: 160px;
-  min-width: 160px;
+    width: 160px;
+    min-width: 160px;
 }
+
 .tableScoreAndTalents th:nth-child(2),
 .tableScoreAndTalents td:nth-child(2) {
-  width: 120px;
-  min-width: 120px;
-  white-space: nowrap;
+    width: 120px;
+    min-width: 120px;
+    white-space: nowrap;
 }
+
 .tableTalents th:nth-child(n + 3),
 .tableTalents td:nth-child(n + 3) {
-  width: auto;
+    width: auto;
 }
-.stats {
-  font-family: Consolas, Lucida Console, Courier New;
-  font-size: 80%;
-  text-align: left;
-  vertical-align: top;
+
+.active-col {
+    background-color: rgba(255, 255, 255, 0.08);
 }
-.statsHealth {
-  color: #8af968;
-  padding-right: 30px;
+
+/* Lines */
+.trAbilities,
+.trAllTalents,
+.trAllTalentsNumbers {
+    display: none;
 }
-.statsDamage {
-  color: #fe3338;
-  padding-right: 30px;
+
+tr.trTalents,
+tr.trAbilities,
+tr.trAllTalents,
+.trAllTalentsNumbers {
+    cursor: pointer;
 }
-.trAbilities, .trAllTalents, .trAllTalentsNumbers  {
-  display: none;
+
+.trAllTalentsNumbers {
+    font-size: 80%;
 }
-tr.trTalents, tr.trAbilities, tr.trAllTalents, .trAllTalentsNumbers {
-  cursor: pointer;
-}
-.trAllTalentsNumbers{
-  font-size: 80%;
-}
+
 tr.trTalents:hover {
-  filter: brightness(125%);
-  position: relative;
-  z-index: 10;
+    filter: brightness(125%);
+    position: relative;
+    z-index: 10;
 }
+
 tr.trTalents.highlight {
-  filter: brightness(125%);
+    filter: brightness(125%);
 }
+
+/* Borders */
 .tdBorders {
-  border: 1px solid #555;
+    border: 1px solid #555;
 }
-tr.trAllTalents td.tdBorders {
-  border-top: none;
-  border-bottom: none;
+
+tr.trAllTalents td.tdBorders,
+tr.trAbilities td.tdBorders {
+    border-top: none;
+    border-bottom: none;
 }
+
 tr.trLastAllTalents td.tdBorders {
-  border-bottom: 1px solid #555;
+    border-bottom: 1px solid #555;
 }
 
 .tdAllTalentsEmptyBorders {
-  border-top: none;
-  border-bottom: none;
+    border-top: none;
+    border-bottom: none;
 }
 
-tr.trAbilities td.tdBorders {
-  border-top: none;
-  border-bottom: none;
+/* Stats */
+.stats {
+    font-family: Consolas, Lucida Console, Courier New;
+    font-size: 80%;
+    text-align: left;
+    vertical-align: top;
 }
+
+.statsHealth {
+    color: #8af968;
+    padding-right: 30px;
+}
+
+.statsDamage {
+    color: #fe3338;
+    padding-right: 30px;
+}
+
+/* Scores */
 .scoreHeaderIcon {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
 }
+
 .scoreIcon {
-  width: 100px;
-  height: 50px;
-  object-fit: cover;
+    width: 100px;
+    height: 50px;
+    object-fit: cover;
 }
+
 .teamBestScore {
-  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
+    text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
 }
-/*
-.teamBestScoreBlue {
-  text-shadow: 2px 2px 15px lightBlue, 2px -2px 15px lightBlue, -2px -2px 15px lightBlue, -2px 2px 15px lightBlue;
-}
-.teamBestScoreRed {
-  text-shadow: 2px 2px 15px #e6add8, 2px -2px 15px #e6add8, -2px -2px 15px #e6add8, -2px 2px 15px #e6add8;
-}
-*/
+
+/* Abilities and Talents Icons */
 .heroTalentIcon {
-  width: 45px;
-  vertical-align: baseline;
-  z-index: 10;
+    width: 45px;
+    vertical-align: baseline;
+    z-index: 10;
 }
-.imgAllTalentContainer
-{
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 43px;
+
+.imgTalentBorder {
+    border: 6px solid transparent;
+    border-image: url('app://hotsResources/talentsBorder.png') 6 stretch;
 }
-.imgAllTalentIcon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+
+.imgTalent10Border {
+    border: 6px solid transparent;
+    border-image: url('app://hotsResources/talents10Border.png') 6 stretch;
 }
+
+.imgAllTalentContainer {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 43px;
+}
+
+.imgAllTalentIcon,
 .imgAllTalentBorder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
+
+.imgAllTalentIcon {
+    z-index: 1;
+}
+
+.imgAllTalentBorder {
+    z-index: 2;
+    pointer-events: none;
+}
+
+.abilityIconContainer {
+    position: relative;
+    width: 60px;
+    height: 69px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.abilityIconBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.abilityIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Tooltips */
 .tooltip {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
-.tooltip .tooltiptext,
+
+td.tooltip-cell {
+    position: relative;
+    overflow: visible;
+}
+
+td.tooltip-cell > .tooltip {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
 .tooltip .tooltipHero,
+.tooltip .tooltiptalent,
+.tooltip .tooltipalltalents,
+.tooltip .tooltipScoreHeader,
 .tooltip .tooltipHeroMvpScore,
 .tooltip .tooltipAbilityText {
-  white-space: normal;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+    position: absolute;
+    z-index: 20;
+    margin-left: -60px;
+    padding: 1em;
+    text-align: left;
+    white-space: normal;
+    background-color: #150C39;
+    color: #8984C7;
+    border: 1px solid #8984C7;
+    box-shadow: 0 0 0 1px #8984C780, inset 0 0 0 1px #8984C780;
 }
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 300px;
-  background-color: #150C39;
-  color: #8984C7;
-  font-family: Calibri;
-  text-align: left;
-  border-radius: 6px;
-  padding: 1em;
-  position: absolute;
-  z-index: 20;
-  bottom: 90%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.5s;
+
+.tooltip:hover .tooltipHero,
+.tooltip:hover .tooltiptalent,
+.tooltip:hover .tooltipalltalents,
+.tooltip:hover .tooltipScoreHeader,
+.tooltip:hover .tooltipHeroMvpScore,
+.tooltip:hover .tooltipAbilityText,
+td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
+    visibility: visible;
+    opacity: 1;
 }
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+
+/* Talent tooltip */
+.tooltip .tooltiptalent {
+    width: 300px;
+    bottom: 58px;
+    font-family: Calibri;
 }
-.tooltip .tooltiptextLeft, .tooltip .tooltiptextAllTalentsLeft {
-  right: 92%;
+
+.tooltip .tooltiptalentLeft {
+    right: 58px;
 }
-.tooltip .tooltiptextRight {
-  left: 195%;
+
+.tooltip .tooltiptalentRight {
+    left: 118px;
 }
-.tooltip .tooltiptextAllTalentsRight {
-  left: 250%;
+
+/* All Talents tooltip */
+.tooltip .tooltipalltalents {
+    width: 300px;
+    bottom: 90%;
+    font-family: Calibri;
 }
+
+.tooltip .tooltipalltalentsLeft {
+    right: 92%;
+}
+
+.tooltip .tooltipalltalentsRight {
+    left: 250%;
+}
+
+/* Hero tooltip */
 .tooltip .tooltipHero {
-  visibility: hidden;
-  background-color: #150C39;
-  color: #8984C7;
-  font-family: Consolas;
-  text-align: left;
-  border-radius: 6px;
-  padding: 1em;
-  position: absolute;
-  z-index: 20;
-  bottom: 90%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.5s;
+    bottom: 90%;
+    font-family: Consolas;
 }
-.tooltip:hover .tooltipHero {
-  visibility: visible;
-  opacity: 1;
-}
+
 .tooltip .tooltipHeroLeft {
-  left: 75%;
+    left: 163%;
 }
+
 .tooltip .tooltipHeroRight {
-  right: 0%;
+    right: 90%;
 }
+
+/* Score Header tooltip */
+.tooltip .tooltipScoreHeader {
+    bottom: 53px;
+    font-family: Consolas;
+}
+
 .tooltip .tooltipScoreHeaderLeft {
-  left: 75%;
+    left: 113px;
 }
+
 .tooltip .tooltipScoreHeaderRight {
-  right: -23%;
+    right: 53px;
 }
+
+/* MVP Score Tooltip */
 .tooltip .tooltipHeroMvpScore {
-  visibility: hidden;
-  background-color: #150C39;
-  color: #8984C7;
-  font-family: Consolas;
-  text-align: left;
-  border-radius: 6px;
-  padding: 1em;
-  position: absolute;
-  z-index: 20;
-  right: 96px;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.5s;
-  transform: translateY(-50%);
+    right: 96px;
+    font-family: Consolas;
+    transform: translateY(-50%);
 }
-.tooltip:hover .tooltipHeroMvpScore {
-  visibility: visible;
-  opacity: 1;
-}
+
+/* Ability Toltip */
 .tooltip .tooltipAbilityText {
-  visibility: hidden;
-  width: 300px;
-  background-color: #150C39;
-  color: #8984C7;
-  font-family: Calibri;
-  text-align: left;
-  border-radius: 6px;
-  padding: 1em;
-  position: absolute;
-  z-index: 20;
-  bottom: 100%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.5s;
+    width: 300px;
+    bottom: 100%;
+    font-family: Calibri;
 }
-.tooltip:hover .tooltipAbilityText {
-  visibility: visible;
-  opacity: 1;
-}
+
 .tooltip .tooltipAbilityTextRight {
-  left: 170%;
+    left: 170%;
 }
+
 .tooltip .tooltipAbilityTextLeft {
-  right: 80%;
+    right: 80%;
 }
-td.tooltip-cell {
-  position: relative;
-  overflow: visible;
+
+/* Chat */
+.chat-container {
+    zoom: 0.9;
+    overflow-y: auto;
+    text-align: left;
+    margin: 0 auto;
+    background-color: #39393b;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
-td.tooltip-cell > .tooltip {
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: relative;
+
+.chat-container.has-pings-btn {
+    padding-bottom: 0;
 }
-td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore, td.tooltip-cell > .tooltip:hover .tooltipHeroMvpScore {
-  visibility: visible;
-  opacity: 1;
+
+.chat-container:focus {
+    outline: none;
 }
-.imgTalentBorder {
-  border: 6px solid transparent;
-  border-image: url('app://hotsResources/talentsBorder.png') 6 stretch;
+
+.chat-message {
+    font-family: Verdana, sans-serif;
+    font-size: 26px;
+    font-weight: normal;
+    color: #fff;
+    text-shadow: 1px 1px 3px black;
+    line-height: 1.5;
+    position: relative; /* Permet le positionnement absolu des icônes copy / translate */
 }
-.imgTalent10Border {
-  border: 6px solid transparent;
-  border-image: url('app://hotsResources/talents10Border.png') 6 stretch;
+
+.chat-message.chat-ping {
+    display: none;
 }
-.disconnected {
-  color: Red;
-  font-size: 0.75em;
+
+.chat-container.show-pings .chat-message.chat-ping {
+    display: block;
 }
-.reconnected {
-  color: Green;
-  font-size: 0.75em;
+
+.chat-user {
+    font-weight: bold;
 }
-.nobr {
-  white-space: nowrap;
+
+.chat-time {
+    font-family: Courier New, Consolas, Lucida Console;
+    color: lightgray;
+    font-weight: bold;
+    vertical-align: 2%;
 }
-.abilityIconContainer {
-  position: relative;
-  width: 60px;
-  height: 69px;
-  display: inline-block;
-  overflow: hidden;
+
+.chat-time-bracket {
+    vertical-align: 5%;
 }
-.abilityIconBorder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-width: 100%;
-  max-height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  width: auto;
-  height: auto;
+
+.chat-time-blue {
+    color: #3184ff;
 }
-.abilityIcon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  height: 80%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: 1;
+
+.chat-time-red {
+    color: #ff004b;
+}
+
+.chat-ping {
+    font-family: Courier New, Consolas, Lucida Console;
+    font-size: 26px;
+    font-weight: normal;
+    vertical-align: 2%;
+}
+
+.chat-ping-blue {
+    color: #3184ff;
+    font-weight: bold;
+}
+
+.chat-ping-red {
+    color: #ff004b;
+    font-weight: bold;
+}
+
+.chat-image {
+    height: 36px;
+    margin-top: -5px;
+    vertical-align: middle;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.chat-image-emoticon {
+    height: 26px;
+}
+
+/* Copy / Translate Icons */
+.copy-icon,
+.translate-icon,
+.translate-flag {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.copy-icon {
+    display: none;
+    right: 30px;
+    cursor: pointer;
+}
+
+.translate-icon {
+    display: none;
+    right: 0;
+    cursor: pointer;
+}
+
+.translate-flag {
+    display: inline-block;
+    right: 0;
+}
+
+.chat-message:hover .copy-icon,
+.chat-message:hover .translate-icon {
+    display: inline-block;
+}
+
+/* Pings Button */
+.toggle-pings-wrapper {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    text-align: center;
+    margin: 10px -20px 0 -20px;
+    padding: 6px 20px 10px 20px;
+    background-color: #39393b;
+}
+
+.toggle-pings-btn {
+    display: inline-block;
+    padding: 6px 16px;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.toggle-pings-btn:hover {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
 }

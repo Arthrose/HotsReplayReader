@@ -29,7 +29,7 @@ namespace HotsReplayReader
 {
     public partial class HotsReplayWebReader : Form
     {
-        readonly bool release = true;
+        readonly bool release = false;
         readonly internal string defaultLangCode = "en-US";
         readonly List<string> LangCodeList = ["de-DE", "en-US", "es-ES", "es-MX", "fr-FR", "it-IT", "ko-KR", "pl-PL", "pt-BR", "ru-RU", "zh-TW"];
         internal int useDarkMode = 0;
@@ -1440,7 +1440,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
-          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
           </span>
         </span>
@@ -1448,7 +1448,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
-          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}</nobr>
           </span>
         </span>
@@ -1456,7 +1456,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
-          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
           </span>
         </span>
@@ -1464,7 +1464,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""time"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
-          <span class=""tooltipHero tooltipScoreHeaderLeft"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
           </span>
         </span>
@@ -1472,7 +1472,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
-          <span class=""tooltipHero tooltipScoreHeaderRight"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
           </span>
         </span>
@@ -1480,7 +1480,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
-          <span class=""tooltipHero tooltipScoreHeaderRight"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
           </span>
         </span>
@@ -1488,7 +1488,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
-          <span class=""tooltipHero tooltipScoreHeaderRight"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
           </span>
         </span>
@@ -1496,7 +1496,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
-          <span class=""tooltipHero tooltipScoreHeaderRight"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
           </span>
         </span>
@@ -1504,7 +1504,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
-          <span class=""tooltipHero tooltipScoreHeaderRight"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
           </span>
         </span>
@@ -1512,7 +1512,7 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
-          <span class=""tooltipHero tooltipScoreHeaderRight"">
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
             <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
           </span>
         </span>
@@ -1906,7 +1906,7 @@ namespace HotsReplayReader
             return @$"    <td class=""tdBorders"">
       <div class=""tooltip"">
         <img src=""{iconPath}"" class=""heroTalentIcon {imgTalentBorderClass}"">
-        <span class=""tooltiptext tooltiptext{toolTipPosition}"">
+        <span class=""tooltiptalent tooltiptalent{toolTipPosition}"">
           {FormatAbilityAndTalentToolTip(hotsTalent.Name, hotsTalent.Energy, hotsTalent.Life, hotsTalent.Cooldown, description)}
         </span>
       </div>
@@ -1988,7 +1988,7 @@ namespace HotsReplayReader
           <img src=""{iconPath}"" class=""imgAllTalentIcon"">
           <img src=""app://hotsResources/talentIconBorder{partyColor}.png"" class=""imgAllTalentBorder"">
         </div>
-        <span class=""tooltiptext tooltiptextAllTalents{toolTipPosition}"">
+        <span class=""tooltipalltalents tooltipalltalents{toolTipPosition}"">
           {FormatAbilityAndTalentToolTip(hotsTalent.Name, hotsTalent.Energy, hotsTalent.Life, hotsTalent.Cooldown, description)}
         </span>
       </div>
