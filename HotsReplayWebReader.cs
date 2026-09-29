@@ -889,9 +889,9 @@ namespace HotsReplayReader
             html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}";
 
             if (gameMode != "" && (Init.config is null || Init.config.DisplayGameMode))
-                html += $"<br><span style=\"font-size: 50%; color: white;\">{gameMode}</span>";
+                html += $"<br><span style=\"font-size: 50%; color: white; font-weight: normal\">{gameMode}</span>";
             if (Init.config is null || Init.config.DisplayDate)
-                html += $"<br><span style=\"font-size: 40%; color: darkgrey;\">{hotsReplay!.stormReplay!.Timestamp.ToString("f", Thread.CurrentThread.CurrentCulture)}</span>";
+                html += $"<br><span style=\"font-size: 40%; color: lightgrey; font-weight: normal;\">{hotsReplay!.stormReplay!.Timestamp.ToString("f", Thread.CurrentThread.CurrentCulture)}</span>";
 
 
             html += $@"</td></tr>
@@ -960,6 +960,25 @@ namespace HotsReplayReader
     </tr>
   </table>
 </div>
+<script>
+document.querySelectorAll('.battleTag').forEach(function (el) {{
+    var full = el.textContent.trim();
+    el.title = full;                       // nom complet au survol
+    var max = 80;                          // largeur de l'image
+
+    // le texte tient déjà : rien à faire
+    el.textContent = full;
+    if (el.scrollWidth <= max) return;
+
+    // sinon on retire des lettres jusqu'à ce que ""texte…"" tienne
+    var text = full;
+    while (text.length > 1) {{
+        text = text.slice(0, -1);
+        el.textContent = text + '\u2026';
+        if (el.scrollWidth <= max) break;
+    }}
+}});
+</script>
 <br><br>
 ";
             return html;
@@ -1740,6 +1759,35 @@ namespace HotsReplayReader
 
             html += @"</table>
 <script>
+  (function () {
+    const COL1 = 160, MIN2 = 120, MAX2 = 200, PADDING = 12;
+  
+    // 1. Largeur de la colonne 2 = pseudo/héros le plus large, borné entre MIN2 et MAX2
+    const range = document.createRange();
+    let w2 = MIN2;
+    document.querySelectorAll('.tableScoreAndTalents .tdPlayerName').forEach(td => {
+      range.selectNodeContents(td);
+      w2 = Math.max(w2, Math.ceil(range.getBoundingClientRect().width) + PADDING);
+    });
+    w2 = Math.min(w2, MAX2);
+  
+    // 2. Un colgroup par tableau : col 1 et 2 fixes, les autres sans largeur (= parts égales)
+    document.querySelectorAll('.tableScoreAndTalents').forEach(table => {
+      const firstRow = table.querySelector('tr');
+      let nbCols = 0;
+      firstRow.querySelectorAll(':scope > th, :scope > td').forEach(c => nbCols += c.colSpan);
+  
+      const cg = document.createElement('colgroup');
+      for (let i = 0; i < nbCols; i++) {
+        const col = document.createElement('col');
+        if (i === 0) col.style.width = COL1 + 'px';
+        else if (i === 1) col.style.width = w2 + 'px';
+        cg.appendChild(col);
+      }
+      table.insertBefore(cg, table.firstChild);
+    });
+  })();
+
   // Renvoie toutes les lignes du groupe qui suivent une ligne trTalents jusqu'à la prochaine trTalents ou la fin du tableau
   function getGroupRows(talentsRow) {
     const rows = [];
@@ -1834,7 +1882,12 @@ namespace HotsReplayReader
                         html += $"    <td class=\"tdBorders\"><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\"></td>\n";
                     }
                     else
+                    {
+                        const string TRANSPARENT_GIF = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                        // <img width="100" height="1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
                         html += "    <td class=\"tdBorders\">&nbsp;</td>\n";
+                        //html += $"    <td class=\"tdBorders\"><img src=\"{TRANSPARENT_GIF}\" class=\"heroTalentIcon\"></td>\n";
+                    }
                 }
             }
 
@@ -2031,7 +2084,7 @@ namespace HotsReplayReader
             html += "            </table>\n";
 
             html += "          </td>\n";
-            html += "          <td width=\"100%\">&nbsp;</td>\n";
+            html += "          <td width=\"100\">&nbsp;</td>\n";
 
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.Q, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.W, team);
