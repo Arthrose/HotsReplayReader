@@ -933,7 +933,7 @@ namespace HotsReplayReader
                         if (draftPick.Team == StormTeam.Blue)
                             html += HTMLGetBannedPortaitImg(draftPick.HeroSelected, bannedOrder);
                     }
-                html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 75%;\">{Resources.Language.i18n.strBanned}</td>\n";
+                html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 50%;\">{Resources.Language.i18n.strBanned}</td>\n";
                 bannedOrder = 0;
                 foreach (StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == StormDraftPickType.Banned)
@@ -986,7 +986,7 @@ namespace HotsReplayReader
             string playerName;
             string playerID;
             string accountLevel = hotsPlayer.AccountLevel.HasValue ? hotsPlayer.AccountLevel.Value.ToString() : "0";
-            string toolTipPosition = hotsPlayer.Team.ToString() == "Blue" ? "Left" : "Right";
+            string toolTipPosition = hotsPlayer.Team.ToString() == "Blue" ? "Right" : "Left";
 
             string html = "";
 
@@ -1392,6 +1392,7 @@ namespace HotsReplayReader
       return text.toLowerCase();
     }
     headers.forEach((header, index) => {
+      if (index === 0) return;
       header.style.cursor = ""pointer"";
       header.addEventListener(""click"", () => {
         const tbody = table.querySelector(""tbody"");
@@ -1440,32 +1441,32 @@ namespace HotsReplayReader
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""time"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}
           </span>
         </span>
       </th>
@@ -1473,47 +1474,47 @@ namespace HotsReplayReader
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}</nobr>
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}
           </span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            <nobr>{Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}</nobr>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
+            {Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}
           </span>
         </span>
       </th>
@@ -2174,7 +2175,7 @@ namespace HotsReplayReader
             // Remplace <n/> par un saut de ligne <br>
             description = MyRegexNewLine().Replace(description, "<br>");
 
-            return $"<font color=\"White\"><b>{name}</b>{manacost}{life}{cooldown}</font><br><br>{description}";
+            return $"<font color=\"White\">{name}{manacost}{life}{cooldown}</font><br><br>{description}";
         }
         private string GetParty(string playerBattleTag)
         {

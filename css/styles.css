@@ -37,7 +37,7 @@ tr {
     background-color: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(6px);
     color: darkgrey;
-    font-family: Calibri, Arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif;
     font-size: 25px;
     font-weight: 600;
     letter-spacing: 16px;
@@ -55,27 +55,29 @@ tr {
 .titleRed,
 .titleWhite {
     font-size: 300%;
-    font-weight: bold;
-    font-family: Calibri;
+    font-family: Verdana;
 }
 
 .titleBlue {
+    font-weight: bold;
     color: deepskyblue;
 }
 
 .titleRed {
+    font-weight: bold;
     color: crimson;
 }
 
 .titleWhite {
+    font-weight: lighter;
     color: gainsboro;
 }
 
 .teamLevel {
     color: white;
     font-size: 150%;
-    font-weight: bold;
-    font-family: Calibri;
+    font-weight: normal;
+    font-family: Verdana;
 }
 
 .owner {
@@ -149,12 +151,12 @@ tr {
 .tdPlayerName {
     text-align: left;
     vertical-align: middle;
-    font-family: Calibri;
+    font-family: Verdana;
 }
 
 .battleTag {
     font-size: 100%;
-    font-family: Calibri;
+    font-family: Verdana;
     line-height: 250%;
 }
 
@@ -225,7 +227,7 @@ tr {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.75);
     color: white;
-    font-family: Calibri, Arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif;
     font-weight: bold;
     border-radius: 50%;
     display: flex;
@@ -255,13 +257,9 @@ tr {
 .tableScoreAndTalents {
     border-collapse: collapse;
     text-align: center;
-    font-family: Calibri;
+    font-family: Verdana;
     width: 100%;
     table-layout: auto;
-}
-
-.tableTalents {
-    table-layout: fixed;
 }
 
 .tableScoreAndTalents tr {
@@ -499,6 +497,43 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
     opacity: 1;
 }
 
+/* Hero tooltip */
+.tooltip .tooltipHero {
+    bottom: 71px;
+    font-family: Consolas;
+}
+
+.tooltip .tooltipHeroLeft {
+    right: 71px;
+}
+
+.tooltip .tooltipHeroRight {
+    left: 130px;
+}
+
+/* Score Header tooltip */
+.tooltip .tooltipScoreHeader {
+    bottom: 43px;
+    width: max-content;
+    max-width: 250px;
+    font-family: Consolas;
+}
+
+.tooltip .tooltipScoreHeaderLeft {
+    right: 43px;
+}
+
+.tooltip .tooltipScoreHeaderRight {
+    left: 103px;
+}
+
+/* MVP Score Tooltip */
+.tooltip .tooltipHeroMvpScore {
+    right: 96px;
+    font-family: Consolas;
+    transform: translateY(-50%);
+}
+
 /* Talent tooltip */
 .tooltip .tooltiptalent {
     width: 300px;
@@ -514,69 +549,34 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
     left: 118px;
 }
 
+/* Ability Toltip */
+.tooltip .tooltipAbilityText {
+    width: 300px;
+    bottom: 80px;
+    font-family: Calibri;
+}
+
+.tooltip .tooltipAbilityTextLeft {
+    right: 60px;
+}
+
+.tooltip .tooltipAbilityTextRight {
+    left: 120px;
+}
+
 /* All Talents tooltip */
 .tooltip .tooltipalltalents {
     width: 300px;
-    bottom: 90%;
+    bottom: 40px;
     font-family: Calibri;
 }
 
 .tooltip .tooltipalltalentsLeft {
-    right: 92%;
+    right: 35px;
 }
 
 .tooltip .tooltipalltalentsRight {
-    left: 250%;
-}
-
-/* Hero tooltip */
-.tooltip .tooltipHero {
-    bottom: 90%;
-    font-family: Consolas;
-}
-
-.tooltip .tooltipHeroLeft {
-    left: 163%;
-}
-
-.tooltip .tooltipHeroRight {
-    right: 90%;
-}
-
-/* Score Header tooltip */
-.tooltip .tooltipScoreHeader {
-    bottom: 53px;
-    font-family: Consolas;
-}
-
-.tooltip .tooltipScoreHeaderLeft {
-    left: 113px;
-}
-
-.tooltip .tooltipScoreHeaderRight {
-    right: 53px;
-}
-
-/* MVP Score Tooltip */
-.tooltip .tooltipHeroMvpScore {
-    right: 96px;
-    font-family: Consolas;
-    transform: translateY(-50%);
-}
-
-/* Ability Toltip */
-.tooltip .tooltipAbilityText {
-    width: 300px;
-    bottom: 100%;
-    font-family: Calibri;
-}
-
-.tooltip .tooltipAbilityTextRight {
-    left: 170%;
-}
-
-.tooltip .tooltipAbilityTextLeft {
-    right: 80%;
+    left: 96px;
 }
 
 /* Chat */
@@ -714,7 +714,7 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
 .toggle-pings-btn {
     display: inline-block;
     padding: 6px 16px;
-    font-family: Calibri, Arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 1px;
