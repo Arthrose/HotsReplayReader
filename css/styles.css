@@ -329,6 +329,19 @@ tr.trLastAllTalents td.tdBorders {
     border-bottom: none;
 }
 
+tr.trAbilities {
+    height: auto;
+}
+
+tr.trAbilities td {
+    vertical-align: middle;
+    padding: 10px 0;
+}
+
+tr.trAbilities td.tdBorders {
+    border-bottom: 1px solid #555;
+}
+
 /* Stats */
 .stats {
     font-family: Consolas, Lucida Console, Courier New;

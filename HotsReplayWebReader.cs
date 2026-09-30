@@ -1745,16 +1745,16 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 if (stormPlayer.Team.ToString() == "Blue")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAbilitiesTr(stormPlayer, blueTeam);
                     html += HTMLGetAllTalentsTr(stormPlayer, blueTeam);
+                    html += HTMLGetAbilitiesTr(stormPlayer, blueTeam);
                 }
             }
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
                 {
                     html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAbilitiesTr(stormPlayer, redTeam);
                     html += HTMLGetAllTalentsTr(stormPlayer, redTeam);
+                    html += HTMLGetAbilitiesTr(stormPlayer, redTeam);
                 }
 
             html += @"</table>
@@ -2001,7 +2001,28 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
                 else
                     html += $"  <tr class=\"team{team.Name} trAllTalents trLastAllTalents\">\n";
-                html += $"    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
+                if (i == 0)
+                {
+                    html += $"    <td colspan=\"2\" rowspan=\"{maxCount}\" class=\"tdBorders\" style=\"vertical-align: top; text-align: left; padding-left: 50px;\">\n";
+
+                    html += $"      <span class=\"stats\">\n";
+                    html += $"        <span class=\"statsHealth\">\n";
+                    html += $"          Health:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroHealthFromHeroId(heroId)}</font><br>\n";
+                    html += $"          Regen:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroRegenFromHeroId(heroId)}/s</font>\n";
+                    html += $"        </span>\n";
+
+                    html += "        <br><br>\n";
+
+                    html += $"        <span class=\"statsDamage\">\n";
+                    html += $"          Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDmgFromHeroId(heroId)}</font><br>\n";
+                    html += $"          Attack&nbsp;speed:&nbsp;<font color=\"White\">{hotsData.GetHeroAaSpeedFromHeroId(heroId)}/s</font><br>\n";
+                    html += $"          Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDpsFromHeroId(heroId)}</font><br><br>\n";
+                    html += $"          <font color=\"#31ccff\">Attack range:</font>&nbsp;<font color=\"White\">{hotsData.GetHeroAaRangeFromHeroId(heroId)}</font><br>\n";
+                    html += $"        </span>\n";
+                    html += $"      </span>\n";
+
+                    html += "    </td>\n";
+                }
                 for (int level = 0; level <= 6; level++)
                 {
                     if (i < talentsLevel[level].Count)
@@ -2054,37 +2075,52 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             string heroId = HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
 
-            string html = "";
+            string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{team.Name}"">
+    <td colspan=""2"" class=""tdBorders tdAllTalentsEmptyBorders "">&nbsp;</td>
+    <td class=""teamScoreHeader tdBorders"">Q</td>
+    <td class=""teamScoreHeader tdBorders"">W</td>
+    <td class=""teamScoreHeader tdBorders"">E</td>
+    <td class=""teamScoreHeader tdBorders""><font color=""#ffd700"">R1</font></td>
+    <td class=""teamScoreHeader tdBorders""><font color=""#ffd700"">R2</font></td>
+    <td class=""teamScoreHeader tdBorders"">D</td>
+    <td class=""teamScoreHeader tdBorders"">Z</td>
+  </tr>
+";
+
+
             html += $"  <tr class=\"trAbilities team{team.Name}\">\n";
-            html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
 
-            html += "      <table width=\"100%\" rowspan=\"0\">\n";
-            html += "        <tr>\n";
-            html += "          <td valign=\"top\">\n";
+//            html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
+//            html += "      <table width=\"100%\" rowspan=\"0\">\n";
+//            html += "        <tr>\n";
 
-            html += "            <table width=\"315px;\">\n";
-            html += "              <tr class=\"stats\">\n";
-            html += "                <td class=\"statsHealth\">\n";
+//            html += "          <td valign=\"top\">\n";
 
-            html += "                  <br>\n";
-            html += $"                  Health:&nbsp;<font color=\"White\">{hotsData.GetHeroHealthFromHeroId(heroId)}</font><br>\n";
-            html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroRegenFromHeroId(heroId)}/s</font>\n";
+//            html += "            <table width=\"315px;\">\n";
+//            html += "              <tr class=\"stats\">\n";
+//            html += "                <td class=\"statsHealth\">\n";
+//
+//            html += "                  <br>\n";
+//            html += $"                  Health:&nbsp;<font color=\"White\">{hotsData.GetHeroHealthFromHeroId(heroId)}</font><br>\n";
+//            html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroRegenFromHeroId(heroId)}/s</font>\n";
+//
+//            html += "                </td>\n";
+//            html += "                <td class=\"statsDamage\">\n";
+//            html += "                  <br>\n";
+//
+//            html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDmgFromHeroId(heroId)}</font><br>\n";
+//            html += $"                  Attack&nbsp;speed:&nbsp;<font color=\"White\">{hotsData.GetHeroAaSpeedFromHeroId(heroId)}/s</font><br>\n";
+//            html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDpsFromHeroId(heroId)}</font><br><br>\n";
+//            html += $"                  <font color=\"#31ccff\">Attack range:</font>&nbsp;<font color=\"White\">{hotsData.GetHeroAaRangeFromHeroId(heroId)}</font><br>\n";
+//
+//            html += "                </td>\n";
+//            html += "              </tr>\n";
+//            html += "            </table>\n";
 
-            html += "                </td>\n";
-            html += "                <td class=\"statsDamage\">\n";
-            html += "                  <br>\n";
+//            html += "          </td>\n";
 
-            html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDmgFromHeroId(heroId)}</font><br>\n";
-            html += $"                  Attack&nbsp;speed:&nbsp;<font color=\"White\">{hotsData.GetHeroAaSpeedFromHeroId(heroId)}/s</font><br>\n";
-            html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDpsFromHeroId(heroId)}</font><br><br>\n";
-            html += $"                  <font color=\"#31ccff\">Attack range:</font>&nbsp;<font color=\"White\">{hotsData.GetHeroAaRangeFromHeroId(heroId)}</font><br>\n";
 
-            html += "                </td>\n";
-            html += "              </tr>\n";
-            html += "            </table>\n";
-
-            html += "          </td>\n";
-            html += "          <td width=\"100\">&nbsp;</td>\n";
+            html += "    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
 
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.Q, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.W, team);
@@ -2094,10 +2130,10 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.D, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.Z, team);
 
-            html += "        </tr>\n";
-            html += "      </table>\n";
+//            html += "        </tr>\n";
+//            html += "      </table>\n";
+//            html += "    </td>\n";
 
-            html += "    </td>\n";
             html += "  </tr>\n";
             return html;
         }
@@ -2105,24 +2141,24 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         {
             string html = string.Empty;
 
-            string abilityHeader = hotsAbilityType.ToString();
-            if (hotsAbilityType == HotsAbilityType.R1 || hotsAbilityType == HotsAbilityType.R2)
-                abilityHeader = $"<font color=\"#ffd700\">{abilityHeader}</font>";
-
-            html += "          <td>\n";
-            html += $"            <div class=\"abilityHeader\">{abilityHeader}</div>\n";
+//            string abilityHeader = hotsAbilityType.ToString();
+//            if (hotsAbilityType == HotsAbilityType.R1 || hotsAbilityType == HotsAbilityType.R2)
+//                abilityHeader = $"<font color=\"#ffd700\">{abilityHeader}</font>";
+//
+            html += "    <td class=\"tdBorders\">\n";
+//            html += $"            <div class=\"abilityHeader\">{abilityHeader}</div>\n";
 
             List<HotsAbility?>? abilities = hotsData.GetAbilitiesFromHeroIdAndAbilityType(heroId, hotsAbilityType) ?? [];
 
             bool firstAbility = true;
             foreach (HotsAbility? ability in abilities)
             {
-                if (!firstAbility) html += "            <br>\n";
+                if (!firstAbility) html += "      <br>\n";
                 firstAbility = false;
                 html += HTMLGetAbility(ability, team);
             }
 
-            html += "          </td>\n";
+            html += "    </td>\n";
 
             return html;
         }
@@ -2136,8 +2172,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 if (ability.Type == HotsAbilityType.Z)
                     actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
 
-                html += "            <div class=\"tooltip abilityHeaderDiv\">\n";
-                html += $"              &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://heroes-images/abilitytalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                html += "      <div class=\"tooltip abilityHeaderDiv\">\n";
+                html += $"        <div class=\"abilityIconContainer\"><img src=\"app://heroes-images/abilitytalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>\n";
 
                 string description = "";
                 if (ability.AbilityId != null)
@@ -2159,20 +2195,20 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                 if (description != "")
                 {
-                    html += "              <span class=\"tooltipAbilityText ";
+                    html += "        <span class=\"tooltipAbilityText ";
                     if (ability!.Type == HotsAbilityType.Q || ability.Type == HotsAbilityType.W || ability.Type == HotsAbilityType.E)
                         html += "tooltipAbilityTextRight";
                     else
                         html += "tooltipAbilityTextLeft";
                     html += "\">\n";
-                    html += @$"                {FormatAbilityAndTalentToolTip(ability.Name, ability.Energy, ability.Life, ability.Cooldown, description)}";
-                    html += "\n              </span>\n";
+                    html += @$"          {FormatAbilityAndTalentToolTip(ability.Name, ability.Energy, ability.Life, ability.Cooldown, description)}";
+                    html += "\n        </span>\n";
                 }
 
-                html += "            </div>\n";
+                html += "      </div>\n";
             }
             else
-                html += $"            &nbsp;&nbsp;<div class=\"abilityIconContainer\"><img src=\"app://hotsResources/noAbility.png\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>&nbsp;&nbsp;\n";
+                html += $"      <div class=\"tooltip abilityHeaderDiv\">\n        <div class=\"abilityIconContainer\"><img src=\"app://hotsResources/noAbility.png\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>\n      </div>\n";
 
             return html;
         }
