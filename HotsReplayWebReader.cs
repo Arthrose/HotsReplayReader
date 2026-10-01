@@ -891,7 +891,7 @@ namespace HotsReplayReader
             if (gameMode != "" && (Init.config is null || Init.config.DisplayGameMode))
                 html += $"<br><span style=\"font-size: 50%; color: white; font-weight: normal\">{gameMode}</span>";
             if (Init.config is null || Init.config.DisplayDate)
-                html += $"<br><span style=\"font-size: 40%; color: lightgrey; font-weight: normal;\">{hotsReplay!.stormReplay!.Timestamp.ToString("f", Thread.CurrentThread.CurrentCulture)}</span>";
+                html += $"<br><span style=\"font-size: 40%; color: lightgrey; font-weight: normal;\">{hotsReplay!.stormReplay!.Timestamp.ToLocalTime().ToString("f", CultureInfo.CurrentCulture)}</span>";
 
 
             html += $@"</td></tr>
@@ -964,7 +964,7 @@ namespace HotsReplayReader
 document.querySelectorAll('.battleTag').forEach(function (el) {{
     var full = el.textContent.trim();
     el.title = full;                       // nom complet au survol
-    var max = 80;                          // largeur de l'image
+    var max = 90;                          // largeur de l'image
 
     // le texte tient déjà : rien à faire
     el.textContent = full;
@@ -1020,7 +1020,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             html += $"          <span class=\"heroPortrait\"{dataOrder}>\n";
 
-            html += $"            <img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+            html += $"            &nbsp;<img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>&nbsp;\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
@@ -1882,12 +1882,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                         html += $"    <td class=\"tdBorders\"><img src=\"app://hotsResources/noTalent.png\" class=\"heroTalentIcon {imgTalentBorderClass}\"></td>\n";
                     }
                     else
-                    {
-                        const string TRANSPARENT_GIF = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-                        // <img width="100" height="1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
                         html += "    <td class=\"tdBorders\">&nbsp;</td>\n";
-                        //html += $"    <td class=\"tdBorders\"><img src=\"{TRANSPARENT_GIF}\" class=\"heroTalentIcon\"></td>\n";
-                    }
                 }
             }
 
@@ -1985,13 +1980,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{team.Name}"">
     <td colspan=""2"" class=""tdBorders tdAllTalentsEmptyBorders "">&nbsp;</td>
-    <td class=""teamScoreHeader tdBorders"">1</td>
-    <td class=""teamScoreHeader tdBorders"">4</td>
-    <td class=""teamScoreHeader tdBorders"">7</td>
-    <td class=""teamScoreHeader tdBorders""><font color=""#ffd700"">10</font></td>
-    <td class=""teamScoreHeader tdBorders"">13</td>
-    <td class=""teamScoreHeader tdBorders"">16</td>
-    <td class=""teamScoreHeader tdBorders"">20</td>
+    <td class=""teamScoreSubHeader tdBorders"">1</td>
+    <td class=""teamScoreSubHeader tdBorders"">4</td>
+    <td class=""teamScoreSubHeader tdBorders"">7</td>
+    <td class=""teamScoreSubHeader tdBorders""><font color=""#ffd700"">10</font></td>
+    <td class=""teamScoreSubHeader tdBorders"">13</td>
+    <td class=""teamScoreSubHeader tdBorders"">16</td>
+    <td class=""teamScoreSubHeader tdBorders"">20</td>
   </tr>
 ";
             int maxCount = hotsData.GetTalentMaxCountFromHeroId(heroId);
@@ -2003,7 +1998,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     html += $"  <tr class=\"team{team.Name} trAllTalents trLastAllTalents\">\n";
                 if (i == 0)
                 {
-                    html += $"    <td colspan=\"2\" rowspan=\"{maxCount}\" class=\"tdBorders\" style=\"vertical-align: top; text-align: left; padding-left: 50px;\">\n";
+                    html += $"    <td colspan=\"2\" rowspan=\"{maxCount}\" class=\"tdBorders tdStats\">\n";
 
                     html += $"      <span class=\"stats\">\n";
                     html += $"        <span class=\"statsHealth\">\n";
@@ -2077,48 +2072,17 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{team.Name}"">
     <td colspan=""2"" class=""tdBorders tdAllTalentsEmptyBorders "">&nbsp;</td>
-    <td class=""teamScoreHeader tdBorders"">Q</td>
-    <td class=""teamScoreHeader tdBorders"">W</td>
-    <td class=""teamScoreHeader tdBorders"">E</td>
-    <td class=""teamScoreHeader tdBorders""><font color=""#ffd700"">R1</font></td>
-    <td class=""teamScoreHeader tdBorders""><font color=""#ffd700"">R2</font></td>
-    <td class=""teamScoreHeader tdBorders"">D</td>
-    <td class=""teamScoreHeader tdBorders"">Z</td>
+    <td class=""teamScoreSubHeader tdBorders"">Q</td>
+    <td class=""teamScoreSubHeader tdBorders"">W</td>
+    <td class=""teamScoreSubHeader tdBorders"">E</td>
+    <td class=""teamScoreSubHeader tdBorders""><font color=""#ffd700"">R1</font></td>
+    <td class=""teamScoreSubHeader tdBorders""><font color=""#ffd700"">R2</font></td>
+    <td class=""teamScoreSubHeader tdBorders"">D</td>
+    <td class=""teamScoreSubHeader tdBorders"">Z</td>
   </tr>
 ";
 
-
             html += $"  <tr class=\"trAbilities team{team.Name}\">\n";
-
-//            html += "    <td colspan=\"9\" class=\"tdBorders\">\n";
-//            html += "      <table width=\"100%\" rowspan=\"0\">\n";
-//            html += "        <tr>\n";
-
-//            html += "          <td valign=\"top\">\n";
-
-//            html += "            <table width=\"315px;\">\n";
-//            html += "              <tr class=\"stats\">\n";
-//            html += "                <td class=\"statsHealth\">\n";
-//
-//            html += "                  <br>\n";
-//            html += $"                  Health:&nbsp;<font color=\"White\">{hotsData.GetHeroHealthFromHeroId(heroId)}</font><br>\n";
-//            html += $"                  Regen:&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroRegenFromHeroId(heroId)}/s</font>\n";
-//
-//            html += "                </td>\n";
-//            html += "                <td class=\"statsDamage\">\n";
-//            html += "                  <br>\n";
-//
-//            html += $"                  Damage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDmgFromHeroId(heroId)}</font><br>\n";
-//            html += $"                  Attack&nbsp;speed:&nbsp;<font color=\"White\">{hotsData.GetHeroAaSpeedFromHeroId(heroId)}/s</font><br>\n";
-//            html += $"                  Dps:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"White\">{hotsData.GetHeroAaDpsFromHeroId(heroId)}</font><br><br>\n";
-//            html += $"                  <font color=\"#31ccff\">Attack range:</font>&nbsp;<font color=\"White\">{hotsData.GetHeroAaRangeFromHeroId(heroId)}</font><br>\n";
-//
-//            html += "                </td>\n";
-//            html += "              </tr>\n";
-//            html += "            </table>\n";
-
-//            html += "          </td>\n";
-
 
             html += "    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
 
@@ -2130,10 +2094,6 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.D, team);
             html += HTMLGetAbilityTd(heroId, HotsAbilityType.Z, team);
 
-//            html += "        </tr>\n";
-//            html += "      </table>\n";
-//            html += "    </td>\n";
-
             html += "  </tr>\n";
             return html;
         }
@@ -2141,19 +2101,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         {
             string html = string.Empty;
 
-//            string abilityHeader = hotsAbilityType.ToString();
-//            if (hotsAbilityType == HotsAbilityType.R1 || hotsAbilityType == HotsAbilityType.R2)
-//                abilityHeader = $"<font color=\"#ffd700\">{abilityHeader}</font>";
-//
             html += "    <td class=\"tdBorders\">\n";
-//            html += $"            <div class=\"abilityHeader\">{abilityHeader}</div>\n";
 
             List<HotsAbility?>? abilities = hotsData.GetAbilitiesFromHeroIdAndAbilityType(heroId, hotsAbilityType) ?? [];
 
             bool firstAbility = true;
             foreach (HotsAbility? ability in abilities)
             {
-                if (!firstAbility) html += "      <br>\n";
+                if (!firstAbility) html += "      <span style=\"line-height: 10px;\"><br><br></span>\n";
                 firstAbility = false;
                 html += HTMLGetAbility(ability, team);
             }

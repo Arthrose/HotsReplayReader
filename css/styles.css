@@ -106,7 +106,13 @@ tr {
 .teamScoreHeader {
     background-color: black;
     font-family: Arial, sans-serif;
-    font-size: 120%;
+    font-weight: bold;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+.teamScoreSubHeader {
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: Arial, sans-serif;
     font-weight: bold;
     padding-top: 7px;
     padding-bottom: 7px;
@@ -114,6 +120,8 @@ tr {
 
 .abilityHeaderDiv {
     padding-bottom: 7px;
+    padding: 0;
+    vertical-align: top;
 }
 
 .abilityHeader {
@@ -343,9 +351,15 @@ tr.trAbilities td.tdBorders {
 }
 
 /* Stats */
+.tdStats {
+    vertical-align: top;
+    text-align: left;
+    padding-left: 40px;
+}
+
 .stats {
     font-family: Consolas, Lucida Console, Courier New;
-    font-size: 80%;
+    font-size: 100%;
     text-align: left;
     vertical-align: top;
 }
@@ -424,6 +438,7 @@ tr.trAbilities td.tdBorders {
     height: 69px;
     display: inline-block;
     overflow: hidden;
+    vertical-align: top;
 }
 
 .abilityIconBorder {
@@ -551,21 +566,6 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
     left: 118px;
 }
 
-/* Ability Toltip */
-.tooltip .tooltipAbilityText {
-    width: 300px;
-    bottom: 80px;
-    font-family: Calibri;
-}
-
-.tooltip .tooltipAbilityTextLeft {
-    right: 60px;
-}
-
-.tooltip .tooltipAbilityTextRight {
-    left: 120px;
-}
-
 /* All Talents tooltip */
 .tooltip .tooltipalltalents {
     width: 300px;
@@ -579,6 +579,21 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
 
 .tooltip .tooltipalltalentsRight {
     left: 96px;
+}
+
+/* Ability Toltip */
+.tooltip .tooltipAbilityText {
+    width: 300px;
+    bottom: 70px;
+    font-family: Calibri;
+}
+
+.tooltip .tooltipAbilityTextLeft {
+    right: 50px;
+}
+
+.tooltip .tooltipAbilityTextRight {
+    left: 110px;
 }
 
 /* Chat */
