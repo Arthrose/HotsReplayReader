@@ -306,94 +306,14 @@ namespace HotsReplayReader
                 webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
                 webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
             }
-            webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+            webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += WebViewWebResourceRequested;
+            webView.WebMessageReceived += WebView_WebMessageReceived;
 
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
-
-            // Traite les messages de JavaScript vers C#
-            webView.CoreWebView2.WebMessageReceived += async (sender, args) =>
-            {
-                string json = args.WebMessageAsJson;
-
-                using JsonDocument document = JsonDocument.Parse(json);
-                JsonElement root = document.RootElement;
-
-                // Vérifie si le message contient les propriétés "action"
-                if (root.TryGetProperty("action", out JsonElement actionElement))
-                {
-                    // Récupère les valeurs de "action"
-                    string? action = actionElement.GetString();
-
-                    //Vérifie si l'action est "copyTextToClipboard"
-                    if (action == "copyTextToClipboard")
-                    {
-                        Debug.WriteLine("copyTextToClipboard: " + root.GetProperty("text").GetString() ?? "");
-                        Clipboard.SetText(root.GetProperty("text").GetString() ?? "");
-                    }
-
-                    // Vérifie si l'action est "closeMenu"
-                    if (action == "closeMenu")
-                    {
-                        toolStripMenuItemFile.HideDropDown();
-                        toolStripMenuItemAccounts.HideDropDown();
-                        toolStripMenuItemRegion.HideDropDown();
-                        toolStripMenuItemOptions.HideDropDown();
-                        toolStripMenuItemAbout.HideDropDown();
-                    }
-
-                    // Vérifie si l'action est "hoverLeft"
-                    if (action == "hoverLeft")
-                    {
-                        bool isHover = root.GetProperty("isHover").GetBoolean();
-                        // affiche/masque la listBox
-                        listBoxHotsReplays.Visible = isHover;
-                    }
-
-                    // Vérifie si l'action est "Translate", si il y a une propriété callbackId et si le message contient "text"
-                    if (action == "translate" && root.TryGetProperty("callbackId", out JsonElement callbackIdElement) && root.TryGetProperty("text", out JsonElement textElement))
-                    {
-                        string? callbackId = callbackIdElement.GetString();
-                        // Récupère le texte à traduire
-                        string? inputText = textElement.GetString();
-                        string translatedText = string.Empty;
-                        string detectedLanguage = string.Empty;
-                        string detectedLanguageName = string.Empty;
-
-                        try
-                        {
-                            if (translator != null)
-                                (translatedText, detectedLanguage) = await translator.TranslateText(httpClient, inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erreur : " + ex.Message);
-                            Console.WriteLine("Erreur : " + ex.Message);
-                        }
-
-                        DeepLSupportedLanguage? detectedLangInfo = supportedLanguages?.FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
-                        if (detectedLangInfo == null)
-                        {
-                            detectedLanguage = "unknown";
-                            detectedLanguageName = "Unknown";
-                        }
-                        else
-                        {
-                            detectedLanguageName = detectedLangInfo.LanguageName ?? "Unknown";
-                        }
-                        var resultObject = new { translatedText, detectedLanguage, detectedLanguageName };
-                        // Sérialise le texte traduit et le detected language en JSON
-                        string returnedJson = JsonSerializer.Serialize(resultObject);
-
-                        // Appelle le callback JavaScript puis nettoie
-                        string script = $"window['{callbackId}']({returnedJson}); delete window['{callbackId}'];";
-                        await webView.CoreWebView2.ExecuteScriptAsync(script);
-                    }
-                }
-            };
 
             if (Directory.Exists(Init.config!.LastSelectedAccountDirectory))
             {
@@ -457,7 +377,7 @@ namespace HotsReplayReader
             if (Init.config.AskUpdate)
                 await CheckAndLaunchUpdateAsync();
         }
-        private async void WebViewWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+        private async void WebViewWebResourceRequested(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs e)
         {
             Uri uri = new(e.Request.Uri);
 
@@ -594,6 +514,128 @@ namespace HotsReplayReader
                         e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
                     }
                 }
+            }
+        }
+        private async void WebView_WebMessageReceived(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs args)
+        {
+            string json = args.WebMessageAsJson;
+
+            try
+            {
+                using JsonDocument document = JsonDocument.Parse(json);
+                JsonElement root = document.RootElement;
+
+                // Vérifie si le message contient les propriétés "action"
+                if (root.TryGetProperty("action", out JsonElement actionElement))
+                {
+                    // Récupère les valeurs de "action"
+                    string? action = actionElement.GetString();
+
+                    // Tentative de gestion native du Zoom - A améliorer
+                    if (action == "zoom-in")
+                    {
+                        // Les paliers officiels de Google Chrome / Edge (de 25% à 500%)
+                        double[] steps = { 0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0 };
+                        double current = webView.ZoomFactor;
+
+                        // Trouve le prochain palier supérieur (s'arrête automatiquement à 5.0 max)
+                        double nextStep = steps.FirstOrDefault(s => s > current + 0.01);
+                        if (nextStep != 0) webView.ZoomFactor = nextStep;
+                        return;
+                    }
+
+                    if (action == "zoom-out")
+                    {
+                        // Les paliers officiels de Google Chrome / Edge
+                        double[] steps = { 0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0 };
+                        double current = webView.ZoomFactor;
+
+                        // Trouve le prochain palier inférieur (s'arrête automatiquement à 0.25 min)
+                        double nextStep = steps.LastOrDefault(s => s < current - 0.01);
+                        if (nextStep != 0) webView.ZoomFactor = nextStep;
+                        return;
+                    }
+
+                    if (action == "zoom-reset")
+                    {
+                        // Remet instantanément le navigateur à 100% lors du CTRL + 0
+                        webView.ZoomFactor = 1.0;
+                        return;
+                    }
+
+                    // Vérifie si l'action est "copyTextToClipboard"
+                    if (action == "copyTextToClipboard")
+                    {
+                        Debug.WriteLine("copyTextToClipboard: " + root.GetProperty("text").GetString() ?? "");
+                        Clipboard.SetText(root.GetProperty("text").GetString() ?? "");
+                    }
+
+                    // Vérifie si l'action est "closeMenu"
+                    if (action == "closeMenu")
+                    {
+                        toolStripMenuItemFile.HideDropDown();
+                        toolStripMenuItemAccounts.HideDropDown();
+                        toolStripMenuItemRegion.HideDropDown();
+                        toolStripMenuItemOptions.HideDropDown();
+                        toolStripMenuItemAbout.HideDropDown();
+                    }
+
+                    // Vérifie si l'action est "hoverLeft"
+                    if (action == "hoverLeft")
+                    {
+                        bool isHover = root.GetProperty("isHover").GetBoolean();
+                        // affiche/masque la listBox
+                        listBoxHotsReplays.Visible = isHover;
+                    }
+
+                    // Vérifie si l'action est "Translate", si il y a une propriété callbackId et si le message contient "text"
+                    if (action == "translate" && root.TryGetProperty("callbackId", out JsonElement callbackIdElement) && root.TryGetProperty("text", out JsonElement textElement))
+                    {
+                        string? callbackId = callbackIdElement.GetString();
+                        // Récupère le texte à traduire
+                        string? inputText = textElement.GetString();
+                        string translatedText = string.Empty;
+                        string detectedLanguage = string.Empty;
+                        string detectedLanguageName = string.Empty;
+
+                        try
+                        {
+                            if (translator != null)
+                                (translatedText, detectedLanguage) = await translator.TranslateText(httpClient, inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erreur : " + ex.Message);
+                            Console.WriteLine("Erreur : " + ex.Message);
+                        }
+
+                        DeepLSupportedLanguage? detectedLangInfo = supportedLanguages?.FirstOrDefault(l => string.Equals(l.LanguageCode, detectedLanguage, StringComparison.OrdinalIgnoreCase));
+                        if (detectedLangInfo == null)
+                        {
+                            detectedLanguage = "unknown";
+                            detectedLanguageName = "Unknown";
+                        }
+                        else
+                        {
+                            detectedLanguageName = detectedLangInfo.LanguageName ?? "Unknown";
+                        }
+                        var resultObject = new { translatedText, detectedLanguage, detectedLanguageName };
+                        // Sérialise le texte traduit et le detected language en JSON
+                        string returnedJson = JsonSerializer.Serialize(resultObject);
+
+                        // Appelle le callback JavaScript puis nettoie
+                        string script = $"window['{callbackId}']({returnedJson}); delete window['{callbackId}'];";
+                        await webView.CoreWebView2.ExecuteScriptAsync(script);
+                    }
+                }
+            }
+            catch (JsonException ex)
+            {
+                Debug.WriteLine($"Erreur d'analyse JSON dans WebMessageReceived : {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Erreur générale dans WebMessageReceived : {ex.Message}");
             }
         }
         private void LoadAccountsToolStipMenu()
@@ -814,6 +856,10 @@ namespace HotsReplayReader
 </script>
 </head>
 <body style=""background: {bgColor} url('app://hotsResources/{bgImg}.png') no-repeat center center / cover fixed"">
+<div class=""zoom-controls"">
+  <img src=""app://hotsResources/zoom-in.png"" alt=""Zoom In"" class=""btn-zoom-in"">
+  <img src=""app://hotsResources/zoom-out.png"" alt=""Zoom Out"" class=""btn-zoom-out"">
+</div>
 ";
             if (Init.config is not null && Init.config.DisplayReplaySideBar)
                 html += "<div class=\"sidebar\">replays</div>\r\n";
@@ -823,7 +869,78 @@ namespace HotsReplayReader
         }
         internal static string HTMLGetFooter()
         {
-            string html = "</div>\n<br><br><br>\n</body>\n</html>\n";
+            string html = $@"</div>
+<br><br><br>
+<script>
+  function freezeZoomControls() {{
+    const controls = document.querySelector('.zoom-controls');
+    const imgIn = document.querySelector('.btn-zoom-in');
+    const imgOut = document.querySelector('.btn-zoom-out');
+
+    if (!controls || !imgIn || !imgOut) return;
+
+    // devicePixelRatio donne le ratio exact entre pixels CSS et pixels physiques de l'écran
+    const dpr = window.devicePixelRatio || 1;
+
+    // Calcul des valeurs CSS exactes compensées par le ratio de l'écran
+    const exactTop = 10 / dpr;
+    const exactRight = 15 / dpr;
+    const exactGap = 10 / dpr;
+
+    const exactWidthIn = 32 / dpr;
+    const exactHeightIn = 32 / dpr;
+
+    const exactWidthOut = 24 / dpr;
+    const exactHeightOut = 24 / dpr;
+
+    // Application des styles au conteneur
+    controls.style.top = `${{exactTop}}px`;
+    controls.style.right = `${{exactRight}}px`;
+
+    // Application des tailles strictes aux images (évite le flou et les sauts de proportion)
+    imgIn.style.width = `${{exactWidthIn}}px`;
+    imgIn.style.height = `${{exactHeightIn}}px`;
+    imgIn.style.marginRight = `${{exactGap}}px`; // Remplace le gap CSS par une marge brute
+
+    imgOut.style.width = `${{exactWidthOut}}px`;
+    imgOut.style.height = `${{exactHeightOut}}px`;
+  }}
+
+  // Déclencheurs natifs ultra-rapides
+  window.addEventListener('DOMContentLoaded', freezeZoomControls);
+  window.addEventListener('load', freezeZoomControls);
+  window.addEventListener('resize', freezeZoomControls);
+
+  // Optionnel : Intercepte les touches de raccourcis zoom pour une réactivité instantanée
+  window.addEventListener('keydown', (e) => {{
+    if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {{
+      setTimeout(freezeZoomControls, 50);
+    }}
+  }});
+  document.querySelector('.btn-zoom-in').addEventListener('click', () => {{
+      window.chrome.webview.postMessage({{ action: ""zoom-in"" }});
+  }});
+  document.querySelector('.btn-zoom-out').addEventListener('click', () => {{
+      window.chrome.webview.postMessage({{ action: ""zoom-out"" }});
+  }});
+
+  // Intercepte les touches de raccourcis zoom
+  window.addEventListener('keydown', (e) => {{
+    // Si CTRL + 0 est pressé
+    if ((e.ctrlKey || e.metaKey) && e.key === '0') {{
+      e.preventDefault(); // Empêche le comportement par défaut ""instable??""
+      // Informe le C# qu'il faut remettre le zoom à 100%
+      window.chrome.webview.postMessage({{ action: ""zoom-reset"" }});
+    }}
+    
+    if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {{
+      setTimeout(freezeZoomControls, 50);
+    }}
+  }});
+</script>
+</body>
+</html>
+";
             return html;
         }
         internal string HTMLGetHeadTable()
@@ -876,7 +993,6 @@ namespace HotsReplayReader
             string html = $"<div class=\"head-container\" style=\"background-color: {bgColor};\">\n  <table>\n";
 
             if (hotsReplay?.stormReplay?.ReplayVersion.ToString() != dbVersion)
-            {
                 html += $@"    <tr>
       <td colspan=""5"">Game Version</td><td>&nbsp;</td><td colspan=""5"">DB Version</td>
     </tr>
@@ -884,7 +1000,6 @@ namespace HotsReplayReader
       <td colspan=""5"">{hotsReplay?.stormReplay?.ReplayVersion.ToString()}</td><td>&nbsp;</td><td colspan=""5"">{dbVersion}</td>
     </tr>
 ";
-            }
 
             html += $@"    <tr><td colspan=""11"" class=""{winnerTeamClass}"" title=""{hotsReplay?.stormReplay?.ReplayVersion}"">{mapName}";
 
