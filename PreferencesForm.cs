@@ -20,6 +20,7 @@ namespace HotsReplayReader
             deepLLinkLabel.Text = Resources.Language.i18n.strPreferencesVisitDeepLWebsite;
             testButton.Text = Resources.Language.i18n.strPreferencesTest;
             groupBoxDisplay.Text = Resources.Language.i18n.strPreferencesDisplay;
+            checkBoxDisplayZoom.Text = Resources.Language.i18n.strPreferencesDisplayZoom;
             checkBoxDisplayGameMode.Text = Resources.Language.i18n.strPreferencesDisplayGameMode;
             checkBoxDisplayDate.Text = Resources.Language.i18n.strPreferencesDisplayDate;
             checkBoxDisplayReplaySideBar.Text = Resources.Language.i18n.strPreferencesDisplayReplaySidebar;
@@ -35,6 +36,7 @@ namespace HotsReplayReader
             if (this.hotsReplayWebReader.Init.config != null)
             {
                 deepLTextBox.Text = this.hotsReplayWebReader.Init.config.DeepLAPIKey;
+                checkBoxDisplayZoom.Checked = this.hotsReplayWebReader.Init.config.ZoomEnabled;
                 checkBoxDisplayGameMode.Checked = this.hotsReplayWebReader.Init.config.DisplayGameMode;
                 checkBoxDisplayDate.Checked = this.hotsReplayWebReader.Init.config.DisplayDate;
                 checkBoxDisplayReplaySideBar.Checked = this.hotsReplayWebReader.Init.config.DisplayReplaySideBar;
@@ -68,6 +70,7 @@ namespace HotsReplayReader
             if (this.hotsReplayWebReader.Init.config != null)
             {
                 hotsReplayWebReader.Init.config.DeepLAPIKey = deepLTextBox.Text;
+                this.hotsReplayWebReader.Init.config.ZoomEnabled = checkBoxDisplayZoom.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayGameMode = checkBoxDisplayGameMode.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayDate = checkBoxDisplayDate.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayReplaySideBar = checkBoxDisplayReplaySideBar.Checked;

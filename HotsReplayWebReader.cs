@@ -101,6 +101,14 @@ namespace HotsReplayReader
 <body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
 </html>";
 
+        /* Zoom Handler and Virtual Keys (VK) */
+        [LibraryImport("user32.dll")]
+        private static partial void keybd_event(byte vk, byte scan, uint flags, UIntPtr extra);
+        private const uint KEYUP = 0x0002;
+        private const byte VK_CONTROL = 0x11;
+        private const byte VK_ADD = 0x6B;
+        private const byte VK_SUBTRACT = 0x6D;
+
         internal Init Init = new();
         public HotsReplayWebReader()
         {
@@ -112,6 +120,9 @@ namespace HotsReplayReader
             if (Init.config!.LangCode is null || !LangCodeList.Contains(Init.config.LangCode))
                 Init.config.LangCode = defaultLangCode;
             SetApplicationLanguage(Init.config.LangCode);
+
+            if (!Init.config!.ZoomEnabled)
+                Init.config!.ZoomFactor = 1.0;
 
             InitializeComponent();
 
@@ -306,7 +317,18 @@ namespace HotsReplayReader
                 webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
                 webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
             }
-            webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
+
+            if (Init.config!.ZoomEnabled)
+                webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
+            else
+                webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+
+            webView.ZoomFactorChanged += (s, e) =>
+            {
+                Init.config!.ZoomFactor = webView.ZoomFactor;
+                PushZoomToPage();
+            };
+            webView.ZoomFactor = Math.Clamp(Init.config!.ZoomFactor, 0.25, 5.0);
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += WebViewWebResourceRequested;
@@ -531,35 +553,29 @@ namespace HotsReplayReader
                     // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
 
-                    // Tentative de gestion native du Zoom - A améliorer
+                    // Gestion du Zoom
                     if (action == "zoom-in")
                     {
-                        // Les paliers officiels de Google Chrome / Edge (de 25% à 500%)
-                        double[] steps = { 0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0 };
-                        double current = webView.ZoomFactor;
-
-                        // Trouve le prochain palier supérieur (s'arrête automatiquement à 5.0 max)
-                        double nextStep = steps.FirstOrDefault(s => s > current + 0.01);
-                        if (nextStep != 0) webView.ZoomFactor = nextStep;
+                        SendNativeZoomKey(VK_ADD);
                         return;
                     }
 
                     if (action == "zoom-out")
                     {
-                        // Les paliers officiels de Google Chrome / Edge
-                        double[] steps = { 0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0 };
-                        double current = webView.ZoomFactor;
-
-                        // Trouve le prochain palier inférieur (s'arrête automatiquement à 0.25 min)
-                        double nextStep = steps.LastOrDefault(s => s < current - 0.01);
-                        if (nextStep != 0) webView.ZoomFactor = nextStep;
+                        SendNativeZoomKey(VK_SUBTRACT);
                         return;
                     }
 
                     if (action == "zoom-reset")
                     {
-                        // Remet instantanément le navigateur à 100% lors du CTRL + 0
                         webView.ZoomFactor = 1.0;
+                        Init.config!.ZoomFactor = 1.0;
+                        return;
+                    }
+
+                    if (action == "zoom-sync")
+                    {
+                        PushZoomToPage();
                         return;
                     }
 
@@ -637,6 +653,20 @@ namespace HotsReplayReader
             {
                 Debug.WriteLine($"Erreur générale dans WebMessageReceived : {ex.Message}");
             }
+        }
+        private void SendNativeZoomKey(byte vk)
+        {
+            webView.Focus();
+            keybd_event(VK_CONTROL, 0, 0, UIntPtr.Zero);
+            keybd_event(vk, 0, 0, UIntPtr.Zero);
+            keybd_event(vk, 0, KEYUP, UIntPtr.Zero);
+            keybd_event(VK_CONTROL, 0, KEYUP, UIntPtr.Zero);
+        }
+        private void PushZoomToPage()
+        {
+            if (webView.CoreWebView2 == null) return;
+            string z = webView.ZoomFactor.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            webView.CoreWebView2.PostWebMessageAsJson($"{{\"zoom\":{z}}}");
         }
         private void LoadAccountsToolStipMenu()
         {
@@ -792,7 +822,6 @@ namespace HotsReplayReader
             string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#000011" : "#110000";
             string bgImg = $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}";
 
-
             string html = $@"<html lang=""{Resources.Language.i18n.ResourceManager.GetString("HTMLLang")!}"">
 <head>
 <style>
@@ -856,7 +885,9 @@ namespace HotsReplayReader
 </script>
 </head>
 <body style=""background: {bgColor} url('app://hotsResources/{bgImg}.png') no-repeat center center / cover fixed"">
-<div class=""zoom-controls"">
+";
+            if (Init.config!.ZoomEnabled)
+                html += $@"<div class=""zoom-controls"">
   <img src=""app://hotsResources/zoom-in.png"" alt=""Zoom In"" class=""btn-zoom-in"">
   <img src=""app://hotsResources/zoom-out.png"" alt=""Zoom Out"" class=""btn-zoom-out"">
 </div>
@@ -867,78 +898,46 @@ namespace HotsReplayReader
             html += "<br><br><br>\r\n<div class=\"parentDiv\">\r\n";
             return html;
         }
-        internal static string HTMLGetFooter()
+        internal string HTMLGetFooter()
         {
             string html = $@"</div>
-<br><br><br>
-<script>
-  function freezeZoomControls() {{
-    const controls = document.querySelector('.zoom-controls');
-    const imgIn = document.querySelector('.btn-zoom-in');
-    const imgOut = document.querySelector('.btn-zoom-out');
+<br><br><br>";
+            if (Init.config!.ZoomEnabled)
+                html += $@"<script>
+  const sendCSharpActionMessage = action => window.chrome.webview.postMessage({{ action }});
 
-    if (!controls || !imgIn || !imgOut) return;
+  document.querySelector('.btn-zoom-in').addEventListener('click',  () => sendCSharpActionMessage('zoom-in'));
+  document.querySelector('.btn-zoom-out').addEventListener('click', () => sendCSharpActionMessage('zoom-out'));
 
-    // devicePixelRatio donne le ratio exact entre pixels CSS et pixels physiques de l'écran
-    const dpr = window.devicePixelRatio || 1;
+  // Échelle Windows seule (dpr à zoom 100 %). Supposée = dpr actuel tant que C# n'a pas répondu.
+  let baseDpr = window.devicePixelRatio || 1;
 
-    // Calcul des valeurs CSS exactes compensées par le ratio de l'écran
-    const exactTop = 10 / dpr;
-    const exactRight = 15 / dpr;
-    const exactGap = 10 / dpr;
-
-    const exactWidthIn = 32 / dpr;
-    const exactHeightIn = 32 / dpr;
-
-    const exactWidthOut = 24 / dpr;
-    const exactHeightOut = 24 / dpr;
-
-    // Application des styles au conteneur
-    controls.style.top = `${{exactTop}}px`;
-    controls.style.right = `${{exactRight}}px`;
-
-    // Application des tailles strictes aux images (évite le flou et les sauts de proportion)
-    imgIn.style.width = `${{exactWidthIn}}px`;
-    imgIn.style.height = `${{exactHeightIn}}px`;
-    imgIn.style.marginRight = `${{exactGap}}px`; // Remplace le gap CSS par une marge brute
-
-    imgOut.style.width = `${{exactWidthOut}}px`;
-    imgOut.style.height = `${{exactHeightOut}}px`;
+  function updateCounterZoom() {{
+    const counterZoom = baseDpr / (window.devicePixelRatio || 1);
+    document.documentElement.style.setProperty('--counter-zoom', counterZoom);
   }}
 
-  // Déclencheurs natifs ultra-rapides
-  window.addEventListener('DOMContentLoaded', freezeZoomControls);
-  window.addEventListener('load', freezeZoomControls);
-  window.addEventListener('resize', freezeZoomControls);
+  window.addEventListener('resize', updateCounterZoom);
 
-  // Optionnel : Intercepte les touches de raccourcis zoom pour une réactivité instantanée
-  window.addEventListener('keydown', (e) => {{
-    if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {{
-      setTimeout(freezeZoomControls, 50);
+  // C# calibre baseDpr au chargement et à chaque zoom
+  window.chrome.webview.addEventListener('message', e => {{
+    if (e.data && typeof e.data.zoom === 'number') {{
+      baseDpr = (window.devicePixelRatio || 1) / e.data.zoom;
+      updateCounterZoom();
     }}
   }});
-  document.querySelector('.btn-zoom-in').addEventListener('click', () => {{
-      window.chrome.webview.postMessage({{ action: ""zoom-in"" }});
-  }});
-  document.querySelector('.btn-zoom-out').addEventListener('click', () => {{
-      window.chrome.webview.postMessage({{ action: ""zoom-out"" }});
-  }});
+  updateCounterZoom();
+  sendCSharpActionMessage('zoom-sync');
 
-  // Intercepte les touches de raccourcis zoom
-  window.addEventListener('keydown', (e) => {{
-    // Si CTRL + 0 est pressé
-    if ((e.ctrlKey || e.metaKey) && e.key === '0') {{
-      e.preventDefault(); // Empêche le comportement par défaut ""instable??""
-      // Informe le C# qu'il faut remettre le zoom à 100%
-      window.chrome.webview.postMessage({{ action: ""zoom-reset"" }});
-    }}
-    
-    if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {{
-      setTimeout(freezeZoomControls, 50);
+  window.addEventListener('keydown', e => {{
+    if ((e.ctrlKey || e.metaKey) && (e.code === 'Digit0' || e.code === 'Numpad0')) {{
+      e.preventDefault(); // empêche le reset natif (qui reviendrait au zoom du démarrage)
+      sendCSharpActionMessage('zoom-reset');
     }}
   }});
 </script>
-</body>
+";
+            html+=$@"</body>
 </html>
 ";
             return html;
@@ -3094,6 +3093,15 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             }
 
             webView.CoreWebView2.NavigateToString(htmlContent);
+
+            if (!Init.config!.ZoomEnabled)
+            {
+                webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+                webView.ZoomFactor = 1.0;
+                Init.config!.ZoomFactor = 1.0;
+            }
+            else
+                webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)
         {

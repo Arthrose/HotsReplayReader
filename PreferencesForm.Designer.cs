@@ -44,6 +44,7 @@
             radioButtonDarkModeAutomatic = new RadioButton();
             radioButtonDarkModeDark = new RadioButton();
             radioButtonDarkModeLight = new RadioButton();
+            checkBoxDisplayZoom = new CheckBox();
             groupBoxDisplay.SuspendLayout();
             groupBoxDarkMode.SuspendLayout();
             SuspendLayout();
@@ -71,7 +72,7 @@
             // 
             // OKButton
             // 
-            OKButton.Location = new Point(314, 184);
+            OKButton.Location = new Point(315, 210);
             OKButton.Name = "OKButton";
             OKButton.Size = new Size(75, 23);
             OKButton.TabIndex = 1;
@@ -99,6 +100,7 @@
             // 
             // groupBoxDisplay
             // 
+            groupBoxDisplay.Controls.Add(checkBoxDisplayZoom);
             groupBoxDisplay.Controls.Add(checkBoxDisplayGameMode);
             groupBoxDisplay.Controls.Add(checkBoxDisplayDate);
             groupBoxDisplay.Controls.Add(checkBoxDisplayDraftOrder);
@@ -106,7 +108,7 @@
             groupBoxDisplay.Controls.Add(checkBoxDisplayReplaySideBar);
             groupBoxDisplay.Location = new Point(18, 60);
             groupBoxDisplay.Name = "groupBoxDisplay";
-            groupBoxDisplay.Size = new Size(194, 147);
+            groupBoxDisplay.Size = new Size(194, 173);
             groupBoxDisplay.TabIndex = 5;
             groupBoxDisplay.TabStop = false;
             groupBoxDisplay.Text = "Display";
@@ -114,7 +116,7 @@
             // checkBoxDisplayGameMode
             // 
             checkBoxDisplayGameMode.AutoSize = true;
-            checkBoxDisplayGameMode.Location = new Point(15, 22);
+            checkBoxDisplayGameMode.Location = new Point(6, 47);
             checkBoxDisplayGameMode.Name = "checkBoxDisplayGameMode";
             checkBoxDisplayGameMode.Size = new Size(91, 19);
             checkBoxDisplayGameMode.TabIndex = 4;
@@ -124,7 +126,7 @@
             // checkBoxDisplayDate
             // 
             checkBoxDisplayDate.AutoSize = true;
-            checkBoxDisplayDate.Location = new Point(15, 47);
+            checkBoxDisplayDate.Location = new Point(6, 72);
             checkBoxDisplayDate.Name = "checkBoxDisplayDate";
             checkBoxDisplayDate.Size = new Size(50, 19);
             checkBoxDisplayDate.TabIndex = 3;
@@ -134,7 +136,7 @@
             // checkBoxDisplayDraftOrder
             // 
             checkBoxDisplayDraftOrder.AutoSize = true;
-            checkBoxDisplayDraftOrder.Location = new Point(15, 122);
+            checkBoxDisplayDraftOrder.Location = new Point(6, 147);
             checkBoxDisplayDraftOrder.Name = "checkBoxDisplayDraftOrder";
             checkBoxDisplayDraftOrder.Size = new Size(83, 19);
             checkBoxDisplayDraftOrder.TabIndex = 2;
@@ -144,7 +146,7 @@
             // checkBoxDisplayPingButton
             // 
             checkBoxDisplayPingButton.AutoSize = true;
-            checkBoxDisplayPingButton.Location = new Point(15, 97);
+            checkBoxDisplayPingButton.Location = new Point(6, 122);
             checkBoxDisplayPingButton.Name = "checkBoxDisplayPingButton";
             checkBoxDisplayPingButton.Size = new Size(89, 19);
             checkBoxDisplayPingButton.TabIndex = 1;
@@ -154,7 +156,7 @@
             // checkBoxDisplayReplaySideBar
             // 
             checkBoxDisplayReplaySideBar.AutoSize = true;
-            checkBoxDisplayReplaySideBar.Location = new Point(15, 72);
+            checkBoxDisplayReplaySideBar.Location = new Point(6, 97);
             checkBoxDisplayReplaySideBar.Name = "checkBoxDisplayReplaySideBar";
             checkBoxDisplayReplaySideBar.Size = new Size(102, 19);
             checkBoxDisplayReplaySideBar.TabIndex = 0;
@@ -168,7 +170,7 @@
             groupBoxDarkMode.Controls.Add(radioButtonDarkModeLight);
             groupBoxDarkMode.Location = new Point(218, 60);
             groupBoxDarkMode.Name = "groupBoxDarkMode";
-            groupBoxDarkMode.Size = new Size(172, 116);
+            groupBoxDarkMode.Size = new Size(172, 100);
             groupBoxDarkMode.TabIndex = 6;
             groupBoxDarkMode.TabStop = false;
             groupBoxDarkMode.Text = "Dark Mode";
@@ -206,11 +208,21 @@
             radioButtonDarkModeLight.Text = "Light mode";
             radioButtonDarkModeLight.UseVisualStyleBackColor = true;
             // 
-            // PropertiesForm
+            // checkBoxDisplayZoom
+            // 
+            checkBoxDisplayZoom.AutoSize = true;
+            checkBoxDisplayZoom.Location = new Point(6, 22);
+            checkBoxDisplayZoom.Name = "checkBoxDisplayZoom";
+            checkBoxDisplayZoom.Size = new Size(58, 19);
+            checkBoxDisplayZoom.TabIndex = 5;
+            checkBoxDisplayZoom.Text = "Zoom";
+            checkBoxDisplayZoom.UseVisualStyleBackColor = true;
+            // 
+            // PreferencesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(401, 218);
+            ClientSize = new Size(401, 243);
             Controls.Add(groupBoxDarkMode);
             Controls.Add(groupBoxDisplay);
             Controls.Add(testButton);
@@ -223,7 +235,7 @@
             KeyPreview = true;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "PropertiesForm";
+            Name = "PreferencesForm";
             StartPosition = FormStartPosition.Manual;
             Text = "Properties";
             KeyDown += PreferencesForm_KeyDown;
@@ -252,5 +264,6 @@
         private RadioButton radioButtonDarkModeAutomatic;
         private RadioButton radioButtonDarkModeDark;
         private RadioButton radioButtonDarkModeLight;
+        private CheckBox checkBoxDisplayZoom;
     }
 }
