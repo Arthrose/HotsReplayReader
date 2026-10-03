@@ -426,9 +426,6 @@
   <data name="strPreferencesDisplayDate" xml:space="preserve">
     <value>Datum</value>
   </data>
-  <data name="strPreferencesDisplayZoom" xml:space="preserve">
-    <value>Zoom</value>
-  </data>
   <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>Spielmodus</value>
   </data>

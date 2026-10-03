@@ -426,9 +426,6 @@
   <data name="strPreferencesDisplayDate" xml:space="preserve">
     <value>日期</value>
   </data>
-  <data name="strPreferencesDisplayZoom" xml:space="preserve">
-    <value>縮放</value>
-  </data>
   <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>遊戲模式</value>
   </data>

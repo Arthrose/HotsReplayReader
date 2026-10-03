@@ -747,33 +747,3 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
     color: white;
     background-color: rgba(0, 0, 0, 0.4);
 }
-
-/* Zoom Buttons */
-:root {
-    --counter-zoom: 1; /* zoom, mis à jour par C# */
-}
-
-.zoom-controls {
-    position: fixed;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    top: calc(10px * var(--counter-zoom));
-    right: calc(15px * var(--counter-zoom));
-    gap: calc(10px * var(--counter-zoom));
-}
-
-.zoom-controls img {
-    display: block;
-    cursor: pointer;
-}
-
-.btn-zoom-in {
-    width: calc(32px * var(--counter-zoom));
-    height: calc(32px * var(--counter-zoom));
-}
-
-.btn-zoom-out {
-    width: calc(24px * var(--counter-zoom));
-    height: calc(24px * var(--counter-zoom));
-}

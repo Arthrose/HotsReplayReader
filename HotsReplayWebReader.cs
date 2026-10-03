@@ -101,14 +101,6 @@ namespace HotsReplayReader
 <body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
 </html>";
 
-        /* Zoom Handler and Virtual Keys (VK) */
-        [LibraryImport("user32.dll")]
-        private static partial void keybd_event(byte vk, byte scan, uint flags, UIntPtr extra);
-        private const uint KEYUP = 0x0002;
-        private const byte VK_CONTROL = 0x11;
-        private const byte VK_ADD = 0x6B;
-        private const byte VK_SUBTRACT = 0x6D;
-        private const double ContentMaxWidth = 1200;
         internal Init Init = new();
         public HotsReplayWebReader()
         {
@@ -120,9 +112,6 @@ namespace HotsReplayReader
             if (Init.config!.LangCode is null || !LangCodeList.Contains(Init.config.LangCode))
                 Init.config.LangCode = defaultLangCode;
             SetApplicationLanguage(Init.config.LangCode);
-
-            if (!Init.config!.ZoomEnabled)
-                Init.config!.ZoomFactor = 1.0;
 
             InitializeComponent();
 
@@ -316,21 +305,13 @@ namespace HotsReplayReader
             {
                 webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
                 webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
-            }
-
-            if (Init.config!.ZoomEnabled)
-                webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
-            else
                 webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+            }
+            webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
 
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += WebViewWebResourceRequested;
             webView.WebMessageReceived += WebViewWebMessageReceived;
-            webView.ZoomFactorChanged += WebViewZoomFactorChanged;
-            webView.SizeChanged += WebViewSizeChanged;
-            Init.config!.ZoomFactor = Math.Clamp(Init.config.ZoomFactor, 0.25, 5.0);
-            webView.ZoomFactor = Init.config.ZoomFactor;
-            ClampZoomToWindow();
 
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
@@ -551,32 +532,6 @@ namespace HotsReplayReader
                     // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
 
-                    // Gestion du Zoom
-                    if (action == "zoom-in")
-                    {
-                        SendNativeZoomKey(VK_ADD);
-                        return;
-                    }
-
-                    if (action == "zoom-out")
-                    {
-                        SendNativeZoomKey(VK_SUBTRACT);
-                        return;
-                    }
-
-                    if (action == "zoom-reset")
-                    {
-                        webView.ZoomFactor = 1.0;
-                        Init.config!.ZoomFactor = 1.0;
-                        return;
-                    }
-
-                    if (action == "zoom-sync")
-                    {
-                        PushZoomToPage();
-                        return;
-                    }
-
                     // Vérifie si l'action est "copyTextToClipboard"
                     if (action == "copyTextToClipboard")
                     {
@@ -651,48 +606,6 @@ namespace HotsReplayReader
             {
                 Debug.WriteLine($"Erreur générale dans WebMessageReceived : {ex.Message}");
             }
-        }
-        private void WebViewZoomFactorChanged(object? sender, EventArgs args)
-        {
-            double z = Math.Min(webView.ZoomFactor, GetMaxZoom());
-
-            Init.config!.ZoomFactor = z;
-            webView.ZoomFactor = z;   // corrige le zoom si on a depasse, et met à jour la reference
-            PushZoomToPage();
-        }
-        private void WebViewSizeChanged(object? sender, EventArgs args)
-        {
-            ClampZoomToWindow();
-        }
-        private double GetMaxZoom()
-        {
-            double dpiScale = DeviceDpi / 96.0; // Echelle Windows (125 %, 150 %...)
-            double availableCssPx = webView.ClientSize.Width / dpiScale;
-            return Math.Clamp(availableCssPx / ContentMaxWidth, 0.25, 5.0);
-        }
-        private void ClampZoomToWindow()
-        {
-            double max = GetMaxZoom();
-            if (webView.ZoomFactor > max)
-            {
-                Init.config!.ZoomFactor = max;
-                webView.ZoomFactor = max;
-                PushZoomToPage();
-            }
-        }
-        private void SendNativeZoomKey(byte virtualKey)
-        {
-            webView.Focus();
-            keybd_event(VK_CONTROL, 0, 0, UIntPtr.Zero);
-            keybd_event(virtualKey, 0, 0, UIntPtr.Zero);
-            keybd_event(virtualKey, 0, KEYUP, UIntPtr.Zero);
-            keybd_event(VK_CONTROL, 0, KEYUP, UIntPtr.Zero);
-        }
-        private void PushZoomToPage()
-        {
-            if (webView.CoreWebView2 == null) return;
-            string z = webView.ZoomFactor.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            webView.CoreWebView2.PostWebMessageAsJson($"{{\"zoom\":{z}}}");
         }
         private void LoadAccountsToolStipMenu()
         {
@@ -912,12 +825,6 @@ namespace HotsReplayReader
 </head>
 <body style=""background: {bgColor} url('app://hotsResources/{bgImg}.png') no-repeat center center / cover fixed"">
 ";
-            if (Init.config!.ZoomEnabled)
-                html += $@"<div class=""zoom-controls"">
-  <img src=""app://hotsResources/zoom-in.png"" alt=""Zoom In"" class=""btn-zoom-in"">
-  <img src=""app://hotsResources/zoom-out.png"" alt=""Zoom Out"" class=""btn-zoom-out"">
-</div>
-";
             if (Init.config is not null && Init.config.DisplayReplaySideBar)
                 html += "<div class=\"sidebar\">replays</div>\r\n";
 
@@ -928,41 +835,6 @@ namespace HotsReplayReader
         {
             string html = $@"</div>
 <br><br><br>";
-            if (Init.config!.ZoomEnabled)
-                html += $@"<script>
-  const sendCSharpActionMessage = action => window.chrome.webview.postMessage({{ action }});
-
-  document.querySelector('.btn-zoom-in').addEventListener('click',  () => sendCSharpActionMessage('zoom-in'));
-  document.querySelector('.btn-zoom-out').addEventListener('click', () => sendCSharpActionMessage('zoom-out'));
-
-  // Échelle Windows seule (dpr à zoom 100 %). Supposée = dpr actuel tant que C# n'a pas répondu.
-  let baseDpr = window.devicePixelRatio || 1;
-
-  function updateCounterZoom() {{
-    const counterZoom = baseDpr / (window.devicePixelRatio || 1);
-    document.documentElement.style.setProperty('--counter-zoom', counterZoom);
-  }}
-
-  window.addEventListener('resize', updateCounterZoom);
-
-  // C# calibre baseDpr au chargement et à chaque zoom
-  window.chrome.webview.addEventListener('message', e => {{
-    if (e.data && typeof e.data.zoom === 'number') {{
-      baseDpr = (window.devicePixelRatio || 1) / e.data.zoom;
-      updateCounterZoom();
-    }}
-  }});
-  updateCounterZoom();
-  sendCSharpActionMessage('zoom-sync');
-
-  window.addEventListener('keydown', e => {{
-    if ((e.ctrlKey || e.metaKey) && (e.code === 'Digit0' || e.code === 'Numpad0')) {{
-      e.preventDefault(); // empêche le reset natif (qui reviendrait au zoom du démarrage)
-      sendCSharpActionMessage('zoom-reset');
-    }}
-  }});
-</script>
-";
             html+=$@"</body>
 </html>
 ";
@@ -3118,13 +2990,6 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 htmlContent = welcomeHTML;
             }
 
-            webView.CoreWebView2.Settings.IsZoomControlEnabled = Init.config!.ZoomEnabled;
-
-            if (!Init.config.ZoomEnabled)
-            {
-                Init.config.ZoomFactor = 1.0;
-                webView.ZoomFactor = 1.0;
-            }
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)

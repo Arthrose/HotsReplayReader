@@ -700,15 +700,6 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zoom.
-        /// </summary>
-        internal static string strPreferencesDisplayZoom {
-            get {
-                return ResourceManager.GetString("strPreferencesDisplayZoom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid API key..
         /// </summary>
         internal static string strPreferencesInvalidAPIKey {
