@@ -1,4 +1,4 @@
-﻿// https://github.com/HeroesToolChest/heroes-data
+﻿// https://github.com/HeroesToolChest/heroes-data2
 // https://github.com/HeroesToolChest/heroes-images
 
 using System.Data;
@@ -108,7 +108,7 @@ namespace HotsReplayReader
         private const byte VK_CONTROL = 0x11;
         private const byte VK_ADD = 0x6B;
         private const byte VK_SUBTRACT = 0x6D;
-
+        private const double ContentMaxWidth = 1200;
         internal Init Init = new();
         public HotsReplayWebReader()
         {
@@ -323,16 +323,14 @@ namespace HotsReplayReader
             else
                 webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
 
-            webView.ZoomFactorChanged += (s, e) =>
-            {
-                Init.config!.ZoomFactor = webView.ZoomFactor;
-                PushZoomToPage();
-            };
-            webView.ZoomFactor = Math.Clamp(Init.config!.ZoomFactor, 0.25, 5.0);
-
             webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
             webView.CoreWebView2.WebResourceRequested += WebViewWebResourceRequested;
-            webView.WebMessageReceived += WebView_WebMessageReceived;
+            webView.WebMessageReceived += WebViewWebMessageReceived;
+            webView.ZoomFactorChanged += WebViewZoomFactorChanged;
+            webView.SizeChanged += WebViewSizeChanged;
+            Init.config!.ZoomFactor = Math.Clamp(Init.config.ZoomFactor, 0.25, 5.0);
+            webView.ZoomFactor = Init.config.ZoomFactor;
+            ClampZoomToWindow();
 
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
@@ -399,21 +397,21 @@ namespace HotsReplayReader
             if (Init.config.AskUpdate)
                 await CheckAndLaunchUpdateAsync();
         }
-        private async void WebViewWebResourceRequested(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs e)
+        private async void WebViewWebResourceRequested(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
         {
-            Uri uri = new(e.Request.Uri);
+            Uri uri = new(args.Request.Uri);
 
             // jsDelivr
             if (uri.Scheme == "app" && uri.Host == "heroes-images")
             {
-                CoreWebView2Deferral deferral = e.GetDeferral();
+                CoreWebView2Deferral deferral = args.GetDeferral();
 
                 string relativePath = uri.AbsolutePath.TrimStart('/'); // ex: "heroportraits/hero.png"
                 string? localPath = await HotsImage.GetOrDownloadAsync(httpClient, relativePath);
 
                 if (localPath == null)
                 {
-                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 404, "Not Found", "");
+                    args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 404, "Not Found", "");
                     deferral.Complete();
                     return;
                 }
@@ -435,7 +433,7 @@ namespace HotsReplayReader
                     };
 
                     Stream fileStream = File.OpenRead(localPath);
-                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(fileStream, 200, "OK", $"Content-Type: {contentType}");
+                    args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(fileStream, 200, "OK", $"Content-Type: {contentType}");
                     deferral.Complete();
                     return;
                 }
@@ -450,7 +448,7 @@ namespace HotsReplayReader
 
                     if (transformed == null)
                     {
-                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 500, "Internal Server Error", "");
+                        args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 500, "Internal Server Error", "");
                         deferral.Complete();
                         return;
                     }
@@ -471,7 +469,7 @@ namespace HotsReplayReader
                     transformed.Dispose();
                     ms.Position = 0;
 
-                    e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", $"Content-Type: {contentType}");
+                    args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", $"Content-Type: {contentType}");
                     deferral.Complete();
                     return;
                 }
@@ -495,7 +493,7 @@ namespace HotsReplayReader
                         if (resource is byte[] svgBytes)
                         {
                             MemoryStream msSvg = new(svgBytes);
-                            e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(msSvg, 200, "OK", "Content-Type: image/svg+xml");
+                            args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(msSvg, 200, "OK", "Content-Type: image/svg+xml");
                         }
                         return;
                     }
@@ -513,7 +511,7 @@ namespace HotsReplayReader
                     {
                         image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                         ms.Position = 0;
-                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
+                        args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/png");
                     }
                     else if (extension == ".jpg")
                     {
@@ -526,19 +524,19 @@ namespace HotsReplayReader
                         }
                         newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                         ms.Position = 0;
-                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/jpeg");
+                        args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/jpeg");
                     }
                     else if (extension == ".gif")
                     {
                         // Handle GIF images
                         image.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
                         ms.Position = 0;
-                        e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
+                        args.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(ms, 200, "OK", "Content-Type: image/gif");
                     }
                 }
             }
         }
-        private async void WebView_WebMessageReceived(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs args)
+        private async void WebViewWebMessageReceived(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs args)
         {
             string json = args.WebMessageAsJson;
 
@@ -654,12 +652,40 @@ namespace HotsReplayReader
                 Debug.WriteLine($"Erreur générale dans WebMessageReceived : {ex.Message}");
             }
         }
-        private void SendNativeZoomKey(byte vk)
+        private void WebViewZoomFactorChanged(object? sender, EventArgs args)
+        {
+            double z = Math.Min(webView.ZoomFactor, GetMaxZoom());
+
+            Init.config!.ZoomFactor = z;
+            webView.ZoomFactor = z;   // corrige le zoom si on a depasse, et met à jour la reference
+            PushZoomToPage();
+        }
+        private void WebViewSizeChanged(object? sender, EventArgs args)
+        {
+            ClampZoomToWindow();
+        }
+        private double GetMaxZoom()
+        {
+            double dpiScale = DeviceDpi / 96.0; // Echelle Windows (125 %, 150 %...)
+            double availableCssPx = webView.ClientSize.Width / dpiScale;
+            return Math.Clamp(availableCssPx / ContentMaxWidth, 0.25, 5.0);
+        }
+        private void ClampZoomToWindow()
+        {
+            double max = GetMaxZoom();
+            if (webView.ZoomFactor > max)
+            {
+                Init.config!.ZoomFactor = max;
+                webView.ZoomFactor = max;
+                PushZoomToPage();
+            }
+        }
+        private void SendNativeZoomKey(byte virtualKey)
         {
             webView.Focus();
             keybd_event(VK_CONTROL, 0, 0, UIntPtr.Zero);
-            keybd_event(vk, 0, 0, UIntPtr.Zero);
-            keybd_event(vk, 0, KEYUP, UIntPtr.Zero);
+            keybd_event(virtualKey, 0, 0, UIntPtr.Zero);
+            keybd_event(virtualKey, 0, KEYUP, UIntPtr.Zero);
             keybd_event(VK_CONTROL, 0, KEYUP, UIntPtr.Zero);
         }
         private void PushZoomToPage()
@@ -3092,16 +3118,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 htmlContent = welcomeHTML;
             }
 
-            webView.CoreWebView2.NavigateToString(htmlContent);
+            webView.CoreWebView2.Settings.IsZoomControlEnabled = Init.config!.ZoomEnabled;
 
-            if (!Init.config!.ZoomEnabled)
+            if (!Init.config.ZoomEnabled)
             {
-                webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+                Init.config.ZoomFactor = 1.0;
                 webView.ZoomFactor = 1.0;
-                Init.config!.ZoomFactor = 1.0;
             }
-            else
-                webView.CoreWebView2.Settings.IsZoomControlEnabled = true;
+            webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)
         {

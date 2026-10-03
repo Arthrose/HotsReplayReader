@@ -118,7 +118,7 @@ namespace HotsReplayReader
         public bool DisplayPingButton { get; set; } = true;
         public bool DisplayDraftOrder { get; set; } = true;
         public bool ZoomEnabled { get; set; } = true;
-        public double ZoomFactor { get; set; } = 1.0;
+        public double ZoomFactor { get; set;} = 1.0;
         public DarkModeType DarkMode { get; set; } = DarkModeType.Automatic;
         internal JsonSerializerOptions jsonOptions = new() { WriteIndented = true };
         private static string GetConfigPath()
