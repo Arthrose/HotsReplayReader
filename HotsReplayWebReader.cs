@@ -24,6 +24,7 @@ using Heroes.StormReplayParser.Replay;
 using Heroes.StormReplayParser.TrackerEvent;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Win32;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace HotsReplayReader
 {
@@ -831,7 +832,7 @@ namespace HotsReplayReader
             html += "<br><br><br>\r\n<div class=\"parentDiv\">\r\n";
             return html;
         }
-        internal string HTMLGetFooter()
+        internal static string HTMLGetFooter()
         {
             string html = $@"</div>
 <br><br><br>";
@@ -1162,7 +1163,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             html += $"      </td>\n";
             return html;
         }
-        internal string HTMLGetChatMessages()
+        internal async Task<string> HTMLGetChatMessages()
         {
             if (hotsReplay == null || hotsPlayers == null || hotsReplay.stormReplay == null) return "";
 
@@ -1248,7 +1249,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
-                    html += HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
+                    html += await HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
 
                 if(Init.config is not null && Init.config.DisplayPingButton)
                     html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
@@ -1309,7 +1310,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             else
                 return "";
         }
-        internal string HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
+        internal async Task<string> HTMLGetChatMessage(HotsMessage hotsMessage, bool lastMessageAfterAnHour)
         {
             if (hotsMessage.HotsPlayer.PlayerHero == null) return "";
 
@@ -1334,7 +1335,20 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             }
             else
             {
-                html += $"    <span class=\"chat-user\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap}\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
+                string actions = "";
+                string? portrait = hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap;
+                if (portrait != null)
+                {
+                    // L'icone de Xal'Atath n'a pas de bordure transparente, on lui ajoute
+                    Size? size = await HotsImage.GetSizeAsync(httpClient, $"heroportraits/{portrait}");
+                    if (size != null && size.Value.Width < 32)
+                    {
+                        int border = (32 - size.Value.Width) / 2;
+                        actions = $"?actions=border:transparent,{border}";
+                    }
+                }
+
+                html += $"    <span class=\"chat-user\"><img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Minimap}{actions}\" class=\"chat-image\" title=\"{hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsMessage.HotsPlayer.PlayerHero.HeroUnitId])}\"></span>\n";
                 string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsMessage.HotsPlayer.BattleTagName) ? " owner" : "";
                 html += $"    <span class=\"team{hotsMessage.HotsPlayer.Party}{owner}\">{msgSenderName}</span>: \n";
             }
@@ -2974,7 +2988,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                     htmlContent = $"{HTMLGetHeader()}";
                     htmlContent += $"{HTMLGetHeadTable()}";
-                    htmlContent += $"{HTMLGetChatMessages()}";
+                    htmlContent += await HTMLGetChatMessages();
                     htmlContent += $"{HTMLGetScoreTable()}";
                     htmlContent += $"{HTMLGetTalentsTable()}";
                     htmlContent += $"{HTMLGetFooter()}";

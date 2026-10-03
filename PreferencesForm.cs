@@ -8,8 +8,6 @@ namespace HotsReplayReader
     {
         readonly HotsReplayWebReader hotsReplayWebReader;
         // Dark mode
-        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
-        private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
         public PreferencesForm(HotsReplayWebReader hotsReplayWebReader)
         {
             InitializeComponent();
@@ -110,10 +108,11 @@ namespace HotsReplayReader
 
             const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
             const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
-            if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref this.hotsReplayWebReader.useDarkMode, sizeof(int)) != 0)
+            int useDarkMode = this.hotsReplayWebReader.useDarkMode;
+            if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int)) != 0)
             {
                 // Fallback for older Windows 10 builds
-                NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref this.hotsReplayWebReader.useDarkMode, sizeof(int));
+                NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref useDarkMode, sizeof(int));
             }
 
             if (this.hotsReplayWebReader.useDarkMode == 1)

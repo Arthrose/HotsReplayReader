@@ -142,23 +142,49 @@ namespace HotsReplayReader
             int newWidth = source.Width + 2 * borderSize;
             int newHeight = source.Height + 2 * borderSize;
 
-            // Convert hex string to Color
-            Color color = ColorTranslator.FromHtml(borderColor);
-
-            Bitmap output = new(newWidth, newHeight, source.PixelFormat);
+            // Toujours un format avec canal alpha, sinon la transparence est perdue
+            Bitmap output = new(newWidth, newHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             using (Graphics g = Graphics.FromImage(output))
             {
+                // Convert hex string to Color
+                Color color = ColorTranslator.FromHtml(borderColor);
+
+                // Fond : on remplace réellement les pixels (y compris par du transparent)
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                 // Dessine fond de la couleur de la bordure partout
                 using (SolidBrush brush = new(color))
                 {
                     g.FillRectangle(brush, 0, 0, newWidth, newHeight);
                 }
+
+                // Retour au mode normal pour dessiner l'image d'origine
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                 // Dessine l'image d'origine au centre
                 g.DrawImage(source, borderSize, borderSize, source.Width, source.Height);
             }
 
             return output;
+        }
+        private static readonly ConcurrentDictionary<string, Size> SizeCache = new();
+        public static async Task<Size?> GetSizeAsync(HttpClient httpClient, string relativePath)
+        {
+            relativePath = relativePath.Replace('\\', '/').TrimStart('/');
+
+            if (SizeCache.TryGetValue(relativePath, out Size cached))
+                return cached;
+
+            string? localPath = await GetOrDownloadAsync(httpClient, relativePath);
+            if (localPath == null)
+                return null;
+
+            // validateImageData: false => ne lit que l'en-tête, sans décoder les pixels
+            using FileStream fs = File.OpenRead(localPath);
+            using Image img = Image.FromStream(fs, useEmbeddedColorManagement: false, validateImageData: false);
+
+            Size size = new(img.Width, img.Height);
+            SizeCache[relativePath] = size;
+            return size;
         }
         public void SetBitmap()
         {
