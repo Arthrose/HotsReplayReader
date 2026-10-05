@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json;
 using Heroes.StormReplayParser;
@@ -45,40 +46,80 @@ namespace HotsReplayReader
 
                 foreach (string accountDir in orderedDirs)
                 {
-                    DirectoryInfo directoryInfo = new(accountDir);
-                    string[] multiplayersReplayDirs = Directory.GetDirectories(accountDir);
-                    foreach (string multiplayersReplayDir in multiplayersReplayDirs)
+                    bool    accountRegionAmerica = false,
+                            accountRegionEurope = false,
+                            accountRegionAsia = false,
+                            accountRegionPTR = false,
+                            accountNameFound = false;
+
+                    string? battleTagName = null,
+                            fullPath = null,
+                            accountRegionAmericaFullPath = null,
+                            accountRegionEuropeFullPath = null,
+                            accountRegionAsiaFullPath = null,
+                            accountRegionPTRFullPath = null;
+
+                    foreach (string accountRegionDir in Directory.GetDirectories(accountDir, "*-Hero-*"))
                     {
-                        DirectoryInfo multiplayersReplayDirInfo = new(multiplayersReplayDir);
-                        if (multiplayersReplayDirInfo.Name[..7] == $"{config?.Region}-Hero-")
+                        FileInfo[] regionReplayFiles = new DirectoryInfo(Path.Combine(accountRegionDir, "Replays", "Multiplayer")).GetFiles("*.StormReplay");
+                        if (regionReplayFiles.Length > 0)
                         {
-                            DirectoryInfo hotsReplayFolder = new(multiplayersReplayDir + @"\Replays\Multiplayer");
-                            FileInfo[] replayFiles = hotsReplayFolder.GetFiles(@"*.StormReplay");
-                            if (replayFiles.Length > 0)
+                            switch (int.Parse(Path.GetFileName(accountRegionDir)[..Path.GetFileName(accountRegionDir).IndexOf('-')]))
                             {
-                                Array.Reverse(replayFiles);
-                                for (int i = 0; i < replayFiles.Length; i++)
+                                case 1:
+                                    accountRegionAmerica = true;
+                                    accountRegionAmericaFullPath = Path.Combine(accountRegionDir, "Replays", "Multiplayer");
+                                    break;
+                                case 2:
+                                    accountRegionEurope = true;
+                                    accountRegionEuropeFullPath = Path.Combine(accountRegionDir, "Replays", "Multiplayer");
+                                    break;
+                                case 3:
+                                    accountRegionAsia = true;
+                                    accountRegionAsiaFullPath = Path.Combine(accountRegionDir, "Replays", "Multiplayer");
+                                    break;
+                                case 98:
+                                    accountRegionPTR = true;
+                                    accountRegionPTRFullPath = Path.Combine(accountRegionDir, "Replays", "Multiplayer");
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            if (!accountNameFound)
+                            {
+                                Array.Reverse(regionReplayFiles);
+                                for (int i = 0; i < regionReplayFiles.Length; i++)
                                 {
                                     try
                                     {
-                                        if (StormReplayParse(replayFiles[i].FullName) && hotsReplay?.Owner != null)
+                                        if (StormReplayParse(regionReplayFiles[i].FullName) && hotsReplay?.Owner != null)
                                         {
-                                            hotsLocalAccounts.Add(new HotsLocalAccount
-                                            {
-                                                BattleTagName = hotsReplay.Owner.BattleTagName,
-                                                FullPath = Path.GetDirectoryName(replayFiles[0].FullName)
-                                            });
+                                            battleTagName = hotsReplay.Owner.BattleTagName;
+                                            fullPath = Path.GetDirectoryName(regionReplayFiles[0].FullName)!;
+                                            accountNameFound = true;
                                             break;
                                         }
                                     }
-                                    catch
-                                    {
-                                        continue;
-                                    }
+                                    catch { continue; }
                                 }
                             }
                         }
                     }
+                    if (accountNameFound)
+                        hotsLocalAccounts.Add(new HotsLocalAccount
+                        {
+                            BattleTagName = battleTagName,
+                            FullPath = fullPath,
+                            RegionAmerica = accountRegionAmerica,
+                            RegionAmericaFullPath = accountRegionAmericaFullPath,
+                            RegionEurope = accountRegionEurope,
+                            RegionEuropeFullPath = accountRegionEuropeFullPath,
+                            RegionAsia = accountRegionAsia,
+                            RegionAsiaFullPath = accountRegionAsiaFullPath,
+                            RegionPTR = accountRegionPTR,
+                            RegionPTRFullPath = accountRegionPTRFullPath
+                        });
                 }
             }
         }
@@ -87,7 +128,7 @@ namespace HotsReplayReader
             StormReplayResult? hotsReplayResult = StormReplay.Parse(hotsReplayFilePath);
             StormReplayParseStatus hotsReplayStatus = hotsReplayResult.Status;
 
-            if (hotsReplayStatus == StormReplayParseStatus.Success)
+            if (hotsReplayStatus == StormReplayParseStatus.Success || hotsReplayStatus == StormReplayParseStatus.PTRRegion)
             {
                 hotsReplay = hotsReplayResult.Replay;
                 hotsPlayers = hotsReplay.StormPlayers;
@@ -108,7 +149,6 @@ namespace HotsReplayReader
         public string? LangCode { get; set; } = "en-US";
         public string? Region { get; set; } = "2";
         public string? LastSelectedAccount { get; set; }
-        public string? LastSelectedAccountDirectory { get; set; }
         public string? LastBrowseDirectory { get; set; }
         public string? DeepLAPIKey { get; set; }
         public bool AskUpdate { get; set; } = true;
@@ -133,13 +173,17 @@ namespace HotsReplayReader
             string json = File.ReadAllText(file);
             if (json != null)
             {
-                Config? config = JsonSerializer.Deserialize<Config>(json);
-                if (config != null)
+                try
                 {
-                    config.LangCode ??= "en-US";
-                    config.Region ??= "2";
-                    return config;
+                    Config? config = JsonSerializer.Deserialize<Config>(json);
+                    if (config != null)
+                    {
+                        config.LangCode ??= "en-US";
+                        config.Region ??= "2";
+                        return config;
+                    }
                 }
+                catch (Exception) { return new Config(); }
             }
             return new Config();
         }

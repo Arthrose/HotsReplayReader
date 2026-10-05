@@ -143,12 +143,15 @@ namespace HotsReplayReader
                 case "3":
                     toolStripMenuItemRegionAsia.Checked = true;
                     break;
+                case "98":
+                    toolStripMenuItemRegionPTR.Checked = true;
+                    break;
                 default:
                     toolStripMenuItemRegionEurope.Checked = true;
                     break;
             }
 
-            LoadAccountsToolStipMenu();
+            LoadAccountsToolStripMenu();
 
             ToolStripMenuItem[] languageToolStripMenu = new ToolStripMenuItem[LangCodeList.Count];
             int j = 0;
@@ -317,39 +320,15 @@ namespace HotsReplayReader
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
 
-            if (Directory.Exists(Init.config!.LastSelectedAccountDirectory))
+            if (toolStripMenuItemAccounts.DropDownItems.Count > 0)
             {
-                ListHotsReplays(Init.config.LastSelectedAccountDirectory);
-                if (Init.config!.LastSelectedAccount != null)
-                {
-                    currentAccount = Init.config!.LastSelectedAccount;
-                    this.Text = $"{formTitle} - {currentAccount}";
-                }
-                else
-                {
-                    currentAccount = "";
-                    this.Text = $"{formTitle}";
-                }
+                ToolStripItem target = toolStripMenuItemAccounts.DropDownItems
+                    .Cast<ToolStripItem>()
+                    .FirstOrDefault(i => i.Name == Init.config!.LastSelectedAccount)
+                    ?? toolStripMenuItemAccounts.DropDownItems[0];
 
-                this.Update();
-
-                foreach (ToolStripItem item in toolStripMenuItemAccounts.DropDownItems)
-                {
-                    if (item is ToolStripMenuItem submenu)
-                    {
-                        if (submenu.Name == currentAccount) submenu.Checked = true;
-                        else submenu.Checked = false;
-                    }
-                }
-
-                this.Invoke(new Action(() =>
-                {
-                    if (listBoxHotsReplays.Items.Count > 0)
-                        listBoxHotsReplays.SelectedIndex = 0; // select first element
-                }));
+                AccountMenuItemClickHandler(target, EventArgs.Empty);
             }
-            else if (toolStripMenuItemAccounts.DropDownItems.Count > 0)
-                AccountMenuItemClickHandler(toolStripMenuItemAccounts.DropDownItems[0], EventArgs.Empty);
             else
             {
                 htmlContent = welcomeHTML;
@@ -376,7 +355,7 @@ namespace HotsReplayReader
                 */
                 webView.NavigateToString(htmlContent);
             }
-            if (Init.config.AskUpdate)
+            if (Init.config!.AskUpdate)
                 await CheckAndLaunchUpdateAsync();
         }
         private async void WebViewWebResourceRequested(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs args)
@@ -608,59 +587,140 @@ namespace HotsReplayReader
                 Debug.WriteLine($"Erreur générale dans WebMessageReceived : {ex.Message}");
             }
         }
-        private void LoadAccountsToolStipMenu()
+        private void LoadAccountsToolStripMenu()
         {
             toolStripMenuItemAccounts.DropDownItems.Clear();
+            if (Init.hotsLocalAccounts is not { Count: > 0 } accounts) return;
 
-            if (Init.hotsLocalAccounts == null) return;
-
-            ToolStripMenuItem[] accountsToolStripMenu = new ToolStripMenuItem[Init.hotsLocalAccounts.Count];
-            for (int i = 0; i < accountsToolStripMenu.Length; i++)
+            ToolStripMenuItem[] items = [.. accounts.Select(account =>
             {
-                ToolStripMenuItem toolStripMenuItem = new()
+                string battleTag = account.BattleTagName ?? string.Empty;
+                int hashIndex = battleTag.IndexOf('#');
+        
+                ToolStripMenuItem item = new()
                 {
-                    Name = Init?.hotsLocalAccounts[i].BattleTagName,
+                    Name = battleTag,
                     Tag = "Account",
-                    Text = Init?.hotsLocalAccounts[i]?.BattleTagName is string tag && tag.Contains('#')
-                        ? tag[..tag.IndexOf('#')]
-                        : string.Empty
+                    Text = hashIndex >= 0 ? battleTag[..hashIndex] : string.Empty,
+                    CheckOnClick = true
                 };
-                accountsToolStripMenu[i] = toolStripMenuItem;
-                accountsToolStripMenu[i].Click += new EventHandler(AccountMenuItemClickHandler);
-                accountsToolStripMenu[i].CheckOnClick = true;
-            }
-            toolStripMenuItemAccounts.DropDownItems.AddRange(accountsToolStripMenu);
+                item.Click += AccountMenuItemClickHandler;
+                return item;
+            })];
+            toolStripMenuItemAccounts.DropDownItems.AddRange(items);
         }
         private void AccountMenuItemClickHandler(object? sender, EventArgs e)
         {
-            if (sender is ToolStripMenuItem clickedItem && clickedItem.Tag?.ToString() == "Account" && Init.hotsLocalAccounts != null)
+            if (
+                 sender is not ToolStripMenuItem clickedItem
+              || clickedItem.Tag?.ToString() != "Account"
+              || clickedItem.Name == null
+              || Init.hotsLocalAccounts == null
+            )
+                return;
+
+            HotsLocalAccount? account = Init.hotsLocalAccounts
+                .FirstOrDefault(a => a.BattleTagName == clickedItem.Name);
+            if (account == null) return;
+
+            // Path du compte pour la région sélectionnée (null si pas de replay)
+            string? regionPath = Init.config!.Region switch
             {
-                for (int i = 0; i < Init.hotsLocalAccounts.Count; i++)
-                {
-                    if (Init.hotsLocalAccounts[i].BattleTagName == clickedItem.Name)
-                    {
-                        if (clickedItem.Name == null) continue;
-                        currentAccount = clickedItem.Name;
-                        ListHotsReplays(Init.hotsLocalAccounts[i].FullPath);
+                "1" => account.RegionAmerica ? account.RegionAmericaFullPath : null,
+                "2" => account.RegionEurope ? account.RegionEuropeFullPath : null,
+                "3" => account.RegionAsia ? account.RegionAsiaFullPath : null,
+                "98" => account.RegionPTR ? account.RegionPTRFullPath : null,
+                _ => null
+            };
 
-                        Init.config!.LastSelectedAccount = clickedItem.Name;
-                        Init.config.LastSelectedAccountDirectory = Init.hotsLocalAccounts[i].FullPath;
-                    }
+            currentAccount = clickedItem.Name;
+
+            if (!string.IsNullOrEmpty(regionPath) && Directory.Exists(regionPath))
+            {
+                ListHotsReplays(regionPath);
+            }
+            else
+            {
+                // Aucun replay pour cette région : on vide la liste et on affiche l'accueil
+                listBoxHotsReplays.Items.Clear();
+                replayList.Clear();
+                webView.NavigateToString(welcomeHTML);
+            }
+
+            Init.config.LastSelectedAccount = clickedItem.Name;
+
+            foreach (ToolStripItem item in toolStripMenuItemAccounts.DropDownItems)
+            {
+                if (item is ToolStripMenuItem submenu)
+                    submenu.Checked = submenu == sender;
+            }
+
+            this.Text = $"{formTitle} - {currentAccount}";
+            this.Update();
+        }
+        private void RegionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItemRegionAmericas.Checked = false;
+            toolStripMenuItemRegionEurope.Checked = false;
+            toolStripMenuItemRegionAsia.Checked = false;
+            toolStripMenuItemRegionPTR.Checked = false;
+            ((ToolStripMenuItem)sender).Checked = true;
+
+            if (((ToolStripMenuItem)sender)?.Tag != null)
+            {
+                Init.config!.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
+
+                // On mémorise le compte actuel avant de recharger le menu
+                string? previousAccount = currentAccount;
+
+                Init.ListHotsAccounts();
+                LoadAccountsToolStripMenu();
+
+                // On reclique sur le même compte s'il existe encore, sinon sur le premier
+                ToolStripItem? target = toolStripMenuItemAccounts.DropDownItems
+                    .Cast<ToolStripItem>()
+                    .FirstOrDefault(i => i.Name == previousAccount)
+                    ?? (toolStripMenuItemAccounts.DropDownItems.Count > 0
+                        ? toolStripMenuItemAccounts.DropDownItems[0]
+                        : null);
+
+                target?.PerformClick();
+            }
+            ApplyTheme();
+        }
+        private void ListHotsReplays(string? path)
+        {
+            hotsReplayFolder = path;
+            listBoxHotsReplays.Items.Clear();
+            replayList.Clear();
+            if (Directory.Exists(path))
+            {
+                // Initie l'observateur de fichiers
+                InitFileWatcher(path);
+
+                DirectoryInfo hotsReplayFolder = new(path);
+                FileInfo[] replayFiles = hotsReplayFolder.GetFiles("*.StormReplay");
+                Array.Reverse(replayFiles);
+                string replayDisplayedName = string.Empty;
+                int i = 0;
+                foreach (FileInfo replayFile in replayFiles)
+                {
+                    replayDisplayedName = replayFile.Name.ToString().Replace(replayFile.Extension.ToString(), "");
+                    replayDisplayedName = MyRegexRenameReplayInList().Replace(replayDisplayedName, "$3/$2/$1 $4:$5 $7");
+                    listBoxHotsReplays.Items.Add(replayDisplayedName);
+
+                    replayList.Add(i, replayFile.FullName);
+                    i++;
                 }
 
-                foreach (ToolStripItem item in toolStripMenuItemAccounts.DropDownItems)
+                // Attends que le composant webView2 soit chargé
+                if (webView.CoreWebView2 != null && listBoxHotsReplays.Items.Count > 0)
                 {
-                    if (item is ToolStripMenuItem submenu)
+                    this.Invoke(new Action(() =>
                     {
-                        if (submenu == sender)
-                            submenu.Checked = true;
-                        else
-                            submenu.Checked = false;
-                    }
+                        listBoxHotsReplays.SelectedIndex = 0;
+                    }));
                 }
-
-                this.Text = $"{formTitle} - {currentAccount}";
-                this.Update();
             }
         }
         private void LanguageMenuItemClickHandler(object? sender, EventArgs e)
@@ -719,41 +779,6 @@ namespace HotsReplayReader
 
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-        }
-        private void ListHotsReplays(string? path)
-        {
-            hotsReplayFolder = path;
-            listBoxHotsReplays.Items.Clear();
-            replayList.Clear();
-            if (Directory.Exists(path))
-            {
-                // Initie l'observateur de fichiers
-                InitFileWatcher(path);
-
-                DirectoryInfo hotsReplayFolder = new(path);
-                FileInfo[] replayFiles = hotsReplayFolder.GetFiles("*.StormReplay");
-                Array.Reverse(replayFiles);
-                string replayDisplayedName = string.Empty;
-                int i = 0;
-                foreach (FileInfo replayFile in replayFiles)
-                {
-                    replayDisplayedName = replayFile.Name.ToString().Replace(replayFile.Extension.ToString(), "");
-                    replayDisplayedName = MyRegexRenameReplayInList().Replace(replayDisplayedName, "$3/$2/$1 $4:$5 $7");
-                    listBoxHotsReplays.Items.Add(replayDisplayedName);
-
-                    replayList.Add(i, replayFile.FullName);
-                    i++;
-                }
-
-                // Attends que le composant webView2 soit chargé
-                if (webView.CoreWebView2 != null && listBoxHotsReplays.Items.Count > 0)
-                {
-                    this.Invoke(new Action(() =>
-                    {
-                        listBoxHotsReplays.SelectedIndex = 0;
-                    }));
-                }
-            }
         }
         internal string HTMLGetHeader()
         {
@@ -1187,6 +1212,10 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerChatMessageEvent.Timestamp, msg, rawText));
             }
 
+            // Debug: get replay's owner Events
+            // List<StormGameEvent> STriggerOwnersPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent && e.MessageSender?.BattleTagName == hotsReplay.stormReplay.Owner?.BattleTagName)];
+            // List<StormGameEvent> STriggerOwnersEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.MessageSender?.BattleTagName == hotsReplay.stormReplay.Owner?.BattleTagName)];
+
             if (Init.config is not null && Init.config.DisplayPingButton)
             {
                 List<StormGameEvent>? STriggerPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent)];
@@ -1389,7 +1418,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             if (emoticonsDb.TryGetValue(dbVersion, out var innerDb) && innerDb.TryGetValue(tag, out string? emoticonImage))
             {
-                Debug.WriteLine($"Emoticon found: {emoticonImage}");
+                Debug.WriteLine($"Emoticon: {tag} > {emoticonImage}");
                 if (emoticonImage.Contains("storm_emoji_nexus"))
                     return $@"<img src=""app://heroes-images/emoticons/{emoticonImage}"" class=""chat-image"" title=""{tag}"">";
                 else
@@ -3069,23 +3098,6 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HotsReplayReader.Program.ExitApp();
-        }
-        private void RegionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMenuItemRegionAmericas.Checked = false;
-            toolStripMenuItemRegionEurope.Checked = false;
-            toolStripMenuItemRegionAsia.Checked = false;
-            ((ToolStripMenuItem)sender).Checked = true;
-            if (((ToolStripMenuItem)sender)?.Tag != null)
-            {
-                Init.config!.Region = ((ToolStripMenuItem)sender)?.Tag?.ToString();
-
-                Init.ListHotsAccounts();
-                LoadAccountsToolStipMenu();
-
-                if (toolStripMenuItemAccounts.DropDownItems.Count > 0)
-                    toolStripMenuItemAccounts.DropDownItems[0].PerformClick();
-            }
         }
         private enum UpdateCheckStatus
         {

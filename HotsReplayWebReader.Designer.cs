@@ -33,18 +33,19 @@
             toolStripMenuItemFile = new ToolStripMenuItem();
             toolStripMenuItemBrowse = new ToolStripMenuItem();
             toolStripMenuItemSource = new ToolStripMenuItem();
-            toolStripMenuItemProperties = new ToolStripMenuItem();
             toolStripMenuItemExit = new ToolStripMenuItem();
             toolStripMenuItemRegion = new ToolStripMenuItem();
             toolStripMenuItemRegionAmericas = new ToolStripMenuItem();
             toolStripMenuItemRegionEurope = new ToolStripMenuItem();
             toolStripMenuItemRegionAsia = new ToolStripMenuItem();
+            toolStripMenuItemRegionPTR = new ToolStripMenuItem();
             toolStripMenuItemAccounts = new ToolStripMenuItem();
             toolStripMenuItemOptions = new ToolStripMenuItem();
             toolStripMenuItemLanguage = new ToolStripMenuItem();
+            toolStripMenuItemClearCache = new ToolStripMenuItem();
+            toolStripMenuItemProperties = new ToolStripMenuItem();
             toolStripMenuItemAbout = new ToolStripMenuItem();
             toolStripMenuItemUpdate = new ToolStripMenuItem();
-            toolStripMenuItemClearCache = new ToolStripMenuItem();
             toolStripMenuItemAboutHotsReplayReader = new ToolStripMenuItem();
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
@@ -55,77 +56,86 @@
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItemFile, toolStripMenuItemRegion, toolStripMenuItemAccounts, toolStripMenuItemOptions, toolStripMenuItemAbout });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItemFile, toolStripMenuItemAccounts, toolStripMenuItemRegion, toolStripMenuItemOptions, toolStripMenuItemAbout });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(1359, 24);
             menuStrip.TabIndex = 0;
             // 
-            // fileToolStripMenuItem
+            // toolStripMenuItemFile
             // 
             toolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemBrowse, toolStripMenuItemSource, toolStripMenuItemExit });
-            toolStripMenuItemFile.Name = "fileToolStripMenuItem";
+            toolStripMenuItemFile.Name = "toolStripMenuItemFile";
             toolStripMenuItemFile.Size = new Size(37, 20);
             toolStripMenuItemFile.Text = Resources.Language.i18n.strMenuFile;
             // 
-            // browseToolStripMenuItem
+            // toolStripMenuItemBrowse
             // 
-            toolStripMenuItemBrowse.Name = "browseToolStripMenuItem";
-            toolStripMenuItemBrowse.Size = new Size(127, 22);
+            toolStripMenuItemBrowse.Name = "toolStripMenuItemBrowse";
+            toolStripMenuItemBrowse.Size = new Size(112, 22);
             toolStripMenuItemBrowse.Text = Resources.Language.i18n.strMenuBrowse;
             toolStripMenuItemBrowse.Click += BrowseToolStripMenuItem_Click;
             // 
-            // sourceToolStripMenuItem
+            // toolStripMenuItemSource
             // 
-            toolStripMenuItemSource.Name = "sourceToolStripMenuItem";
-            toolStripMenuItemSource.Size = new Size(127, 22);
+            toolStripMenuItemSource.Name = "toolStripMenuItemSource";
+            toolStripMenuItemSource.Size = new Size(112, 22);
             toolStripMenuItemSource.Text = Resources.Language.i18n.strMenuSource;
             toolStripMenuItemSource.Click += SourceToolStripMenuItem_Click;
             // 
-            // exitToolStripMenuItem
+            // toolStripMenuItemExit
             // 
-            toolStripMenuItemExit.Name = "exitToolStripMenuItem";
-            toolStripMenuItemExit.Size = new Size(127, 22);
+            toolStripMenuItemExit.Name = "toolStripMenuItemExit";
+            toolStripMenuItemExit.Size = new Size(112, 22);
             toolStripMenuItemExit.Text = Resources.Language.i18n.strMenuExit;
             toolStripMenuItemExit.Click += ExitToolStripMenuItem_Click;
             // 
-            // regionToolStripMenuItem
+            // toolStripMenuItemRegion
             // 
-            toolStripMenuItemRegion.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemRegionAmericas, toolStripMenuItemRegionEurope, toolStripMenuItemRegionAsia });
-            toolStripMenuItemRegion.Name = "regionToolStripMenuItem";
+            toolStripMenuItemRegion.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemRegionAmericas, toolStripMenuItemRegionEurope, toolStripMenuItemRegionAsia, toolStripMenuItemRegionPTR });
+            toolStripMenuItemRegion.Name = "toolStripMenuItemRegion";
             toolStripMenuItemRegion.Size = new Size(56, 20);
             toolStripMenuItemRegion.Text = Resources.Language.i18n.strRegion;
             // 
-            // americasRegionToolStripMenuItem
+            // toolStripMenuItemRegionAmericas
             // 
             toolStripMenuItemRegionAmericas.CheckOnClick = true;
-            toolStripMenuItemRegionAmericas.Name = "americasRegionToolStripMenuItem";
+            toolStripMenuItemRegionAmericas.Name = "toolStripMenuItemRegionAmericas";
             toolStripMenuItemRegionAmericas.Size = new Size(180, 22);
             toolStripMenuItemRegionAmericas.Tag = "1";
             toolStripMenuItemRegionAmericas.Text = Resources.Language.i18n.strRegionAmercas;
             toolStripMenuItemRegionAmericas.Click += RegionToolStripMenuItem_Click;
             // 
-            // europeRegionToolStripMenuItem
+            // toolStripMenuItemRegionEurope
             // 
             toolStripMenuItemRegionEurope.CheckOnClick = true;
-            toolStripMenuItemRegionEurope.Name = "europeRegionToolStripMenuItem";
+            toolStripMenuItemRegionEurope.Name = "toolStripMenuItemRegionEurope";
             toolStripMenuItemRegionEurope.Size = new Size(180, 22);
             toolStripMenuItemRegionEurope.Tag = "2";
             toolStripMenuItemRegionEurope.Text = Resources.Language.i18n.strRegionEurope;
             toolStripMenuItemRegionEurope.Click += RegionToolStripMenuItem_Click;
             // 
-            // asiaRegionToolStripMenuItem
+            // toolStripMenuItemRegionAsia
             // 
             toolStripMenuItemRegionAsia.CheckOnClick = true;
-            toolStripMenuItemRegionAsia.Name = "asiaRegionToolStripMenuItem";
+            toolStripMenuItemRegionAsia.Name = "toolStripMenuItemRegionAsia";
             toolStripMenuItemRegionAsia.Size = new Size(180, 22);
             toolStripMenuItemRegionAsia.Tag = "3";
             toolStripMenuItemRegionAsia.Text = Resources.Language.i18n.strRegionAsia;
             toolStripMenuItemRegionAsia.Click += RegionToolStripMenuItem_Click;
             // 
-            // accountsToolStripMenuItem
+            // toolStripMenuItemRegionPTR
             // 
-            toolStripMenuItemAccounts.Name = "accountsToolStripMenuItem";
+            toolStripMenuItemRegionPTR.CheckOnClick = true;
+            toolStripMenuItemRegionPTR.Name = "toolStripMenuItemRegionPTR";
+            toolStripMenuItemRegionPTR.Size = new Size(180, 22);
+            toolStripMenuItemRegionPTR.Tag = "98";
+            toolStripMenuItemRegionPTR.Text = "PTR";
+            toolStripMenuItemRegionPTR.Click += RegionToolStripMenuItem_Click;
+            // 
+            // toolStripMenuItemAccounts
+            // 
+            toolStripMenuItemAccounts.Name = "toolStripMenuItemAccounts";
             toolStripMenuItemAccounts.Size = new Size(69, 20);
             toolStripMenuItemAccounts.Text = Resources.Language.i18n.strMenuAccounts;
             // 
@@ -136,44 +146,44 @@
             toolStripMenuItemOptions.Size = new Size(61, 20);
             toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuSettings;
             // 
-            // languageToolStripMenuItem
+            // toolStripMenuItemLanguage
             // 
-            toolStripMenuItemLanguage.Name = "languageToolStripMenuItem";
-            toolStripMenuItemLanguage.Size = new Size(71, 20);
+            toolStripMenuItemLanguage.Name = "toolStripMenuItemLanguage";
+            toolStripMenuItemLanguage.Size = new Size(135, 22);
             toolStripMenuItemLanguage.Text = Resources.Language.i18n.strMenuLanguage;
             // 
-            // clearCacheToolStripMenuItem
+            // toolStripMenuItemClearCache
             // 
-            toolStripMenuItemClearCache.Name = "clearCacheToolStripMenuItem";
+            toolStripMenuItemClearCache.Name = "toolStripMenuItemClearCache";
             toolStripMenuItemClearCache.Size = new Size(135, 22);
             toolStripMenuItemClearCache.Text = Resources.Language.i18n.strMenuClearCache;
             toolStripMenuItemClearCache.Click += ClearCacheToolStripMenuItem_Click;
             // 
-            // propertiesToolStripMenuItem
+            // toolStripMenuItemProperties
             // 
-            toolStripMenuItemProperties.Name = "propertiesToolStripMenuItem";
-            toolStripMenuItemProperties.Size = new Size(127, 22);
+            toolStripMenuItemProperties.Name = "toolStripMenuItemProperties";
+            toolStripMenuItemProperties.Size = new Size(135, 22);
             toolStripMenuItemProperties.Text = Resources.Language.i18n.strPreferences;
             toolStripMenuItemProperties.Click += PropertiesToolStripMenuItem_Click;
             // 
-            // aboutToolStripMenuItem
+            // toolStripMenuItemAbout
             // 
             toolStripMenuItemAbout.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemUpdate, toolStripMenuItemAboutHotsReplayReader });
-            toolStripMenuItemAbout.Name = "aboutToolStripMenuItem";
+            toolStripMenuItemAbout.Name = "toolStripMenuItemAbout";
             toolStripMenuItemAbout.Size = new Size(24, 20);
             toolStripMenuItemAbout.Text = "?";
             // 
-            // updateToolStripMenuItem
+            // toolStripMenuItemUpdate
             // 
-            toolStripMenuItemUpdate.Name = "updateToolStripMenuItem";
-            toolStripMenuItemUpdate.Size = new Size(135, 22);
+            toolStripMenuItemUpdate.Name = "toolStripMenuItemUpdate";
+            toolStripMenuItemUpdate.Size = new Size(116, 22);
             toolStripMenuItemUpdate.Text = Resources.Language.i18n.strMenuUpdate;
             toolStripMenuItemUpdate.Click += UpdateToolStripMenuItem_Click;
             // 
-            // aboutHotsReplayReaderToolStripMenuItem
+            // toolStripMenuItemAboutHotsReplayReader
             // 
-            toolStripMenuItemAboutHotsReplayReader.Name = "aboutHotsReplayReaderToolStripMenuItem";
-            toolStripMenuItemAboutHotsReplayReader.Size = new Size(135, 22);
+            toolStripMenuItemAboutHotsReplayReader.Name = "toolStripMenuItemAboutHotsReplayReader";
+            toolStripMenuItemAboutHotsReplayReader.Size = new Size(116, 22);
             toolStripMenuItemAboutHotsReplayReader.Text = Resources.Language.i18n.strMenuAbout;
             toolStripMenuItemAboutHotsReplayReader.Click += AboutHotsReplayReaderToolStripMenuItem_Click;
             // 
@@ -248,5 +258,6 @@
         private ToolStripMenuItem toolStripMenuItemUpdate;
         private ToolStripMenuItem toolStripMenuItemClearCache;
         private ToolStripMenuItem toolStripMenuItemOptions;
+        private ToolStripMenuItem toolStripMenuItemRegionPTR;
     }
 }
