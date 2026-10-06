@@ -444,10 +444,10 @@ namespace HotsReplayReader
                     hotsHeroes[heroId] = new()
                     {
                         Health = Math.Ceiling(heroesElementData[heroId].Life.LifeMax * Math.Pow((1 + heroesElementData[heroId].Life.LifeMaxScaling), 1)).ToString(),
-                        Regen = Math.Round(heroesElementData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesElementData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString(),
+                        Regen = Math.Round(heroesElementData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesElementData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString("0.00"),
 
                         AaDmg = aaDmg.ToString(),
-                        AaSpeed = aaSpeed.ToString(),
+                        AaSpeed = aaSpeed.ToString("0.00"),
                         AaDps = aaDps.ToString(),
                         AaRange = aaRange.ToString(),
 

@@ -74,6 +74,29 @@ namespace HotsReplayReader
 
         readonly private string welcomeHTML = $@"<html>
 <head>
+<style>
+.sidebar {{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  color: darkgrey;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 16px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}}
+</style>
 <script>
   // Désactive le menu contextuel
   document.addEventListener('DOMContentLoaded', () => {{
@@ -99,6 +122,7 @@ namespace HotsReplayReader
 </script>
 </head>
 <body style=""background: url(app://hotsResources/Welcome.jpg) no-repeat center center; background-size: cover; background-color: black; margin: 0; height: 100%;""></body>
+<div class=""sidebar"">replays</div>
 </html>";
 
         internal Init Init = new();
@@ -1382,12 +1406,29 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
-            chatMessage = WebUtility.HtmlEncode(chatMessage);
-            return Regex.Replace(chatMessage, pattern, match =>
+
+            StringBuilder? result = new();
+            int lastIndex = 0;
+            foreach (Match match in Regex.Matches(chatMessage, pattern))
             {
+                // Le texte avant le tag doit être encodé (texte libre de l'utilisateur)
+                result.Append(WebUtility.HtmlEncode(chatMessage[lastIndex..match.Index]));
                 string emoticonTag = match.Groups[1].Value;
-                return GetEmoticonImgFromTag(emoticonTag);
-            });
+                string replacement = GetEmoticonImgFromTag(emoticonTag);
+
+                // Tag reconnu -> GetEmoticonImgFromTag a déjà généré du HTML
+                if (replacement != emoticonTag)
+                    result.Append(replacement);
+                // Tag non reconnu -> on l'encode comme du texte normal.
+                else
+                    result.Append(WebUtility.HtmlEncode(emoticonTag));
+
+                lastIndex = match.Index + match.Length;
+            }
+            // Encode le texte après le dernier emoticon
+            result.Append(WebUtility.HtmlEncode(chatMessage[lastIndex..]));
+
+            return result.ToString();
         }
         internal string GetEmoticonImgFromTag(string tag)
         {
