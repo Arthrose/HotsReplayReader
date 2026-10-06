@@ -87,8 +87,8 @@ namespace HotsReplayReader
             this.hotsReplayWebReader.ApplyTheme();
 
             // Recharge le dernier replay
-            hotsReplayWebReader.ListBoxHotsReplays_SelectedIndexChanged(hotsReplayWebReader, EventArgs.Empty);
             this.Close();
+            await hotsReplayWebReader.LoadReplay();
         }
         private async void TestButton_Click(object sender, EventArgs e)
         {

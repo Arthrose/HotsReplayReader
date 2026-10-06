@@ -42,8 +42,7 @@ namespace HotsReplayReader
         internal static string currentAccount = string.Empty;
 
         private HotsReplay? hotsReplay;
-        private HotsTeam? redTeam;
-        private HotsTeam? blueTeam;
+        private HotsTeam? blueTeam, redTeam;
         private Dictionary<string, string>? hotsParties;
         private HotsPlayer[]? hotsPlayers;
 
@@ -71,7 +70,7 @@ namespace HotsReplayReader
         internal List<DeepLSupportedLanguage>? supportedLanguages;
         internal bool DeepLAPIValid = false;
 
-        private Dictionary<string, Dictionary<string, string>> emoticonsDb = [];
+        private readonly Dictionary<string, Dictionary<string, string>> emoticonsDb = [];
 
         readonly private string welcomeHTML = $@"<html>
 <head>
@@ -876,40 +875,19 @@ namespace HotsReplayReader
 
             string? mapName = Resources.Language.i18n.ResourceManager.GetString($"Map{hotsReplay?.stormReplay?.MapInfo.MapId}") ?? hotsReplay?.stormReplay?.MapInfo.MapName;
 
-            string gameMode;
-            switch (hotsReplay!.stormReplay!.GameMode)
+            string gameMode = hotsReplay!.stormReplay!.GameMode switch
             {
-                case StormGameMode.Cooperative: // AI
-                    gameMode = "Versus A.I.";
-                    break;
-                case StormGameMode.QuickMatch:
-                    gameMode = "Quick Match";
-                    break;
-                case StormGameMode.UnrankedDraft:
-                    gameMode = "Unranked";
-                    break;
-                case StormGameMode.HeroLeague:
-                    gameMode = "Hero League";
-                    break;
-                case StormGameMode.TeamLeague:
-                    gameMode = "Team League";
-                    break;
-                case StormGameMode.StormLeague:
-                    gameMode = "Storm League";
-                    break;
-                case StormGameMode.Brawl:
-                    gameMode = "Brawl";
-                    break;
-                case StormGameMode.ARAM:
-                    gameMode = "ARAM";
-                    break;
-                case StormGameMode.Custom:
-                    gameMode = "Custom Games";
-                    break;
-                default:
-                    gameMode = "";
-                    break;
-            }
+                StormGameMode.Cooperative => "Versus A.I.",
+                StormGameMode.QuickMatch => "Quick Match",
+                StormGameMode.UnrankedDraft => "Unranked",
+                StormGameMode.HeroLeague => "Hero League",
+                StormGameMode.TeamLeague => "Team League",
+                StormGameMode.StormLeague => "Storm League",
+                StormGameMode.Brawl => "Brawl",
+                StormGameMode.ARAM => "ARAM",
+                StormGameMode.Custom => "Custom Games",
+                _ => ""
+            };
 
             string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#000011" : "#110000";
 
@@ -930,7 +908,6 @@ namespace HotsReplayReader
                 html += $"<br><span style=\"font-size: 50%; color: white; font-weight: normal\">{gameMode}</span>";
             if (Init.config is null || Init.config.DisplayDate)
                 html += $"<br><span style=\"font-size: 40%; color: lightgrey; font-weight: normal;\">{hotsReplay!.stormReplay!.Timestamp.ToLocalTime().ToString("f", CultureInfo.CurrentCulture)}</span>";
-
 
             html += $@"</td></tr>
     <tr>
@@ -1043,7 +1020,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             string playerName;
             string playerID;
             string accountLevel = hotsPlayer.AccountLevel.HasValue ? hotsPlayer.AccountLevel.Value.ToString() : "0";
-            string toolTipPosition = hotsPlayer.Team.ToString() == "Blue" ? "Right" : "Left";
+            string toolTipPosition = hotsPlayer.Team == StormTeam.Blue ? "Right" : "Left";
 
             string html = "";
 
@@ -1077,7 +1054,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             {
                 string? ressourceName = hotsData.GetMatchRewardsMvpScreenIcon(hotsPlayer.MatchAwards[0].ToString());
                 if (ressourceName != null)
-                    ressourceName = ressourceName.Replace("%color%", hotsPlayer.Team.ToString().ToLower());
+                    ressourceName = ressourceName.Replace("%color%", hotsPlayer.PlayerTeam!.IsOwner ? "blue" : "red");
                 html += $"            <img src=\"app://heroes-images/matchawards/{ressourceName}\" class =\"heroAwardIcon\">\n";
             }
 
@@ -2967,9 +2944,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 }
             }
         }
-        // Sélection d'un replay dans la liste
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
+            await LoadReplay();
+        }
+        internal async Task LoadReplay()
+        {
+            htmlContent = welcomeHTML;
             try
             {
                 hotsReplay = new HotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
@@ -3024,15 +3005,11 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                     this.Text = $"{formTitle} - {hotsReplay?.stormReplay?.Owner?.BattleTagName}";
                 }
-                else
-                    htmlContent = welcomeHTML;
             }
             catch (Exception exception)
             {
                 Debug.WriteLine(exception);
-                htmlContent = welcomeHTML;
             }
-
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)
