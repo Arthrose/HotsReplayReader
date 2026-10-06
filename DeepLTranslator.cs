@@ -9,10 +9,9 @@ namespace HotsReplayReader
         private readonly HttpClient _httpClient = new();
         private readonly string _apiKey = apiKey;
         internal List <DeepLSupportedLanguage>? DeepLSupportedLanguages;
+        private static readonly JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
         public List<DeepLSupportedLanguage>? GetSupportedLanguages()
         {
-            JsonSerializerOptions jsonOptions = new() { PropertyNameCaseInsensitive = true };
-
             string tmp = Encoding.UTF8.GetString(Resources.HotsResources.DeepLSupportedLanguages);
 
             DeepLSupportedLanguages = JsonSerializer.Deserialize<List<DeepLSupportedLanguage>>(tmp, jsonOptions);

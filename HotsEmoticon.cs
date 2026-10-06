@@ -8,7 +8,7 @@
     public sealed class HeroesElementEmoticonEntry
     {
         [JsonPropertyName("universalAliases")]
-        public List<string> UniversalAliases { get; set; } = new();
+        public List<string> UniversalAliases { get; set; } = [];
 
         [JsonPropertyName("isCaseSensitive")]
         public bool IsCaseSensitive { get; set; }
@@ -19,17 +19,17 @@
     public sealed class HeroesElementEmoticonDataFile
     {
         [JsonPropertyName("items")]
-        public Dictionary<string, HeroesElementEmoticonEntry> Items { get; set; } = new();
+        public Dictionary<string, HeroesElementEmoticonEntry> Items { get; set; } = [];
     }
     public sealed class HeroesElementLocalizedEmoticonSection
     {
         [JsonPropertyName("localizedAliases")]
-        public Dictionary<string, List<string>> LocalizedAliases { get; set; } = new();
+        public Dictionary<string, List<string>> LocalizedAliases { get; set; } = [];
     }
     public sealed class HeroesElementLocalizedEmoticonFile
     {
         [JsonPropertyName("items")]
-        public Dictionary<string, HeroesElementLocalizedEmoticonSection> Items { get; set; } = new();
+        public Dictionary<string, HeroesElementLocalizedEmoticonSection> Items { get; set; } = [];
     }
 
     public sealed class HeroesIconsLegacyEmoticonEntry
@@ -46,10 +46,10 @@
     public sealed class HeroesIconsEmoticonSection
     {
         [JsonPropertyName("aliases")]
-        public Dictionary<string, string> Aliases { get; set; } = new();
+        public Dictionary<string, string> Aliases { get; set; } = [];
 
         [JsonPropertyName("description")]
-        public Dictionary<string, string> Description { get; set; } = new();
+        public Dictionary<string, string> Description { get; set; } = [];
     }
     public sealed class HeroesIconsGamestringsRoot
     {
@@ -62,7 +62,7 @@
         public HeroesIconsGamestringsRoot? Gamestrings { get; set; }
     }
 
-    public static class EmoticonLoader
+    public static partial class EmoticonLoader
     {
         private static readonly Version FormatChangeVersion = new("2.55.16.97039");
 
@@ -129,7 +129,7 @@
             return emoticons;
         }
 
-        private static readonly Regex AliasTokenPattern = new(@":\w+:", RegexOptions.Compiled);
+        private static readonly Regex AliasTokenPattern = MyRegexAliasToken();
 
         private static Dictionary<string, string> LoadHeroesIcons(string dbDirectory, string dbVersion)
         {
@@ -215,5 +215,8 @@
                     emoticons[match.Value] = image;
             }
         }
+
+        [GeneratedRegex(@":\w+:", RegexOptions.Compiled)]
+        private static partial Regex MyRegexAliasToken();
     }
 }
