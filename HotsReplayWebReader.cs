@@ -2018,7 +2018,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 description = hotsTalent.Full;
 
             // Place le tooltip a gauche ou a droite de l'icône
-            string toolTipPosition = tier > 10 ? "Left" : "Right";
+            string toolTipPosition = tier > 7 ? "Left" : "Right";
             // Met une bordure sur les Talents de niveau 10 et 20
             string imgTalentBorderClass;
             if (tier == 10 || tier == 20)
@@ -2124,7 +2124,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             else
                 description = hotsTalent.Full;
 
-            string toolTipPosition = hotsTalent.Level > 10 ? "Left" : "Right";
+            string toolTipPosition = hotsTalent.Level > 7 ? "Left" : "Right";
             return @$"    <td class=""tdBorders"">
       <div class=""tooltip"">
         <div class=""imgAllTalentContainer"">
@@ -2242,57 +2242,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         }
         private static string FormatAbilityAndTalentToolTip(string? name, string? manacost, string? life, string? cooldown, string description)
         {
+            name = $"<font color=\"White\">{name}</font>";
             manacost = manacost != null ? $"<br><font color=\"#bfd4fd\">{manacost}</font>" : "";
             life = life != null ? MyRegexRemoveHTMLTag().Replace(life, string.Empty) : null;
             life = life != null ? $"<br><font color=\"#bfd4fd\">{life}</font>" : "";
             cooldown = cooldown != null ? $"<br><font color=\"#bfd4fd\">{cooldown}</font>" : "";
 
-            // Suppression des balises <img> dans la description
-            description = MyRegexRemoveImg().Replace(description, string.Empty);
-
-            // Bug FR talent GreymaneLordofHisPack
-            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
-
-            // Remplace <c val="color">text</c> par du texte coloré
-            description = MyRegexConvertColor().Replace(description, "<font color=\"#${1}\">${2}</font>");
-
-            description = MyRegexConvertPercentPerLevel().Replace(description, match =>
-            {
-                // Conversion du nombre capturé
-                double value = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                // Conversion en pourcentage (4% pour 0.04)
-                int percent = (int)Math.Round(value * 100);
-                // Mise en forme du texte final
-                string replacement = "";
-                if (Resources.Language.i18n.strPerLevelBefore == "false")
-                    replacement = $" (<font color=\"#bfd4fd\">+{percent}%</font> {Resources.Language.i18n.strPerLevel})";
-                else
-                    replacement = $" ({Resources.Language.i18n.strPerLevel} <font color=\"#bfd4fd\">+{percent}%</font>) ";
-
-                // Si la balise </font> était présente, la déplacer avant le texte remplacé
-                if (match.Groups[2].Success)
-                    return $"{match.Groups[2].Value}{replacement}";
-                else
-                    return replacement;
-            });
-            description = MyRegexStyledSpan().Replace(description, match =>
-            {
-                string color = match.Groups[1].Value;
-                string styleName = match.Groups[2].Value;
-                string content = match.Groups[3].Value;
-
-                return styleName switch
-                {
-                    "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
-                    "StandardTooltipDetails" => $"<font color=\"#{color}\">{content}</font>",
-                    "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>",
-                    _ => $"<font color=\"#{color}\">{content}</font>",
-                };
-            });
-            // Remplace <n/> par un saut de ligne <br>
-            description = MyRegexNewLine().Replace(description, "<br>");
-
-            return $"<font color=\"White\">{name}{manacost}{life}{cooldown}</font><br><br>{description}";
+            return $"{name}{manacost}{life}{cooldown}<br><br>{description}";
         }
         private string GetParty(string playerBattleTag)
         {
@@ -3357,29 +3313,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             }
         }
 
-        // Retire les images
-        [GeneratedRegex(@"<img\s.*?\/>")]
-        private static partial Regex MyRegexRemoveImg();
-
-        // Converti les couleurs
-        [GeneratedRegex(@"<c\s+val=""(.*?)"">(.*?)</c>")]
-        private static partial Regex MyRegexConvertColor();
-
-        // Format les descriptions
-        [GeneratedRegex(@"<s\s+val=""(.*?)""\s+(?:hlt-)?name=""(.*?)"">(.*?)<\/s>")]
-        private static partial Regex MyRegexStyledSpan();
-
-        // Affiche (+x% per level)
-        [GeneratedRegex(@"\~\~([0-9.]+)\~\~(</font>)?")]
-        private static partial Regex MyRegexConvertPercentPerLevel();
-
         // Supprime les balises HTML
         [GeneratedRegex(@"<.*?>")]
         private static partial Regex MyRegexRemoveHTMLTag();
-
-        // Sauts de ligne
-        [GeneratedRegex(@"<n/>")]
-        private static partial Regex MyRegexNewLine();
 
         // Renomme les replays dans la liste
         [GeneratedRegex(@"(\d{4})-(\d{2})-(\d{2}) (\d{2}).(\d{2}).(\d{2}) (.*)")]

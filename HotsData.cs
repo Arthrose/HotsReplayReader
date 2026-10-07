@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 using Heroes.Element;
 using Heroes.Element.Models;
@@ -8,7 +10,7 @@ using Heroes.Models;
 
 namespace HotsReplayReader
 {
-    internal class HotsData
+    internal partial class HotsData
     {
         private readonly Dictionary<string, Heroes.Models.Hero> heroesIconsData = [];
         private readonly Dictionary<string, Heroes.Element.Models.Hero> heroesElementData = [];
@@ -226,11 +228,11 @@ namespace HotsReplayReader
                         Level = talenLevel,
                         IconFileName = talent.IconFileName ?? null,
                         Cooldown = talent.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
-                        Energy = talent.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
-                        Full = talent.Tooltip.FullTooltip?.ColoredText ?? null,
-                        Life = talent.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
+                        Energy = talent.Tooltip.Energy.EnergyTooltip?.PlainText ?? null,
+                        Full = FormatDescription(talent.Tooltip.FullTooltip?.ColoredTextWithScaling) ?? null,
+                        Life = talent.Tooltip.Life.LifeCostTooltip?.PlainText ?? null,
                         Name = talent.Name ?? null,
-                        Short = talent.Tooltip.ShortTooltip?.ColoredText ?? null
+                        Short = FormatDescription(talent.Tooltip.ShortTooltip?.ColoredTextWithScaling) ?? null
                     }
                 );
             }
@@ -256,11 +258,11 @@ namespace HotsReplayReader
                         AbilityId = ability.AbilityTalentId.ReferenceId,
                         IconFileName = ability.IconFileName ?? null,
                         Cooldown = ability.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
-                        Energy = ability.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
-                        Full = ability.Tooltip.FullTooltip?.ColoredText ?? null,
-                        Life = ability.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
+                        Energy = ability.Tooltip.Energy.EnergyTooltip?.PlainText ?? null,
+                        Full = FormatDescription(ability.Tooltip.FullTooltip?.ColoredTextWithScaling) ?? null,
+                        Life = ability.Tooltip.Life.LifeCostTooltip?.PlainText ?? null,
                         Name = ability.Name ?? null,
-                        Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
+                        Short = FormatDescription(ability.Tooltip.ShortTooltip?.ColoredTextWithScaling) ?? null
                     };
 
                     switch (ability.AbilityTalentId.AbilityType)
@@ -341,11 +343,11 @@ namespace HotsReplayReader
                             AbilityId = ability.AbilityTalentId.ReferenceId,
                             IconFileName = ability.IconFileName ?? null,
                             Cooldown = ability.Tooltip.Cooldown.CooldownTooltip?.PlainText ?? null,
-                            Energy = ability.Tooltip.Energy.EnergyTooltip?.ColoredText ?? null,
-                            Full = ability.Tooltip.FullTooltip?.ColoredText ?? null,
-                            Life = ability.Tooltip.Life.LifeCostTooltip?.ColoredText ?? null,
+                            Energy = ability.Tooltip.Energy.EnergyTooltip?.PlainText ?? null,
+                            Full = FormatDescription(ability.Tooltip.FullTooltip?.ColoredTextWithScaling) ?? null,
+                            Life = ability.Tooltip.Life.LifeCostTooltip?.PlainText ?? null,
                             Name = ability.Name ?? null,
-                            Short = ability.Tooltip.ShortTooltip?.ColoredText ?? null
+                            Short = FormatDescription(ability.Tooltip.ShortTooltip?.ColoredTextWithScaling) ?? null
                         };
                         switch (ability.AbilityTalentId.AbilityType)
                         {
@@ -519,10 +521,10 @@ namespace HotsReplayReader
                             IconFileName = talent.Icon ?? null,
                             Energy = energy,
                             Cooldown = cooldown,
-                            Full = talent.FullText?.RawText ?? null,
+                            Full = FormatDescription(talent.FullText?.ColoredTextWithScaling) ?? null,
                             Life = life,
                             Name = talent.Name?.PlainText ?? null,
-                            Short = talent.ShortText?.RawText ?? null
+                            Short = FormatDescription(talent.ShortText?.ColoredTextWithScaling) ?? null
                         }
                     );
                 }
@@ -641,14 +643,58 @@ namespace HotsReplayReader
                 IconFileName = ability.Icon,
                 Cooldown = ability.CooldownText?.PlainText,
                 Energy = ability.EnergyText?.PlainText,
-                Full = ability.FullText?.RawText,
-                Life = ability.LifeText?.ColoredText,
+                Full = FormatDescription(ability.FullText?.ColoredTextWithScaling),
+                Life = ability.LifeText?.PlainText,
                 Name = ability.Name?.PlainText,
-                Short = ability.ShortText?.RawText,
+                Short = FormatDescription(ability.ShortText?.ColoredTextWithScaling),
                 Type = type
             };
 
             return hotsAbility;
+        }
+        private static string? FormatDescription(string? description)
+        {
+            if (description is null) return null;
+
+            // Suppression des balises <img> comme les (!) des quetes
+            description = MyRegexRemoveImg().Replace(description, string.Empty);
+
+            // Bug FR talent GreymaneLordofHisPack
+            description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
+
+            // <c val="color" hlt-name="...">text</c>
+            description = MyRegexConvertColor().Replace(description, match =>
+            {
+                string color = match.Groups[1].Value;
+                string styleName = match.Groups[2].Value; // peut être vide
+                string content = match.Groups[3].Value;
+
+                return styleName switch
+                {
+                    "#ColorGray" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
+                    _ => $"<font color=\"#{color}\">{content}</font>",
+                };
+            });
+
+            // <s val="color" name="style">text</s>
+            description = MyRegexStyledSpan().Replace(description, match =>
+            {
+                string color = match.Groups[1].Value;
+                string styleName = match.Groups[2].Value;
+                string content = match.Groups[3].Value;
+
+                return styleName switch
+                {
+                    "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
+                    "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>",
+                    _ => $"<font color=\"#{color}\">{content}</font>",
+                };
+            });
+
+            // <n/> -> <br>
+            description = MyRegexNewLine().Replace(description, "<br>");
+
+            return description;
         }
         private static void GetHeroesIconsHeroUnitIdsFromHeroUnits(string jsonPath)
         {
@@ -784,6 +830,23 @@ namespace HotsReplayReader
         {
             return hotsMatchAwards[matchAwardId].MVPScreenImageFileName ?? "";
         }
+
+        // Retire les images
+        [GeneratedRegex(@"<img\s.*?\/>")]
+        private static partial Regex MyRegexRemoveImg();
+
+        // <c val="bfd4fd" hlt-name="#TooltipNumbers">2</c>  (hlt-name optionnel)
+        [GeneratedRegex(@"<c\s+val=""([^""]*)""(?:\s+(?:hlt-)?name=""([^""]*)"")?\s*>(.*?)</c>")]
+        private static partial Regex MyRegexConvertColor();
+
+        // <s val="a7a7a7" hlt-name="TooltipSubscript">...</s>
+        [GeneratedRegex(@"<s\s+val=""([^""]*)""\s+(?:hlt-)?name=""([^""]*)""\s*>(.*?)</s>")]
+        private static partial Regex MyRegexStyledSpan();
+
+        // Sauts de ligne
+        [GeneratedRegex(@"<n/>")]
+        private static partial Regex MyRegexNewLine();
+
     }
     internal class HotsHero
     {

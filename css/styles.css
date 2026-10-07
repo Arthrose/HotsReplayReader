@@ -549,11 +549,17 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
     transform: translateY(-50%);
 }
 
+/* Talents and Abilities*/
+.tooltip .tooltiptalent,
+.tooltip .tooltipalltalents,
+.tooltip .tooltipAbilityText {
+    width: 310px;
+    font-family: Calibri;
+}
+
 /* Talent tooltip */
 .tooltip .tooltiptalent {
-    width: 300px;
     bottom: 58px;
-    font-family: Calibri;
 }
 
 .tooltip .tooltiptalentLeft {
@@ -566,9 +572,7 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
 
 /* All Talents tooltip */
 .tooltip .tooltipalltalents {
-    width: 300px;
     bottom: 40px;
-    font-family: Calibri;
 }
 
 .tooltip .tooltipalltalentsLeft {
@@ -581,9 +585,7 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
 
 /* Ability Toltip */
 .tooltip .tooltipAbilityText {
-    width: 300px;
     bottom: 70px;
-    font-family: Calibri;
 }
 
 .tooltip .tooltipAbilityTextLeft {
