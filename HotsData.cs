@@ -175,10 +175,10 @@ namespace HotsReplayReader
                     hotsHeroes[heroId] = new()
                     {
                         Health = Math.Ceiling(heroesIconsData[heroId].Life.LifeMax * Math.Pow((1 + heroesIconsData[heroId].Life.LifeScaling), 1)).ToString(),
-                        Regen = Math.Round(heroesIconsData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesIconsData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString(),
+                        Regen = Math.Round(heroesIconsData[heroId].Life.LifeRegenerationRate * Math.Pow((1 + heroesIconsData[heroId].Life.LifeRegenerationRateScaling), 1), 2).ToString("0.00"),
 
                         AaDmg = aaDmg.ToString(),
-                        AaSpeed = aaSpeed.ToString(),
+                        AaSpeed = aaSpeed.ToString("0.00"),
                         AaDps = aaDps.ToString(),
                         AaRange = aaRange.ToString(),
 
@@ -519,10 +519,10 @@ namespace HotsReplayReader
                             IconFileName = talent.Icon ?? null,
                             Energy = energy,
                             Cooldown = cooldown,
-                            Full = talent.FullText?.ColoredText ?? null,
+                            Full = talent.FullText?.RawText ?? null,
                             Life = life,
                             Name = talent.Name?.PlainText ?? null,
-                            Short = talent.ShortText?.ColoredText ?? null
+                            Short = talent.ShortText?.RawText ?? null
                         }
                     );
                 }
@@ -641,10 +641,10 @@ namespace HotsReplayReader
                 IconFileName = ability.Icon,
                 Cooldown = ability.CooldownText?.PlainText,
                 Energy = ability.EnergyText?.PlainText,
-                Full = ability.FullText?.ColoredText,
+                Full = ability.FullText?.RawText,
                 Life = ability.LifeText?.ColoredText,
                 Name = ability.Name?.PlainText,
-                Short = ability.ShortText?.ColoredText,
+                Short = ability.ShortText?.RawText,
                 Type = type
             };
 

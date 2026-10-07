@@ -1407,26 +1407,26 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             //string pattern = @"(:\w+:)"; // messages from stormReplay.ChatMessages
             string pattern = @"(:\w+:)";
 
-            StringBuilder? result = new();
+            string result = "";
             int lastIndex = 0;
             foreach (Match match in Regex.Matches(chatMessage, pattern))
             {
                 // Le texte avant le tag doit être encodé (texte libre de l'utilisateur)
-                result.Append(WebUtility.HtmlEncode(chatMessage[lastIndex..match.Index]));
+                result += WebUtility.HtmlEncode(chatMessage[lastIndex..match.Index]);
                 string emoticonTag = match.Groups[1].Value;
                 string replacement = GetEmoticonImgFromTag(emoticonTag);
 
                 // Tag reconnu -> GetEmoticonImgFromTag a déjà généré du HTML
                 if (replacement != emoticonTag)
-                    result.Append(replacement);
+                    result += replacement;
                 // Tag non reconnu -> on l'encode comme du texte normal.
                 else
-                    result.Append(WebUtility.HtmlEncode(emoticonTag));
+                    result += WebUtility.HtmlEncode(emoticonTag);
 
                 lastIndex = match.Index + match.Length;
             }
             // Encode le texte après le dernier emoticon
-            result.Append(WebUtility.HtmlEncode(chatMessage[lastIndex..]));
+            result += WebUtility.HtmlEncode(chatMessage[lastIndex..]);
 
             return result.ToString();
         }
