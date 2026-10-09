@@ -662,33 +662,43 @@ namespace HotsReplayReader
             // Bug FR talent GreymaneLordofHisPack
             description = description.Replace("\"#ColorViolet »>", "\"d65cff\">");
 
-            // <c val="color" hlt-name="...">text</c>
-            description = MyRegexConvertColor().Replace(description, match =>
+            // Une seule passe sur <s> et <c> pour connaître l'élément précédent
+            int previousEnd = -1;
+            bool previousWasSubscript = false;
+
+            description = MyRegexSpanOrColor().Replace(description, match =>
             {
-                string color = match.Groups[1].Value;
-                string styleName = match.Groups[2].Value; // peut être vide
-                string content = match.Groups[3].Value;
+                bool directlyAfterSubscript = previousWasSubscript && match.Index == previousEnd;
+                previousEnd = match.Index + match.Length;
 
-                return styleName switch
+                // Cas <s val="..." name="...">...</s>
+                if (match.Groups["sColor"].Success)
                 {
-                    "#ColorGray" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
-                    _ => $"<font color=\"#{color}\">{content}</font>",
-                };
-            });
+                    string color = match.Groups["sColor"].Value;
+                    string styleName = match.Groups["sName"].Value;
+                    string content = match.Groups["sContent"].Value;
 
-            // <s val="color" name="style">text</s>
-            description = MyRegexStyledSpan().Replace(description, match =>
-            {
-                string color = match.Groups[1].Value;
-                string styleName = match.Groups[2].Value;
-                string content = match.Groups[3].Value;
+                    previousWasSubscript = styleName == "TooltipSubscript";
 
-                return styleName switch
+                    return styleName switch
+                    {
+                        "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
+                        "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>",
+                        _ => $"<font color=\"#{color}\">{content}</font>",
+                    };
+                }
+
+                // Cas <c val="...">...</c>
                 {
-                    "TooltipSubscript" => $"<font color=\"#{color}\" size=\"-1\">{content}</font>",
-                    "StandardTooltipHeader" => $"<font color=\"#{color}\"><b>{content}</b></font>",
-                    _ => $"<font color=\"#{color}\">{content}</font>",
-                };
+                    string color = match.Groups["cColor"].Value;
+                    string content = match.Groups["cContent"].Value;
+
+                    previousWasSubscript = false;
+
+                    return directlyAfterSubscript
+                        ? $"<font color=\"#{color}\" size=\"-1\">{content}</font>"
+                        : $"<font color=\"#{color}\">{content}</font>";
+                }
             });
 
             // <n/> -> <br>
@@ -835,18 +845,16 @@ namespace HotsReplayReader
         [GeneratedRegex(@"<img\s.*?\/>")]
         private static partial Regex MyRegexRemoveImg();
 
-        // <c val="bfd4fd" hlt-name="#TooltipNumbers">2</c>  (hlt-name optionnel)
-        [GeneratedRegex(@"<c\s+val=""([^""]*)""(?:\s+(?:hlt-)?name=""([^""]*)"")?\s*>(.*?)</c>")]
-        private static partial Regex MyRegexConvertColor();
-
-        // <s val="a7a7a7" hlt-name="TooltipSubscript">...</s>
-        [GeneratedRegex(@"<s\s+val=""([^""]*)""\s+(?:hlt-)?name=""([^""]*)""\s*>(.*?)</s>")]
-        private static partial Regex MyRegexStyledSpan();
+        // span et colors
+        [GeneratedRegex(
+            @"<s\s+val=""(?<sColor>[^""]*)""\s+(?:hlt-)?name=""(?<sName>[^""]*)""\s*>(?<sContent>.*?)</s>" +
+            @"|<c\s+val=""(?<cColor>[^""]*)""(?:\s+(?:hlt-)?name=""[^""]*"")?\s*>(?<cContent>.*?)</c>"
+        )]
+        private static partial Regex MyRegexSpanOrColor();
 
         // Sauts de ligne
         [GeneratedRegex(@"<n/>")]
         private static partial Regex MyRegexNewLine();
-
     }
     internal class HotsHero
     {
