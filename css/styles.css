@@ -677,7 +677,7 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
     height: 36px;
     margin-top: -5px;
     vertical-align: middle;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     box-sizing: border-box;
 }
 

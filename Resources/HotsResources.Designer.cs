@@ -61,7 +61,7 @@ namespace HotsReplayReader.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to q.
+        ///   Looks up a localized string similar to a.
         /// </summary>
         internal static string _1Useless {
             get {

@@ -1108,10 +1108,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                 string heroLevelLabel = (Resources.Language.i18n.strHeroLevel + ":").PadRight(maxLength + 2).Replace(" ", "&nbsp;");
 
+                int tierLevel = hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero.HeroAttributeId)?.TierLevel ?? 0;
                 if (hotsReplay?.stormReplay?.GameMode.ToString() == "ARAM" || hotsReplay?.stormReplay?.GameMode.ToString() == "Brawl")
                 {
-                    int tierLevel = hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero.HeroAttributeId)?.TierLevel ?? 0;
-
                     string heroLevel = tierLevel switch
                     {
                         0 => "&lt;&nbsp;15",
@@ -1130,24 +1129,21 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 }
                 else
                 {
-                    int tierLevel = hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero.HeroAttributeId)?.TierLevel ?? 0;
-
-                    if (hotsPlayer.PlayerHero.HeroLevel >= 20)
+                    string heroLevel = tierLevel switch
                     {
-                        string heroLevel = tierLevel switch
-                        {
-                            0 => "&GreaterEqual;&nbsp;20",
-                            1 => "20-25",
-                            2 => "25-50",
-                            3 => "50-75",
-                            4 => "75-100",
-                            5 => "100+",
-                            _ => "&GreaterEqual;&nbsp;20",
-                        };
-                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
-                    }
-                    else if (hotsPlayer.PlayerHero.HeroLevel >= 15)
+                        0 => "&GreaterEqual;&nbsp;20",
+                        1 => "20-25",
+                        2 => "25-50",
+                        3 => "50-75",
+                        4 => "75-100",
+                        5 => "100+",
+                        _ => "&GreaterEqual;&nbsp;20",
+                    };
+
+                    if (hotsPlayer.PlayerHero.HeroLevel >= 15 && hotsPlayer.PlayerHero.HeroLevel < 20)
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+                    else if (tierLevel >= 1)
+                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
                     else
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                 }
