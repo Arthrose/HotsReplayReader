@@ -43,7 +43,7 @@
             toolStripMenuItemOptions = new ToolStripMenuItem();
             toolStripMenuItemLanguage = new ToolStripMenuItem();
             toolStripMenuItemClearCache = new ToolStripMenuItem();
-            toolStripMenuItemProperties = new ToolStripMenuItem();
+            toolStripMenuItemPreferences = new ToolStripMenuItem();
             toolStripMenuItemAbout = new ToolStripMenuItem();
             toolStripMenuItemUpdate = new ToolStripMenuItem();
             toolStripMenuItemAboutHotsReplayReader = new ToolStripMenuItem();
@@ -141,7 +141,7 @@
             // 
             // toolStripMenuItemOptions
             // 
-            toolStripMenuItemOptions.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemLanguage, toolStripMenuItemClearCache, toolStripMenuItemProperties });
+            toolStripMenuItemOptions.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemLanguage, toolStripMenuItemClearCache, toolStripMenuItemPreferences });
             toolStripMenuItemOptions.Name = "toolStripMenuItemOptions";
             toolStripMenuItemOptions.Size = new Size(61, 20);
             toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuSettings;
@@ -161,10 +161,10 @@
             // 
             // toolStripMenuItemProperties
             // 
-            toolStripMenuItemProperties.Name = "toolStripMenuItemProperties";
-            toolStripMenuItemProperties.Size = new Size(135, 22);
-            toolStripMenuItemProperties.Text = Resources.Language.i18n.strPreferences;
-            toolStripMenuItemProperties.Click += PropertiesToolStripMenuItem_Click;
+            toolStripMenuItemPreferences.Name = "toolStripMenuItemProperties";
+            toolStripMenuItemPreferences.Size = new Size(135, 22);
+            toolStripMenuItemPreferences.Text = Resources.Language.i18n.strPreferences;
+            toolStripMenuItemPreferences.Click += PreferencesToolStripMenuItem_Click;
             // 
             // toolStripMenuItemAbout
             // 
@@ -252,7 +252,7 @@
         private ToolStripMenuItem toolStripMenuItemRegionAmericas;
         private ToolStripMenuItem toolStripMenuItemRegionEurope;
         private ToolStripMenuItem toolStripMenuItemRegionAsia;
-        private ToolStripMenuItem toolStripMenuItemProperties;
+        private ToolStripMenuItem toolStripMenuItemPreferences;
         private ToolStripMenuItem toolStripMenuItemAbout;
         private ToolStripMenuItem toolStripMenuItemAboutHotsReplayReader;
         private ToolStripMenuItem toolStripMenuItemUpdate;

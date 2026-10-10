@@ -573,7 +573,7 @@ namespace HotsReplayReader
                         try
                         {
                             if (translator != null)
-                                (translatedText, detectedLanguage) = await translator.TranslateText(httpClient, inputText, Resources.Language.i18n.ResourceManager.GetString("DeepLLang")!);
+                                (translatedText, detectedLanguage) = await translator.TranslateText(httpClient, inputText, Resources.Language.i18n.DeepLLang);
                         }
                         catch (Exception ex)
                         {
@@ -768,7 +768,7 @@ namespace HotsReplayReader
             toolStripMenuItemFile.Text = Resources.Language.i18n.strMenuFile;
             toolStripMenuItemBrowse.Text = Resources.Language.i18n.strMenuBrowse;
             toolStripMenuItemSource.Text = Resources.Language.i18n.strMenuSource;
-            toolStripMenuItemProperties.Text = Resources.Language.i18n.strPreferences;
+            toolStripMenuItemPreferences.Text = Resources.Language.i18n.strPreferences;
             toolStripMenuItemExit.Text = Resources.Language.i18n.strMenuExit;
             toolStripMenuItemAccounts.Text = Resources.Language.i18n.strMenuAccounts;
             toolStripMenuItemRegion.Text = Resources.Language.i18n.strRegion;
@@ -810,7 +810,7 @@ namespace HotsReplayReader
             string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#000011" : "#110000";
             string bgImg = $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}";
 
-            string html = $@"<html lang=""{Resources.Language.i18n.ResourceManager.GetString("HTMLLang")!}"">
+            string html = $@"<html lang=""{Resources.Language.i18n.HTMLLang}"">
 <head>
 <style>
 {css}
@@ -1186,14 +1186,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 html += $"            {Resources.Language.i18n.strAIDifficulty}:&nbsp;<font color=\"#bfd4fd\">{computerDifficulty}</font>\n";
             }
 
-            html += $"          </span>\n";
-            html += $"        </span>\n";
+            html += "          </span>\n        </span>\n";
 
             string owner = (hotsReplay?.stormReplay?.Owner?.BattleTagName == hotsPlayer.BattleTagName) ? " owner" : "";
             string partyColor = (party != "0") ? $" team{party}" : "";
 
             html += $"        <div class=\"battleTag{owner}{partyColor}\">{playerName}</div>\n";
-            html += $"      </td>\n";
+            html += "      </td>\n";
             return html;
         }
         internal async Task<string> HTMLGetChatMessages()
@@ -1541,7 +1540,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreKills")!}
+            {Resources.Language.i18n.strScoreKills}
           </span>
         </span>
       </th>
@@ -1549,7 +1548,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreAssists")!}
+            {Resources.Language.i18n.strScoreAssists}
           </span>
         </span>
       </th>
@@ -1557,7 +1556,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreDeaths")!}
+            {Resources.Language.i18n.strScoreDeaths}
           </span>
         </span>
       </th>
@@ -1565,7 +1564,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreTimeSpentDead")!}
+            {Resources.Language.i18n.strScoreTimeSpentDead}
           </span>
         </span>
       </th>
@@ -1573,7 +1572,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreSiegeDmg")!}
+            {Resources.Language.i18n.strScoreSiegeDmg}
           </span>
         </span>
       </th>
@@ -1581,7 +1580,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreHeroDmg")!}
+            {Resources.Language.i18n.strScoreHeroDmg}
           </span>
         </span>
       </th>
@@ -1589,7 +1588,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreHealing")!}
+            {Resources.Language.i18n.strScoreHealing}
           </span>
         </span>
       </th>
@@ -1597,7 +1596,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreDmgTaken")!}
+            {Resources.Language.i18n.strScoreDmgTaken}
           </span>
         </span>
       </th>
@@ -1605,7 +1604,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreExp")!}
+            {Resources.Language.i18n.strScoreExp}
           </span>
         </span>
       </th>
@@ -1613,7 +1612,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
           <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.ResourceManager.GetString("strScoreMvp")!}
+            {Resources.Language.i18n.strScoreMvp}
           </span>
         </span>
       </th>
@@ -2384,7 +2383,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 if (hotsPlayer.PlayerType == PlayerType.Computer)
                 {
                     ComputerID++;
-                    hotsPlayer.ComputerName = $"{Resources.Language.i18n.ResourceManager.GetString("strPlayer")} {ComputerID} ({Resources.Language.i18n.ResourceManager.GetString("strAI")})";
+                    hotsPlayer.ComputerName = $"{Resources.Language.i18n.strPlayer} {ComputerID} ({Resources.Language.i18n.strAI})";
                 }
 
             }
@@ -2950,14 +2949,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         }
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await LoadReplay();
+            await LoadReplay(replayList[listBoxHotsReplays.SelectedIndex]);
         }
-        internal async Task LoadReplay()
+        internal async Task LoadReplay(string replayFilePath)
         {
             htmlContent = welcomeHTML;
             try
             {
-                hotsReplay = new HotsReplay(replayList[listBoxHotsReplays.SelectedIndex]);
+                hotsReplay = new HotsReplay(replayFilePath);
                 if (hotsReplay.stormReplay != null)
                 {
                     // Get GatesOpen Timestamp
@@ -3065,11 +3064,11 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             Process.Start(GetNotepadPath(), path);
         }
-        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PreferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PreferencesForm propertiesForm = new(this) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
-            propertiesForm.ShowDialog(this);
-            propertiesForm.Dispose();
+            PreferencesForm preferencesForm = new(this, replayList[listBoxHotsReplays.SelectedIndex]) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
+            preferencesForm.ShowDialog(this);
+            preferencesForm.Dispose();
             if (Init.config != null)
             {
                 Init.config.DeepLAPIKey ??= "";

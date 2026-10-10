@@ -159,7 +159,7 @@ internal static class GitHubDownloader
 <br><br>
 <div class=""body-div"">
 <div class=""parent"">
-<div class=""header"">{Resources.Language.i18n.ResourceManager.GetString("DownloadingGameData")!}</div>
+<div class=""header"">{Resources.Language.i18n.DownloadingGameData}</div>
 <div class=""gameVersion"">{versionToUse.Version}{(versionToUse.IsPtr ? " [PTR]" : "")}<br><br></div>
 <div class=""loader""></div>
 </div>

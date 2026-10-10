@@ -7,9 +7,11 @@ namespace HotsReplayReader
     public partial class PreferencesForm : Form
     {
         readonly HotsReplayWebReader hotsReplayWebReader;
+        readonly string lasReplayFilePath = "";
         // Dark mode
-        public PreferencesForm(HotsReplayWebReader hotsReplayWebReader)
+        public PreferencesForm(HotsReplayWebReader hotsReplayWebReader, string lasReplayFilePath)
         {
+            this.lasReplayFilePath = lasReplayFilePath;
             InitializeComponent();
             this.hotsReplayWebReader = hotsReplayWebReader;
 
@@ -88,7 +90,7 @@ namespace HotsReplayReader
 
             // Recharge le dernier replay
             this.Close();
-            await hotsReplayWebReader.LoadReplay();
+            await hotsReplayWebReader.LoadReplay(this.lasReplayFilePath);
         }
         private async void TestButton_Click(object sender, EventArgs e)
         {
@@ -97,9 +99,9 @@ namespace HotsReplayReader
             {
                 bool isValid = await translator.CheckApiKeyValidity();
                 if (isValid)
-                    MessageBox.Show(Resources.Language.i18n.ResourceManager.GetString("strPropertiesValidAPIKey"));
+                    MessageBox.Show(Resources.Language.i18n.strPreferencesValidAPIKey);
                 else
-                    MessageBox.Show(Resources.Language.i18n.ResourceManager.GetString("strPropertiesInvalidAPIKey"));
+                    MessageBox.Show(Resources.Language.i18n.strPreferencesInvalidAPIKey);
             }
         }
         protected override void OnHandleCreated(EventArgs e)

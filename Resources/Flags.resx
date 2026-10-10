@@ -397,6 +397,9 @@
   <data name="uk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\uk.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="unknown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Flags\unknown.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ur" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Flags\ur.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
