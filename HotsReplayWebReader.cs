@@ -1140,12 +1140,21 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                         _ => "&GreaterEqual;&nbsp;20",
                     };
 
-                    if (hotsPlayer.PlayerHero.HeroLevel >= 15 && hotsPlayer.PlayerHero.HeroLevel < 20)
-                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
-                    else if (hotsPlayer.PlayerHero.HeroLevel < 20 && tierLevel == 1)
-                        html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">15-25</font></span><br>\n";
-                    else if (tierLevel >= 1)
+                    if (tierLevel > 1)
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+
+                    else if (tierLevel == 1)
+                    {
+                        if (hotsPlayer.PlayerHero.HeroLevel >= 20)
+                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+
+                        if (hotsPlayer.PlayerHero.HeroLevel >= 15 && hotsPlayer.PlayerHero.HeroLevel < 20)
+                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+
+                        else if (hotsPlayer.PlayerHero.HeroLevel < 20)
+                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">15-25</font></span><br>\n";
+                    }
+
                     else
                         html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
                 }
