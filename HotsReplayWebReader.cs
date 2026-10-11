@@ -1644,6 +1644,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             string? heroName = hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]);
 
+            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
+
             string timeSpentDead = "&nbsp;";
             if (hotsPlayer.ScoreResult.Deaths > 0)
             {
@@ -1654,7 +1656,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             }
 
             string html = @"";
-            html += $"    <tr class=\"team{team.Name}\">\n";
+            html += $"    <tr class=\"team{teamColor}\">\n";
             html += $"      <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
             html += $"      <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
@@ -1923,34 +1925,36 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 ";
             return html;
         }
-        private string HTMLGetTalentsTr(HotsPlayer stormPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetTalentsTr(HotsPlayer hotsPlayer, HotsTeam team, string partyColor)
         {
-            if (stormPlayer.PlayerHero == null) return "";
+            if (hotsPlayer.PlayerHero == null) return "";
 
-            string? heroName = hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]);
+            string? heroName = hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]);
             string playerName;
 
-            if (stormPlayer.PlayerType == PlayerType.Computer)
-                playerName = stormPlayer.ComputerName!;
+            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
+
+            if (hotsPlayer.PlayerType == PlayerType.Computer)
+                playerName = hotsPlayer.ComputerName!;
             else
-                playerName = stormPlayer.Name;
+                playerName = hotsPlayer.Name;
 
             string html = "";
-            html += $"  <tr class=\"team{team.Name} trTalents\">\n";
-            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
+            html += $"  <tr class=\"team{teamColor} trTalents\">\n";
+            html += $"    <td class=\"tdBorders\"><img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\"></td>\n";
             html += $"    <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             for (int i = 0; i <= 6; i++)
             {
                 int talentEarlierLevel = 0;
-                if (stormPlayer.PlayerHero.HeroUnitId == "HeroChromie")
+                if (hotsPlayer.PlayerHero.HeroUnitId == "HeroChromie")
                     talentEarlierLevel = 2;
 
-                if (i < stormPlayer.Talents.Count)
-                    html += $"{GetTalentImgString(stormPlayer, i, HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId])}\n";
+                if (i < hotsPlayer.Talents.Count)
+                    html += $"{GetTalentImgString(hotsPlayer, i, HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId])}\n";
                 else
                 {
-                    // Qustion mark for unselected talents
+                    // Question mark for unselected talents
                     if (i == 0 || (i == 1 && team.Level >= 4 - talentEarlierLevel) || (i == 2 && team.Level >= 7 - talentEarlierLevel) || (i == 3 && team.Level >= 10 - talentEarlierLevel) || (i == 4 && team.Level >= 13 - talentEarlierLevel) || (i == 5 && team.Level >= 16 - talentEarlierLevel) || (i == 6 && team.Level >= 20 - talentEarlierLevel))
                     {
                         string imgTalentBorderClass;
@@ -2040,11 +2044,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       </div>
     </td>";
         }
-        private string HTMLGetAllTalentsTr(HotsPlayer stormPlayer, HotsTeam team)
+        private string HTMLGetAllTalentsTr(HotsPlayer hotsPlayer, HotsTeam team)
         {
-            if (stormPlayer.PlayerHero == null) return "";
+            if (hotsPlayer.PlayerHero == null) return "";
 
-            string heroId = HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
+            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
+
+            string heroId = HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId];
 
             List<List<HotsTalent>> talentsLevel =
             [
@@ -2057,7 +2063,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 hotsData.GetTalentsFromHeroIdAndLevel(heroId, 20)
             ];
 
-            string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{team.Name}"">
+            string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{teamColor}"">
     <td colspan=""2"" class=""tdBorders tdAllTalentsEmptyBorders "">&nbsp;</td>
     <td class=""teamScoreSubHeader tdBorders"">1</td>
     <td class=""teamScoreSubHeader tdBorders"">4</td>
@@ -2072,9 +2078,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             for (int i = 0; i < maxCount; i++)
             {
                 if (i != maxCount - 1)
-                    html += $"  <tr class=\"team{team.Name} trAllTalents\">\n";
+                    html += $"  <tr class=\"team{teamColor} trAllTalents\">\n";
                 else
-                    html += $"  <tr class=\"team{team.Name} trAllTalents trLastAllTalents\">\n";
+                    html += $"  <tr class=\"team{teamColor} trAllTalents trLastAllTalents\">\n";
                 if (i == 0)
                 {
                     html += $"    <td colspan=\"2\" rowspan=\"{maxCount}\" class=\"tdBorders tdStats\">\n";
@@ -2102,7 +2108,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     if (i < talentsLevel[level].Count)
                     {
                         HotsTalent hotsTalent = talentsLevel[level][i];
-                        html += $"{GetAllTalentImgString(hotsTalent, team.Name)}\n";
+                        html += $"{GetAllTalentImgString(hotsTalent, teamColor)}\n";
                     }
                     else
                         html += "    <td class=\"tdBorders\">&nbsp;</td>\n";
@@ -2112,7 +2118,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             return html;
         }
-        private static string GetAllTalentImgString(HotsTalent? hotsTalent, string partyColor)
+        private static string GetAllTalentImgString(HotsTalent? hotsTalent, string teamColor)
         {
             if (hotsTalent == null) return "    <td class=\"tdBorders\">&nbsp;</td>\n";
 
@@ -2135,7 +2141,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       <div class=""tooltip"">
         <div class=""imgAllTalentContainer"">
           <img src=""{iconPath}"" class=""imgAllTalentIcon"">
-          <img src=""app://hotsResources/talentIconBorder{partyColor}.png"" class=""imgAllTalentBorder"">
+          <img src=""app://hotsResources/talentIconBorder{teamColor}.png"" class=""imgAllTalentBorder"">
         </div>
         <span class=""tooltipalltalents tooltipalltalents{toolTipPosition}"">
           {FormatAbilityAndTalentToolTip(hotsTalent.Name, hotsTalent.Energy, hotsTalent.Life, hotsTalent.Cooldown, description)}
@@ -2143,13 +2149,15 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       </div>
     </td>";
         }
-        private string HTMLGetAbilitiesTr(HotsPlayer stormPlayer, HotsTeam team)
+        private string HTMLGetAbilitiesTr(HotsPlayer hotsPlayer, HotsTeam team)
         {
-            if (stormPlayer.PlayerHero == null) return "";
+            if (hotsPlayer.PlayerHero == null) return "";
 
-            string heroId = HotsData.HeroIdFromHeroUnitId[stormPlayer.PlayerHero.HeroUnitId];
+            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
 
-            string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{team.Name}"">
+            string heroId = HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId];
+
+            string html = @$"  <tr class=""freeHeight trAllTalentsNumbers team{teamColor}"">
     <td colspan=""2"" class=""tdBorders tdAllTalentsEmptyBorders "">&nbsp;</td>
     <td class=""teamScoreSubHeader tdBorders"">Q</td>
     <td class=""teamScoreSubHeader tdBorders"">W</td>
@@ -2161,7 +2169,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   </tr>
 ";
 
-            html += $"  <tr class=\"trAbilities team{team.Name}\">\n";
+            html += $"  <tr class=\"trAbilities team{teamColor}\">\n";
 
             html += "    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
 
@@ -2200,6 +2208,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         {
             string html = string.Empty;
 
+            string teamColor = (team!.IsOwner) ? "Blue" : "Red";
+
             if (ability != null)
             {
                 string actions = string.Empty;
@@ -2207,7 +2217,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     actions = $"?actions=crop:left,4;border:{Uri.EscapeDataString("#000000")},1";
 
                 html += "      <div class=\"tooltip abilityHeaderDiv\">\n";
-                html += $"        <div class=\"abilityIconContainer\"><img src=\"app://heroes-images/abilitytalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>\n";
+                html += $"        <div class=\"abilityIconContainer\"><img src=\"app://heroes-images/abilitytalents/{ability.IconFileName}{actions}\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{teamColor}.png\" class=\"abilityIconBorder\"></div>\n";
 
                 string description = "";
                 if (ability.AbilityId != null)
@@ -2242,7 +2252,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 html += "      </div>\n";
             }
             else
-                html += $"      <div class=\"tooltip abilityHeaderDiv\">\n        <div class=\"abilityIconContainer\"><img src=\"app://hotsResources/noAbility.png\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{team.Name}.png\" class=\"abilityIconBorder\"></div>\n      </div>\n";
+                html += $"      <div class=\"tooltip abilityHeaderDiv\">\n        <div class=\"abilityIconContainer\"><img src=\"app://hotsResources/noAbility.png\" class=\"abilityIcon\"><img src=\"app://hotsResources/abilityIconBorder{teamColor}.png\" class=\"abilityIconBorder\"></div>\n      </div>\n";
 
             return html;
         }
