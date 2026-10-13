@@ -488,7 +488,7 @@ td.tooltip-cell > .tooltip {
 .tooltip .tooltipAbilityText {
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.5s;
+    /*transition: opacity 0.5s;*/
     position: absolute;
     z-index: 20;
     margin-left: -60px;
@@ -499,6 +499,7 @@ td.tooltip-cell > .tooltip {
     color: #8984C7;
     border: 1px solid #8984C7;
     box-shadow: 0 0 0 1px #8984C780, inset 0 0 0 1px #8984C780;
+    pointer-events: none;
 }
 
 .tooltip:hover .tooltipHero,

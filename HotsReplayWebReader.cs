@@ -810,7 +810,7 @@ namespace HotsReplayReader
             string bgColor = hotsReplay!.stormReplay!.Owner!.IsWinner ? "#000011" : "#110000";
             string bgImg = $"Map{hotsReplay?.stormReplay?.MapInfo.MapId}";
 
-            string html = $@"<html lang=""{Resources.Language.i18n.HTMLLang}"">
+            string html = $@"<html lang=""{Resources.Language.i18n.HTMLLang}"" style=""color-scheme: {(useDarkMode == 1 ? "dark" : "light" )}"">
 <head>
 <style>
 {css}
@@ -1622,16 +1622,16 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 ";
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Blue")
-                    html += HTMLGetScoreTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
+                    html += HTMLGetScoreTr(stormPlayer, "Blue", GetParty(stormPlayer.BattleTagName));
             foreach (HotsPlayer stormPlayer in hotsPlayers)
                 if (stormPlayer.Team.ToString() == "Red")
-                    html += HTMLGetScoreTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
+                    html += HTMLGetScoreTr(stormPlayer, "Red", GetParty(stormPlayer.BattleTagName));
 
             html += "  </tbody>\n</table>\n<br><br>\n";
 
             return html;
         }
-        private string HTMLGetScoreTr(HotsPlayer hotsPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetScoreTr(HotsPlayer hotsPlayer, string teamColor, string partyColor)
         {
             if (hotsPlayer.ScoreResult == null || hotsPlayer.PlayerHero == null) return "";
 
@@ -1643,8 +1643,6 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 playerName = hotsPlayer.Name;
 
             string? heroName = hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]);
-
-            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
 
             string timeSpentDead = "&nbsp;";
             if (hotsPlayer.ScoreResult.Deaths > 0)
@@ -1661,44 +1659,44 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             html += $"      <td class=\"tdPlayerName team{partyColor} tdBorders\">&nbsp;{heroName}&nbsp;<br><font size=\"-1\">&nbsp;{playerName}</font></td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.SoloKills == team.MaxKills)
+            if (hotsPlayer.ScoreResult.SoloKills == hotsPlayer.PlayerTeam.MaxKills)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.SoloKills}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.Assists == team.MaxAssists)
+            if (hotsPlayer.ScoreResult.Assists == hotsPlayer.PlayerTeam.MaxAssists)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Assists}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.Deaths == team.MaxDeaths)
+            if (hotsPlayer.ScoreResult.Deaths == hotsPlayer.PlayerTeam.MaxDeaths)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Deaths}</td>\n";
 
             html += $"      <td class=\"tdBorders\">{timeSpentDead}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.SiegeDamage == team.MaxSiegeDmg)
+            if (hotsPlayer.ScoreResult.SiegeDamage == hotsPlayer.PlayerTeam.MaxSiegeDmg)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.SiegeDamage:n0}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.HeroDamage == team.MaxHeroDmg)
+            if (hotsPlayer.ScoreResult.HeroDamage == hotsPlayer.PlayerTeam.MaxHeroDmg)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.HeroDamage:n0}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if ((hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing) == team.MaxTotalHealing)
+            if ((hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing) == hotsPlayer.PlayerTeam.MaxTotalHealing)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.Healing + hotsPlayer.ScoreResult.SelfHealing:n0}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.DamageTaken == team.MaxDmgTaken)
+            if (hotsPlayer.ScoreResult.DamageTaken == hotsPlayer.PlayerTeam.MaxDmgTaken)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.DamageTaken:n0}</td>\n";
 
             html += "      <td class=\"tdBorders";
-            if (hotsPlayer.ScoreResult.ExperienceContribution == team.MaxExp)
+            if (hotsPlayer.ScoreResult.ExperienceContribution == hotsPlayer.PlayerTeam.MaxExp)
                 html += " teamBestScore";
             html += $"\">{hotsPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
@@ -1821,21 +1819,21 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 ";
             if (hotsReplay == null || hotsPlayers == null || blueTeam == null || redTeam == null) return "";
 
-            foreach (HotsPlayer stormPlayer in hotsPlayers)
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
-                if (stormPlayer.Team.ToString() == "Blue")
+                if (hotsPlayer.PlayerTeam!.IsOwner)
                 {
-                    html += HTMLGetTalentsTr(stormPlayer, blueTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAllTalentsTr(stormPlayer, blueTeam);
-                    html += HTMLGetAbilitiesTr(stormPlayer, blueTeam);
+                    html += HTMLGetTalentsTr(hotsPlayer, "Blue", GetParty(hotsPlayer.BattleTagName));
+                    html += HTMLGetAllTalentsTr(hotsPlayer, "Blue");
+                    html += HTMLGetAbilitiesTr(hotsPlayer, "Blue");
                 }
             }
-            foreach (HotsPlayer stormPlayer in hotsPlayers)
-                if (stormPlayer.Team.ToString() == "Red")
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                if (!hotsPlayer.PlayerTeam!.IsOwner)
                 {
-                    html += HTMLGetTalentsTr(stormPlayer, redTeam, GetParty(stormPlayer.BattleTagName));
-                    html += HTMLGetAllTalentsTr(stormPlayer, redTeam);
-                    html += HTMLGetAbilitiesTr(stormPlayer, redTeam);
+                    html += HTMLGetTalentsTr(hotsPlayer, "Red", GetParty(hotsPlayer.BattleTagName));
+                    html += HTMLGetAllTalentsTr(hotsPlayer, "Red");
+                    html += HTMLGetAbilitiesTr(hotsPlayer, "Red");
                 }
 
             html += @"</table>
@@ -1925,14 +1923,12 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 ";
             return html;
         }
-        private string HTMLGetTalentsTr(HotsPlayer hotsPlayer, HotsTeam team, string partyColor)
+        private string HTMLGetTalentsTr(HotsPlayer hotsPlayer, string teamColor, string partyColor)
         {
             if (hotsPlayer.PlayerHero == null) return "";
 
             string? heroName = hotsData.GetHeroNameFromHeroId(HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]);
             string playerName;
-
-            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
 
             if (hotsPlayer.PlayerType == PlayerType.Computer)
                 playerName = hotsPlayer.ComputerName!;
@@ -1955,7 +1951,15 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 else
                 {
                     // Question mark for unselected talents
-                    if (i == 0 || (i == 1 && team.Level >= 4 - talentEarlierLevel) || (i == 2 && team.Level >= 7 - talentEarlierLevel) || (i == 3 && team.Level >= 10 - talentEarlierLevel) || (i == 4 && team.Level >= 13 - talentEarlierLevel) || (i == 5 && team.Level >= 16 - talentEarlierLevel) || (i == 6 && team.Level >= 20 - talentEarlierLevel))
+                    if (
+                        i == 0
+                        || (i == 1 && hotsPlayer.PlayerTeam!.Level >= 4 - talentEarlierLevel)
+                        || (i == 2 && hotsPlayer.PlayerTeam!.Level >= 7 - talentEarlierLevel)
+                        || (i == 3 && hotsPlayer.PlayerTeam!.Level >= 10 - talentEarlierLevel)
+                        || (i == 4 && hotsPlayer.PlayerTeam!.Level >= 13 - talentEarlierLevel)
+                        || (i == 5 && hotsPlayer.PlayerTeam!.Level >= 16 - talentEarlierLevel)
+                        || (i == 6 && hotsPlayer.PlayerTeam!.Level >= 20 - talentEarlierLevel)
+                    )
                     {
                         string imgTalentBorderClass;
                         if (i == 3 || i == 6)
@@ -2044,11 +2048,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       </div>
     </td>";
         }
-        private string HTMLGetAllTalentsTr(HotsPlayer hotsPlayer, HotsTeam team)
+        private string HTMLGetAllTalentsTr(HotsPlayer hotsPlayer, string teamColor)
         {
             if (hotsPlayer.PlayerHero == null) return "";
-
-            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
 
             string heroId = HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId];
 
@@ -2149,11 +2151,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       </div>
     </td>";
         }
-        private string HTMLGetAbilitiesTr(HotsPlayer hotsPlayer, HotsTeam team)
+        private string HTMLGetAbilitiesTr(HotsPlayer hotsPlayer, string teamColor)
         {
             if (hotsPlayer.PlayerHero == null) return "";
-
-            string teamColor = (hotsPlayer.PlayerTeam!.IsOwner) ? "Blue" : "Red";
 
             string heroId = HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId];
 
@@ -2173,18 +2173,18 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             html += "    <td colspan=\"2\" class=\"tdBorders\">&nbsp;</td>\n";
 
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.Q, team);
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.W, team);
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.E, team);
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.R1, team);
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.R2, team);
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.D, team);
-            html += HTMLGetAbilityTd(heroId, HotsAbilityType.Z, team);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.Q, teamColor);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.W, teamColor);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.E, teamColor);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.R1, teamColor);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.R2, teamColor);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.D, teamColor);
+            html += HTMLGetAbilityTd(heroId, HotsAbilityType.Z, teamColor);
 
             html += "  </tr>\n";
             return html;
         }
-        private string HTMLGetAbilityTd(string heroId, HotsAbilityType hotsAbilityType, HotsTeam team)
+        private string HTMLGetAbilityTd(string heroId, HotsAbilityType hotsAbilityType, string teamColor)
         {
             string html = string.Empty;
 
@@ -2197,18 +2197,16 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             {
                 if (!firstAbility) html += "      <span style=\"line-height: 10px;\"><br><br></span>\n";
                 firstAbility = false;
-                html += HTMLGetAbility(ability, team);
+                html += HTMLGetAbility(ability, teamColor);
             }
 
             html += "    </td>\n";
 
             return html;
         }
-        private static string HTMLGetAbility(HotsAbility? ability, HotsTeam team)
+        private static string HTMLGetAbility(HotsAbility? ability, string teamColor)
         {
             string html = string.Empty;
-
-            string teamColor = (team!.IsOwner) ? "Blue" : "Red";
 
             if (ability != null)
             {
