@@ -211,9 +211,7 @@ namespace HotsReplayReader
             const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
             const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
             if (NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDarkMode, sizeof(int)) != 0)
-            {
                 NativeMethods.DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref useDarkMode, sizeof(int));
-            }
 
             if (useDarkMode == 1)
             {
@@ -1620,12 +1618,12 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   </thead>
   <tbody>
 ";
-            foreach (HotsPlayer stormPlayer in hotsPlayers)
-                if (stormPlayer.Team.ToString() == "Blue")
-                    html += HTMLGetScoreTr(stormPlayer, "Blue", GetParty(stormPlayer.BattleTagName));
-            foreach (HotsPlayer stormPlayer in hotsPlayers)
-                if (stormPlayer.Team.ToString() == "Red")
-                    html += HTMLGetScoreTr(stormPlayer, "Red", GetParty(stormPlayer.BattleTagName));
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                if (hotsPlayer.PlayerTeam!.IsOwner)
+                    html += HTMLGetScoreTr(hotsPlayer, "Blue", GetParty(hotsPlayer.BattleTagName));
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                if (!hotsPlayer.PlayerTeam!.IsOwner)
+                    html += HTMLGetScoreTr(hotsPlayer, "Red", GetParty(hotsPlayer.BattleTagName));
 
             html += "  </tbody>\n</table>\n<br><br>\n";
 
@@ -1633,7 +1631,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         }
         private string HTMLGetScoreTr(HotsPlayer hotsPlayer, string teamColor, string partyColor)
         {
-            if (hotsPlayer.ScoreResult == null || hotsPlayer.PlayerHero == null) return "";
+            if (hotsPlayer.ScoreResult == null || hotsPlayer.PlayerHero == null || hotsPlayer.PlayerTeam == null) return "";
 
             string playerName;
 
