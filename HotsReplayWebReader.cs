@@ -1199,23 +1199,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             List<HotsMessage> hotsMessages = [];
 
-            List<StormGameEvent>? STriggerChatMessageEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerChatMessageEvent)];
-            foreach (StormGameEvent STriggerChatMessageEvent in STriggerChatMessageEvents)
-            {
-                string? rawText = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
-                if (rawText is null) continue;
-
-                string msg = HTMLGetChatMessageEmoticon(rawText);
-
-                StormPlayer? MessageSender = STriggerChatMessageEvent.MessageSender;
-                if (MessageSender is null) continue;
-
-                HotsPlayer? hotsPlayer = GetHotsPlayer(MessageSender.BattleTagName);
-                if (hotsPlayer is null) continue;
-
-                string? newRaw = STriggerChatMessageEvent.Data?.Structure?.FirstOrDefault()?.Blob;
-                hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerChatMessageEvent.Timestamp, msg, rawText));
-            }
+            foreach (ChatMessage chatMessage in hotsReplay.stormReplay.TeamChatMessages)
+                hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender!.BattleTagName)!, chatMessage.Timestamp, HTMLGetChatMessageEmoticon(chatMessage.Text), chatMessage.Text));
 
             // Debug: get replay's owner Events
             // List<StormGameEvent> STriggerOwnersPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent && e.MessageSender?.BattleTagName == hotsReplay.stormReplay.Owner?.BattleTagName)];
