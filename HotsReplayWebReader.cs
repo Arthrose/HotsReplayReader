@@ -1222,26 +1222,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                     switch (pingIntegerType)
                     {
-                        case -1:
-                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to help!", null, false, true));
-                            break;
-                        case 0:
-                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
-                            break;
-                        case 1:
-                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"is on the way!", null, false, true));
-                            break;
-                        case 2:
-                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true));
-                            break;
-                        case 3:
-                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to defend!", null, false, true));
-                            break;
-                        case 5:
-                            hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"calls for retreat!", null, false, true));
-                            break;
-                        default:
-                            break;
+                        case -1: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to help!", null, false, true)); break;
+                        case 0: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true)); break;
+                        case 1: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"is on the way!", null, false, true)); break;
+                        case 2: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true)); break;
+                        case 3: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to defend!", null, false, true)); break;
+                        case 5: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"calls for retreat!", null, false, true)); break;
+                        default: break;
                     }
                 }
             }
