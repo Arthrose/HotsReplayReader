@@ -481,6 +481,7 @@ td.tooltip-cell > .tooltip {
 }
 
 .tooltip .tooltipHero,
+.tooltip .tooltipHeroTable,
 .tooltip .tooltiptalent,
 .tooltip .tooltipalltalents,
 .tooltip .tooltipScoreHeader,
@@ -503,6 +504,7 @@ td.tooltip-cell > .tooltip {
 }
 
 .tooltip:hover .tooltipHero,
+.tooltip:hover .tooltipHeroTable,
 .tooltip:hover .tooltiptalent,
 .tooltip:hover .tooltipalltalents,
 .tooltip:hover .tooltipScoreHeader,
@@ -525,6 +527,12 @@ td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
 
 .tooltip .tooltipHeroRight {
     left: 130px;
+}
+
+.tooltip .tooltipHeroTable {
+    left: 170px;
+    bottom: 0px;
+    font-family: Consolas;
 }
 
 /* Score Header tooltip */

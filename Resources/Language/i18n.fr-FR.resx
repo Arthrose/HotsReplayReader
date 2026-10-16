@@ -328,7 +328,7 @@
     <value>Clé API invalide.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK</value>
+    <value>AFK&amp;nbsp;</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Français</value>

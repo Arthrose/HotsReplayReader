@@ -46,7 +46,7 @@ namespace HotsReplayReader
         public TimeSpan TimeSpentAFK { get; set; } = TimeSpan.Zero;
         public List<TimeInterval> TimeSpentAFKIntervals { get; set; } = [];
         public List<StormGameEvent> UserActionGameEvents { get; set; } = [];
-        public List<StormGameEvent> UserGameEvents { get; set; } = [];
+        public string ToolTip { get; set; } = string.Empty;
         public int? DraftOrder { get; set; }
     }
     internal class Mvp
