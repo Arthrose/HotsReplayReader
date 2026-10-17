@@ -862,11 +862,30 @@ namespace HotsReplayReader
   }}
 
   // Copie le text dans le presse-papier
-  function copyTextToClipboard(text) {{
+  function copyTextToClipboard(text, message, event) {{
     window.chrome.webview.postMessage({{
       action: ""copyTextToClipboard"",
       text: text
     }});
+    if (message && event) {{
+      showCopyBubble(message, event.clientX, event.clientY);
+    }}
+  }}
+
+  function showCopyBubble(message, x, y) {{
+    const bubble = document.createElement(""div"");
+    bubble.className = ""copyBubble"";
+    bubble.textContent = message;
+    document.body.appendChild(bubble);
+
+    const maxLeft = window.innerWidth - bubble.offsetWidth - 4;
+    const left = Math.max(4, Math.min(x - bubble.offsetWidth / 2, maxLeft));
+    const top = Math.max(4, y + bubble.offsetHeight);
+    bubble.style.left = left + ""px"";
+    bubble.style.top = top + ""px"";
+
+    setTimeout(() => bubble.classList.add(""fade""), 800);
+    setTimeout(() => bubble.remove(), 1200);
   }}
 </script>
 </head>
@@ -1055,7 +1074,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             html += $"          <span class=\"heroPortrait\"{dataOrder}>\n";
 
-            html += $"            &nbsp;<img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)});'>&nbsp;\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
+            html += $"            &nbsp;<img src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.HeroSelect}\" class=\"heroIcon\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)}, \"{Resources.Language.i18n.strCopied}\", event);'>&nbsp;\n"; // heroIconTeam{GetParty(hotsPlayer.BattleTagName)}
 
             string? party = GetParty(hotsPlayer.BattleTagName);
             if (party != "0")
@@ -1175,9 +1194,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   }}
 
 ";
-                html += @"  const chatContainer = document.querySelector("".chat-container"");
+                html += @$"  const chatContainer = document.querySelector("".chat-container"");
 
-  chatContainer.addEventListener(""click"", async function (event) {
+  chatContainer.addEventListener(""click"", async function (event) {{
     const copyIcon = event.target.closest("".copy-icon"");
     const translateIcon = event.target.closest("".translate-icon"");
     if (!copyIcon && !translateIcon) return;
@@ -1188,14 +1207,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
     const verbatimEl = message.querySelector("".chat-verbatim"");
     const bodyEl = message.querySelector("".chat-message-corps"");
 
-    if (copyIcon) {
+    if (copyIcon) {{
       const textToCopy = verbatimEl ? verbatimEl.textContent : (bodyEl ? bodyEl.textContent : """");
-      copyTextToClipboard(textToCopy);
+      copyTextToClipboard(textToCopy, ""{Resources.Language.i18n.strCopied}"", event);
       event.stopPropagation();
       return;
-    }
+    }}
 
-    if (translateIcon) {
+    if (translateIcon) {{
       if (!bodyEl) return;
 
       const textToTranslate = bodyEl.textContent;
@@ -1212,8 +1231,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
       translateIcon.replaceWith(flag);
       event.stopPropagation();
-    }
-  });
+    }}
+  }});
 </script>
 <br><br>";
                 return $"{html}\n";
@@ -1338,68 +1357,71 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   document.addEventListener(""DOMContentLoaded"", () => {
     const table = document.getElementById(""statsTable"");
     const headers = table.querySelectorAll(""thead th"");
-    const tbodyInit = table.querySelector(""tbody"");
-    const originalRows = Array.from(tbodyInit.querySelectorAll(""tr""));
+    const tbody = table.tBodies[0];
+    const originalRows = Array.from(tbody.rows);   // lignes directes uniquement
     let activeIndex = null;
+  
+    // Texte d'une cellule sans le contenu des tooltips
+    function cellText(cell) {
+      if (!cell) return """";
+      const clone = cell.cloneNode(true);
+      clone.querySelectorAll(
+        "".tooltipHero, .tooltipHeroTable, .tooltipHeroMvpScore, .tooltipScoreHeader""
+      ).forEach(e => e.remove());
+      return clone.textContent;
+    }
+  
     function parseValue(text, type) {
-      if (!text) return 0;
-      text = text.replace(/\u00a0/g, """").trim();
+      text = (text || """").replace(/\u00a0/g, """").trim();
+      if (!text) return type === ""string"" ? """" : 0;
       if (type === ""time"") {
-        const parts = text.split("":"").map(Number);
-        // hh:mm:ss
-        if (parts.length === 3) {
-          const [h, m, s] = parts;
-          return h * 3600 + m * 60 + s;
-        }
-        // mm:ss
-        if (parts.length === 2) {
-          const [m, s] = parts;
-          return m * 60 + s;
-        }
+        const p = text.split("":"").map(Number);
+        if (p.length === 3) return p[0] * 3600 + p[1] * 60 + p[2];
+        if (p.length === 2) return p[0] * 60 + p[1];
         return 0;
       }
       if (type === ""number"") {
-        const num = parseFloat(text.replace(/\s/g, """").replace("","", "".""));
-        return isNaN(num) ? 0 : num;
+        const n = parseFloat(text.replace(/\s/g, """").replace(/,/g, """"));
+        return isNaN(n) ? 0 : n;
       }
       return text.toLowerCase();
     }
+  
+    function clearActive() {
+      table.querySelectorAll("".active-col"").forEach(el => el.classList.remove(""active-col""));
+    }
+  
     headers.forEach((header, index) => {
       if (index === 0) return;
       header.style.cursor = ""pointer"";
       header.addEventListener(""click"", () => {
-        const tbody = table.querySelector(""tbody"");
         const isSorted = activeIndex === index && header.dataset.order === ""desc"";
         if (isSorted) {
-          // Deuxieme clic sur la meme colonne : on remet l'ordre d'origine
           header.dataset.order = """";
           activeIndex = null;
-          tbody.innerHTML = """";
-          originalRows.forEach(r => tbody.appendChild(r));
-          table.querySelectorAll("".active-col"").forEach(el => { el.classList.remove(""active-col""); });
+          tbody.append(...originalRows);
+          clearActive();
           return;
         }
+  
         const type = header.dataset.type || ""string"";
         headers.forEach(h => { if (h !== header) h.dataset.order = """"; });
         header.dataset.order = ""desc"";
         activeIndex = index;
-        const rows = Array.from(tbody.querySelectorAll(""tr""));
-        rows.sort((a, b) => {
-          const A = parseValue(a.children[index]?.innerText, type);
-          const B = parseValue(b.children[index]?.innerText, type);
-          if (type === ""string"")
-            return String(A).localeCompare(String(B));
-          if (type === ""time"")
-            return A - B;
-          return B - A;
+  
+        const keyed = Array.from(tbody.rows).map(r => ({
+          row: r,
+          key: parseValue(cellText(r.cells[index]), type)
+        }));
+        keyed.sort((a, b) => {
+          if (type === ""string"") return String(a.key).localeCompare(String(b.key));
+          if (type === ""time"") return a.key - b.key;
+          return b.key - a.key;
         });
-        tbody.innerHTML = """";
-        rows.forEach(r => tbody.appendChild(r));
-        table.querySelectorAll("".active-col"").forEach(el => { el.classList.remove(""active-col""); });
-        tbody.querySelectorAll(""tr"").forEach(row => {
-          const cell = row.children[index];
-          if (cell) cell.classList.add(""active-col"");
-        });
+  
+        tbody.append(...keyed.map(k => k.row));
+        clearActive();
+        keyed.forEach(k => k.row.cells[index]?.classList.add(""active-col""));
       });
     });
   });
@@ -1513,7 +1535,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             html += "      <td class=\"tdBorders\">\n";
             html += "        <span class=\"tooltip\">\n";
-            html += $"          <img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\">\n";
+            html += $"          <img class=\"tableHeroIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)}, \"{Resources.Language.i18n.strCopied}\", event);'>\n";
             html += $"          <span class=\"tooltipHeroTable\">\n";
             html += hotsPlayer.ToolTip;
             html += "          </span>\n";
@@ -1747,7 +1769,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
   // Clic sur trTalents : affiche/cache tout le groupe qui suit
   document.querySelectorAll('.trTalents').forEach(tr => {
-    tr.addEventListener('click', function() {
+    tr.addEventListener('click', function(event) {
+      if (event.target.closest('.tableHeroIcon')) return;
       const groupRows = getGroupRows(this);
       if (groupRows.length === 0) return;
       const isHidden = groupRows[0].style.display === 'none' || groupRows[0].style.display === '';
@@ -1798,7 +1821,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             html += "    <td class=\"tdBorders\">\n";
             html += "      <span class=\"tooltip\">\n";
-            html += $"        <img class=\"scoreIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\">\n";
+            html += $"        <img class=\"tableHeroIcon\" src=\"app://heroes-images/heroportraits/{hotsData.hotsHeroes[HotsData.HeroIdFromHeroUnitId[hotsPlayer.PlayerHero.HeroUnitId]].Portraits!.Leaderboard}\" onclick='copyTextToClipboard({JsonSerializer.Serialize(hotsPlayer.BattleTagName)}, \"{Resources.Language.i18n.strCopied}\", event);'>\n";
             html += $"        <span class=\"tooltipHeroTable\">\n";
             html += MyRegexRemoveToolTipSpaces().Replace(hotsPlayer.ToolTip, "");
             html += "        </span>\n";

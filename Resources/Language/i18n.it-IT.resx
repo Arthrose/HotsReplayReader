@@ -330,6 +330,9 @@
   <data name="strTimeSpentAFK" xml:space="preserve">
     <value>AFK:</value>
   </data>
+  <data name="strTimeSpentAFK1" xml:space="preserve">
+    <value>AFK:</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Italiano</value>
   </data>
@@ -428,5 +431,8 @@
   </data>
   <data name="strPreferencesDisplayGameMode" xml:space="preserve">
     <value>Modalità di gioco</value>
+  </data>
+  <data name="strCopied" xml:space="preserve">
+    <value>Copiato!</value>
   </data>
 </root>

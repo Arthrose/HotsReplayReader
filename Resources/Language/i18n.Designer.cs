@@ -412,6 +412,15 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copied!.
+        /// </summary>
+        internal static string strCopied {
+            get {
+                return ResourceManager.GetString("strCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnected.
         /// </summary>
         internal static string strDisconnected {
@@ -894,6 +903,15 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strTimeSpentAFK {
             get {
                 return ResourceManager.GetString("strTimeSpentAFK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AFK:.
+        /// </summary>
+        internal static string strTimeSpentAFK1 {
+            get {
+                return ResourceManager.GetString("strTimeSpentAFK1", resourceCulture);
             }
         }
         
