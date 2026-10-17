@@ -34,9 +34,8 @@ namespace HotsReplayReader
         public IReadOnlyList<HeroTalent> Talents { get; set; } = stormPlayer.Talents;
 
         // Nouvelles propriétés
-        public string? ComputerName { get; set; }
-        public string? HeroUnitId { get; set; }
-        //public int Kills { get; set; } = stormPlayer.ScoreResult?.SoloKills ?? 0;
+        public string? ComputerNameLong { get; set; }
+        public string? ComputerNameShort { get; set; }
         public Mvp Mvp { get; set; } = new();
         public string? Party { get; set; }
         public HotsTeam? PlayerTeam { get; set; }

@@ -960,7 +960,7 @@ namespace HotsReplayReader
 ";
 
             if (hotsPlayers != null && hotsReplay != null)
-                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
+                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder).Reverse())
                     html += HTMLGetHeadTableCell(hotsPlayer);
 
             html += "      <td width=\"100\"></td>\n";
@@ -1111,7 +1111,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             if (hotsPlayer.BattleTagName.IndexOf('#') > 0)
                 playerName = hotsPlayer.BattleTagName[..hotsPlayer.BattleTagName.IndexOf('#')];
             else
-                playerName = hotsPlayer.ComputerName!;
+                playerName = hotsPlayer.ComputerNameShort!;
 
                 html += $"        <div class=\"battleTag{owner}{partyColor}\">{playerName}</div>\n";
             html += "      </td>\n";
@@ -1194,7 +1194,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   }}
 
 ";
-                html += @$"  document.querySelectorAll("".chat-message"").forEach(function (message) {{
+                html += @$"  const COOLDOWN_MS = 1000;
+  document.querySelectorAll("".chat-message"").forEach(function (message) {{
     const verbatimEl = message.querySelector("".chat-verbatim"");
     const bodyEl = message.querySelector("".chat-message-corps"");
     const copyIcon = message.querySelector("".copy-icon"");
@@ -1203,6 +1204,11 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
     const originalText = bodyEl.textContent;
     let translating = false;
+    let lastActionEnd = 0;
+
+    function canAct() {{
+      return !translating && (Date.now() - lastActionEnd >= COOLDOWN_MS);
+    }}
 
     // Copier
     if (copyIcon) {{
@@ -1217,33 +1223,37 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
     if (translateIcon) {{
       translateIcon.addEventListener(""click"", async function (event) {{
         event.stopPropagation();
-        if (translating) return; // verrou : une seule traduction à la fois
+        if (!canAct()) return;   // <-- changé
         translating = true;
-
+    
         try {{
           const result = await translateWithCSharp(originalText);
-
+    
           bodyEl.textContent = result.translatedText;
-
+    
           const flag = document.createElement(""img"");
           flag.className = ""translate-flag"";
           flag.src = ""app://flags/"" + result.detectedLanguage.toLowerCase() + "".svg"";
           flag.width = 24;
           flag.height = 18;
           flag.title = result.detectedLanguageName;
-
+    
           // Clic sur le drapeau : retour à l'état d'origine
           flag.addEventListener(""click"", function (e) {{
             e.stopPropagation();
+            if (!canAct()) return;   // <-- ajouté
+    
             bodyEl.textContent = originalText;
             flag.replaceWith(translateIcon);
+            lastActionEnd = Date.now();
           }});
-
+    
           translateIcon.replaceWith(flag);
         }} catch (err) {{
           console.error(""Erreur de traduction :"", err);
         }} finally {{
-          translating = false; // libère le verrou, même en cas d'erreur
+          translating = false;
+          lastActionEnd = Date.now();
         }}
       }});
     }}
@@ -1535,7 +1545,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             string playerName;
 
             if (hotsPlayer.PlayerType == PlayerType.Computer)
-                playerName = hotsPlayer.ComputerName!;
+                playerName = hotsPlayer.ComputerNameLong!;
             else
                 playerName = hotsPlayer.Name;
 
@@ -1843,7 +1853,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             string playerName;
 
             if (hotsPlayer.PlayerType == PlayerType.Computer)
-                playerName = hotsPlayer.ComputerName!;
+                playerName = hotsPlayer.ComputerNameLong!;
             else
                 playerName = hotsPlayer.Name;
 
@@ -2312,7 +2322,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 if (hotsPlayer.PlayerType == PlayerType.Computer)
                 {
                     ComputerID++;
-                    hotsPlayer.ComputerName = $"{Resources.Language.i18n.strPlayer} {ComputerID} ({Resources.Language.i18n.strAI})";
+                    hotsPlayer.ComputerNameLong = $"{Resources.Language.i18n.strPlayer} {ComputerID} ({Resources.Language.i18n.strAI})";
+                    hotsPlayer.ComputerNameShort = $"({Resources.Language.i18n.strAI} {ComputerID})";
                 }
 
             }
@@ -2604,7 +2615,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 }
                 else
                 {
-                    playerName = hotsPlayer.ComputerName!;
+                    playerName = hotsPlayer.ComputerNameLong!;
 
                     string? computerDifficulty = Resources.Language.i18n.ResourceManager.GetString($"strAI{hotsPlayer.ComputerDifficulty}")
                                    ?? hotsPlayer.ComputerDifficulty.ToString();
