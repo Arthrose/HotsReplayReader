@@ -982,14 +982,16 @@ namespace HotsReplayReader
                 html += "    <tr>\n      <td>&nbsp;</td>\n";
 
                 int bannedOrder = 0;
-                foreach (StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
-                    if (draftPick.PickType == StormDraftPickType.Banned)
-                    {
-                        bannedOrder++;
-                        if (draftPick.Team == StormTeam.Blue)
-                            html += HTMLGetBannedPortaitImg(draftPick.HeroSelected, bannedOrder);
-                    }
+                IEnumerable<(StormDraftPick Pick, int Order)> blueBans = hotsReplay.stormReplay.DraftPicks
+                    .Where(p => p.PickType == StormDraftPickType.Banned)
+                    .Select((p, index) => (Pick: p, Order: index + 1))
+                    .Where(x => x.Pick.Team == StormTeam.Blue)
+                    .Reverse();
+                foreach ((StormDraftPick Pick, int Order) in blueBans)
+                    html += HTMLGetBannedPortaitImg(Pick.HeroSelected, Order);
+
                 html += $"      <td colspan=\"3\" class=\"titleWhite\" style=\"zoom: 50%;\">{Resources.Language.i18n.strBanned}</td>\n";
+
                 bannedOrder = 0;
                 foreach (StormDraftPick draftPick in hotsReplay.stormReplay.DraftPicks)
                     if (draftPick.PickType == StormDraftPickType.Banned)
