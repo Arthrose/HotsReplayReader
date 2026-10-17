@@ -489,7 +489,6 @@ td.tdMvpCell > .tooltip {
 .tooltip .tooltipAbilityText {
     visibility: hidden;
     opacity: 0;
-    /*transition: opacity 0.5s;*/
     position: absolute;
     z-index: 20;
     margin-left: -60px;
@@ -520,8 +519,10 @@ table.tooltipInnerTable {
     border-collapse: collapse;
     text-align: left;
     margin-left: 0;
-    margin-right: auto;   /* colle le tableau à gauche */
+    margin-right: auto;
     width: auto;
+    color: inherit;
+    font: inherit;
 }
 table.tooltipInnerTable tr {
     height: auto;
@@ -575,6 +576,25 @@ table.tooltipInnerTable td {
     right: 96px;
     font-family: Consolas;
     transform: translateY(-50%);
+}
+
+table.tooltipInnerTable td.mvpLabel {
+    min-width: 24ch;
+}
+
+table.tooltipInnerTable td.mvpTitle {
+    padding-top: 1em;
+}
+
+table.tooltipInnerTable tr:first-child td.mvpTitle {
+    padding-top: 0;
+}
+
+table.tooltipInnerTable td.mvpValue {
+    text-align: left;
+    min-width: 6ch;
+    padding-left: 1em;
+    padding-right: 0;
 }
 
 /* Talents and Abilities*/
@@ -651,7 +671,7 @@ table.tooltipInnerTable td {
     color: #fff;
     text-shadow: 1px 1px 3px black;
     line-height: 1.5;
-    position: relative; /* Permet le positionnement absolu des icônes copy / translate */
+    position: relative;
 }
 
 .chat-message.chat-ping {
@@ -704,7 +724,6 @@ table.tooltipInnerTable td {
     height: 36px;
     margin-top: -5px;
     vertical-align: middle;
-    /* border-radius: 50%; */
     box-sizing: border-box;
 }
 

@@ -794,7 +794,7 @@ namespace HotsReplayReader
         }
         public static void SetApplicationLanguage(string langCode)
         {
-            CultureInfo? culture = new(langCode);
+            CultureInfo? culture = new(langCode, useUserOverride: false);
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
@@ -1414,81 +1414,61 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreKills.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.strScoreKills}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">{Resources.Language.i18n.strScoreKills}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreAssists.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.strScoreAssists}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">{Resources.Language.i18n.strScoreAssists}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDeaths.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.strScoreDeaths}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">{Resources.Language.i18n.strScoreDeaths}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""time"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreTimeSpentDead.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.strScoreTimeSpentDead}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">{Resources.Language.i18n.strScoreTimeSpentDead}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreSiegeDmg.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">
-            {Resources.Language.i18n.strScoreSiegeDmg}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderRight"">{Resources.Language.i18n.strScoreSiegeDmg}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHeroDmg.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.strScoreHeroDmg}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">{Resources.Language.i18n.strScoreHeroDmg}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreHealing.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.strScoreHealing}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">{Resources.Language.i18n.strScoreHealing}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreDmgTaken.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.strScoreDmgTaken}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">{Resources.Language.i18n.strScoreDmgTaken}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreExp.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.strScoreExp}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">{Resources.Language.i18n.strScoreExp}</span>
         </span>
       </th>
       <th class=""teamHeader tdBorders"" data-type=""number"">
         <span class=""tooltip"">
           <img class=""scoreHeaderIcon"" src=""app://hotsResources/scoreMvp.png"">
-          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">
-            {Resources.Language.i18n.strScoreMvp}
-          </span>
+          <span class=""tooltipScoreHeader tooltipScoreHeaderLeft"">{Resources.Language.i18n.strScoreMvp}</span>
         </span>
       </th>
     </tr>
@@ -1585,7 +1565,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             html += $"\">{hotsPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
             // MVP Score with tooltip
-            html += "      <td class=\"tdBorders tdMvpCell\">\n";
+            html += HTMLGetScoreMvpTd(hotsPlayer);
+
+            html += "    </tr>\n";
+            return html;
+        }
+        private static string HTMLGetScoreMvpTd(HotsPlayer hotsPlayer)
+        {
+            string html = "      <td class=\"tdBorders tdMvpCell\">\n";
             html += "        <span class=\"tooltip\">\n          ";
             if (hotsPlayer.MatchAwardsCount > 0 && hotsPlayer.MatchAwards != null)
                 if (hotsPlayer.MatchAwards[0].ToString() == "MVP")
@@ -1598,92 +1585,79 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     html += "</span>";
 
             html += $"\n          <span class=\"tooltipHeroMvpScore\">\n";
+            html += "            <table class=\"tooltipInnerTable\">\n";
 
-            bool firstLine = true;
+            // Un titre de section (ligne sur 2 colonnes)
+            void Title(string title) =>
+                html += $"              <tr><td colspan=\"2\" class=\"mvpTitle\"><u>{title}</u></td></tr>\n";
 
-            if (hotsPlayer.Mvp.WinningTeam != null)
+            // Une ligne libellé / valeur (ignorée si la valeur est nulle)
+            void Row(string label, double? value)
             {
-                html += $"            WinningTeam:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.WinningTeam, 2)}<br>\n";
-                firstLine = false;
+                if (value != null)
+                    html += $"              <tr><td class=\"mvpLabel\">{label}:</td><td class=\"mvpValue\">{Math.Round(value.Value, 2)}</td></tr>\n";
             }
+
+            Row("WinningTeam", hotsPlayer.Mvp.WinningTeam);
 
             if (hotsPlayer.Mvp.Kills != null || hotsPlayer.Mvp.Assists != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u>Takedowns</u><br>\n";
-                if (hotsPlayer.Mvp.Kills != null) html += $"            Kills:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.Kills, 2)}<br>\n";
-                if (hotsPlayer.Mvp.Assists != null) html += $"            Assists:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.Assists, 2)}<br>\n";
-                firstLine = false;
+                Title("Takedowns");
+                Row("Kills", hotsPlayer.Mvp.Kills);
+                Row("Assists", hotsPlayer.Mvp.Assists);
             }
 
             if (hotsPlayer.Mvp.TimeSpentDead != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u>Deaths</u><br>\n";
-                html += $"            TimeSpentDead:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TimeSpentDead, 2)}<br>\n";
-                firstLine = false;
+                Title("Deaths");
+                Row("TimeSpentDead", hotsPlayer.Mvp.TimeSpentDead);
             }
 
             if (hotsPlayer.Mvp.TopHeroDamageOnTeam != null || hotsPlayer.Mvp.TopHeroDamage != null || hotsPlayer.Mvp.HeroDamageBonus != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u>Hero Damage</u><br>\n";
-                if (hotsPlayer.Mvp.TopHeroDamage != null) html += $"            TopHeroDamage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopHeroDamage, 2)}<br>\n";
-                if (hotsPlayer.Mvp.TopHeroDamageOnTeam != null) html += $"            TopHeroDamageOnTeam:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopHeroDamageOnTeam, 2)}<br>\n";
-                if (hotsPlayer.Mvp.HeroDamageBonus != null) html += $"            HeroDamageBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.HeroDamageBonus, 2)}<br>\n";
-                firstLine = false;
+                Title("Hero Damage");
+                Row("TopHeroDamage", hotsPlayer.Mvp.TopHeroDamage);
+                Row("TopHeroDamageOnTeam", hotsPlayer.Mvp.TopHeroDamageOnTeam);
+                Row("HeroDamageBonus", hotsPlayer.Mvp.HeroDamageBonus);
             }
 
             if (hotsPlayer.Mvp.TopSiegeDamageOnTeam != null || hotsPlayer.Mvp.TopSiegeDamage != null || hotsPlayer.Mvp.SiegeDamageBonus != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u>Siege Damage</u><br>\n";
-                if (hotsPlayer.Mvp.TopSiegeDamage != null) html += $"            TopSiegeDamage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopSiegeDamage, 2)}<br>\n";
-                if (hotsPlayer.Mvp.TopSiegeDamageOnTeam != null) html += $"            TopSiegeDamageOnTeam:&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopSiegeDamageOnTeam, 2)}<br>\n";
-                if (hotsPlayer.Mvp.SiegeDamageBonus != null) html += $"            SiegeDamageBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.SiegeDamageBonus, 2)}<br>\n";
-                firstLine = false;
+                Title("Siege Damage");
+                Row("TopSiegeDamage", hotsPlayer.Mvp.TopSiegeDamage);
+                Row("TopSiegeDamageOnTeam", hotsPlayer.Mvp.TopSiegeDamageOnTeam);
+                Row("SiegeDamageBonus", hotsPlayer.Mvp.SiegeDamageBonus);
             }
 
             if (hotsPlayer.Mvp.TopDamageTakenOnTeam != null || hotsPlayer.Mvp.TopDamageTaken != null || hotsPlayer.Mvp.DamageTakenBonus != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u>Damage Taken</u><br>\n";
-                if (hotsPlayer.Mvp.TopDamageTaken != null) html += $"            TopDamageTaken:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopDamageTaken, 2)}<br>\n";
-                if (hotsPlayer.Mvp.TopDamageTakenOnTeam != null) html += $"            TopDamageTakenOnTeam:&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopDamageTakenOnTeam, 2)}<br>\n";
-                if (hotsPlayer.Mvp.DamageTakenBonus != null) html += $"            DamageTakenBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.DamageTakenBonus, 2)}<br>\n";
-                firstLine = false;
+                Title("Damage Taken");
+                Row("TopDamageTaken", hotsPlayer.Mvp.TopDamageTaken);
+                Row("TopDamageTakenOnTeam", hotsPlayer.Mvp.TopDamageTakenOnTeam);
+                Row("DamageTakenBonus", hotsPlayer.Mvp.DamageTakenBonus);
             }
 
             if (hotsPlayer.Mvp.TopHealing != null || hotsPlayer.Mvp.HealingBonus != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u></u>Healing<br>\n";
-                if (hotsPlayer.Mvp.TopHealing != null) html += $"            TopHealing:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopHealing, 2)}<br>\n";
-                if (hotsPlayer.Mvp.HealingBonus != null) html += $"            HealingBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.HealingBonus, 2)}<br>\n";
-                firstLine = false;
+                Title("Healing");
+                Row("TopHealing", hotsPlayer.Mvp.TopHealing);
+                Row("HealingBonus", hotsPlayer.Mvp.HealingBonus);
             }
 
             if (hotsPlayer.Mvp.TopXPContributionOnTeam != null || hotsPlayer.Mvp.TopXPContribution != null || hotsPlayer.Mvp.XPContributionBonus != null)
             {
-                if (!firstLine)
-                    html += "            <br>\n";
-                html += "            <u>Experience</u><br>\n";
-                if (hotsPlayer.Mvp.TopXPContribution != null) html += $"            TopXPContribution:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopXPContribution, 2)}<br>\n";
-                if (hotsPlayer.Mvp.TopXPContributionOnTeam != null) html += $"            TopXPContributionOnTeam:&nbsp;{Math.Round((double)hotsPlayer.Mvp.TopXPContributionOnTeam, 2)}<br>\n";
-                if (hotsPlayer.Mvp.XPContributionBonus != null) html += $"            XPContributionBonus:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Math.Round((double)hotsPlayer.Mvp.XPContributionBonus, 2)}<br>\n";
+                Title("Experience");
+                Row("TopXPContribution", hotsPlayer.Mvp.TopXPContribution);
+                Row("TopXPContributionOnTeam", hotsPlayer.Mvp.TopXPContributionOnTeam);
+                Row("XPContributionBonus", hotsPlayer.Mvp.XPContributionBonus);
             }
             // if (hotsPlayer.ScoreResult.OnFireTimeonFire != null && hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds > 0) html += $"<br>\n            TimeOnFire:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ffd700\">{hotsPlayer.ScoreResult.OnFireTimeonFire.Value.TotalSeconds} s</font><br>\n";
 
+            html += "            </table>\n";
             html += "          </span>\n";
             html += "        </span>\n";
             html += "      </td>\n";
-            html += "    </tr>\n";
+
             return html;
         }
         private string HTMLGetTalentsTable()
@@ -3014,12 +2988,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     if (dbVersion is not null && (!emoticonsDb.TryGetValue(dbVersion, out Dictionary<string, string>? emoticons) || emoticons.Count == 0))
                         emoticonsDb[dbVersion] = EmoticonLoader.LoadAll(Init.DbDirectory!, dbVersion);
 
-                    htmlContent = $"{HTMLGetHeader()}";
-                    htmlContent += $"{HTMLGetHeadTable()}";
-                    htmlContent += await HTMLGetChatMessages();
-                    htmlContent += $"{HTMLGetScoreTable()}";
-                    htmlContent += $"{HTMLGetTalentsTable()}";
-                    htmlContent += $"{HTMLGetFooter()}";
+                    htmlContent = string.Concat(
+                        HTMLGetHeader(),
+                        HTMLGetHeadTable(),
+                        await HTMLGetChatMessages(),
+                        HTMLGetScoreTable(),
+                        HTMLGetTalentsTable(),
+                        HTMLGetFooter()
+                    );
 
                     this.Text = $"{formTitle} - {hotsReplay?.stormReplay?.Owner?.BattleTagName}";
                 }
@@ -3028,6 +3004,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             {
                 Debug.WriteLine(exception);
             }
+
+            // MessageBox.Show($"Data sent to NavigateToString: {Encoding.UTF8.GetByteCount(htmlContent) / (1024.0 * 1024.0):F2} MB");
+
             webView.CoreWebView2.NavigateToString(htmlContent);
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)
