@@ -959,15 +959,41 @@ namespace HotsReplayReader
     <tr>
 ";
 
-            if (hotsPlayers != null)
-                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
-                    html += HTMLGetHeadTableCell(hotsPlayer);
+            if (hotsPlayers != null && hotsReplay != null)
+            {
+                // Shows replay's owner first
+                if (blueTeam.IsOwner)
+                {
+                    foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                        if (hotsPlayer.BattleTagName ==  hotsReplay!.stormReplay.Owner.BattleTagName)
+                            html += HTMLGetHeadTableCell(hotsPlayer);
+                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
+                        if (hotsPlayer.BattleTagName != hotsReplay.stormReplay.Owner.BattleTagName)
+                            html += HTMLGetHeadTableCell(hotsPlayer);
+                }
+                else
+                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
+                        html += HTMLGetHeadTableCell(hotsPlayer);
+            }
 
             html += "      <td width=\"100\"></td>\n";
 
-            if (hotsPlayers != null)
-                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
-                    html += HTMLGetHeadTableCell(hotsPlayer);
+            if (hotsPlayers != null && hotsReplay != null)
+            {
+                // Shows replay's owner first
+                if (redTeam.IsOwner)
+                {
+                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
+                        if (hotsPlayer.BattleTagName == hotsReplay!.stormReplay.Owner.BattleTagName)
+                            html += HTMLGetHeadTableCell(hotsPlayer);
+                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
+                        if (hotsPlayer.BattleTagName != hotsReplay!.stormReplay.Owner.BattleTagName)
+                            html += HTMLGetHeadTableCell(hotsPlayer);
+                }
+                else
+                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
+                        html += HTMLGetHeadTableCell(hotsPlayer);
+            }
 
             string replayLength;
             if (hotsReplay?.stormReplay?.ReplayLength.Hours == 0)
@@ -1498,8 +1524,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   <tbody>
 ";
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
-                if (hotsPlayer.PlayerTeam!.IsOwner)
+                if (hotsPlayer.BattleTagName == hotsReplay!.stormReplay!.Owner!.BattleTagName)
                     html += HTMLGetScoreTr(hotsPlayer, "Blue", GetParty(hotsPlayer.BattleTagName));
+
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
+                if (hotsPlayer.PlayerTeam!.IsOwner && hotsPlayer.BattleTagName != hotsReplay!.stormReplay!.Owner!.BattleTagName)
+                    html += HTMLGetScoreTr(hotsPlayer, "Blue", GetParty(hotsPlayer.BattleTagName));
+
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
                 if (!hotsPlayer.PlayerTeam!.IsOwner)
                     html += HTMLGetScoreTr(hotsPlayer, "Red", GetParty(hotsPlayer.BattleTagName));
@@ -1701,13 +1732,24 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
-                if (hotsPlayer.PlayerTeam!.IsOwner)
+                if (hotsPlayer.BattleTagName == hotsReplay!.stormReplay!.Owner!.BattleTagName)
                 {
                     html += HTMLGetTalentsTr(hotsPlayer, "Blue", GetParty(hotsPlayer.BattleTagName));
                     html += HTMLGetAllTalentsTr(hotsPlayer, "Blue");
                     html += HTMLGetAbilitiesTr(hotsPlayer, "Blue");
                 }
             }
+
+            foreach (HotsPlayer hotsPlayer in hotsPlayers)
+            {
+                if (hotsPlayer.PlayerTeam!.IsOwner && hotsPlayer.BattleTagName != hotsReplay!.stormReplay!.Owner!.BattleTagName)
+                {
+                    html += HTMLGetTalentsTr(hotsPlayer, "Blue", GetParty(hotsPlayer.BattleTagName));
+                    html += HTMLGetAllTalentsTr(hotsPlayer, "Blue");
+                    html += HTMLGetAbilitiesTr(hotsPlayer, "Blue");
+                }
+            }
+
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
                 if (!hotsPlayer.PlayerTeam!.IsOwner)
                 {
