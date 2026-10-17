@@ -960,40 +960,14 @@ namespace HotsReplayReader
 ";
 
             if (hotsPlayers != null && hotsReplay != null)
-            {
-                // Shows replay's owner first
-                if (blueTeam.IsOwner)
-                {
-                    foreach (HotsPlayer hotsPlayer in hotsPlayers)
-                        if (hotsPlayer.BattleTagName ==  hotsReplay!.stormReplay.Owner.BattleTagName)
-                            html += HTMLGetHeadTableCell(hotsPlayer);
-                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
-                        if (hotsPlayer.BattleTagName != hotsReplay.stormReplay.Owner.BattleTagName)
-                            html += HTMLGetHeadTableCell(hotsPlayer);
-                }
-                else
-                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
-                        html += HTMLGetHeadTableCell(hotsPlayer);
-            }
+                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Blue).OrderBy(p => p.DraftOrder))
+                    html += HTMLGetHeadTableCell(hotsPlayer);
 
             html += "      <td width=\"100\"></td>\n";
 
             if (hotsPlayers != null && hotsReplay != null)
-            {
-                // Shows replay's owner first
-                if (redTeam.IsOwner)
-                {
-                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
-                        if (hotsPlayer.BattleTagName == hotsReplay!.stormReplay.Owner.BattleTagName)
-                            html += HTMLGetHeadTableCell(hotsPlayer);
-                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
-                        if (hotsPlayer.BattleTagName != hotsReplay!.stormReplay.Owner.BattleTagName)
-                            html += HTMLGetHeadTableCell(hotsPlayer);
-                }
-                else
-                    foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
-                        html += HTMLGetHeadTableCell(hotsPlayer);
-            }
+                foreach (HotsPlayer hotsPlayer in hotsPlayers.Where(p => p.Team == StormTeam.Red).OrderBy(p => p.DraftOrder))
+                    html += HTMLGetHeadTableCell(hotsPlayer);
 
             string replayLength;
             if (hotsReplay?.stormReplay?.ReplayLength.Hours == 0)
@@ -1220,43 +1194,58 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   }}
 
 ";
-                html += @$"  const chatContainer = document.querySelector("".chat-container"");
-
-  chatContainer.addEventListener(""click"", async function (event) {{
-    const copyIcon = event.target.closest("".copy-icon"");
-    const translateIcon = event.target.closest("".translate-icon"");
-    if (!copyIcon && !translateIcon) return;
-
-    const message = event.target.closest("".chat-message"");
-    if (!message) return;
-
+                html += @$"  document.querySelectorAll("".chat-message"").forEach(function (message) {{
     const verbatimEl = message.querySelector("".chat-verbatim"");
     const bodyEl = message.querySelector("".chat-message-corps"");
+    const copyIcon = message.querySelector("".copy-icon"");
+    const translateIcon = message.querySelector("".translate-icon"");
+    if (!bodyEl) return;
 
+    const originalText = bodyEl.textContent;
+    let translating = false;
+
+    // Copier
     if (copyIcon) {{
-      const textToCopy = verbatimEl ? verbatimEl.textContent : (bodyEl ? bodyEl.textContent : """");
-      copyTextToClipboard(textToCopy, ""{Resources.Language.i18n.strCopied}"", event);
-      event.stopPropagation();
-      return;
+      copyIcon.addEventListener(""click"", function (event) {{
+        const textToCopy = verbatimEl ? verbatimEl.textContent : originalText;
+        copyTextToClipboard(textToCopy, ""{Resources.Language.i18n.strCopied}"", event);
+        event.stopPropagation();
+      }});
     }}
 
+    // Traduire
     if (translateIcon) {{
-      if (!bodyEl) return;
+      translateIcon.addEventListener(""click"", async function (event) {{
+        event.stopPropagation();
+        if (translating) return; // verrou : une seule traduction à la fois
+        translating = true;
 
-      const textToTranslate = bodyEl.textContent;
-      const result = await translateWithCSharp(textToTranslate);
+        try {{
+          const result = await translateWithCSharp(originalText);
 
-      bodyEl.textContent = result.translatedText;
+          bodyEl.textContent = result.translatedText;
 
-      const flag = document.createElement(""img"");
-      flag.className = ""translate-flag"";
-      flag.src = ""app://flags/"" + result.detectedLanguage.toLowerCase() + "".svg"";
-      flag.width = 24;
-      flag.height = 18;
-      flag.title = result.detectedLanguageName;
+          const flag = document.createElement(""img"");
+          flag.className = ""translate-flag"";
+          flag.src = ""app://flags/"" + result.detectedLanguage.toLowerCase() + "".svg"";
+          flag.width = 24;
+          flag.height = 18;
+          flag.title = result.detectedLanguageName;
 
-      translateIcon.replaceWith(flag);
-      event.stopPropagation();
+          // Clic sur le drapeau : retour à l'état d'origine
+          flag.addEventListener(""click"", function (e) {{
+            e.stopPropagation();
+            bodyEl.textContent = originalText;
+            flag.replaceWith(translateIcon);
+          }});
+
+          translateIcon.replaceWith(flag);
+        }} catch (err) {{
+          console.error(""Erreur de traduction :"", err);
+        }} finally {{
+          translating = false; // libère le verrou, même en cas d'erreur
+        }}
+      }});
     }}
   }});
 </script>

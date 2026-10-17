@@ -757,6 +757,7 @@ table.tooltipInnerTable td.mvpValue {
 .copy-icon,
 .translate-icon,
 .translate-flag {
+    cursor: pointer;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -765,13 +766,11 @@ table.tooltipInnerTable td.mvpValue {
 .copy-icon {
     display: none;
     right: 30px;
-    cursor: pointer;
 }
 
 .translate-icon {
     display: none;
     right: 0;
-    cursor: pointer;
 }
 
 .translate-flag {
