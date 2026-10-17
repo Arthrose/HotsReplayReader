@@ -247,13 +247,13 @@
     <value>布萊西斯哨站</value>
   </data>
   <data name="strBattleTag" xml:space="preserve">
-    <value>戰網名稱</value>
+    <value>戰網名稱:</value>
   </data>
   <data name="strAccountLevel" xml:space="preserve">
-    <value>帳號等級</value>
+    <value>帳號等級:</value>
   </data>
   <data name="strHeroLevel" xml:space="preserve">
-    <value>英雄等級</value>
+    <value>英雄等級:</value>
   </data>
   <data name="strBanned" xml:space="preserve">
     <value>已禁用</value>
@@ -328,7 +328,7 @@
     <value>無效的 API 金鑰。</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK</value>
+    <value>AFK:</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>中文</value>

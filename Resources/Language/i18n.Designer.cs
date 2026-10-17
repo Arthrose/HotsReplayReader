@@ -295,7 +295,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Level.
+        ///   Looks up a localized string similar to Account Level:.
         /// </summary>
         internal static string strAccountLevel {
             get {
@@ -376,7 +376,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BattleTag.
+        ///   Looks up a localized string similar to BattleTag:.
         /// </summary>
         internal static string strBattleTag {
             get {
@@ -439,7 +439,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hero Level.
+        ///   Looks up a localized string similar to Hero Level:.
         /// </summary>
         internal static string strHeroLevel {
             get {
@@ -889,7 +889,7 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AFK.
+        ///   Looks up a localized string similar to AFK:.
         /// </summary>
         internal static string strTimeSpentAFK {
             get {

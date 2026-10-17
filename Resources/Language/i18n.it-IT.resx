@@ -247,13 +247,13 @@
     <value>Avamposto di Braxis</value>
   </data>
   <data name="strBattleTag" xml:space="preserve">
-    <value>BattleTag</value>
+    <value>BattleTag:</value>
   </data>
   <data name="strAccountLevel" xml:space="preserve">
-    <value>Livello account</value>
+    <value>Livello account:</value>
   </data>
   <data name="strHeroLevel" xml:space="preserve">
-    <value>Livello eroe</value>
+    <value>Livello eroe:</value>
   </data>
   <data name="strBanned" xml:space="preserve">
     <value>Banditi</value>
@@ -328,7 +328,7 @@
     <value>Chiave API non valida.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK</value>
+    <value>AFK:</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Italiano</value>

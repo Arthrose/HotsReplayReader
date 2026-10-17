@@ -468,12 +468,12 @@ tr.trAbilities td.tdBorders {
     display: inline-block;
 }
 
-td.tooltip-cell {
+td.tdMvpCell {
     position: relative;
     overflow: visible;
 }
 
-td.tooltip-cell > .tooltip {
+td.tdMvpCell > .tooltip {
     display: block;
     width: 100%;
     height: 100%;
@@ -510,12 +510,31 @@ td.tooltip-cell > .tooltip {
 .tooltip:hover .tooltipScoreHeader,
 .tooltip:hover .tooltipHeroMvpScore,
 .tooltip:hover .tooltipAbilityText,
-td.tooltip-cell:hover > .tooltip .tooltipHeroMvpScore {
+.tdMvpCell:hover > .tooltip .tooltipHeroMvpScore {
     visibility: visible;
     opacity: 1;
 }
 
 /* Hero tooltip */
+table.tooltipInnerTable {
+    border-collapse: collapse;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;   /* colle le tableau à gauche */
+    width: auto;
+}
+table.tooltipInnerTable tr {
+    height: auto;
+    text-align: left;
+}
+
+table.tooltipInnerTable td {
+    padding: 0 6px 0 0;
+    white-space: nowrap;
+    vertical-align: top;
+    text-align: left;
+}
+
 .tooltip .tooltipHero {
     bottom: 71px;
     font-family: Consolas;

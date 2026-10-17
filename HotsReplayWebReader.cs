@@ -1585,7 +1585,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             html += $"\">{hotsPlayer.ScoreResult.ExperienceContribution:n0}</td>\n";
 
             // MVP Score with tooltip
-            html += "      <td class=\"tooltip-cell tdBorders\">\n";
+            html += "      <td class=\"tdBorders tdMvpCell\">\n";
             html += "        <span class=\"tooltip\">\n          ";
             if (hotsPlayer.MatchAwardsCount > 0 && hotsPlayer.MatchAwards != null)
                 if (hotsPlayer.MatchAwards[0].ToString() == "MVP")
@@ -2497,56 +2497,16 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     html += $"              <font color=\"#bfd4fd\" size=\"-1\"><nobr>{hotsData.GetMatchRewardsDescription(hotsPlayer.MatchAwards[0].ToString())}</nobr></font><br>\n";
                     html += $"            </center><br>\n";
                 }
+                html += "            <table class=\"tooltipInnerTable\">\n";
                 if (hotsPlayer.BattleTagName.IndexOf('#') > 0)
                 {
                     playerName = hotsPlayer.BattleTagName[..hotsPlayer.BattleTagName.IndexOf('#')];
                     playerID = hotsPlayer.BattleTagName[(hotsPlayer.BattleTagName.IndexOf('#') + 1)..];
 
-                    // Alignement des donées sur l'intitulé le plus long
-                    // Décode les entités HTML (&nbsp; -> \u00A0), sans rien supprimer
-                    static string Decode(string s) => System.Net.WebUtility.HtmlDecode(s);
+                    html += $"              <tr><td>{Resources.Language.i18n.strBattleTag}</td><td><font color=\"#bfd4fd\">{playerName}</font>#{playerID}</td></tr>\n";
+                    html += $"              <tr><td>{Resources.Language.i18n.strAccountLevel}</td><td><font color=\"#bfd4fd\">{accountLevel}</font></td></tr>\n";
 
-                    static int DisplayWidth(string s)
-                    {
-                        int w = 0;
-                        foreach (char c in s)
-                        {
-                            // Hangul, CJK, Hiragana/Katakana, formes pleine chasse : 2 colonnes
-                            bool wide =
-                                (c >= 0x1100 && c <= 0x115F) ||
-                                (c >= 0x2E80 && c <= 0xA4CF) ||
-                                (c >= 0xAC00 && c <= 0xD7A3) ||
-                                (c >= 0xF900 && c <= 0xFAFF) ||
-                                (c >= 0xFE30 && c <= 0xFE6F) ||
-                                (c >= 0xFF00 && c <= 0xFF60) ||
-                                (c >= 0xFFE0 && c <= 0xFFE6);
-                            w += wide ? 2 : 1;
-                        }
-                        return w;
-                    }
-
-                    static string MakeLabel(string text, int targetWidth)
-                    {
-                        string label = Decode(text) + ":";
-                        int pad = Math.Max(0, targetWidth - DisplayWidth(label));
-                        return label.Replace("\u00A0", "&nbsp;").Replace(" ", "&nbsp;") + string.Concat(Enumerable.Repeat("&nbsp;", pad));
-                    }
-
-                    int labelWidth = new[]
-                    {
-                        DisplayWidth(Decode(Resources.Language.i18n.strBattleTag) + ":"),
-                        DisplayWidth(Decode(Resources.Language.i18n.strAccountLevel) + ":"),
-                        DisplayWidth(Decode(Resources.Language.i18n.strHeroLevel) + ":"),
-                        DisplayWidth(Decode(Resources.Language.i18n.strTimeSpentAFK) + ":")
-                    }.Max() + 1; // 1 espace de séparation avant la valeur
-
-                    string battleTagLabel = MakeLabel(Resources.Language.i18n.strBattleTag, labelWidth);
-                    html += $"            <span class=\"nobr\">{battleTagLabel}<font color=\"#bfd4fd\">{playerName}</font>#{playerID}</span><br>\n";
-
-                    string accountLevelLabel = MakeLabel(Resources.Language.i18n.strAccountLevel, labelWidth);
-                    html += $"            <span class=\"nobr\">{accountLevelLabel}<font color=\"#bfd4fd\">{accountLevel}</font></span><br>\n";
-
-                    string heroLevelLabel = MakeLabel(Resources.Language.i18n.strHeroLevel, labelWidth);
+                    string heroLevelLabel = Resources.Language.i18n.strHeroLevel;
 
                     int tierLevel = hotsPlayer.HeroMasteryTiers.FirstOrDefault(x => x.HeroAttributeId == hotsPlayer.PlayerHero!.HeroAttributeId)?.TierLevel ?? 0;
                     if (hotsReplay?.stormReplay?.GameMode.ToString() == "ARAM" || hotsReplay?.stormReplay?.GameMode.ToString() == "Brawl")
@@ -2563,9 +2523,9 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                         };
 
                         if (tierLevel >= 1)
-                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                            html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#ffd700\">{heroLevel}</font></td></tr>\n";
                         else
-                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{heroLevel}</font></span><br>\n";
+                            html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#bfd4fd\">{heroLevel}</font></td></tr>\n";
                     }
                     else
                     {
@@ -2581,38 +2541,36 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                         };
 
                         if (tierLevel > 1)
-                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                            html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#ffd700\">{heroLevel}</font></td></tr>\n";
 
                         else if (tierLevel == 1)
                         {
                             if (hotsPlayer.PlayerHero!.HeroLevel >= 20)
-                                html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{heroLevel}</font></span><br>\n";
+                                html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#ffd700\">{heroLevel}</font></td></tr>\n";
 
                             if (hotsPlayer.PlayerHero.HeroLevel >= 15 && hotsPlayer.PlayerHero.HeroLevel < 20)
-                                html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></span><br>\n";
+                                html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#ffd700\">{hotsPlayer.PlayerHero.HeroLevel}</font></td></tr>\n";
 
                             else if (hotsPlayer.PlayerHero.HeroLevel < 20)
-                                html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#ffd700\">15-25</font></span><br>\n";
+                                html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#ffd700\">15-25</font></td></tr>\n";
                         }
 
                         else
-                            html += $"            <span class=\"nobr\">{heroLevelLabel}<font color=\"#bfd4fd\">{hotsPlayer.PlayerHero!.HeroLevel}</font></span><br>\n";
+                            html += $"              <tr><td>{heroLevelLabel}</td><td><font color=\"#bfd4fd\">{hotsPlayer.PlayerHero!.HeroLevel}</font></td></tr>\n";
                     }
 
                     if (hotsPlayer.TimeSpentAFK != TimeSpan.Zero && hotsPlayer.TimeSpentAFK.TotalSeconds > 1)
                     {
-                        string AFKLabel = MakeLabel(Resources.Language.i18n.strTimeSpentAFK, labelWidth);
-
                         string formattedTimeSpentAFK = hotsPlayer.TimeSpentAFK.Hours > 0
                             ? $"{hotsPlayer.TimeSpentAFK.Hours:D2}:{hotsPlayer.TimeSpentAFK.Minutes:D2}:{hotsPlayer.TimeSpentAFK.Seconds:D2}"
                             : $"{hotsPlayer.TimeSpentAFK.Minutes:D2}:{hotsPlayer.TimeSpentAFK.Seconds:D2}";
 
-                        html += $"            <br>\n            <span class=\"nobr\">{AFKLabel}<font color=\"#bfd4fd\">&#8771; {formattedTimeSpentAFK}</font></span><br>\n";
+                        html += "              <tr><td colspan=\"2\">&nbsp;</td></tr>\n";
+                        html += $"              <tr><td>{Resources.Language.i18n.strTimeSpentAFK}</td><td><font color=\"#bfd4fd\">&#8771; {formattedTimeSpentAFK}</font></td></tr>\n";
 
-                        string emptyLabel = string.Concat(Enumerable.Repeat("&nbsp;", labelWidth));
                         foreach (TimeInterval AFKInterval in hotsPlayer.TimeSpentAFKIntervals)
                         {
-                            html += $"            <span class=\"nobr\">{emptyLabel}<font size=\"-1\">[{AFKInterval.Start:mm\\:ss} - {AFKInterval.End:mm\\:ss}] <font color=\"#bfd4fd\">{AFKInterval.Duration:mm\\:ss}</font></font></span><br>\n";
+                            html += $"              <tr><td></td><td><font size=\"-1\">[{AFKInterval.Start:mm\\:ss} - {AFKInterval.End:mm\\:ss}] <font color=\"#bfd4fd\">{AFKInterval.Duration:mm\\:ss}</font></font></td></tr>\n";
                         }
                     }
                 }
@@ -2625,6 +2583,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                     html += $"            {Resources.Language.i18n.strAIDifficulty}:&nbsp;<font color=\"#bfd4fd\">{computerDifficulty}</font>\n";
                 }
+                html += "            </table>\n";
                 hotsPlayer.ToolTip = html;
             }
         }

@@ -247,13 +247,13 @@
     <value>Posto Avançado Braxis</value>
   </data>
   <data name="strBattleTag" xml:space="preserve">
-    <value>BattleTag</value>
+    <value>BattleTag:</value>
   </data>
   <data name="strAccountLevel" xml:space="preserve">
-    <value>Nível de conta</value>
+    <value>Nível de conta:</value>
   </data>
   <data name="strHeroLevel" xml:space="preserve">
-    <value>Nível de herói</value>
+    <value>Nível de herói:</value>
   </data>
   <data name="strBanned" xml:space="preserve">
     <value>Banidos</value>
@@ -328,7 +328,7 @@
     <value>Chave de API inválida.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK</value>
+    <value>AFK:</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Português</value>

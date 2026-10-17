@@ -247,13 +247,13 @@
     <value>L'avant-poste de Braxis</value>
   </data>
   <data name="strBattleTag" xml:space="preserve">
-    <value>BattleTag&amp;nbsp;</value>
+    <value>BattleTag :</value>
   </data>
   <data name="strAccountLevel" xml:space="preserve">
-    <value>Niveau de compte&amp;nbsp;</value>
+    <value>Niveau de compte :</value>
   </data>
   <data name="strHeroLevel" xml:space="preserve">
-    <value>Niveau de héros&amp;nbsp;</value>
+    <value>Niveau de héros :</value>
   </data>
   <data name="strBanned" xml:space="preserve">
     <value>Bannis</value>
@@ -328,7 +328,7 @@
     <value>Clé API invalide.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK&amp;nbsp;</value>
+    <value>AFK :</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Français</value>

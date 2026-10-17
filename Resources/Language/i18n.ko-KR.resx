@@ -247,13 +247,13 @@
     <value>브락시스 전초기지</value>
   </data>
   <data name="strBattleTag" xml:space="preserve">
-    <value>배틀태그</value>
+    <value>배틀태그:</value>
   </data>
   <data name="strAccountLevel" xml:space="preserve">
-    <value>계정 레벨</value>
+    <value>계정 레벨:</value>
   </data>
   <data name="strHeroLevel" xml:space="preserve">
-    <value>영웅 레벨</value>
+    <value>영웅 레벨:</value>
   </data>
   <data name="strBanned" xml:space="preserve">
     <value>밴됨</value>
@@ -328,7 +328,7 @@
     <value>잘못된 API 키입니다.</value>
   </data>
   <data name="strTimeSpentAFK" xml:space="preserve">
-    <value>AFK</value>
+    <value>AFK:</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>한국어</value>
