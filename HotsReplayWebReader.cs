@@ -1207,12 +1207,37 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
     const originalText = bodyEl.textContent;
     let translating = false;
     let lastActionEnd = 0;
+    let cachedResult = null;
 
     function canAct() {{
       return !translating && (Date.now() - lastActionEnd >= COOLDOWN_MS);
     }}
 
-    // Copier
+    // From cache
+    function showTranslation() {{
+      bodyEl.textContent = cachedResult.translatedText;
+
+      const flag = document.createElement(""img"");
+      flag.className = ""translate-flag"";
+      flag.src = ""app://flags/"" + cachedResult.detectedLanguage.toLowerCase() + "".svg"";
+      flag.width = 24;
+      flag.height = 18;
+      flag.title = cachedResult.detectedLanguageName;
+
+      // Clic sur le drapeau : retour à l'état d'origine
+      flag.addEventListener(""click"", function (e) {{
+        e.stopPropagation();
+        if (!canAct()) return;
+
+        bodyEl.textContent = originalText;
+        flag.replaceWith(translateIcon);
+        lastActionEnd = Date.now();
+      }});
+
+      translateIcon.replaceWith(flag);
+    }}
+
+    // Copy
     if (copyIcon) {{
       copyIcon.addEventListener(""click"", function (event) {{
         const textToCopy = verbatimEl ? verbatimEl.textContent : originalText;
@@ -1221,36 +1246,24 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
       }});
     }}
 
-    // Traduire
+    // Translate
     if (translateIcon) {{
       translateIcon.addEventListener(""click"", async function (event) {{
         event.stopPropagation();
-        if (!canAct()) return;   // <-- changé
+        if (!canAct()) return;
+
+        // Déjà traduit une fois : on réutilise le résultat, sans appel à C#
+        if (cachedResult) {{
+          showTranslation();
+          lastActionEnd = Date.now();
+          return;
+        }}
+
         translating = true;
     
         try {{
-          const result = await translateWithCSharp(originalText);
-    
-          bodyEl.textContent = result.translatedText;
-    
-          const flag = document.createElement(""img"");
-          flag.className = ""translate-flag"";
-          flag.src = ""app://flags/"" + result.detectedLanguage.toLowerCase() + "".svg"";
-          flag.width = 24;
-          flag.height = 18;
-          flag.title = result.detectedLanguageName;
-    
-          // Clic sur le drapeau : retour à l'état d'origine
-          flag.addEventListener(""click"", function (e) {{
-            e.stopPropagation();
-            if (!canAct()) return;   // <-- ajouté
-    
-            bodyEl.textContent = originalText;
-            flag.replaceWith(translateIcon);
-            lastActionEnd = Date.now();
-          }});
-    
-          translateIcon.replaceWith(flag);
+          cachedResult = await translateWithCSharp(originalText);
+          showTranslation();
         }} catch (err) {{
           console.error(""Erreur de traduction :"", err);
         }} finally {{
