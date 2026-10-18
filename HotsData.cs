@@ -392,9 +392,13 @@ namespace HotsReplayReader
                 heroIds.Add(HeroIdFromHeroUnitId[heroUnitId]);
             heroIds.AddRange(bannedHeroIds);
 
-            Heroes.Element.GameStringsDocument gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(File.OpenRead(gameStringsJsonPath)));
-            Heroes.Element.HeroDataDocument heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(File.OpenRead(heroDataJsonPath)), gameStringsDocument);
-            Heroes.Element.MatchAwardDataDocument matchAwardHeroesElementDataDocument = Heroes.Element.MatchAwardDataDocument.Load(JsonDocument.Parse(File.OpenRead(matchAwardsJsonPath)), gameStringsDocument);
+            using FileStream gameStringsStream = File.OpenRead(gameStringsJsonPath);
+            using FileStream heroDataStream = File.OpenRead(heroDataJsonPath);
+            using FileStream matchAwardsStream = File.OpenRead(matchAwardsJsonPath);
+
+            using GameStringsDocument? gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(gameStringsStream));
+            using HeroDataDocument? heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(heroDataStream), gameStringsDocument);
+            using MatchAwardDataDocument? matchAwardHeroesElementDataDocument = Heroes.Element.MatchAwardDataDocument.Load(JsonDocument.Parse(matchAwardsStream), gameStringsDocument);
 
             CultureInfo originalCulture = CultureInfo.CurrentCulture;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;

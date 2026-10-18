@@ -1196,7 +1196,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
   }}
 
 ";
-                html += @$"  const COOLDOWN_MS = 1000;
+                html += @$"  const COOLDOWN_MS = 500;
   document.querySelectorAll("".chat-message"").forEach(function (message) {{
     const verbatimEl = message.querySelector("".chat-verbatim"");
     const bodyEl = message.querySelector("".chat-message-corps"");
