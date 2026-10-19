@@ -733,12 +733,12 @@ table.tooltipInnerTable td.mvpValue {
 }
 
 .chat-ping-blue {
-    color: #3184ff;
+    color: deepskyblue;
     font-weight: bold;
 }
 
 .chat-ping-red {
-    color: #ff004b;
+    color: red;
     font-weight: bold;
 }
 
