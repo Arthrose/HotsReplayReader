@@ -1177,14 +1177,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 string chatcontainermaxheight = (Init.config is not null && Init.config.DisplayPingButton) ? "420" : "400";
 
                 string html = $@"";
-                html += $"<div class=\"chat-container{hasPingButton}\" style=\"max-height: {chatcontainermaxheight}px;\" tabindex=\"-1\">\n";
+                html += $"<div class=\"chat-container{hasPingButton}\" style=\"max-height: {chatcontainermaxheight}px;\">\n";
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
                     html += await HTMLGetChatMessage(hotsMessage, lastMessageAfterAnHour);
 
                 if(Init.config is not null && Init.config.DisplayPingButton)
-                    html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
+                    html += $"  <div class=\"toggle-pings-wrapper\"><button class=\"toggle-pings-btn\" tabindex=\"-1\" onclick=\"togglePings(this)\">{Resources.Language.i18n.strPingsShow}</button></div>\r\n";
 
                 html += "</div>\n<script>\n";
 
