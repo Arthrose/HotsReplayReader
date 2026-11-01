@@ -1177,7 +1177,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 string chatcontainermaxheight = (Init.config is not null && Init.config.DisplayPingButton) ? "420" : "400";
 
                 string html = $@"";
-                html += $"<div class=\"chat-container{hasPingButton}\" style=\"max-height: {chatcontainermaxheight}px;\">\n";
+
+                html += $"<div class=\"chat-container{hasPingButton}\" style=\"max-height: {chatcontainermaxheight}px;\" tabindex=\"-1\">\n";
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
 
                 foreach (HotsMessage hotsMessage in hotsMessages)
