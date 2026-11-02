@@ -39,6 +39,7 @@ namespace HotsReplayReader
         readonly string fetchedHeroName = "The Lost Vikings";
 
         private string? hotsReplayFolder;
+        private string hotsReplayFile = string.Empty;
         internal static string currentAccount = string.Empty;
 
         private HotsReplay? hotsReplay;
@@ -338,6 +339,11 @@ namespace HotsReplayReader
             webView.CoreWebView2.WebResourceRequested += WebViewWebResourceRequested;
             webView.WebMessageReceived += WebViewWebMessageReceived;
 
+
+            await webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
+
+");
+
             string appAsetsFolder = @$"{Directory.GetCurrentDirectory()}";
             webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets", appAsetsFolder, CoreWebView2HostResourceAccessKind.Allow);
 
@@ -533,25 +539,31 @@ namespace HotsReplayReader
                     // Récupère les valeurs de "action"
                     string? action = actionElement.GetString();
 
+                    if (action == "openFile")
+                        BeginInvoke(() => toolStripMenuItemOpenFile.PerformClick());
+
+                    else if (action == "openFolder")
+                        BeginInvoke(() => toolStripMenuItemOpenFolder.PerformClick());
+                    
                     // Vérifie si l'action est "copyTextToClipboard"
-                    if (action == "copyTextToClipboard")
+                    else if (action == "copyTextToClipboard")
                     {
                         Debug.WriteLine("copyTextToClipboard: " + root.GetProperty("text").GetString() ?? "");
                         Clipboard.SetText(root.GetProperty("text").GetString() ?? "");
                     }
 
                     // Vérifie si l'action est "closeMenu"
-                    if (action == "closeMenu")
+                    else if (action == "closeMenu")
                     {
                         toolStripMenuItemFile.HideDropDown();
                         toolStripMenuItemAccounts.HideDropDown();
                         toolStripMenuItemRegion.HideDropDown();
-                        toolStripMenuItemOptions.HideDropDown();
+                        toolStripMenuItemSettings.HideDropDown();
                         toolStripMenuItemAbout.HideDropDown();
                     }
 
                     // Vérifie si l'action est "hoverLeft"
-                    if (action == "hoverLeft")
+                    else if (action == "hoverLeft")
                     {
                         bool isHover = root.GetProperty("isHover").GetBoolean();
                         // affiche/masque la listBox
@@ -559,7 +571,7 @@ namespace HotsReplayReader
                     }
 
                     // Vérifie si l'action est "Translate", si il y a une propriété callbackId et si le message contient "text"
-                    if (action == "translate" && root.TryGetProperty("callbackId", out JsonElement callbackIdElement) && root.TryGetProperty("text", out JsonElement textElement))
+                    else if (action == "translate" && root.TryGetProperty("callbackId", out JsonElement callbackIdElement) && root.TryGetProperty("text", out JsonElement textElement))
                     {
                         string? callbackId = callbackIdElement.GetString();
                         // Récupère le texte à traduire
@@ -764,7 +776,9 @@ namespace HotsReplayReader
             }
             // Met à jour les textes de l'interface
             toolStripMenuItemFile.Text = Resources.Language.i18n.strMenuFile;
-            toolStripMenuItemBrowse.Text = Resources.Language.i18n.strMenuBrowse;
+            toolStripMenuItemOpen.Text = Resources.Language.i18n.strOpen;
+            toolStripMenuItemOpenFile.Text = Resources.Language.i18n.strOpenFile;
+            toolStripMenuItemOpenFolder.Text = Resources.Language.i18n.strOpenFolder;
             toolStripMenuItemSource.Text = Resources.Language.i18n.strMenuSource;
             toolStripMenuItemPreferences.Text = Resources.Language.i18n.strPreferences;
             toolStripMenuItemExit.Text = Resources.Language.i18n.strMenuExit;
@@ -774,7 +788,7 @@ namespace HotsReplayReader
             toolStripMenuItemRegionEurope.Text = Resources.Language.i18n.strRegionEurope;
             toolStripMenuItemRegionAsia.Text = Resources.Language.i18n.strRegionAsia;
             toolStripMenuItemLanguage.Text = Resources.Language.i18n.strMenuLanguage;
-            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuSettings;
+            toolStripMenuItemSettings.Text = Resources.Language.i18n.strMenuSettings;
             toolStripMenuItemClearCache.Text = Resources.Language.i18n.strMenuClearCache;
             toolStripMenuItemUpdate.Text = Resources.Language.i18n.strMenuUpdate;
             toolStripMenuItemAboutHotsReplayReader.Text = Resources.Language.i18n.strMenuAbout;
@@ -814,6 +828,14 @@ namespace HotsReplayReader
 {css}
 </style>
 <script>
+  // Dialogue d'ouverture de dossier ou de fichier
+  document.addEventListener('keydown', e => {{
+      if (e.ctrlKey && e.key.toLowerCase() === 'o') {{
+          e.preventDefault();
+          window.chrome.webview.postMessage({{ action: e.shiftKey ? 'openFolder' : 'openFile' }});
+      }}
+  }}, true);
+
   // Désactive le menu contextuel
   document.addEventListener('DOMContentLoaded', () => {{
     document.addEventListener('contextmenu', (e) => {{
@@ -1121,52 +1143,68 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         }
         internal async Task<string> HTMLGetChatMessages()
         {
-            if (hotsReplay == null || hotsPlayers == null || hotsReplay.stormReplay == null) return "";
+            if (hotsReplay?.stormReplay is null || hotsPlayers is null || Init.config is null) return "";
+
+            Config? config = Init.config;
+            StormReplay? replay = hotsReplay.stormReplay;
+            StormTeam ownerTeam = replay.Owner!.Team;
+
+            // Indique si on doit afficher un message selon le camp de l'émetteur
+            bool ShouldDisplay(bool isFriendly) => isFriendly ? config.DisplayFriendlyMessages : config.DisplayEnnemyMessages;
 
             List<HotsMessage> hotsMessages = [];
 
-            foreach (ChatMessage chatMessage in hotsReplay.stormReplay.TeamChatMessages)
-                hotsMessages.Add(new HotsMessage(GetHotsPlayer(chatMessage.MessageSender!.BattleTagName)!, chatMessage.Timestamp, HTMLGetChatMessageEmoticon(chatMessage.Text), chatMessage.Text));
+            // Messages du chat
+            foreach (ChatMessage chatMessage in replay.TeamChatMessages)
+            {
+                StormPlayer? sender = chatMessage.MessageSender!;
+                if (!ShouldDisplay(sender.Team == ownerTeam)) continue;
+                hotsMessages.Add(new HotsMessage(GetHotsPlayer(sender.BattleTagName)!, chatMessage.Timestamp, HTMLGetChatMessageEmoticon(chatMessage.Text), chatMessage.Text));
+            }
 
             // Debug: get replay's owner Events
             // List<StormGameEvent> STriggerOwnersPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent && e.MessageSender?.BattleTagName == hotsReplay.stormReplay.Owner?.BattleTagName)];
             // List<StormGameEvent> STriggerOwnersEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.MessageSender?.BattleTagName == hotsReplay.stormReplay.Owner?.BattleTagName)];
 
-            if (Init.config is not null && Init.config.DisplayPingButton)
+            // Pings
+            if (config.DisplayPingButton)
             {
-                List<StormGameEvent>? STriggerPingEvents = [.. hotsReplay.stormReplay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent)];
-                foreach (StormGameEvent STriggerPingEvent in STriggerPingEvents)
+                foreach (StormGameEvent pingEvent in replay.GameEvents.Where(e => e.GameEventType == StormGameEventType.STriggerPingEvent))
                 {
-                    int? pingIntegerType = STriggerPingEvent.Data?.Structure?[3].Integer32;
-                    if (pingIntegerType is null) continue;
-
-                    StormPlayer? MessageSender = STriggerPingEvent.MessageSender;
-                    if (MessageSender is null) continue;
-
-                    HotsPlayer? hotsPlayer = GetHotsPlayer(MessageSender.BattleTagName);
-                    if (hotsPlayer is null || hotsPlayer.PlayerHero is null) continue;
-
-                    switch (pingIntegerType)
+                    string? pingText = pingEvent.Data?.Structure?[3].Integer32 switch
                     {
-                        case -1: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to help!", null, false, true)); break;
-                        case 0: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true)); break;
-                        case 1: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"is on the way!", null, false, true)); break;
-                        case 2: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"asks for assistance!", null, false, true)); break;
-                        case 3: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"wants to defend!", null, false, true)); break;
-                        case 5: hotsMessages.Add(new HotsMessage(hotsPlayer, STriggerPingEvent.Timestamp, $"calls for retreat!", null, false, true)); break;
-                        default: break;
-                    }
+                        -1 => "wants to help!",
+                        0 or 2 => "asks for assistance!",
+                        1 => "is on the way!",
+                        3 => "wants to defend!",
+                        5 => "calls for retreat!",
+                        _ => null
+                    };
+                    if (pingText is null || pingEvent.MessageSender is null) continue;
+
+                    HotsPlayer? hotsPlayer = GetHotsPlayer(pingEvent.MessageSender.BattleTagName);
+                    if (hotsPlayer?.PlayerHero is null) continue;
+                    if (!ShouldDisplay(hotsPlayer.Team == ownerTeam)) continue;
+
+                    hotsMessages.Add(new HotsMessage(hotsPlayer, pingEvent.Timestamp, pingText, null, false, true));
                 }
             }
+
+            // Déconnexions / reconnexions
             foreach (HotsPlayer hotsPlayer in hotsPlayers)
             {
+                if (!ShouldDisplay(hotsPlayer.Team == ownerTeam)) continue;
+
                 foreach (PlayerDisconnect playerDisconnect in hotsPlayer.PlayerDisconnects)
                 {
-                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From, $"<span class=\"disconnected\">{Resources.Language.i18n.strDisconnected}</span>", null, false));
+                    hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.From,
+                        $"<span class=\"disconnected\">{Resources.Language.i18n.strDisconnected}</span>", null, false));
                     if (playerDisconnect.To != null)
-                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value, $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", null, false));
+                        hotsMessages.Add(new HotsMessage(hotsPlayer, playerDisconnect.To.Value,
+                            $"<span class=\"reconnected\">{Resources.Language.i18n.strReconnected}</span>", null, false));
                 }
             }
+
             hotsMessages = [.. hotsMessages.OrderBy(o => o.TotalMilliseconds)];
 
             if (hotsMessages.Count > 0)
@@ -1177,7 +1215,6 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 string chatcontainermaxheight = (Init.config is not null && Init.config.DisplayPingButton) ? "420" : "400";
 
                 string html = $@"";
-
                 html += $"<div class=\"chat-container{hasPingButton}\" style=\"max-height: {chatcontainermaxheight}px;\" tabindex=\"-1\">\n";
                 html += "  <script>\r\n    document.querySelector(\".chat-container\").focus({ preventScroll: true });\r\n  </script>\r\n";
 
@@ -3019,7 +3056,8 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         }
         internal async void ListBoxHotsReplays_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await LoadReplay(replayList[listBoxHotsReplays.SelectedIndex]);
+            if (listBoxHotsReplays.SelectedIndex != -1)
+                await LoadReplay(replayList[listBoxHotsReplays.SelectedIndex]);
         }
         internal async Task LoadReplay(string replayFilePath)
         {
@@ -3072,7 +3110,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     htmlContent = string.Concat(
                         HTMLGetHeader(),
                         HTMLGetHeadTable(),
-                        await HTMLGetChatMessages(),
+                        Init.config!.DisplayMessages && (Init.config.DisplayFriendlyMessages || Init.config.DisplayEnnemyMessages) ? await HTMLGetChatMessages() : string.Empty,
                         HTMLGetScoreTable(),
                         HTMLGetTalentsTable(),
                         HTMLGetFooter()
@@ -3080,15 +3118,32 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
 
                     this.Text = $"{formTitle} - {hotsReplay?.stormReplay?.Owner?.BattleTagName}";
                 }
+
+                this.hotsReplayFile = replayFilePath;
             }
             catch (Exception exception)
             {
+                this.hotsReplayFile = "";
                 Debug.WriteLine(exception);
             }
 
             // MessageBox.Show($"Data sent to NavigateToString: {Encoding.UTF8.GetByteCount(htmlContent) / (1024.0 * 1024.0):F2} MB");
 
             webView.CoreWebView2.NavigateToString(htmlContent);
+        }
+        private async void OpenFileStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(Init.config!.LastBrowseDirectory))
+                folderBrowserDialog.InitialDirectory = Init.config.LastBrowseDirectory;
+            else
+                folderBrowserDialog.InitialDirectory = hotsReplayFolder ?? "";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK && Init.config != null)
+            {
+                Init.config.LastBrowseDirectory = openFileDialog.FileName;
+                listBoxHotsReplays.ClearSelected();
+                await LoadReplay(openFileDialog.FileName);
+            }
         }
         private void BrowseToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -3102,6 +3157,13 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                 Init.config.LastBrowseDirectory = folderBrowserDialog.SelectedPath;
 
                 hotsReplayFolder = folderBrowserDialog.SelectedPath;
+
+                foreach (ToolStripItem item in toolStripMenuItemAccounts.DropDownItems)
+                {
+                    if (item is ToolStripMenuItem submenu)
+                        submenu.Checked = false;
+                }
+
                 ListHotsReplays(hotsReplayFolder);
             }
         }
@@ -3141,7 +3203,7 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
         }
         private void PreferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PreferencesForm preferencesForm = new(this, replayList[listBoxHotsReplays.SelectedIndex]) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
+            PreferencesForm preferencesForm = new(this, hotsReplayFile) { Location = new System.Drawing.Point(this.Location.X + 150, this.Location.Y + 150) };
             preferencesForm.ShowDialog(this);
             preferencesForm.Dispose();
             if (Init.config != null)
@@ -3451,6 +3513,16 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
     }
 
     // Override des couleurs pour le mode sombre
+    public class HotsWebView : Microsoft.Web.WebView2.WinForms.WebView2
+    {
+        public event Func<Keys, bool>? ShortcutPressed;
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (ShortcutPressed?.Invoke(keyData) == true) return true;
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+    }
     public class DarkModeColorTable : ProfessionalColorTable
     {
         public override Color MenuItemPressedGradientBegin => Color.FromArgb(61, 61, 61);    // Mouseover menu top

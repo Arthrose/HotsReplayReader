@@ -16,15 +16,22 @@ namespace HotsReplayReader
             this.hotsReplayWebReader = hotsReplayWebReader;
 
             this.Text = Resources.Language.i18n.strPreferences;
+
             deepLLabel.Text = Resources.Language.i18n.strPreferencesDeepLAPIKey;
             deepLLinkLabel.Text = Resources.Language.i18n.strPreferencesVisitDeepLWebsite;
-            testButton.Text = Resources.Language.i18n.strPreferencesTest;
+            deepLTestButton.Text = Resources.Language.i18n.strPreferencesTest;
+
             groupBoxDisplay.Text = Resources.Language.i18n.strPreferencesDisplay;
             checkBoxDisplayGameMode.Text = Resources.Language.i18n.strPreferencesDisplayGameMode;
             checkBoxDisplayDate.Text = Resources.Language.i18n.strPreferencesDisplayDate;
             checkBoxDisplayReplaySideBar.Text = Resources.Language.i18n.strPreferencesDisplayReplaySidebar;
-            checkBoxDisplayPingButton.Text = Resources.Language.i18n.strPreferencesDisplayPingButton;
             checkBoxDisplayDraftOrder.Text = Resources.Language.i18n.strPreferencesDisplayDraftOrder;
+
+            checkBoxMessagesShow.Text = Resources.Language.i18n.strPreferencesMessages;
+            checkBoxMessagesFriendlyChat.Text = Resources.Language.i18n.strPreferencesMessagesFriendly;
+            checkBoxMessagesEnnemyChat.Text = Resources.Language.i18n.strPreferencesMessagesEnnemy;
+            checkBoxMessagesPingButton.Text = Resources.Language.i18n.strPreferencesDisplayPingButton;
+
             groupBoxDarkMode.Text = Resources.Language.i18n.strPreferencesDarkMode;
             radioButtonDarkModeLight.Text = Resources.Language.i18n.strPreferencesDarkModeLightMode;
             radioButtonDarkModeDark.Text = Resources.Language.i18n.strPreferencesDarkModeDarkMode;
@@ -38,8 +45,15 @@ namespace HotsReplayReader
                 checkBoxDisplayGameMode.Checked = this.hotsReplayWebReader.Init.config.DisplayGameMode;
                 checkBoxDisplayDate.Checked = this.hotsReplayWebReader.Init.config.DisplayDate;
                 checkBoxDisplayReplaySideBar.Checked = this.hotsReplayWebReader.Init.config.DisplayReplaySideBar;
-                checkBoxDisplayPingButton.Checked = this.hotsReplayWebReader.Init.config.DisplayPingButton;
                 checkBoxDisplayDraftOrder.Checked = this.hotsReplayWebReader.Init.config.DisplayDraftOrder;
+
+                checkBoxMessagesShow.Checked = this.hotsReplayWebReader.Init.config.DisplayMessages;
+                checkBoxMessagesFriendlyChat.Checked = this.hotsReplayWebReader.Init.config.DisplayFriendlyMessages;
+                checkBoxMessagesEnnemyChat.Checked = this.hotsReplayWebReader.Init.config.DisplayEnnemyMessages;
+                checkBoxMessagesPingButton.Checked = this.hotsReplayWebReader.Init.config.DisplayPingButton;
+
+                CheckBoxMessagesShow_CheckedChanged(this, EventArgs.Empty);
+
                 switch (this.hotsReplayWebReader.Init.config.DarkMode)
                 {
                     case Config.DarkModeType.Automatic:
@@ -52,6 +66,21 @@ namespace HotsReplayReader
                         radioButtonDarkModeDark.Checked = true;
                         break;
                 }
+            }
+        }
+        private void CheckBoxMessagesShow_CheckedChanged(object sender, EventArgs e)
+        {
+            bool enabled = checkBoxMessagesShow.Checked;
+
+            Color disabledColor = this.hotsReplayWebReader.useDarkMode == 1
+                ? Color.FromArgb(128, 128, 128)
+                : SystemColors.GrayText;
+
+            foreach (CheckBox? checkBox in new[] { checkBoxMessagesEnnemyChat, checkBoxMessagesFriendlyChat, checkBoxMessagesPingButton })
+            {
+                checkBox.AutoCheck = enabled;
+                checkBox.TabStop = enabled;
+                checkBox.ForeColor = enabled ? Color.Empty : disabledColor;
             }
         }
         private void DeepLLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -71,8 +100,12 @@ namespace HotsReplayReader
                 this.hotsReplayWebReader.Init.config.DisplayGameMode = checkBoxDisplayGameMode.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayDate = checkBoxDisplayDate.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayReplaySideBar = checkBoxDisplayReplaySideBar.Checked;
-                this.hotsReplayWebReader.Init.config.DisplayPingButton = checkBoxDisplayPingButton.Checked;
                 this.hotsReplayWebReader.Init.config.DisplayDraftOrder = checkBoxDisplayDraftOrder.Checked;
+
+                this.hotsReplayWebReader.Init.config.DisplayMessages = checkBoxMessagesShow.Checked;
+                this.hotsReplayWebReader.Init.config.DisplayFriendlyMessages = checkBoxMessagesFriendlyChat.Checked;
+                this.hotsReplayWebReader.Init.config.DisplayEnnemyMessages = checkBoxMessagesEnnemyChat.Checked;
+                this.hotsReplayWebReader.Init.config.DisplayPingButton = checkBoxMessagesPingButton.Checked;
 
                 if (radioButtonDarkModeLight.Checked)
                     this.hotsReplayWebReader.Init.config.DarkMode = Config.DarkModeType.Light;
@@ -132,10 +165,10 @@ namespace HotsReplayReader
                 Color buttonBackColor = Color.FromArgb(51, 51, 51);
                 Color buttonBorderColor = Color.FromArgb(139, 139, 139);
                 Color buttonMouseOverColor = Color.FromArgb(69, 69, 69);
-                testButton.BackColor = buttonBackColor;
-                testButton.FlatStyle = FlatStyle.Flat;
-                testButton.FlatAppearance.MouseOverBackColor = buttonMouseOverColor;
-                testButton.FlatAppearance.BorderColor = buttonBorderColor;
+                deepLTestButton.BackColor = buttonBackColor;
+                deepLTestButton.FlatStyle = FlatStyle.Flat;
+                deepLTestButton.FlatAppearance.MouseOverBackColor = buttonMouseOverColor;
+                deepLTestButton.FlatAppearance.BorderColor = buttonBorderColor;
                 OKButton.BackColor = buttonBackColor;
                 OKButton.FlatStyle = FlatStyle.Flat;
                 OKButton.FlatAppearance.MouseOverBackColor = buttonMouseOverColor;

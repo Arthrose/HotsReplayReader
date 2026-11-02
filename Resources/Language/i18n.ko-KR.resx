@@ -435,4 +435,25 @@
   <data name="strCopied" xml:space="preserve">
     <value>복사됨!</value>
   </data>
+  <data name="strOpen" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="strOpenFile" xml:space="preserve">
+    <value>파일...</value>
+  </data>
+  <data name="strOpenFolder" xml:space="preserve">
+    <value>폴더...</value>
+  </data>
+  <data name="strPreferencesMessagesFriendly" xml:space="preserve">
+    <value>아군 메시지</value>
+  </data>
+  <data name="strPreferencesMessagesEnnemy" xml:space="preserve">
+    <value>적군 메시지</value>
+  </data>
+  <data name="strPreferencesMessages" xml:space="preserve">
+    <value>메시지</value>
+  </data>
+  <data name="strPreferencesMessagesShow" xml:space="preserve">
+    <value>메시지</value>
+  </data>
 </root>

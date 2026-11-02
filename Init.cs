@@ -155,6 +155,9 @@ namespace HotsReplayReader
         public bool DisplayGameMode { get; set; } = true;
         public bool DisplayDate { get; set; } = true;
         public bool DisplayReplaySideBar { get; set; } = true;
+        public bool DisplayMessages { get; set; } = true;
+        public bool DisplayFriendlyMessages { get; set; } = true;
+        public bool DisplayEnnemyMessages { get; set; } = true;
         public bool DisplayPingButton { get; set; } = true;
         public bool DisplayDraftOrder { get; set; } = true;
         public DarkModeType DarkMode { get; set; } = DarkModeType.Automatic;

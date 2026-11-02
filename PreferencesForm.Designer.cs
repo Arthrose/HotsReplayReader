@@ -33,12 +33,15 @@
             deepLLinkLabel = new LinkLabel();
             OKButton = new Button();
             deepLTextBox = new TextBox();
-            testButton = new Button();
+            deepLTestButton = new Button();
             groupBoxDisplay = new GroupBox();
+            checkBoxMessagesShow = new CheckBox();
+            checkBoxMessagesEnnemyChat = new CheckBox();
+            checkBoxMessagesFriendlyChat = new CheckBox();
+            checkBoxMessagesPingButton = new CheckBox();
             checkBoxDisplayGameMode = new CheckBox();
             checkBoxDisplayDate = new CheckBox();
             checkBoxDisplayDraftOrder = new CheckBox();
-            checkBoxDisplayPingButton = new CheckBox();
             checkBoxDisplayReplaySideBar = new CheckBox();
             groupBoxDarkMode = new GroupBox();
             radioButtonDarkModeAutomatic = new RadioButton();
@@ -71,11 +74,11 @@
             // 
             // OKButton
             // 
-            OKButton.Location = new Point(314, 186);
+            OKButton.Location = new Point(315, 263);
             OKButton.Name = "OKButton";
             OKButton.Size = new Size(75, 23);
             OKButton.TabIndex = 1;
-            OKButton.Text = "OK";
+            OKButton.Text = Resources.Language.i18n.strPreferencesOK;
             OKButton.UseVisualStyleBackColor = true;
             OKButton.Click += OKButton_Click;
             // 
@@ -87,29 +90,73 @@
             deepLTextBox.Size = new Size(297, 23);
             deepLTextBox.TabIndex = 2;
             // 
-            // testButton
+            // deepLTestButton
             // 
-            testButton.Location = new Point(314, 27);
-            testButton.Name = "testButton";
-            testButton.Size = new Size(75, 23);
-            testButton.TabIndex = 3;
-            testButton.Text = "Test";
-            testButton.UseVisualStyleBackColor = true;
-            testButton.Click += TestButton_Click;
+            deepLTestButton.Location = new Point(314, 27);
+            deepLTestButton.Name = "deepLTestButton";
+            deepLTestButton.Size = new Size(75, 23);
+            deepLTestButton.TabIndex = 3;
+            deepLTestButton.Text = Resources.Language.i18n.strPreferencesTest;
+            deepLTestButton.UseVisualStyleBackColor = true;
+            deepLTestButton.Click += TestButton_Click;
             // 
             // groupBoxDisplay
             // 
+            groupBoxDisplay.Controls.Add(checkBoxMessagesShow);
+            groupBoxDisplay.Controls.Add(checkBoxMessagesEnnemyChat);
+            groupBoxDisplay.Controls.Add(checkBoxMessagesFriendlyChat);
+            groupBoxDisplay.Controls.Add(checkBoxMessagesPingButton);
             groupBoxDisplay.Controls.Add(checkBoxDisplayGameMode);
             groupBoxDisplay.Controls.Add(checkBoxDisplayDate);
             groupBoxDisplay.Controls.Add(checkBoxDisplayDraftOrder);
-            groupBoxDisplay.Controls.Add(checkBoxDisplayPingButton);
             groupBoxDisplay.Controls.Add(checkBoxDisplayReplaySideBar);
             groupBoxDisplay.Location = new Point(18, 60);
             groupBoxDisplay.Name = "groupBoxDisplay";
-            groupBoxDisplay.Size = new Size(194, 149);
+            groupBoxDisplay.Size = new Size(194, 226);
             groupBoxDisplay.TabIndex = 5;
             groupBoxDisplay.TabStop = false;
             groupBoxDisplay.Text = "Display";
+            // 
+            // checkBoxMessagesShow
+            // 
+            checkBoxMessagesShow.AutoSize = true;
+            checkBoxMessagesShow.Location = new Point(6, 122);
+            checkBoxMessagesShow.Name = "checkBoxMessagesShow";
+            checkBoxMessagesShow.Size = new Size(94, 19);
+            checkBoxMessagesShow.TabIndex = 8;
+            checkBoxMessagesShow.Text = Resources.Language.i18n.strPreferencesMessagesFriendly;
+            checkBoxMessagesShow.UseVisualStyleBackColor = true;
+            checkBoxMessagesShow.CheckedChanged += CheckBoxMessagesShow_CheckedChanged;
+            // 
+            // checkBoxMessagesEnnemyChat
+            // 
+            checkBoxMessagesEnnemyChat.AutoSize = true;
+            checkBoxMessagesEnnemyChat.Location = new Point(28, 172);
+            checkBoxMessagesEnnemyChat.Name = "checkBoxMessagesEnnemyChat";
+            checkBoxMessagesEnnemyChat.Size = new Size(88, 19);
+            checkBoxMessagesEnnemyChat.TabIndex = 7;
+            checkBoxMessagesEnnemyChat.Text = Resources.Language.i18n.strPreferencesMessagesEnnemy;
+            checkBoxMessagesEnnemyChat.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMessagesFriendlyChat
+            // 
+            checkBoxMessagesFriendlyChat.AutoSize = true;
+            checkBoxMessagesFriendlyChat.Location = new Point(28, 147);
+            checkBoxMessagesFriendlyChat.Name = "checkBoxMessagesFriendlyChat";
+            checkBoxMessagesFriendlyChat.Size = new Size(94, 19);
+            checkBoxMessagesFriendlyChat.TabIndex = 6;
+            checkBoxMessagesFriendlyChat.Text = Resources.Language.i18n.strPreferencesMessagesFriendly;
+            checkBoxMessagesFriendlyChat.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMessagesPingButton
+            // 
+            checkBoxMessagesPingButton.AutoSize = true;
+            checkBoxMessagesPingButton.Location = new Point(28, 197);
+            checkBoxMessagesPingButton.Name = "checkBoxMessagesPingButton";
+            checkBoxMessagesPingButton.Size = new Size(89, 19);
+            checkBoxMessagesPingButton.TabIndex = 5;
+            checkBoxMessagesPingButton.Text = Resources.Language.i18n.strPreferencesDisplayPingButton;
+            checkBoxMessagesPingButton.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisplayGameMode
             // 
@@ -118,7 +165,7 @@
             checkBoxDisplayGameMode.Name = "checkBoxDisplayGameMode";
             checkBoxDisplayGameMode.Size = new Size(91, 19);
             checkBoxDisplayGameMode.TabIndex = 4;
-            checkBoxDisplayGameMode.Text = "Game mode";
+            checkBoxDisplayGameMode.Text = Resources.Language.i18n.strPreferencesDisplayGameMode;
             checkBoxDisplayGameMode.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisplayDate
@@ -128,28 +175,18 @@
             checkBoxDisplayDate.Name = "checkBoxDisplayDate";
             checkBoxDisplayDate.Size = new Size(50, 19);
             checkBoxDisplayDate.TabIndex = 3;
-            checkBoxDisplayDate.Text = "Date";
+            checkBoxDisplayDate.Text = Resources.Language.i18n.strPreferencesDisplayDate;
             checkBoxDisplayDate.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisplayDraftOrder
             // 
             checkBoxDisplayDraftOrder.AutoSize = true;
-            checkBoxDisplayDraftOrder.Location = new Point(6, 122);
+            checkBoxDisplayDraftOrder.Location = new Point(6, 97);
             checkBoxDisplayDraftOrder.Name = "checkBoxDisplayDraftOrder";
             checkBoxDisplayDraftOrder.Size = new Size(83, 19);
             checkBoxDisplayDraftOrder.TabIndex = 2;
-            checkBoxDisplayDraftOrder.Text = "Draft order";
+            checkBoxDisplayDraftOrder.Text = Resources.Language.i18n.strPreferencesDisplayDraftOrder;
             checkBoxDisplayDraftOrder.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxDisplayPingButton
-            // 
-            checkBoxDisplayPingButton.AutoSize = true;
-            checkBoxDisplayPingButton.Location = new Point(6, 97);
-            checkBoxDisplayPingButton.Name = "checkBoxDisplayPingButton";
-            checkBoxDisplayPingButton.Size = new Size(89, 19);
-            checkBoxDisplayPingButton.TabIndex = 1;
-            checkBoxDisplayPingButton.Text = "Ping button";
-            checkBoxDisplayPingButton.UseVisualStyleBackColor = true;
             // 
             // checkBoxDisplayReplaySideBar
             // 
@@ -158,7 +195,7 @@
             checkBoxDisplayReplaySideBar.Name = "checkBoxDisplayReplaySideBar";
             checkBoxDisplayReplaySideBar.Size = new Size(102, 19);
             checkBoxDisplayReplaySideBar.TabIndex = 0;
-            checkBoxDisplayReplaySideBar.Text = "Replay sidebar";
+            checkBoxDisplayReplaySideBar.Text = Resources.Language.i18n.strPreferencesDisplayReplaySidebar;
             checkBoxDisplayReplaySideBar.UseVisualStyleBackColor = true;
             // 
             // groupBoxDarkMode
@@ -181,7 +218,7 @@
             radioButtonDarkModeAutomatic.Size = new Size(81, 19);
             radioButtonDarkModeAutomatic.TabIndex = 2;
             radioButtonDarkModeAutomatic.TabStop = true;
-            radioButtonDarkModeAutomatic.Text = "Automatic";
+            radioButtonDarkModeAutomatic.Text = Resources.Language.i18n.strPreferencesDarkModeAutomatic;
             radioButtonDarkModeAutomatic.UseVisualStyleBackColor = true;
             // 
             // radioButtonDarkModeDark
@@ -192,7 +229,7 @@
             radioButtonDarkModeDark.Size = new Size(83, 19);
             radioButtonDarkModeDark.TabIndex = 1;
             radioButtonDarkModeDark.TabStop = true;
-            radioButtonDarkModeDark.Text = "Dark mode";
+            radioButtonDarkModeDark.Text = Resources.Language.i18n.strPreferencesDarkModeDarkMode;
             radioButtonDarkModeDark.UseVisualStyleBackColor = true;
             // 
             // radioButtonDarkModeLight
@@ -203,17 +240,17 @@
             radioButtonDarkModeLight.Size = new Size(86, 19);
             radioButtonDarkModeLight.TabIndex = 0;
             radioButtonDarkModeLight.TabStop = true;
-            radioButtonDarkModeLight.Text = "Light mode";
+            radioButtonDarkModeLight.Text = Resources.Language.i18n.strPreferencesDarkModeLightMode;
             radioButtonDarkModeLight.UseVisualStyleBackColor = true;
             // 
             // PreferencesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(401, 218);
+            ClientSize = new Size(401, 297);
             Controls.Add(groupBoxDarkMode);
             Controls.Add(groupBoxDisplay);
-            Controls.Add(testButton);
+            Controls.Add(deepLTestButton);
             Controls.Add(deepLTextBox);
             Controls.Add(OKButton);
             Controls.Add(deepLLinkLabel);
@@ -225,7 +262,7 @@
             MinimizeBox = false;
             Name = "PreferencesForm";
             StartPosition = FormStartPosition.Manual;
-            Text = "Properties";
+            Text = "Preferences";
             KeyDown += PreferencesForm_KeyDown;
             groupBoxDisplay.ResumeLayout(false);
             groupBoxDisplay.PerformLayout();
@@ -241,10 +278,9 @@
         private LinkLabel deepLLinkLabel;
         private Button OKButton;
         private TextBox deepLTextBox;
-        private Button testButton;
+        private Button deepLTestButton;
         private GroupBox groupBoxDisplay;
         private CheckBox checkBoxDisplayReplaySideBar;
-        private CheckBox checkBoxDisplayPingButton;
         private CheckBox checkBoxDisplayDraftOrder;
         private CheckBox checkBoxDisplayGameMode;
         private CheckBox checkBoxDisplayDate;
@@ -252,5 +288,9 @@
         private RadioButton radioButtonDarkModeAutomatic;
         private RadioButton radioButtonDarkModeDark;
         private RadioButton radioButtonDarkModeLight;
+        private CheckBox checkBoxMessagesShow;
+        private CheckBox checkBoxMessagesEnnemyChat;
+        private CheckBox checkBoxMessagesFriendlyChat;
+        private CheckBox checkBoxMessagesPingButton;
     }
 }

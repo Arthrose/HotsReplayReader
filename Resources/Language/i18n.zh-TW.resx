@@ -435,4 +435,25 @@
   <data name="strCopied" xml:space="preserve">
     <value>已複製！</value>
   </data>
+  <data name="strOpen" xml:space="preserve">
+    <value>開啟</value>
+  </data>
+  <data name="strOpenFile" xml:space="preserve">
+    <value>檔案...</value>
+  </data>
+  <data name="strOpenFolder" xml:space="preserve">
+    <value>資料夾...</value>
+  </data>
+  <data name="strPreferencesMessagesFriendly" xml:space="preserve">
+    <value>友方訊息</value>
+  </data>
+  <data name="strPreferencesMessagesEnnemy" xml:space="preserve">
+    <value>敵方訊息</value>
+  </data>
+  <data name="strPreferencesMessages" xml:space="preserve">
+    <value>訊息</value>
+  </data>
+  <data name="strPreferencesMessagesShow" xml:space="preserve">
+    <value>訊息</value>
+  </data>
 </root>

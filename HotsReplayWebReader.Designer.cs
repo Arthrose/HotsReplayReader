@@ -31,16 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HotsReplayWebReader));
             menuStrip = new MenuStrip();
             toolStripMenuItemFile = new ToolStripMenuItem();
-            toolStripMenuItemBrowse = new ToolStripMenuItem();
+            toolStripMenuItemOpen = new ToolStripMenuItem();
+            toolStripMenuItemOpenFolder = new ToolStripMenuItem();
+            toolStripMenuItemOpenFile = new ToolStripMenuItem();
             toolStripMenuItemSource = new ToolStripMenuItem();
             toolStripMenuItemExit = new ToolStripMenuItem();
+            toolStripMenuItemAccounts = new ToolStripMenuItem();
             toolStripMenuItemRegion = new ToolStripMenuItem();
             toolStripMenuItemRegionAmericas = new ToolStripMenuItem();
             toolStripMenuItemRegionEurope = new ToolStripMenuItem();
             toolStripMenuItemRegionAsia = new ToolStripMenuItem();
             toolStripMenuItemRegionPTR = new ToolStripMenuItem();
-            toolStripMenuItemAccounts = new ToolStripMenuItem();
-            toolStripMenuItemOptions = new ToolStripMenuItem();
+            toolStripMenuItemSettings = new ToolStripMenuItem();
             toolStripMenuItemLanguage = new ToolStripMenuItem();
             toolStripMenuItemClearCache = new ToolStripMenuItem();
             toolStripMenuItemPreferences = new ToolStripMenuItem();
@@ -50,13 +52,14 @@
             webView = new Microsoft.Web.WebView2.WinForms.WebView2();
             listBoxHotsReplays = new ListBox();
             folderBrowserDialog = new FolderBrowserDialog();
+            openFileDialog = new OpenFileDialog();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView).BeginInit();
             SuspendLayout();
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItemFile, toolStripMenuItemAccounts, toolStripMenuItemRegion, toolStripMenuItemOptions, toolStripMenuItemAbout });
+            menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItemFile, toolStripMenuItemAccounts, toolStripMenuItemRegion, toolStripMenuItemSettings, toolStripMenuItemAbout });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(1359, 24);
@@ -64,31 +67,55 @@
             // 
             // toolStripMenuItemFile
             // 
-            toolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemBrowse, toolStripMenuItemSource, toolStripMenuItemExit });
+            toolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOpen, toolStripMenuItemSource, toolStripMenuItemExit });
             toolStripMenuItemFile.Name = "toolStripMenuItemFile";
             toolStripMenuItemFile.Size = new Size(37, 20);
             toolStripMenuItemFile.Text = Resources.Language.i18n.strMenuFile;
             // 
-            // toolStripMenuItemBrowse
+            // toolStripMenuItemOpen
             // 
-            toolStripMenuItemBrowse.Name = "toolStripMenuItemBrowse";
-            toolStripMenuItemBrowse.Size = new Size(112, 22);
-            toolStripMenuItemBrowse.Text = Resources.Language.i18n.strMenuBrowse;
-            toolStripMenuItemBrowse.Click += BrowseToolStripMenuItem_Click;
+            toolStripMenuItemOpen.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOpenFile, toolStripMenuItemOpenFolder });
+            toolStripMenuItemOpen.Name = "toolStripMenuItemOpen";
+            toolStripMenuItemOpen.Size = new Size(180, 22);
+            toolStripMenuItemOpen.Text = Resources.Language.i18n.strOpen;
+            // 
+            // toolStripMenuItemOpenFile
+            // 
+            toolStripMenuItemOpenFile.Name = "toolStripMenuItemOpenFile";
+            toolStripMenuItemOpenFile.ShortcutKeys = Keys.Control | Keys.O;
+            toolStripMenuItemOpenFile.ShortcutKeyDisplayString = "Ctrl+O";
+            toolStripMenuItemOpenFile.Size = new Size(180, 22);
+            toolStripMenuItemOpenFile.Text = Resources.Language.i18n.strOpenFile;
+            toolStripMenuItemOpenFile.Click += OpenFileStripMenuItem_Click;
+            // 
+            // toolStripMenuItemOpenFolder
+            // 
+            toolStripMenuItemOpenFolder.Name = "toolStripMenuItemOpenFolder";
+            toolStripMenuItemOpenFolder.ShortcutKeys = Keys.Control | Keys.Shift | Keys.O;
+            toolStripMenuItemOpenFolder.ShortcutKeyDisplayString = "Ctrl+Shift+O";
+            toolStripMenuItemOpenFolder.Size = new Size(180, 22);
+            toolStripMenuItemOpenFolder.Text = Resources.Language.i18n.strOpenFolder;
+            toolStripMenuItemOpenFolder.Click += BrowseToolStripMenuItem_Click;
             // 
             // toolStripMenuItemSource
             // 
             toolStripMenuItemSource.Name = "toolStripMenuItemSource";
-            toolStripMenuItemSource.Size = new Size(112, 22);
+            toolStripMenuItemSource.Size = new Size(180, 22);
             toolStripMenuItemSource.Text = Resources.Language.i18n.strMenuSource;
             toolStripMenuItemSource.Click += SourceToolStripMenuItem_Click;
             // 
             // toolStripMenuItemExit
             // 
             toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            toolStripMenuItemExit.Size = new Size(112, 22);
+            toolStripMenuItemExit.Size = new Size(180, 22);
             toolStripMenuItemExit.Text = Resources.Language.i18n.strMenuExit;
             toolStripMenuItemExit.Click += ExitToolStripMenuItem_Click;
+            // 
+            // toolStripMenuItemAccounts
+            // 
+            toolStripMenuItemAccounts.Name = "toolStripMenuItemAccounts";
+            toolStripMenuItemAccounts.Size = new Size(69, 20);
+            toolStripMenuItemAccounts.Text = Resources.Language.i18n.strMenuAccounts;
             // 
             // toolStripMenuItemRegion
             // 
@@ -101,7 +128,7 @@
             // 
             toolStripMenuItemRegionAmericas.CheckOnClick = true;
             toolStripMenuItemRegionAmericas.Name = "toolStripMenuItemRegionAmericas";
-            toolStripMenuItemRegionAmericas.Size = new Size(180, 22);
+            toolStripMenuItemRegionAmericas.Size = new Size(123, 22);
             toolStripMenuItemRegionAmericas.Tag = "1";
             toolStripMenuItemRegionAmericas.Text = Resources.Language.i18n.strRegionAmercas;
             toolStripMenuItemRegionAmericas.Click += RegionToolStripMenuItem_Click;
@@ -110,7 +137,7 @@
             // 
             toolStripMenuItemRegionEurope.CheckOnClick = true;
             toolStripMenuItemRegionEurope.Name = "toolStripMenuItemRegionEurope";
-            toolStripMenuItemRegionEurope.Size = new Size(180, 22);
+            toolStripMenuItemRegionEurope.Size = new Size(123, 22);
             toolStripMenuItemRegionEurope.Tag = "2";
             toolStripMenuItemRegionEurope.Text = Resources.Language.i18n.strRegionEurope;
             toolStripMenuItemRegionEurope.Click += RegionToolStripMenuItem_Click;
@@ -119,7 +146,7 @@
             // 
             toolStripMenuItemRegionAsia.CheckOnClick = true;
             toolStripMenuItemRegionAsia.Name = "toolStripMenuItemRegionAsia";
-            toolStripMenuItemRegionAsia.Size = new Size(180, 22);
+            toolStripMenuItemRegionAsia.Size = new Size(123, 22);
             toolStripMenuItemRegionAsia.Tag = "3";
             toolStripMenuItemRegionAsia.Text = Resources.Language.i18n.strRegionAsia;
             toolStripMenuItemRegionAsia.Click += RegionToolStripMenuItem_Click;
@@ -128,23 +155,17 @@
             // 
             toolStripMenuItemRegionPTR.CheckOnClick = true;
             toolStripMenuItemRegionPTR.Name = "toolStripMenuItemRegionPTR";
-            toolStripMenuItemRegionPTR.Size = new Size(180, 22);
+            toolStripMenuItemRegionPTR.Size = new Size(123, 22);
             toolStripMenuItemRegionPTR.Tag = "98";
             toolStripMenuItemRegionPTR.Text = "PTR";
             toolStripMenuItemRegionPTR.Click += RegionToolStripMenuItem_Click;
             // 
-            // toolStripMenuItemAccounts
+            // toolStripMenuItemSettings
             // 
-            toolStripMenuItemAccounts.Name = "toolStripMenuItemAccounts";
-            toolStripMenuItemAccounts.Size = new Size(69, 20);
-            toolStripMenuItemAccounts.Text = Resources.Language.i18n.strMenuAccounts;
-            // 
-            // toolStripMenuItemOptions
-            // 
-            toolStripMenuItemOptions.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemLanguage, toolStripMenuItemClearCache, toolStripMenuItemPreferences });
-            toolStripMenuItemOptions.Name = "toolStripMenuItemOptions";
-            toolStripMenuItemOptions.Size = new Size(61, 20);
-            toolStripMenuItemOptions.Text = Resources.Language.i18n.strMenuSettings;
+            toolStripMenuItemSettings.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemLanguage, toolStripMenuItemClearCache, toolStripMenuItemPreferences });
+            toolStripMenuItemSettings.Name = "toolStripMenuItemSettings";
+            toolStripMenuItemSettings.Size = new Size(61, 20);
+            toolStripMenuItemSettings.Text = Resources.Language.i18n.strMenuSettings;
             // 
             // toolStripMenuItemLanguage
             // 
@@ -159,9 +180,9 @@
             toolStripMenuItemClearCache.Text = Resources.Language.i18n.strMenuClearCache;
             toolStripMenuItemClearCache.Click += ClearCacheToolStripMenuItem_Click;
             // 
-            // toolStripMenuItemProperties
+            // toolStripMenuItemPreferences
             // 
-            toolStripMenuItemPreferences.Name = "toolStripMenuItemProperties";
+            toolStripMenuItemPreferences.Name = "toolStripMenuItemPreferences";
             toolStripMenuItemPreferences.Size = new Size(135, 22);
             toolStripMenuItemPreferences.Text = Resources.Language.i18n.strPreferences;
             toolStripMenuItemPreferences.Click += PreferencesToolStripMenuItem_Click;
@@ -213,6 +234,12 @@
             listBoxHotsReplays.Visible = false;
             listBoxHotsReplays.SelectedIndexChanged += ListBoxHotsReplays_SelectedIndexChanged;
             // 
+            // openFileDialog
+            // 
+            openFileDialog.AddToRecent = false;
+            openFileDialog.DefaultExt = "StormReplay";
+            openFileDialog.Filter = "StormReplay files|*.StormReplay";
+            // 
             // HotsReplayWebReader
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -240,24 +267,32 @@
 
         private MenuStrip menuStrip;
         private ToolStripMenuItem toolStripMenuItemFile;
-        private ToolStripMenuItem toolStripMenuItemExit;
-        private ToolStripMenuItem toolStripMenuItemAccounts;
-        private Microsoft.Web.WebView2.WinForms.WebView2 webView;
-        private ListBox listBoxHotsReplays;
-        private FolderBrowserDialog folderBrowserDialog;
-        private ToolStripMenuItem toolStripMenuItemBrowse;
+        private ToolStripMenuItem toolStripMenuItemOpen;
+        private ToolStripMenuItem toolStripMenuItemOpenFile;
+        private ToolStripMenuItem toolStripMenuItemOpenFolder;
         private ToolStripMenuItem toolStripMenuItemSource;
-        private ToolStripMenuItem toolStripMenuItemLanguage;
+        private ToolStripMenuItem toolStripMenuItemExit;
+
+        private ToolStripMenuItem toolStripMenuItemAccounts;
+
         private ToolStripMenuItem toolStripMenuItemRegion;
         private ToolStripMenuItem toolStripMenuItemRegionAmericas;
         private ToolStripMenuItem toolStripMenuItemRegionEurope;
         private ToolStripMenuItem toolStripMenuItemRegionAsia;
-        private ToolStripMenuItem toolStripMenuItemPreferences;
-        private ToolStripMenuItem toolStripMenuItemAbout;
-        private ToolStripMenuItem toolStripMenuItemAboutHotsReplayReader;
-        private ToolStripMenuItem toolStripMenuItemUpdate;
-        private ToolStripMenuItem toolStripMenuItemClearCache;
-        private ToolStripMenuItem toolStripMenuItemOptions;
         private ToolStripMenuItem toolStripMenuItemRegionPTR;
+
+        private ToolStripMenuItem toolStripMenuItemSettings;
+        private ToolStripMenuItem toolStripMenuItemLanguage;
+        private ToolStripMenuItem toolStripMenuItemClearCache;
+        private ToolStripMenuItem toolStripMenuItemPreferences;
+
+        private ToolStripMenuItem toolStripMenuItemAbout;
+        private ToolStripMenuItem toolStripMenuItemUpdate;
+        private ToolStripMenuItem toolStripMenuItemAboutHotsReplayReader;
+
+        private ListBox listBoxHotsReplays;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView;
+        private FolderBrowserDialog folderBrowserDialog;
+        private OpenFileDialog openFileDialog;
     }
 }

@@ -556,6 +556,33 @@ namespace HotsReplayReader.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        internal static string strOpen {
+            get {
+                return ResourceManager.GetString("strOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File....
+        /// </summary>
+        internal static string strOpenFile {
+            get {
+                return ResourceManager.GetString("strOpenFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder....
+        /// </summary>
+        internal static string strOpenFolder {
+            get {
+                return ResourceManager.GetString("strOpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to per level.
         /// </summary>
         internal static string strPerLevel {
@@ -714,6 +741,42 @@ namespace HotsReplayReader.Resources.Language {
         internal static string strPreferencesInvalidAPIKey {
             get {
                 return ResourceManager.GetString("strPreferencesInvalidAPIKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat.
+        /// </summary>
+        internal static string strPreferencesMessages {
+            get {
+                return ResourceManager.GetString("strPreferencesMessages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enemy chat.
+        /// </summary>
+        internal static string strPreferencesMessagesEnnemy {
+            get {
+                return ResourceManager.GetString("strPreferencesMessagesEnnemy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friendly chat.
+        /// </summary>
+        internal static string strPreferencesMessagesFriendly {
+            get {
+                return ResourceManager.GetString("strPreferencesMessagesFriendly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat.
+        /// </summary>
+        internal static string strPreferencesMessagesShow {
+            get {
+                return ResourceManager.GetString("strPreferencesMessagesShow", resourceCulture);
             }
         }
         

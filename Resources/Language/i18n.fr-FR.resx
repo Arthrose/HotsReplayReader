@@ -435,4 +435,25 @@
   <data name="strCopied" xml:space="preserve">
     <value>Copié !</value>
   </data>
+  <data name="strOpen" xml:space="preserve">
+    <value>Ouvrir</value>
+  </data>
+  <data name="strOpenFile" xml:space="preserve">
+    <value>Fichier...</value>
+  </data>
+  <data name="strOpenFolder" xml:space="preserve">
+    <value>Dossier...</value>
+  </data>
+  <data name="strPreferencesMessagesFriendly" xml:space="preserve">
+    <value>Messages alliés</value>
+  </data>
+  <data name="strPreferencesMessagesEnnemy" xml:space="preserve">
+    <value>Messages ennemis</value>
+  </data>
+  <data name="strPreferencesMessages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="strPreferencesMessagesShow" xml:space="preserve">
+    <value>Messages</value>
+  </data>
 </root>
