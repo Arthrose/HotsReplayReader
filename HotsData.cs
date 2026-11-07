@@ -99,7 +99,7 @@ namespace HotsReplayReader
             ["輔助"] = HotsRole.Support,
         };
         internal Version versionThreshold = new("2.55.16.97039");
-        internal void Parse(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, Version dbVersion, List<string> matchAwardsList, List<string> heroList, List<string> bannedHeroIds)
+        internal void Parse(string heroDataJsonPath, string matchAwardDataJsonPath, string gameStringsJsonPath, Version dbVersion, List<string> matchAwardsList, List<string> heroIdsList, List<string> bannedHeroIds)
         {
             heroesIconsData.Clear();
             heroesElementData.Clear();
@@ -109,22 +109,22 @@ namespace HotsReplayReader
             HeroRoleFromHeroId = [];
 
             if (dbVersion < versionThreshold)
-                ParseHeroesIcons(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, matchAwardsList, heroList, bannedHeroIds);
+                ParseHeroesIcons(heroDataJsonPath, matchAwardDataJsonPath, gameStringsJsonPath, matchAwardsList, heroIdsList, bannedHeroIds);
             else
-                ParseHeroesElement(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, matchAwardsList, heroList, bannedHeroIds);
+                ParseHeroesElement(heroDataJsonPath, matchAwardDataJsonPath, gameStringsJsonPath, matchAwardsList, heroIdsList, bannedHeroIds);
         }
-        internal void ParseHeroesIcons(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> matchAwardsList, List<string> heroList, List<string> bannedHeroIds)
+        internal void ParseHeroesIcons(string heroDataJsonPath, string matchAwardDataJsonPath, string gameStringsJsonPath, List<string> matchAwardsList, List<string> heroIdsList, List<string> bannedHeroIds)
         {
             GetHeroesIconsHeroUnitIdsFromHeroUnits(heroDataJsonPath);
 
             List<string> heroIds = [];
-            foreach (string heroUnitId in heroList)
-                heroIds.Add(HeroIdFromHeroUnitId[heroUnitId]);
+            foreach (string heroId in heroIdsList)
+                heroIds.Add(HeroIdFromHeroUnitId[heroId]);
             heroIds.AddRange(bannedHeroIds);
 
             Heroes.Icons.GameStringDocument gameStringDocument = Heroes.Icons.GameStringDocument.Parse(gameStringsJsonPath);
             Heroes.Icons.DataDocument.HeroDataDocument heroDataDocument = Heroes.Icons.DataDocument.HeroDataDocument.Parse(heroDataJsonPath, gameStringDocument);
-            Heroes.Icons.DataDocument.MatchAwardDataDocument matchAwardHeroesIconsDataDocument = Heroes.Icons.DataDocument.MatchAwardDataDocument.Parse(matchAwardsJsonPath, gameStringDocument);
+            Heroes.Icons.DataDocument.MatchAwardDataDocument matchAwardDataDocument = Heroes.Icons.DataDocument.MatchAwardDataDocument.Parse(matchAwardDataJsonPath, gameStringDocument);
 
             CultureInfo originalCulture = CultureInfo.CurrentCulture;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
@@ -132,7 +132,7 @@ namespace HotsReplayReader
             {
                 foreach (string matchAwardId in matchAwardsList)
                 {
-                    Heroes.Models.MatchAward matchAward = matchAwardHeroesIconsDataDocument!.GetMatchAwardById(matchAwardId);
+                    Heroes.Models.MatchAward matchAward = matchAwardDataDocument!.GetMatchAwardById(matchAwardId);
                     hotsMatchAwards[matchAwardId] = new()
                     {
                         Name = matchAward.Name,
@@ -383,22 +383,22 @@ namespace HotsReplayReader
                 hotsHeroes[heroId].HeroUnits.Add(heroUnit);
             }
         }
-        internal void ParseHeroesElement(string heroDataJsonPath, string gameStringsJsonPath, string matchAwardsJsonPath, List<string> matchAwardsList, List<string> heroList, List<string> bannedHeroIds)
+        internal void ParseHeroesElement(string heroDataJsonPath, string matchAwardDataJsonPath, string gameStringsJsonPath, List<string> matchAwardsList, List<string> heroIdsList, List<string> bannedHeroIds)
         {
             GetHeroesElementHeroUnitIdsFromHeroUnits(heroDataJsonPath);
 
             List<string> heroIds = [];
-            foreach (string heroUnitId in heroList)
-                heroIds.Add(HeroIdFromHeroUnitId[heroUnitId]);
+            foreach (string heroId in heroIdsList)
+                heroIds.Add(HeroIdFromHeroUnitId[heroId]);
             heroIds.AddRange(bannedHeroIds);
 
             using FileStream gameStringsStream = File.OpenRead(gameStringsJsonPath);
             using FileStream heroDataStream = File.OpenRead(heroDataJsonPath);
-            using FileStream matchAwardsStream = File.OpenRead(matchAwardsJsonPath);
+            using FileStream matchAwardDataStream = File.OpenRead(matchAwardDataJsonPath);
 
             using GameStringsDocument? gameStringsDocument = Heroes.Element.GameStringsDocument.Load(JsonDocument.Parse(gameStringsStream));
             using HeroDataDocument? heroDataDocument = Heroes.Element.HeroDataDocument.Load(JsonDocument.Parse(heroDataStream), gameStringsDocument);
-            using MatchAwardDataDocument? matchAwardHeroesElementDataDocument = Heroes.Element.MatchAwardDataDocument.Load(JsonDocument.Parse(matchAwardsStream), gameStringsDocument);
+            using MatchAwardDataDocument? matchAwardDataDocument = Heroes.Element.MatchAwardDataDocument.Load(JsonDocument.Parse(matchAwardDataStream), gameStringsDocument);
 
             CultureInfo originalCulture = CultureInfo.CurrentCulture;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
@@ -406,7 +406,7 @@ namespace HotsReplayReader
             {
                 foreach (string matchAwardId in matchAwardsList)
                 {
-                    Heroes.Element.Models.MatchAward matchAward = matchAwardHeroesElementDataDocument!.GetElementById(matchAwardId);
+                    Heroes.Element.Models.MatchAward matchAward = matchAwardDataDocument!.GetElementById(matchAwardId);
                     hotsMatchAwards[matchAwardId] = new()
                     {
                         Name = matchAward.ScoreScreenName?.PlainText.Split(',', 2)[0],

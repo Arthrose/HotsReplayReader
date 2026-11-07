@@ -3019,14 +3019,14 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
             try
             {
                 string? heroDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "herodata_*.json").FirstOrDefault();
-                string? matchAwardsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*.json").FirstOrDefault();
+                string? matchAwardDataJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\data\", "matchawarddata_*.json").FirstOrDefault();
                 string? gameStringsJsonPath = Directory.GetFiles($@"{Init.DbDirectory}\{dbVersion}\gamestrings\", $"gamestrings_*_{Init.config!.LangCode?.ToLower().Replace("-", "")}.json").FirstOrDefault();
 
                 Debug.WriteLine($"heroDataJsonPath: {heroDataJsonPath}");
-                Debug.WriteLine($"matchAwardsJsonPath: {matchAwardsJsonPath}");
+                Debug.WriteLine($"matchAwardDataJsonPath: {matchAwardDataJsonPath}");
                 Debug.WriteLine($"gameStringsJsonPath: {gameStringsJsonPath}");
 
-                if (heroDataJsonPath == null || matchAwardsJsonPath == null || gameStringsJsonPath == null)
+                if (heroDataJsonPath == null || matchAwardDataJsonPath == null || gameStringsJsonPath == null)
                     throw new Exception("Missiing a JSON file");
 
                 List<string> matchAwardsList = [];
@@ -3034,16 +3034,20 @@ document.querySelectorAll('.battleTag').forEach(function (el) {{
                     if (player.MatchAwards?.Count > 0)
                         matchAwardsList.Add(player.MatchAwards[0].ToString());
 
-                List<string> HeroIds = [];
+                List<string> heroIdsList = [];
                 foreach (StormPlayer stormPlayer in hotsReplay!.stormPlayers)
-                    HeroIds.Add(stormPlayer.PlayerHero!.HeroUnitId);
+                {
+                    // Deathwing HeroId bug
+                    if (stormPlayer.PlayerHero!.HeroUnitId == "DeathwingDragonflightUnit") stormPlayer.PlayerHero!.HeroUnitId = "HeroDeathwing";
+                    heroIdsList.Add(stormPlayer.PlayerHero!.HeroUnitId);
+                }
 
                 List<string> bannedHeroIds = [];
                 foreach (Heroes.StormReplayParser.Replay.StormDraftPick draftPick in hotsReplay.stormReplay!.DraftPicks)
                     if (draftPick.PickType == Heroes.StormReplayParser.Replay.StormDraftPickType.Banned && draftPick.HeroSelected != "NONE")
                         bannedHeroIds.Add(draftPick.HeroSelected);
 
-                hotsData.Parse(heroDataJsonPath, gameStringsJsonPath, matchAwardsJsonPath, Version.Parse(dbVersion), matchAwardsList, HeroIds, bannedHeroIds);
+                hotsData.Parse(heroDataJsonPath, matchAwardDataJsonPath, gameStringsJsonPath, Version.Parse(dbVersion), matchAwardsList, heroIdsList, bannedHeroIds);
             }
             catch
             {
